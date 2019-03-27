@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 401949914239289466}
   - component: {fileID: 3681456820627842949}
-  - component: {fileID: 314449817390568984}
+  - component: {fileID: 339403945516565782}
   m_Layer: 5
   m_Name: Flock Sprite
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 437225413474538469}
   m_CullTransparentMesh: 0
---- !u!114 &314449817390568984
+--- !u!114 &339403945516565782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,16 +128,16 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.84126985, y: 0.84126985}
+    newSize: {x: 100, y: 100}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 4.91
+  m_EdgeRadius: 3.5
 --- !u!114 &3679100315635514291
 MonoBehaviour:
   m_ObjectHideFlags: 0
