@@ -54,9 +54,9 @@ public class MagicWall : MonoBehaviour
             CreateNewAgent(i);
         }
 
-        wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
-
-        CreateRefAgent();
+//        wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
+//
+//        CreateRefAgent();
 
 
     }
@@ -71,39 +71,23 @@ public class MagicWall : MonoBehaviour
 
         // 添加并删除碰撞体
         //List<Transform> context = new List<Transform>();
-        Collider2D[] contextColliders = Physics2D.OverlapCircleAll(wallLogo.position, logoEffectRadius);
-        foreach (Collider2D c in contextColliders)
-        {
-            if (c != wallLogo.GetComponent<Collider2D>())
-            {
-                Rigidbody2D rb2 = c.gameObject.GetComponent<Rigidbody2D>();
-                if (rb2 == null)
-                {
-                    rb2 = c.gameObject.AddComponent<Rigidbody2D>();
-                    rb2.gravityScale = 0;
-                }
-                else {
-                    rb2.simulated = true;
-                }
-            }
-        }
-
-
-
-        // 检测 agent
-        foreach (FlockAgent agent in agents) {
-            List<Transform> context = new List<Transform>();
-            if (agent.AgentStatus == FlockStatus.MOVE) {
-                Vector2 move = behavior.CalculateMove(agent, context, this);
-                move *= driveFactor;
-                if (move.sqrMagnitude > squareMaxSpeed)
-                {
-                    move = move.normalized * maxSpeed;
-                }
-                agent.Move(move);
-            }
-
-        }
+//        Collider2D[] contextColliders = Physics2D.OverlapCircleAll(wallLogo.position, logoEffectRadius);
+//        foreach (Collider2D c in contextColliders)
+//        {
+//            if (c != wallLogo.GetComponent<Collider2D>())
+//            {
+//                Rigidbody2D rb2 = c.gameObject.GetComponent<Rigidbody2D>();
+//                if (rb2 == null)
+//                {
+//                    rb2 = c.gameObject.AddComponent<Rigidbody2D>();
+//                    rb2.gravityScale = 0;
+//                }
+//                else {
+//                    rb2.simulated = true;
+//                }
+//            }
+//        }
+			
     }
 
     //  创建一个新Agent

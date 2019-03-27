@@ -1,24 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
-    int index;
-    public int AgentIndex { get { return index; } }
-
-    int index_x;
-    public int AgentIndex_x { get { return index_x; } }
-
-    int index_y;
-    public int AgentIndex_y { get { return index_y; } }
-
-    FlockStatus status;
-    public FlockStatus AgentStatus{ get { return status; } }
-
-
-
+	int index;
+	int x;
+	int y;
 
     MagicWall agentMagicWall;
     public MagicWall AgentMagicWall { get { return agentMagicWall; } }
@@ -36,37 +26,48 @@ public class FlockAgent : MonoBehaviour
     {
         agentCollider = GetComponent<Collider2D>();
         agentRectTransform = GetComponent<RectTransform>();
-
-
     }
 
-    public void Initialize(MagicWall magicWall,int index,int index_x,int index_y)
+	public void Initialize(MagicWall magicWall,int index,int x,int y)
     {
         agentMagicWall = magicWall;
-        this.index = index;
-        this.index_x = index_x;
-        this.index_y = index_y;
-        this.status = FlockStatus.MOVE;
+		this.index = index;
+		this.x = x;
+		this.y = y;
     }
 
     public void Move(Vector2 velocity)
     {
-        if (velocity == Vector2.zero)
-        {
-        }
-        else {
-            // turn agent face the direction that it's going to be moving toward.(箭头的指向向上)
+        // turn agent face the direction that it's going to be moving toward.(箭头的指向向上)
+        if(velocity != Vector2.zero){
             transform.up = velocity;
             transform.position += (Vector3)velocity * Time.deltaTime;
         }
 
-
-
-
     }
 
-}
 
-public enum FlockStatus {
-    MOVE,SHOW
+	void Update(){
+
+	}
+
+
+
+	// 向右下缩小
+	void DoScaleRD(){
+		float width = agentMagicWall.flock_width / 2;
+
+		// 缩小
+		RectTransform rt = GetComponent<RectTransform>();
+
+		//缩小至右下
+		rt.DOScale (0.5f, Time.deltaTime);
+		Vector2 v = new Vector2 (width, -width);
+		rt.DOAnchorPos (rt.anchoredPosition + v,Time.deltaTime);
+		BoxCollider2D collider = GetComponent<BoxCollider2D> ();
+		collider.edgeRadius = collider.edgeRadius / 2;
+	}
+
+
+
 }
