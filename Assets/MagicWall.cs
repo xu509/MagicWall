@@ -67,7 +67,7 @@ public class MagicWall : MonoBehaviour
         // 画布移动
 
         //transform.position += (Vector3)velocity * Time.deltaTime;
-        mainPanel.transform.position += (Vector3)Vector2.left * Time.deltaTime;
+        mainPanel.transform.position += (Vector3)Vector2.left * Time.deltaTime * driveFactor;
 
         // 添加并删除碰撞体
         //List<Transform> context = new List<Transform>();
@@ -113,11 +113,12 @@ public class MagicWall : MonoBehaviour
                                     mainPanel
                                     );
         newAgent.name = "Agent(" + x + "," + y + ")";
-        newAgent.Initialize(this,index,x,y);
 
         postion.x = (x-1) * flock_width + (flock_width / 2);
         postion.y = (y-1) * flock_width + (flock_width / 2);
         newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
+
+        newAgent.Initialize(this, index, x, y, postion);
         agents.Add(newAgent);
     }
 
@@ -125,13 +126,12 @@ public class MagicWall : MonoBehaviour
     void CreateRefAgent()
     {
         //设置位置
-
         FlockAgent newAgent = Instantiate(
                                     refPrefab,
                                     mainPanel
                                     );
         newAgent.name = "RefAgent";
-        newAgent.Initialize(this, -1, 0, 0);
+        newAgent.Initialize(this, -1, 0, 0,Vector2.zero);
         agents.Add(newAgent);
     }
 
