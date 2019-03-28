@@ -43,6 +43,14 @@ public class MagicWall : MonoBehaviour
 
     Transform wallLogo;
 
+	//缩放状态
+	[SerializeField,Range(1f,10f)]
+	public float scaleSpeed = 1;  // 缩放的速度
+
+	[SerializeField,Range(1f,10f)]
+	public float recoverMoveSpeed = 1;  // 恢复的移动速度
+
+	public float agent_colider_radius = 4f; // 碰撞体半径
 
 
     // Start is called before the first frame update

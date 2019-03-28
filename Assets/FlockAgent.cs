@@ -46,6 +46,7 @@ public class FlockAgent : MonoBehaviour
     public float edge_radius = 4f; // 碰撞体半径
 
 
+
     MagicWall agentMagicWall;
     public MagicWall AgentMagicWall { get { return agentMagicWall; } }
 
@@ -101,58 +102,20 @@ public class FlockAgent : MonoBehaviour
 
         // 判断何时恢复
         if (agentStatus == StatusEnum.CHANGING) {
-            if (confictItems.Count > 1)
-            {
-                DoScale();
-            }
-            else if (confictItems.Count == 0)
-            {
-                DoRecover();
-            }
+			if (confictItems.Count > 1) {
+				DoScale (false);
+			} else if (confictItems.Count == 0) {
+				DoRecover ();
+			} else if (confictItems.Count == 1) {
+				// 当 collider 有一个
+				DoScale(true);
+			}
         }
+			
 
-
-        
-
-
-
-
-        //if (confictItems.Count >= 1) {
-
-        //    //Debug.Log("Current Colllider items : " + confictItems.Count);
-        //    DoScale();
-        //} else if (agentStatus == AgentStatusEnum.changing) {
-        //    // 当模块没有接触其他模块，并且位置可能不在
-        //    if (confictItems.Count == 0)
-        //    {
-        //        DoRecover();
-        //    }
-        //    else if (confictItems.Count == 1) {
-        //        //Collider2D[] results = new Collider2D[10];
-        //        //ContactFilter2D contactFilter = new ContactFilter2D();
-
-        //        //int i = agentCollider.OverlapCollider(contactFilter, results);
-        //        //if (i != 1)
-        //        //{
-        //        //    confictItems.Clear();
-        //        //    for (int j = 0; j < i; j++)
-        //        //    {
-        //        //        confictItems.Add(results[j].gameObject.name, results[j].gameObject.GetComponent<Transform>());
-        //        //    }
-        //        //}
-        //        DoRecover();
-
-        //    }
-
-
-        //}
-
-
-
-
-        // show dic
+//        // show dic
         int index = 0;
-
+//
         foreach (KeyValuePair<string, Transform> pair in confictItems)
         {
             confictItemsNames[index] = pair.Key;
@@ -160,7 +123,7 @@ public class FlockAgent : MonoBehaviour
         }
 
         signTextComponent.text = confictItems.Count.ToString();
-
+//
 
 
 
@@ -169,67 +132,49 @@ public class FlockAgent : MonoBehaviour
 
 
 	// 1级缩小
-	void DoScale(){
+	void DoScale(bool isOneCollider){
         //float width = agentMagicWall.flock_width / 2;
 
-        float toScaleFactor = 0.6f;
+//        float toScaleFactor = 0.6f;
+//
+//        if (scaleFactor != toScaleFactor) {
+//            scaleFactor = toScaleFactor;
+//
+//            // 缩小 
+//            RectTransform rt = GetComponent<RectTransform>();
+//            rt.DOScale(scaleFactor, 2f);
+//
+//            BoxCollider2D collider = GetComponent<BoxCollider2D>();
+//            collider.edgeRadius = edge_radius * scaleFactor;
+//
+//        }
 
-        if (scaleFactor != toScaleFactor) {
-            scaleFactor = toScaleFactor;
+		float theScaleFactor = agentMagicWall.scaleSpeed;
 
-            // 缩小 
-            RectTransform rt = GetComponent<RectTransform>();
-            rt.DOScale(scaleFactor, 2f);
-
-            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-            collider.edgeRadius = edge_radius * scaleFactor;
-
-        }
+		if (isOneCollider)
+			theScaleFactor /= 2;
 
 
-
-        //// 如果已缩小至一半，则不再缩小
-        //if (scaleFactor > 0.6f)
-        //{
-        //    scaleFactor -= 0.01f;
-
-        //    // 缩小 
-        //    RectTransform rt = GetComponent<RectTransform>();
-        //    rt.DOScale(scaleFactor, Time.deltaTime);
-
-        //    BoxCollider2D collider = GetComponent<BoxCollider2D>();
-        //    collider.edgeRadius = edge_radius * scaleFactor;
-
-        //    //GetComponentInChildren<Image>().color = Color.blue;
-
-        //}
-
-        //Vector2 v = new Vector2 (width, -width);
-        //rt.DOAnchorPos (rt.anchoredPosition + v,Time.deltaTime);
-
-    }
-
-    // 2级缩小
-    void DoScale2()
-    {
-        //float width = agentMagicWall.flock_width / 2;
-
-        float toScaleFactor = 0.4f;
-
-        if (scaleFactor != toScaleFactor)
+        // 如果已缩小至一半，则不再缩小
+        if (scaleFactor > 0.6f)
         {
-            scaleFactor = toScaleFactor;
+			scaleFactor -= theScaleFactor * Time.deltaTime;
 
             // 缩小 
             RectTransform rt = GetComponent<RectTransform>();
-            rt.DOScale(scaleFactor, 2f);
+            rt.DOScale(scaleFactor, Time.deltaTime);
 
-            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-            collider.edgeRadius = edge_radius * scaleFactor;
+			CircleCollider2D collider = GetComponent<CircleCollider2D>();
+			collider.radius = AgentMagicWall.agent_colider_radius * scaleFactor;
+//            collider.edgeRadius = edge_radius * scaleFactor;
+
+            //GetComponentInChildren<Image>().color = Color.blue;
 
         }
+			
 
     }
+		
 
     // 恢复
     void DoRecover()
@@ -244,18 +189,20 @@ public class FlockAgent : MonoBehaviour
         if (rt.anchoredPosition != tarVector2)
         {
             //GetComponentInChildren<Image>().color = Color.grey;
+			// 判断是否已超过最远距离
 
-            // 如果此时被
-
-            //Debug.Log("show : " + agentCollider);
-
-            Vector2 to = tarVector2 - rt.anchoredPosition;
-            //Debug.Log(to);
-            if (to.sqrMagnitude > Vector2.one.sqrMagnitude)
-            {
-                to = to.normalized;
-            }
-            rt.DOAnchorPos(rt.anchoredPosition + to, Time.deltaTime);
+			// 判断是否贴边
+			Collider2D[] contextColliders = Physics2D.OverlapCircleAll(transform.position, AgentMagicWall.agent_colider_radius + 0.1f);
+			if (contextColliders.Length == 1) {
+			
+				Vector2 to = tarVector2 - rt.anchoredPosition;
+				//Debug.Log(to);
+				if (to.sqrMagnitude > Vector2.one.sqrMagnitude)
+				{
+					to = to.normalized * AgentMagicWall.recoverMoveSpeed;
+				}
+				rt.DOAnchorPos(rt.anchoredPosition + to, Time.deltaTime);
+			}
 
         }
         else {
@@ -263,13 +210,22 @@ public class FlockAgent : MonoBehaviour
             // 恢复大小
             if (scaleFactor < 1f)
             {
-                //GetComponentInChildren<Image>().color = Color.red;
+				// 判断半径内是否还有别的物体
+				Collider2D[] contextColliders = Physics2D.OverlapCircleAll(transform.position, AgentMagicWall.agent_colider_radius);
+				if (contextColliders.Length == 1) {
+					//GetComponentInChildren<Image>().color = Color.red;
+					float theScaleFactor = agentMagicWall.scaleSpeed;
 
-                scaleFactor += 0.01f;
-                rt.DOScale(scaleFactor, Time.deltaTime);
+					scaleFactor += theScaleFactor * Time.deltaTime;
+					rt.DOScale(scaleFactor, Time.deltaTime);
 
-                BoxCollider2D collider = GetComponent<BoxCollider2D>();
-                collider.edgeRadius = edge_radius * scaleFactor;
+					CircleCollider2D collider = GetComponent<CircleCollider2D>();
+//					collider.edgeRadius = edge_radius * scaleFactor;
+					collider.radius = AgentMagicWall.agent_colider_radius * scaleFactor;
+						
+				
+				}
+
             }
 
         }
