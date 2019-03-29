@@ -43,9 +43,6 @@ public class FlockAgent : MonoBehaviour
             return scaleFactor;
         }
     }
-    public float edge_radius = 4f; // 碰撞体半径
-
-
 
     MagicWall agentMagicWall;
     public MagicWall AgentMagicWall { get { return agentMagicWall; } }
@@ -64,6 +61,11 @@ public class FlockAgent : MonoBehaviour
 
     public Text signTextComponent;
     public Text nameTextComponent;
+
+    // Last Collision time;
+    private float lastCollisionInstant = 0;
+    const float collisionInterval = 1.0f;
+
 
 
     // Start is called before the first frame update
@@ -133,21 +135,6 @@ public class FlockAgent : MonoBehaviour
 
 	// 1级缩小
 	void DoScale(bool isOneCollider){
-        //float width = agentMagicWall.flock_width / 2;
-
-//        float toScaleFactor = 0.6f;
-//
-//        if (scaleFactor != toScaleFactor) {
-//            scaleFactor = toScaleFactor;
-//
-//            // 缩小 
-//            RectTransform rt = GetComponent<RectTransform>();
-//            rt.DOScale(scaleFactor, 2f);
-//
-//            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-//            collider.edgeRadius = edge_radius * scaleFactor;
-//
-//        }
 
 		float theScaleFactor = agentMagicWall.scaleSpeed;
 
@@ -164,9 +151,8 @@ public class FlockAgent : MonoBehaviour
             RectTransform rt = GetComponent<RectTransform>();
             rt.DOScale(scaleFactor, Time.deltaTime);
 
-			CircleCollider2D collider = GetComponent<CircleCollider2D>();
-			collider.radius = AgentMagicWall.agent_colider_radius * scaleFactor;
-//            collider.edgeRadius = edge_radius * scaleFactor;
+            BoxCollider2D collider = GetComponent<BoxCollider2D>();
+			collider.edgeRadius = AgentMagicWall.agent_colider_radius * scaleFactor;
 
             //GetComponentInChildren<Image>().color = Color.blue;
 
@@ -179,6 +165,15 @@ public class FlockAgent : MonoBehaviour
     // 恢复
     void DoRecover()
     {
+
+        // 如果上一次碰撞在一秒内，则不碰撞
+        if (Time.time - lastCollisionInstant < collisionInterval) {
+            return;
+        }
+
+
+
+
         //float width = agentMagicWall.flock_width / 2;
         RectTransform rt = GetComponent<RectTransform>();
 
@@ -192,8 +187,8 @@ public class FlockAgent : MonoBehaviour
 			// 判断是否已超过最远距离
 
 			// 判断是否贴边
-			Collider2D[] contextColliders = Physics2D.OverlapCircleAll(transform.position, AgentMagicWall.agent_colider_radius + 0.1f);
-			if (contextColliders.Length == 1) {
+			//Collider2D[] contextColliders = Physics2D.OverlapCircleAll(transform.position, AgentMagicWall.agent_colider_radius + 0.1f);
+			//if (contextColliders.Length == 1) {
 			
 				Vector2 to = tarVector2 - rt.anchoredPosition;
 				//Debug.Log(to);
@@ -202,7 +197,7 @@ public class FlockAgent : MonoBehaviour
 					to = to.normalized * AgentMagicWall.recoverMoveSpeed;
 				}
 				rt.DOAnchorPos(rt.anchoredPosition + to, Time.deltaTime);
-			}
+			//}
 
         }
         else {
@@ -219,9 +214,8 @@ public class FlockAgent : MonoBehaviour
 					scaleFactor += theScaleFactor * Time.deltaTime;
 					rt.DOScale(scaleFactor, Time.deltaTime);
 
-					CircleCollider2D collider = GetComponent<CircleCollider2D>();
-//					collider.edgeRadius = edge_radius * scaleFactor;
-					collider.radius = AgentMagicWall.agent_colider_radius * scaleFactor;
+					BoxCollider2D collider = GetComponent<BoxCollider2D>();
+					collider.edgeRadius = AgentMagicWall.agent_colider_radius * scaleFactor;
 						
 				
 				}
@@ -246,11 +240,25 @@ public class FlockAgent : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        float collisionInstant = Time.time;
+        //if (lastCollisionInstant - collisionInstant > collisionInterval) {
+        //    lastCollisionInstant = collisionInstant;
+        //}
+        lastCollisionInstant = collisionInstant;
+
+
+
+
         //当碰撞体被触发
         string collision_name = collision.gameObject.name;
         Transform collision_transform = collision.gameObject.GetComponent<Transform>();
 
         //Debug.Log("collision_name:" + collision_name);
+
+        if (name == "Agent(10,6)") {
+            Debug.Log(GetComponent<Collider2D>().bounciness);
+        }
+
 
         try
         {
