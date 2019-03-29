@@ -274,25 +274,25 @@ public class GameManager : MonoBehaviour
 
         //Texture2D myTexture = toTexture2D(texRender);
 
-        //FileStream stream = null ;
-        //byte[] pReadByte = new byte[0];
+        FileStream stream = null ;
+        byte[] pReadByte = new byte[0];
 
-        //try
-        //{
-        //    stream = new FileStream(Application.dataPath + "/test/test.png", FileMode.Open);
-        //    BinaryReader r = new BinaryReader(stream);
-        //    r.BaseStream.Seek(0, SeekOrigin.Begin);    //将文件指针设置到文件开
-        //    pReadByte = r.ReadBytes((int)r.BaseStream.Length);
-        //}
-        //catch { }
-        //finally
-        //{
-        //    if (stream != null)
-        //        stream.Close();
-        //}
+        try
+        {
+            stream = new FileStream(Application.dataPath + "/test/test.png", FileMode.Open);
+            BinaryReader r = new BinaryReader(stream);
+            r.BaseStream.Seek(0, SeekOrigin.Begin);    //将文件指针设置到文件开
+            pReadByte = r.ReadBytes((int)r.BaseStream.Length);
+        }
+        catch { }
+        finally
+        {
+            if (stream != null)
+                stream.Close();
+        }
 
 
-        //GeneralBasicDemo(pReadByte);
+        GeneralBasicDemo(pReadByte);
         //Debug.Log(raw.texture);
     }
 
