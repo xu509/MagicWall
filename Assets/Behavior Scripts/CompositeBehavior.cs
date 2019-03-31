@@ -8,10 +8,7 @@ public class CompositeBehavior : FlockBehavior
     public FlockBehavior[] behaviors;
     public float[] weights;
 
-
-
-
-    public override Vector2 CalculateMove(FlockAgent agent, List<Transform> context, MagicWall magicWall)
+	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall)
     {
         //handle data mismatch
         if (weights.Length != behaviors.Length)
@@ -24,22 +21,26 @@ public class CompositeBehavior : FlockBehavior
         Vector2 move = Vector2.zero;
 
         //iterate through behaviors
-        for (int i = 0; i < behaviors.Length; i++)
-        {
-            Vector2 partialMove = behaviors[i].CalculateMove(agent, context, magicWall) * weights[i];
-
-            if (partialMove != Vector2.zero)
-            {
-                if (partialMove.sqrMagnitude > weights[i] * weights[i])
-                {
-                    partialMove.Normalize();
-                    partialMove *= weights[i];
-                }
-
-                move += partialMove;
-            }
-        }
+//        for (int i = 0; i < behaviors.Length; i++)
+//        {
+//            Vector2 partialMove = behaviors[i].CalculateMove(agent, context, magicWall) * weights[i];
+//
+//            if (partialMove != Vector2.zero)
+//            {
+//                if (partialMove.sqrMagnitude > weights[i] * weights[i])
+//                {
+//                    partialMove.Normalize();
+//                    partialMove *= weights[i];
+//                }
+//
+//                move += partialMove;
+//            }
+//        }
 
         return move;
     }
+
+	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+	}
+
 }

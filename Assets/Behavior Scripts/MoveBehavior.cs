@@ -5,33 +5,63 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Flock/Behavior/Move")]
 public class MoveBehavior : FlockBehavior
 {
-    public override Vector2 CalculateMove(FlockAgent agent, List<Transform> context, MagicWall magicWall)
+	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall)
     {
-        // 向左移动
-        Vector2 move = Vector2.left;
+		float neighbor_radius = 439f;
 
-        // 向右下角缩小
-        Collider2D[] contextColliders = new Collider2D[10];
-        ContactFilter2D contactFilter2D = new ContactFilter2D();
-        int isOverlap = agent.GetComponent<Collider2D>().OverlapCollider(contactFilter2D, contextColliders);
-        if (isOverlap > 0)
-        {
-            RectTransform rc = agent.GetComponent<RectTransform>();
-            //Vector2 v2 = rc.sizeDelta;
-            //v2.x--;
-            //v2.y--;
 
-            //rc.sizeDelta = v2;
+		Vector2 move = Vector2.zero;
+
+		bool isUpper = false; // 在目标物的上侧
+		bool isEqual = false; // 在目标物的下侧
+
+		// 获取两个点之间点距离
+		float distance = (tar.position - agent.AgentRectTransform.transform.position).sqrMagnitude;
+		float rdistance = (tar.position - magicWall.RefObj.position).sqrMagnitude;
+		Debug.Log ("[" + rdistance + "] -> " + distance + " - distance");
 
 
 
+		if (agent.AgentRectTransform.transform.position.y > tar.position.y) {
+			isUpper = true;
+		} else if (agent.AgentRectTransform.transform.position.y < tar.position.y) {
+			isUpper = false;
+		} else {
+			isEqual = true;
+		}
 
-            Debug.Log(agent.gameObject.name + " is over lap!");
-        }
-        else {
-        }
+
+
+		if (isEqual) {
+				
+		} else {
+			if (distance != neighbor_radius) {
+				if (isUpper) {
+					// 向下移
+					move = Vector2.down;
+					Debug.Log (agent.name + " - Do Down");
+
+
+				}
+				if (!isUpper) {
+					// 向上移
+					move = Vector2.up;
+					Debug.Log (agent.name + " - Do Up");
+
+				}
+			
+			}
+
+		}
+
+
 
         return move;
 
     }
+
+	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+	}
+
+		
 }

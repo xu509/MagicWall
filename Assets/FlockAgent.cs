@@ -7,42 +7,39 @@ using DG.Tweening;
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
-    [SerializeField]
-    public int index;
 	int x;
 	int y;
 
-    // 冲突的 items 
-    [SerializeField]
-    public Dictionary<string, Transform> confictItems;
+	Rigidbody2D agentRigidbody2D;
 
-    public string[] confictItemsNames;
-
+	public AgentStatus agentStatus;
+	public AgentStatus AgentStatus{set{agentStatus = value;}get { return agentStatus; } }
 
     // 目标点
-    public Vector2 tarVector2;
-    public Vector2 TarVector2 {
-        set {
-            tarVector2 = value;
-        }
-        get {
-            return tarVector2;
-        }
-    }
+    Vector2 tarVector2;
+	public Vector2 TarVector2 {
+		set {
+			tarVector2 = value;
+		}
+		get {
+			return tarVector2;
+		}
+	}
 
     // 缩放因子
     public float scaleFactor = 1.0f;
-    public float ScaleFactor
-    {
-        set
-        {
-            scaleFactor = value;
-        }
-        get
-        {
-            return scaleFactor;
-        }
-    }
+	public float ScaleFactor
+	{
+		set
+		{
+			scaleFactor = value;
+		}
+		get
+		{
+			return scaleFactor;
+		}
+	}
+
 
     MagicWall agentMagicWall;
     public MagicWall AgentMagicWall { get { return agentMagicWall; } }
@@ -53,10 +50,6 @@ public class FlockAgent : MonoBehaviour
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
 
-    public StatusEnum agentStatus = StatusEnum.NORMAL;
-    public StatusEnum AgentStatus { get { return agentStatus; } }
-
-    public ScaleStatusEnum agentScaleStatus;
 
 
     public Text signTextComponent;
@@ -68,64 +61,75 @@ public class FlockAgent : MonoBehaviour
 
 
 
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         agentCollider = GetComponent<Collider2D>();
         agentRectTransform = GetComponent<RectTransform>();
-        confictItems = new Dictionary<string, Transform>();
-        confictItemsNames = new string[10];
+
+		agentRigidbody2D = GetComponent<Rigidbody2D> ();
 
         nameTextComponent.text = name;
 
     }
 
-	public void Initialize(MagicWall magicWall,int index,int x,int y,Vector2 tar)
+	public void Initialize(MagicWall magicWall,int x,int y,Vector2 tar)
     {
         agentMagicWall = magicWall;
-		this.index = index;
 		this.x = x;
 		this.y = y;
         this.TarVector2 = tar;
+		this.agentStatus = AgentStatus.NORMAL;
     }
 
     public void Move(Vector2 velocity)
     {
         // turn agent face the direction that it's going to be moving toward.(箭头的指向向上)
         if(velocity != Vector2.zero){
-            transform.up = velocity;
+//            transform.up = velocity;
+
+//			agentRigidbody2D.AddForce (velocity * 50,ForceMode2D.Force);
+
             transform.position += (Vector3)velocity * Time.deltaTime;
         }
 
     }
 
+	public void MoveToPosition(Vector2 postion){
+		agentRectTransform.DOAnchorPos (postion,0.5f);
+	}
+
 
 	void FixedUpdate(){
 
-        // 判断何时恢复
-        if (agentStatus == StatusEnum.CHANGING) {
-			if (confictItems.Count > 1) {
-				DoScale (false);
-			} else if (confictItems.Count == 0) {
-				DoRecover ();
-			} else if (confictItems.Count == 1) {
-				// 当 collider 有一个
-				DoScale(true);
-			}
-        }
-			
-
-//        // show dic
-        int index = 0;
+//        // 判断何时恢复
+//        if (agentStatus == StatusEnum.CHANGING) {
+//			if (confictItems.Count > 1) {
+//				DoScale (false);
+//			} else if (confictItems.Count == 0) {
+//				DoRecover ();
+//			} else if (confictItems.Count == 1) {
+//				// 当 collider 有一个
+//				DoScale(true);
+//			}
+//        }
+//			
 //
-        foreach (KeyValuePair<string, Transform> pair in confictItems)
-        {
-            confictItemsNames[index] = pair.Key;
-            index++;
-        }
-
-        signTextComponent.text = confictItems.Count.ToString();
+////        // show dic
+//        int index = 0;
+////
+//        foreach (KeyValuePair<string, Transform> pair in confictItems)
+//        {
+//            confictItemsNames[index] = pair.Key;
+//            index++;
+//        }
 //
+//        signTextComponent.text = confictItems.Count.ToString();
+////
 
 
 
@@ -226,7 +230,7 @@ public class FlockAgent : MonoBehaviour
 
 
         if (scaleFactor == 1f && rt.anchoredPosition == tarVector2) {
-            agentStatus = StatusEnum.NORMAL;
+//            agentStatus = StatusEnum.NORMAL;
             //GetComponentInChildren<Image>().color = Color.white;
         }
         //Vector2 v = new Vector2 (width, -width);
@@ -238,41 +242,37 @@ public class FlockAgent : MonoBehaviour
 
 
 
+
+
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-        float collisionInstant = Time.time;
-        //if (lastCollisionInstant - collisionInstant > collisionInterval) {
-        //    lastCollisionInstant = collisionInstant;
-        //}
-        lastCollisionInstant = collisionInstant;
-
-
-
-
-        //当碰撞体被触发
-        string collision_name = collision.gameObject.name;
-        Transform collision_transform = collision.gameObject.GetComponent<Transform>();
-
-        //Debug.Log("collision_name:" + collision_name);
-
-        if (name == "Agent(10,6)") {
-            Debug.Log(GetComponent<Collider2D>().bounciness);
-        }
-
-
-        try
-        {
-            confictItems.Add(collision_name, collision_transform);
-            agentStatus = StatusEnum.CHANGING;
-        }
-        catch
-        {
-        }
-
-        //gameObject.GetComponentInChildren<Image>().color = Color.blue;
-
-
-        //confictItems.Add(collision.gameObject.name, collision.gameObject.GetComponent<Transform>());
+//        float collisionInstant = Time.time;
+//
+//        lastCollisionInstant = collisionInstant;
+//
+//
+//
+//
+//        //当碰撞体被触发
+//        string collision_name = collision.gameObject.name;
+//        Transform collision_transform = collision.gameObject.GetComponent<Transform>();
+//
+//        //Debug.Log("collision_name:" + collision_name);
+//
+//        if (name == "Agent(10,6)") {
+//            Debug.Log(GetComponent<Collider2D>().bounciness);
+//        }
+//
+//
+//        try
+//        {
+//            confictItems.Add(collision_name, collision_transform);
+//            agentStatus = StatusEnum.CHANGING;
+//        }
+//        catch
+//        {
+//        }
 
     }
 
@@ -284,20 +284,13 @@ public class FlockAgent : MonoBehaviour
     }
 
     void OnCollisionExit2D(Collision2D collision) {
-        confictItems.Remove(collision.gameObject.name);
+//        confictItems.Remove(collision.gameObject.name);
     }
 
+
 }
 
-// agent 状态
-public enum StatusEnum {
-    NORMAL,
-    CHANGING
-}
 
-// agent 缩放状态
-public enum ScaleStatusEnum {
-    ONCE,
-    TWICE,
-    NORMAL
+public enum AgentStatus{
+	NORMAL,MOVING
 }
