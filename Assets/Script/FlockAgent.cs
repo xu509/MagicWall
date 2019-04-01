@@ -39,6 +39,20 @@ public class FlockAgent : MonoBehaviour
 			return scaleFactor;
 		}
 	}
+    public bool isScale = false;
+    public bool IsScale
+    {
+        set
+        {
+            isScale = value;
+        }
+        get
+        {
+            return isScale;
+        }
+    }
+
+
 
 
     MagicWall agentMagicWall;
@@ -292,5 +306,5 @@ public class FlockAgent : MonoBehaviour
 
 
 public enum AgentStatus{
-	NORMAL,MOVING
+	NORMAL,MOVING,CHOOSING
 }
