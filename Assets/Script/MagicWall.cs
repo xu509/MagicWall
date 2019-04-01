@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine;
 
 public class MagicWall : MonoBehaviour
@@ -36,6 +38,8 @@ public class MagicWall : MonoBehaviour
 
 
     Transform wallLogo;
+	public Transform WallLogo { get { return wallLogo; } }
+
     public Transform refObj;
     public Transform RefObj { get { return refObj; } }
 
@@ -52,6 +56,11 @@ public class MagicWall : MonoBehaviour
     //layout
     public int row = 6;
     public int column = 30;
+
+	GraphicRaycaster m_Raycaster;
+	PointerEventData m_PointerEventData;
+	EventSystem m_EventSystem;
+
     #endregion
 
 
@@ -72,15 +81,15 @@ public class MagicWall : MonoBehaviour
     {
         squareMaxSpeed = maxSpeed * maxSpeed;
 
-        //for (int i = 0; i < row * column; i++) {
-        //    CreateNewAgent(i);
-        //}
-
         wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
         //
         //        CreateRefAgent();
         sceneManager = new SceneManager();
         sceneManager.Init(this);
+
+		// Raycaster - event
+		m_Raycaster = GetComponent<GraphicRaycaster>();
+		m_EventSystem = GetComponent<EventSystem> ();
 
 
     }
@@ -91,40 +100,32 @@ public class MagicWall : MonoBehaviour
         // 画布移动
         sceneManager.UpdateItems(this);
 
-        // 添加并删除碰撞体
-        //foreach (FlockAgent agent in agents) {
-        //	if (HasItemsInNear (agent)) {
-        //		scaleBehavior.DoScale (agent, this);
-        //	} else {
-        //		if (agent.AgentStatus == AgentStatus.MOVING) {
-        //			// 回归原位
-        //			Vector2 v2 = recoverBehavior.CalculateMove(agent,null,this);
-
-        //                  reScaleBehavior.DoScale(agent, this);
-        //              }
-        //          }
-        //}
         if (Input.GetMouseButton(0)) {
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+			//Set up the new Pointer Event
+			m_PointerEventData = new PointerEventData(m_EventSystem);
+			//Set the Pointer Event Position to that of the mouse position
+			m_PointerEventData.position = Input.mousePosition;
 
+			//Create a list of Raycast Results
+			List<RaycastResult> results = new List<RaycastResult>();
 
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,Camera.main.nearClipPlane));
+			//Raycast using the Graphics Raycaster and mouse click position
+			m_Raycaster.Raycast(m_PointerEventData, results);
 
-            Debug.Log("Near clip plane : " + Camera.main.nearClipPlane + " | mousePos : " + mousePos + " | Input.mousePosition : " + Input.mousePosition);
+			//For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+			foreach (RaycastResult result in results)
+			{
+				GameObject go = result.gameObject;
+				if (go != null) {
+					FlockAgent agent = result.gameObject.transform.parent.gameObject.GetComponent<FlockAgent> ();
 
-
-        
-
-            Debug.DrawRay(mousePos, Camera.main.transform.forward * 100 , Color.green);
-
-            if (Physics.Raycast(ray,out hit)) {
-                Debug.Log("Input.GetMouseButton(0)");
-
-                Debug.Log(hit.transform.name);
-
-            }
+					if (agent != null) {
+						agent.DoChosenItem ();
+					}  
+				}
+			}
+				
         }
     }
 
