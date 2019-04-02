@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 
 [CreateAssetMenu(menuName = "Flock/Behavior/Recover")]
@@ -10,20 +12,54 @@ public class RecoverBehavior : FlockBehavior
     {
         Vector2 move = Vector2.zero;
 
-		if (agent.AgentRectTransform.anchoredPosition.sqrMagnitude != agent.TarVector2.sqrMagnitude) {
-			move = agent.TarVector2 - agent.AgentRectTransform.anchoredPosition;
-//			Debug.Log(agent.name + " - [Local]" + agent.AgentRectTransform.anchoredPosition.sqrMagnitude 
-//				+ "[Tar]" + agent.TarVector2.sqrMagnitude + "To :" + move);
-			if (move.sqrMagnitude > Vector2.one.sqrMagnitude) {
-				move = move.normalized * magicWall.recoverFactor;
-				agent.Move (move);
-			} else {
-				agent.MoveToPosition (agent.AgentRectTransform.anchoredPosition + move);
-			}
-		
-		} else {
-			magicWall.AdjustAgentStatus (agent);
-		}
+        //if (agent.isRunning)
+        //    return move;
+
+
+        //// 如果离家时间超过4s，则直接回家
+        //if ((Time.time - agent.LeaveTime) > 4)
+        //{
+        //    agent.IsRunning = true;
+        //    //Debug.Log("agent.AgentRectTransform : " + agent.AgentRectTransform == null);
+        //    //Debug.Log("tar.position : " + tar);
+        //    agent.AgentRectTransform.DOAnchorPos(agent.TarVector2, 1f);
+        //}
+        //else {
+        if (agent.AgentRectTransform.anchoredPosition.sqrMagnitude != agent.TarVector2.sqrMagnitude)
+        {
+            move = agent.TarVector2 - agent.AgentRectTransform.anchoredPosition;
+            if (move.sqrMagnitude > Vector2.one.sqrMagnitude)
+            {
+
+                float distance = Vector2.Distance(agent.TarVector2, agent.AgentRectTransform.anchoredPosition);
+                // 判断距离，如果过远，则增加移动速度
+
+                move = move.normalized * magicWall.recoverFactor;
+                if (distance > 10 && distance <= 20)
+                {
+                    move *= 2f;
+                }
+                else if (distance > 20)
+                {
+                    move *= 3f;
+                }
+
+                //if (Vector2.Distance(agent.TarVector2, agent.AgentRectTransform.anchoredPosition) > 200)
+                //    move = move * 1.5f;
+                //Debug.Log(agent.name + " distance : " + distance);
+                agent.signTextComponent.text = distance.ToString();
+                agent.transform.position += (Vector3)move * Time.deltaTime;
+                //agent.Move(move);
+            }
+            else
+            {
+                agent.AgentRectTransform.DOAnchorPos(agent.AgentRectTransform.anchoredPosition + move, 0.5f);
+            }
+        }
+        else
+        {
+            magicWall.AdjustAgentStatus(agent);
+        }
 
         return move;
     }

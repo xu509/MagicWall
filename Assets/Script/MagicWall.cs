@@ -11,10 +11,10 @@ public class MagicWall : MonoBehaviour
 	public RectTransform mainPanel;
 	public FlockAgent agentPrefab;
 
-	public FlockBehavior moveBehavior;
-	public FlockBehavior scaleBehavior;
-	public FlockBehavior reScaleBehavior;
-	public FlockBehavior recoverBehavior;
+	//public FlockBehavior moveBehavior;
+	//public FlockBehavior scaleBehavior;
+	//public FlockBehavior reScaleBehavior;
+	//public FlockBehavior recoverBehavior;
 
     // flock width
     public int flock_width = 106;
@@ -28,14 +28,6 @@ public class MagicWall : MonoBehaviour
 
 	[SerializeField,Range(1f, 20f)]
 	public float neighborRadius ; // flock neighbor radius
-
-    // radius
-    [SerializeField, Range(1f, 10f)]
-    public float flockRadius = 4.2f;
-    // logo 可以辐射的范围
-    [SerializeField, Range(1f, 10f)]
-    public float logoEffectRadius = 15f;
-
 
     Transform wallLogo;
 	public Transform WallLogo { get { return wallLogo; } }
@@ -51,7 +43,8 @@ public class MagicWall : MonoBehaviour
     [SerializeField, Range(1f, 10f)]
     public float recoverMoveSpeed = 1;  // 恢复的移动速度
 
-    public float agent_colider_radius = 4f; // 碰撞体半径
+    [SerializeField, Range(1f, 20f)]
+    public float choosingSpeed; // 被选中的 agent 放大的速度
 
     //layout
     public int row = 6;
@@ -121,7 +114,7 @@ public class MagicWall : MonoBehaviour
 					FlockAgent agent = result.gameObject.transform.parent.gameObject.GetComponent<FlockAgent> ();
 
 					if (agent != null) {
-						agent.DoChosenItem ();
+						DoChosenItem (agent);
 					}  
 				}
 			}
@@ -175,7 +168,8 @@ public class MagicWall : MonoBehaviour
         Collider2D[] contextColliders = Physics2D.OverlapCircleAll(flockAgent.AgentRectTransform.position,neighborRadius);
 
 		foreach (Collider2D c in contextColliders) {
-			if(c.gameObject.layer == 9){
+			if(c.gameObject.layer == 9 && c.gameObject.name != flockAgent.name)
+            {
 				has = true;
 			}
 		}
@@ -193,7 +187,11 @@ public class MagicWall : MonoBehaviour
 
 			if (isCorrectPosition && isCorrectScale) {
 				agent.AgentStatus = AgentStatus.NORMAL;
-			}
+                if (!agent.AgentRigidbody2D.simulated) {
+                    agent.AgentRigidbody2D.simulated = true;
+                }
+
+            }
 		}
 	}
 
@@ -208,6 +206,29 @@ public class MagicWall : MonoBehaviour
         }
         agents.Clear();
         mainPanel.anchoredPosition = Vector3.zero;
+
+    }
+
+
+    public void DoChosenItem(FlockAgent agent)
+    {
+        if (agent.agentStatus != AgentStatus.CHOOSING)
+        {
+            Debug.Log("[" + name + "] Do Chosen Item !");
+
+            //			agentRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+            
+
+
+            agent.agentStatus = AgentStatus.CHOOSING;
+        }
+        else
+        {
+
+        }
+
+
 
     }
 

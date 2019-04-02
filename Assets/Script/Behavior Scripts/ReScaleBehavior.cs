@@ -15,11 +15,16 @@ public class ReScaleBehavior : FlockBehavior
 
         if (!agent.IsScale)
         {
-            // 缩小 
-            RectTransform rt = agent.AgentRectTransform;
-            rt.DOScale(1f, 1).OnComplete(() => MyCallback(agent)); ;
+            // 当确定范围内无其他 agent 时
+            Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agent.transform.position, magicWall.neighborRadius);
+            if (contextColliders.Length == 1) {
+                //Debug.Log(agent.name + " IS SCALING");
+                // 恢复大小
+                RectTransform rt = agent.AgentRectTransform;
+                rt.DOScale(1f, 1).OnComplete(() => MyCallback(agent)); ;
 
-            agent.IsScale = true;
+                agent.IsScale = true;
+            }
         }
         else
         {

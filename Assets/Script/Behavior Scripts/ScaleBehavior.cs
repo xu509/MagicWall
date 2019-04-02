@@ -20,21 +20,20 @@ public class ScaleBehavior : FlockBehavior
 
             // 缩小 
             RectTransform rt = agent.AgentRectTransform;
-            rt.DOScale(0.6f, 1).OnComplete(() => MyCallback(agent)); 
+            rt.transform.DOScale(0.6f, 1).OnComplete(() => MyCallback(agent)); 
 
             agent.AgentStatus = AgentStatus.MOVING;
-
             agent.IsScale = true;
-
         }
 
 
         //		BoxCollider2D collider = GetComponent<BoxCollider2D>();
         //		collider.edgeRadius = AgentMagicWall.agent_colider_radius * scaleFactor;
-
     }
 
     void MyCallback(FlockAgent agent) {
+        //Debug.Log("Do Scale ! [ " + agent.name + " ] - " + agent.IsScale);
+
         agent.IsScale = false;
         agent.ScaleFactor = 0.6f;
 

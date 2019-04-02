@@ -7,16 +7,34 @@ using DG.Tweening;
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
-	int x;
-	int y;
+    int x;
+    int y;
 
-	Rigidbody2D agentRigidbody2D;
+    // 离开本位的时间
+    public float LeaveTime { set { leaveTime = value; } get { return leaveTime; } }
+    public float leaveTime = 0f;
 
-	public AgentStatus agentStatus;
+
+    Rigidbody2D agentRigidbody2D;
+    public Rigidbody2D AgentRigidbody2D { get{return agentRigidbody2D;}}
+
+    BoxCollider2D agentCollider2D;
+    public BoxCollider2D AgentCollider2D {
+        set
+        {
+            agentCollider2D = value;
+        }
+        get
+        {
+            return agentCollider2D;
+        }
+    }
+
+    public AgentStatus agentStatus;
 	public AgentStatus AgentStatus{set{agentStatus = value;}get { return agentStatus; } }
 
     // 目标点
-    Vector2 tarVector2;
+    public Vector2 tarVector2;
 	public Vector2 TarVector2 {
 		set {
 			tarVector2 = value;
@@ -52,19 +70,40 @@ public class FlockAgent : MonoBehaviour
         }
     }
 
+    public bool isChoosing = false;
+    public bool IsChoosing
+    {
+        set
+        {
+            isChoosing = value;
+        }
+        get
+        {
+            return isChoosing;
+        }
+    }
+
+    //在迅速回位
+    public bool isRunning = false;
+    public bool IsRunning
+    {
+        set
+        {
+            isRunning = value;
+        }
+        get
+        {
+            return isRunning;
+        }
+    }
 
 
 
     MagicWall agentMagicWall;
     public MagicWall AgentMagicWall { get { return agentMagicWall; } }
 
-    Collider2D agentCollider;
-    public Collider2D AgentCollider { get { return agentCollider; } }
-
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
-
-
 
     public Text signTextComponent;
     public Text nameTextComponent;
@@ -73,19 +112,12 @@ public class FlockAgent : MonoBehaviour
     private float lastCollisionInstant = 0;
     const float collisionInterval = 1.0f;
 
-
-
-
-
-
-
     // Start is called before the first frame update
     void Start()
     {
-        agentCollider = GetComponent<Collider2D>();
         agentRectTransform = GetComponent<RectTransform>();
-
-		agentRigidbody2D = GetComponent<Rigidbody2D> ();
+        agentRigidbody2D = GetComponent<Rigidbody2D> ();
+        agentCollider2D = GetComponent<BoxCollider2D>();
 
         nameTextComponent.text = name;
 
@@ -119,28 +151,82 @@ public class FlockAgent : MonoBehaviour
 
 
 	void FixedUpdate(){
+        string str = "";
+        if (agentStatus == AgentStatus.MOVING) {
+            str = "MOVING";
+            GetComponentInChildren<Image>().color = Color.blue;
 
+            if (leaveTime == 0)
+                leaveTime = Time.time;
+
+        }
+        if (agentStatus == AgentStatus.NORMAL) { 
+            str = "NORMAL";
+            GetComponentInChildren<Image>().color = Color.white;
+            leaveTime = 0;
+        }
+        if (agentStatus == AgentStatus.CHOOSING) {
+            // 当 Agent 被选中时
+
+            Transform wallLogo = GameObject.Find("MagicWall").GetComponent<Transform>();
+            AgentRectTransform.transform.SetParent(wallLogo);
+            agentRectTransform.gameObject.layer = 9;
+
+            Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agentRectTransform.position, 12);
+            bool hasImport = false;
+            foreach (Collider2D c in contextColliders)
+            {
+                if (c.gameObject.layer == 9 && c.gameObject.name != name)
+                {
+                    //Debug.Log(" RigidbodyType2D.Static");
+                    hasImport = true;
+                }
+            }
+            if (!hasImport) {
+                agentRigidbody2D.bodyType = RigidbodyType2D.Static;
+            }
+
+
+
+
+
+            if (!IsChoosing) {
+                // 改变大小
+                AgentRectTransform.transform.DOScale(2f, 2);
+
+
+                // 微调位置
+                // 以Y轴中间线为标准，分别上下移动半格
+                float currenty = AgentRectTransform.anchoredPosition.y;
+                Debug.Log(AgentRectTransform.anchoredPosition);
+                if (currenty > 320)
+                {
+                    AgentRectTransform.DOAnchorPosY(currenty - 50, 2f);
+                }
+                else
+                {
+                    AgentRectTransform.DOAnchorPosY(currenty + 50, 2f);
+                }
+
+                IsChoosing = true;
+
+            }
+
+            if (AgentCollider2D.edgeRadius < 12f)
+            {
+                // 1秒内，edge radius 从3到12；
+                AgentCollider2D.edgeRadius += agentMagicWall.choosingSpeed * Time.deltaTime;
+                ScaleFactor++;
+            }
+
+        }
+        //if (agentStatus == AgentStatus.CHOOSING)
+        //    str = "CHOOSING";
+        Vector2 v2 = AgentRectTransform.anchoredPosition;
+
+        //signTextComponent.text = v2.ToString(); ;
     }
 
-	public void DoChosenItem(){
-		if (agentStatus != AgentStatus.CHOOSING) {
-			Debug.Log ("[" + name + "] Do Chosen Item !");
-
-//			agentRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
-			Transform wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
-			AgentRectTransform.transform.SetParent(wallLogo);
-
-
-
-
-			agentStatus = AgentStatus.CHOOSING;
-		} else {
-		
-		}
-
-
-
-	}
 
 		
 
