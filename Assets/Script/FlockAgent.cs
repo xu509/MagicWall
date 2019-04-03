@@ -186,19 +186,14 @@ public class FlockAgent : MonoBehaviour
                 agentRigidbody2D.bodyType = RigidbodyType2D.Static;
             }
 
-
-
-
-
             if (!IsChoosing) {
                 // 改变大小
                 AgentRectTransform.transform.DOScale(2f, 2);
-
+                IsChoosing = true;
 
                 // 微调位置
                 // 以Y轴中间线为标准，分别上下移动半格
                 float currenty = AgentRectTransform.anchoredPosition.y;
-                Debug.Log(AgentRectTransform.anchoredPosition);
                 if (currenty > 320)
                 {
                     AgentRectTransform.DOAnchorPosY(currenty - 50, 2f);
@@ -207,17 +202,17 @@ public class FlockAgent : MonoBehaviour
                 {
                     AgentRectTransform.DOAnchorPosY(currenty + 50, 2f);
                 }
-
-                IsChoosing = true;
-
             }
 
+            // 调整碰撞体
             if (AgentCollider2D.edgeRadius < 12f)
             {
                 // 1秒内，edge radius 从3到12；
                 AgentCollider2D.edgeRadius += agentMagicWall.choosingSpeed * Time.deltaTime;
                 ScaleFactor++;
             }
+
+
 
         }
         //if (agentStatus == AgentStatus.CHOOSING)
