@@ -8,7 +8,7 @@ public class CompositeBehavior : FlockBehavior
     public FlockBehavior[] behaviors;
     public float[] weights;
 
-	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall)
+	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWallManager magicWall)
     {
         //handle data mismatch
         if (weights.Length != behaviors.Length)
@@ -40,7 +40,7 @@ public class CompositeBehavior : FlockBehavior
         return move;
     }
 
-	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+	public override void DoScale(FlockAgent agent, MagicWallManager magicWall){
 	}
 
 }

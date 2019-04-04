@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Flock/Behavior/Move")]
 public class MoveBehavior : FlockBehavior
 {
-	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall)
+	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWallManager magicWall)
     {
 		float neighbor_radius = 439f;
 
@@ -60,7 +60,7 @@ public class MoveBehavior : FlockBehavior
 
     }
 
-	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+	public override void DoScale(FlockAgent agent,MagicWallManager magicWall){
 	}
 
 		

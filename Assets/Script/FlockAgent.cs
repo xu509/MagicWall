@@ -10,63 +10,30 @@ public class FlockAgent : MonoBehaviour
     int x;
     int y;
 
-    // 离开本位的时间
-    public float LeaveTime { set { leaveTime = value; } get { return leaveTime; } }
-    public float leaveTime = 0f;
 
-
-    Rigidbody2D agentRigidbody2D;
-    public Rigidbody2D AgentRigidbody2D { get{return agentRigidbody2D;}}
-
-    BoxCollider2D agentCollider2D;
-    public BoxCollider2D AgentCollider2D {
-        set
-        {
-            agentCollider2D = value;
-        }
-        get
-        {
-            return agentCollider2D;
-        }
-    }
-
-    public AgentStatus agentStatus;
-	public AgentStatus AgentStatus{set{agentStatus = value;}get { return agentStatus; } }
-
-    // 目标点
-    public Vector2 tarVector2;
-	public Vector2 TarVector2 {
+    // 原位
+    public Vector2 oriVector2;
+	public Vector2 OriVector2
+    {
 		set {
-			tarVector2 = value;
+            oriVector2 = value;
 		}
 		get {
-			return tarVector2;
+			return oriVector2;
 		}
 	}
 
-    // 缩放因子
-    public float scaleFactor = 1.0f;
-	public float ScaleFactor
-	{
-		set
-		{
-			scaleFactor = value;
-		}
-		get
-		{
-			return scaleFactor;
-		}
-	}
-    public bool isScale = false;
-    public bool IsScale
+    // 影响点
+    public RectTransform effectTransform;
+    public RectTransform EffectTransform
     {
         set
         {
-            isScale = value;
+            effectTransform = value;
         }
         get
         {
-            return isScale;
+            return effectTransform;
         }
     }
 
@@ -82,54 +49,45 @@ public class FlockAgent : MonoBehaviour
             return isChoosing;
         }
     }
-
-    //在迅速回位
-    public bool isRunning = false;
-    public bool IsRunning
+    public bool isChanging = false;
+    public bool IsChanging
     {
         set
         {
-            isRunning = value;
+            isChanging = value;
         }
         get
         {
-            return isRunning;
+            return isChanging;
         }
     }
 
 
 
-    MagicWall agentMagicWall;
-    public MagicWall AgentMagicWall { get { return agentMagicWall; } }
+    MagicWallManager agentMagicWall;
+    public MagicWallManager AgentMagicWall { get { return agentMagicWall; } }
 
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
 
     public Text signTextComponent;
     public Text nameTextComponent;
+    public Text signTextComponent2;
 
-    // Last Collision time;
-    private float lastCollisionInstant = 0;
-    const float collisionInterval = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         agentRectTransform = GetComponent<RectTransform>();
-        agentRigidbody2D = GetComponent<Rigidbody2D> ();
-        agentCollider2D = GetComponent<BoxCollider2D>();
 
         nameTextComponent.text = name;
 
     }
 
-	public void Initialize(MagicWall magicWall,int x,int y,Vector2 tar)
+	public void Initialize(MagicWallManager magicWall,Vector2 originVector)
     {
         agentMagicWall = magicWall;
-		this.x = x;
-		this.y = y;
-        this.TarVector2 = tar;
-		this.agentStatus = AgentStatus.NORMAL;
+        this.oriVector2 = originVector;
     }
 
     public void Move(Vector2 velocity)
@@ -151,79 +109,227 @@ public class FlockAgent : MonoBehaviour
 
 
 	void FixedUpdate(){
-        string str = "";
-        if (agentStatus == AgentStatus.MOVING) {
-            str = "MOVING";
-            GetComponentInChildren<Image>().color = Color.blue;
+        if (IsChanging)
+        {
+            RectTransform m_transform = GetComponent<RectTransform>();
 
-            if (leaveTime == 0)
-                leaveTime = Time.time;
+            List<RectTransform> transforms = AgentMagicWall.EffectAgent;
+            RectTransform targetTransform = null;
 
-        }
-        if (agentStatus == AgentStatus.NORMAL) { 
-            str = "NORMAL";
-            GetComponentInChildren<Image>().color = Color.white;
-            leaveTime = 0;
-        }
-        if (agentStatus == AgentStatus.CHOOSING) {
-            // 当 Agent 被选中时
+            //获取距离影响点与原点的距离
+            float distance = Vector2.Distance(oriVector2, effectTransform.anchoredPosition);
 
-            Transform wallLogo = GameObject.Find("MagicWall").GetComponent<Transform>();
-            AgentRectTransform.transform.SetParent(wallLogo);
-            agentRectTransform.gameObject.layer = 9;
+            ////判断是否有多个影响体，如有多个，取距离最近的那个
+            //foreach (RectTransform item in transforms)
+            //{
+            //    float newDistance = Vector2.Distance(oriVector2, item.anchoredPosition);
+            //    if (newDistance < distance)
+            //    {
+            //        distance = newDistance;
+            //        targetTransform = item;
+            //    }
+            //}
 
-            Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agentRectTransform.position, 12);
-            bool hasImport = false;
-            foreach (Collider2D c in contextColliders)
+
+            // 判断结束
+
+            //获取影响距离与实际距离的差值
+            float offset = AgentMagicWall.TheDistance - distance;
+
+            signTextComponent.text = distance.ToString();
+            signTextComponent2.text = "offset : " + offset.ToString();
+
+            // 进入影响范围
+            if (offset > 0)
             {
-                if (c.gameObject.layer == 9 && c.gameObject.name != name)
-                {
-                    //Debug.Log(" RigidbodyType2D.Static");
-                    hasImport = true;
-                }
-            }
-            if (!hasImport) {
-                agentRigidbody2D.bodyType = RigidbodyType2D.Static;
-            }
+                float m_scale = -(1f / 255f) * offset + 1f;
 
-            if (!IsChoosing) {
-                // 改变大小
-                AgentRectTransform.transform.DOScale(2f, 2);
-                IsChoosing = true;
+                if (oriVector2.y > effectTransform.anchoredPosition.y)
+                {
+                    float to = oriVector2.y + AgentMagicWall.MoveFactor * offset;
+                    Vector2 toy = new Vector2(oriVector2.x, to);
+                    m_transform.DOAnchorPos(toy, Time.deltaTime);
+                }
+                else if (oriVector2.y < effectTransform.anchoredPosition.y)
+                {
+                    float to = oriVector2.y - (AgentMagicWall.MoveFactor * offset);
+                    Vector2 toy = new Vector2(oriVector2.x, to);
+                    m_transform.DOAnchorPos(toy, Time.deltaTime);
+                }
 
-                // 微调位置
-                // 以Y轴中间线为标准，分别上下移动半格
-                float currenty = AgentRectTransform.anchoredPosition.y;
-                if (currenty > 320)
-                {
-                    AgentRectTransform.DOAnchorPosY(currenty - 50, 2f);
-                }
-                else
-                {
-                    AgentRectTransform.DOAnchorPosY(currenty + 50, 2f);
-                }
+                m_transform.DOScale(m_scale, Time.deltaTime);
+
+                IsChanging = false;
+
             }
-
-            // 调整碰撞体
-            if (AgentCollider2D.edgeRadius < 12f)
+            else
+            // 未进入影响范围
             {
-                // 1秒内，edge radius 从3到12；
-                AgentCollider2D.edgeRadius += agentMagicWall.choosingSpeed * Time.deltaTime;
-                ScaleFactor++;
+                if (IsChanging)
+                {
+                    Vector2 toy = new Vector2(oriVector2.x, oriVector2.y);
+                    m_transform.DOAnchorPos(toy, Time.deltaTime);
+                    m_transform.DOScale(1, Time.deltaTime);
+                    IsChanging = false;
+                }
             }
-
-
-
         }
-        //if (agentStatus == AgentStatus.CHOOSING)
-        //    str = "CHOOSING";
-        Vector2 v2 = AgentRectTransform.anchoredPosition;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //if (!isChoosing) {
+        //    List<RectTransform> transforms = AgentMagicWall.EffectAgent;
+        //    RectTransform targetTransform = null;
+        //    float distance = 10000f;
+        //    foreach (RectTransform item in transforms)
+        //    {
+        //        float newDistance = Vector2.Distance(oriVector2, item.anchoredPosition);
+        //        if (newDistance < distance)
+        //        {
+        //            distance = newDistance;
+        //            targetTransform = item;
+        //        }
+        //    }
+        //    float offset = AgentMagicWall.TheDistance - distance;
+
+        //    signTextComponent.text = distance.ToString();
+        //    signTextComponent2.text = "offset : " + offset.ToString();
+
+        //    if (distance < AgentMagicWall.TheDistance)
+        //    {
+        //        // 进入影响范围
+        //        if (offset > 0)
+        //        {
+        //            //Debug.Log (1f / 255f);
+        //            float m_scale = -(1f / 255f) * offset + 1f;
+
+        //            if (oriVector2.y > targetTransform.anchoredPosition.y)
+        //            {
+        //                float to = oriVector2.y + AgentMagicWall.MoveFactor * offset;
+        //                Vector2 toy = new Vector2(oriVector2.x, to);
+        //                m_transform.DOAnchorPos(toy, Time.deltaTime);
+        //            }
+        //            else if (oriVector2.y < targetTransform.anchoredPosition.y)
+        //            {
+        //                float to = oriVector2.y - (AgentMagicWall.MoveFactor * offset);
+        //                Vector2 toy = new Vector2(oriVector2.x, to);
+        //                m_transform.DOAnchorPos(toy, Time.deltaTime);
+        //            }
+
+        //            m_transform.DOScale(m_scale, Time.deltaTime);
+
+        //            IsChanging = true;
+
+        //        }
+        //    }
+        //    else {
+
+        //        if (IsChanging) {
+        //            Vector2 toy = new Vector2(oriVector2.x, oriVector2.y);
+        //            m_transform.DOAnchorPos(toy, Time.deltaTime);
+        //            m_transform.DOScale(1, Time.deltaTime);
+        //            IsChanging = false;
+        //        }
+
+        //    }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+        //string str = "";
+        //if (agentStatus == AgentStatus.MOVING) {
+        //    str = "MOVING";
+        //    GetComponentInChildren<Image>().color = Color.blue;
+
+        //    if (leaveTime == 0)
+        //        leaveTime = Time.time;
+
+        //}
+        //if (agentStatus == AgentStatus.NORMAL) { 
+        //    str = "NORMAL";
+        //    GetComponentInChildren<Image>().color = Color.white;
+        //    leaveTime = 0;
+        //}
+        //if (agentStatus == AgentStatus.CHOOSING) {
+        //    // 当 Agent 被选中时
+
+        //    Transform wallLogo = GameObject.Find("MagicWall").GetComponent<Transform>();
+        //    AgentRectTransform.transform.SetParent(wallLogo);
+        //    agentRectTransform.gameObject.layer = 9;
+
+        //    Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agentRectTransform.position, 12);
+        //    bool hasImport = false;
+        //    foreach (Collider2D c in contextColliders)
+        //    {
+        //        if (c.gameObject.layer == 9 && c.gameObject.name != name)
+        //        {
+        //            //Debug.Log(" RigidbodyType2D.Static");
+        //            hasImport = true;
+        //        }
+        //    }
+        //    if (!hasImport) {
+        //        agentRigidbody2D.bodyType = RigidbodyType2D.Static;
+        //    }
+
+        //    if (!IsChoosing) {
+        //        // 改变大小
+        //        AgentRectTransform.transform.DOScale(2f, 2);
+        //        IsChoosing = true;
+
+        //        // 微调位置
+        //        // 以Y轴中间线为标准，分别上下移动半格
+        //        float currenty = AgentRectTransform.anchoredPosition.y;
+        //        if (currenty > 320)
+        //        {
+        //            AgentRectTransform.DOAnchorPosY(currenty - 50, 2f);
+        //        }
+        //        else
+        //        {
+        //            AgentRectTransform.DOAnchorPosY(currenty + 50, 2f);
+        //        }
+        //    }
+
+        //    // 调整碰撞体
+        //    if (AgentCollider2D.edgeRadius < 12f)
+        //    {
+        //        // 1秒内，edge radius 从3到12；
+        //        AgentCollider2D.edgeRadius += agentMagicWall.choosingSpeed * Time.deltaTime;
+        //        ScaleFactor++;
+        //    }
+
+
+
+        //}
+        ////if (agentStatus == AgentStatus.CHOOSING)
+        ////    str = "CHOOSING";
+        //Vector2 v2 = AgentRectTransform.anchoredPosition;
 
         //signTextComponent.text = v2.ToString(); ;
     }
 
 
-		
+
 
 
     void OnCollisionEnter2D(Collision2D collision)

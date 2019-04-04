@@ -7,6 +7,7 @@ using DG.Tweening;
 public class FlockTestAgent : MonoBehaviour {
 
 	public RectTransform TarAgent; 	// 目标 Agent
+
 	[Range(0,300)]
 	public float TheDistance;	// 影响距离
 	[Range(0,20)]
@@ -45,16 +46,17 @@ public class FlockTestAgent : MonoBehaviour {
 				text2.text = "SCALE: " + m_scale.ToString();
 
 				if (ori_transform.y > TarAgent.anchoredPosition.y) {
-					float to = ori_transform.y + MoveFactor * offset;	
-					m_transform.DOAnchorPosY (to, Time.deltaTime);
+                    float to = ori_transform.y + MoveFactor * offset;
+                    Vector2 toy = new Vector2(ori_transform.x, to);
+					m_transform.DOAnchorPos (toy, Time.deltaTime);
 				} else if (ori_transform.y < TarAgent.anchoredPosition.y){
-					float to = ori_transform.y + MoveFactor * offset;	
-					m_transform.DOAnchorPosY (-to, Time.deltaTime);
+					float to = ori_transform.y - MoveFactor * offset;
+                    Vector2 toy = new Vector2(ori_transform.x, to);
+                    m_transform.DOAnchorPos (toy, Time.deltaTime);
 				}
 
 				m_transform.DOScale (m_scale, Time.deltaTime);
 			} 
-
 		}
 
 	}

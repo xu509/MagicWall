@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class FlockBehavior : ScriptableObject
 {
     // 计算移动
-	public abstract Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall);
+	public abstract Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWallManager magicWall);
 
 	// Do Scale
-	public abstract void DoScale(FlockAgent agent,MagicWall magicWall);
+	public abstract void DoScale(FlockAgent agent, MagicWallManager magicWall);
 }

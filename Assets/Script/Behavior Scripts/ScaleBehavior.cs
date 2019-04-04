@@ -7,24 +7,24 @@ using DG.Tweening;
 public class ScaleBehavior : FlockBehavior
 {
 	// 计算移动
-	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall){
+	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWallManager magicWall){
 		return Vector2.zero;
 	}
 
-	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+	public override void DoScale(FlockAgent agent, MagicWallManager magicWall){
 
-        if (!agent.IsScale)
-        {
-            // 减半
-            float theScaleFactor = magicWall.scaleSpeed;
+        //if (!agent.IsScale)
+        //{
+        //    // 减半
+        //    float theScaleFactor = magicWall.scaleSpeed;
 
-            // 缩小 
-            RectTransform rt = agent.AgentRectTransform;
-            rt.transform.DOScale(0.6f, 1).OnComplete(() => MyCallback(agent)); 
+        //    // 缩小 
+        //    RectTransform rt = agent.AgentRectTransform;
+        //    rt.transform.DOScale(0.6f, 1).OnComplete(() => MyCallback(agent)); 
 
-            agent.AgentStatus = AgentStatus.MOVING;
-            agent.IsScale = true;
-        }
+        //    agent.AgentStatus = AgentStatus.MOVING;
+        //    agent.IsScale = true;
+        //}
 
 
         //		BoxCollider2D collider = GetComponent<BoxCollider2D>();
@@ -34,8 +34,8 @@ public class ScaleBehavior : FlockBehavior
     void MyCallback(FlockAgent agent) {
         //Debug.Log("Do Scale ! [ " + agent.name + " ] - " + agent.IsScale);
 
-        agent.IsScale = false;
-        agent.ScaleFactor = 0.6f;
+        //agent.IsScale = false;
+        //agent.ScaleFactor = 0.6f;
 
     }
 

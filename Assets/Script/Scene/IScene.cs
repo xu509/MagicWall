@@ -4,10 +4,6 @@ using UnityEngine;
 
 public abstract class IScene : ScriptableObject
 {
-    public FlockBehavior moveBehavior;
-    public FlockBehavior scaleBehavior;
-    public FlockBehavior reScaleBehavior;
-    public FlockBehavior recoverBehavior;
 
     SceneStatus status = SceneStatus.PREPARING; //场景状态
     public SceneStatus Status { get { return status; } set { status = value; } }
@@ -20,18 +16,15 @@ public abstract class IScene : ScriptableObject
 
     public void Awake()
     {
-        moveBehavior = new MoveBehavior();
-        scaleBehavior = new ScaleBehavior();
-        reScaleBehavior = new ReScaleBehavior();
-        recoverBehavior = new RecoverBehavior();
+
     }
 
 
-    public abstract void DoInit(MagicWall magicWall);
+    public abstract void DoInit(MagicWallManager magicWall,CutEffect cutEffect);
 
-    public abstract void DoUpdate(MagicWall magicWall);
+    public abstract void DoUpdate(MagicWallManager magicWall);
 
-    public abstract void DoDestory(MagicWall magicWall);
+    public abstract void DoDestory(MagicWallManager magicWall);
 
 
 }

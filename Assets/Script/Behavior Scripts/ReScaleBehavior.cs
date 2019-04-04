@@ -6,38 +6,39 @@ using DG.Tweening;
 [CreateAssetMenu(menuName = "Flock/Behavior/ReScale")]
 public class ReScaleBehavior : FlockBehavior
 {
-	// 计算移动
-	public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWall magicWall){
-		return Vector2.zero;
-	}
+    // 计算移动
+    public override Vector2 CalculateMove(FlockAgent agent, Transform tar, MagicWallManager magicWall) {
+        return Vector2.zero;
+    }
 
-	public override void DoScale(FlockAgent agent,MagicWall magicWall){
+    public override void DoScale(FlockAgent agent, MagicWallManager magicWall)
+    {
 
-        if (!agent.IsScale)
-        {
-            // 当确定范围内无其他 agent 时
-            Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agent.transform.position, magicWall.neighborRadius);
-            if (contextColliders.Length == 1) {
-                //Debug.Log(agent.name + " IS SCALING");
-                // 恢复大小
-                RectTransform rt = agent.AgentRectTransform;
-                rt.DOScale(1f, 1).OnComplete(() => MyCallback(agent)); ;
+        //       if (!agent.IsScale)
+        //       {
+        //           // 当确定范围内无其他 agent 时
+        //           Collider2D[] contextColliders = Physics2D.OverlapCircleAll(agent.transform.position, magicWall.neighborRadius);
+        //           if (contextColliders.Length == 1) {
+        //               //Debug.Log(agent.name + " IS SCALING");
+        //               // 恢复大小
+        //               RectTransform rt = agent.AgentRectTransform;
+        //               rt.DOScale(1f, 1).OnComplete(() => MyCallback(agent)); ;
 
-                agent.IsScale = true;
-            }
-        }
-        else
-        {
-            RectTransform rt = agent.AgentRectTransform;
+        //               agent.IsScale = true;
+        //           }
+        //       }
+        //       else
+        //       {
+        //           RectTransform rt = agent.AgentRectTransform;
 
-            if (rt.localScale == Vector3.one)
-            {
-                agent.scaleFactor = 1f;
-                agent.IsScale = false;
+        //           if (rt.localScale == Vector3.one)
+        //           {
+        //               agent.scaleFactor = 1f;
+        //               agent.IsScale = false;
 
-                magicWall.AdjustAgentStatus(agent);
-            }
-        }
+        //               magicWall.AdjustAgentStatus(agent);
+        //           }
+        //       }
 
         //		BoxCollider2D collider = GetComponent<BoxCollider2D>();
         //		collider.edgeRadius = AgentMagicWall.agent_colider_radius * scaleFactor;
@@ -48,10 +49,10 @@ public class ReScaleBehavior : FlockBehavior
 
     void MyCallback(FlockAgent agent)
     {
-        agent.IsScale = false;
-        agent.ScaleFactor = 1f;
+        //agent.IsScale = false;
+        //agent.ScaleFactor = 1f;
 
     }
-
-
 }
+
+

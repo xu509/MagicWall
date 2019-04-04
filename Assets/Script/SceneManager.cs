@@ -11,17 +11,22 @@ public class SceneManager : ScriptableObject
     float start_time;
     float destoryTime = 2f;
 
+    CutEffect cutEffect;
+
 
     // 加载场景信息
-    public void Init(MagicWall magicWall) {
+    public void Init(MagicWallManager magicWall) {
         Scenes = new List<IScene>();
 
+        // 装载场景
+        //StartScene startScene = new StartScene();
+        //Scenes.Add(startScene);
         EnvScene envScene = new EnvScene();
         Scenes.Add(envScene);
-        EnvScene envScene1 = new EnvScene();
-        Scenes.Add(envScene1);
 
         index = 0;
+
+        cutEffect = new CutEffect1();
         //currentScene = envScene;
         //currentScene.DoInit(magicWall);
     }
@@ -29,10 +34,10 @@ public class SceneManager : ScriptableObject
 
 
     // 开始场景调整
-    public void UpdateItems(MagicWall magicWall) {
+    public void UpdateItems(MagicWallManager magicWall) {
         if (Scenes[index].Status == SceneStatus.PREPARING) {
             start_time = Time.time;
-            Scenes[index].DoInit(magicWall);
+            Scenes[index].DoInit(magicWall, cutEffect);
             //Scenes[index].Status = SceneStatus.RUNNING;
             Scenes[index].Status = SceneStatus.STARTTING;
         }
@@ -44,9 +49,7 @@ public class SceneManager : ScriptableObject
                 Scenes[index].Status = SceneStatus.RUNNING;
             }
         }
-
-
-
+               
         if (Scenes[index].Status == SceneStatus.RUNNING)
         {
             if ((Time.time - start_time) > Scenes[index].Durtime)
