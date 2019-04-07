@@ -8,23 +8,31 @@ using DG.Tweening;
 public class EnvScene : IScene
 {
     private FlockAgent itemPrefab;
+	private CutEffect theCutEffect;
+	private MagicWallManager theMagicWallManager;
 
-    public override void DoInit(MagicWallManager magicWall,CutEffect cutEffect)
+
+	public override void DoInit(MagicWallManager magicWall,CutEffect cutEffect)
     {
         // 设置动画时间
-        StartTime = 10f;
+        StartTime = 6f;
         Durtime = 30;
 
         // 设置预制体
         itemPrefab = magicWall.agentPrefab;
+		theCutEffect = cutEffect;
+		theMagicWallManager = magicWall;
 
-
-        //从左往右，从下往上
-        Debug.Log("Load Env Scene Success !");
-
-        cutEffect.run(itemPrefab, magicWall);
+        //初始化过场效果
+		cutEffect.init(itemPrefab, magicWall,StartTime);
 
     }
+
+	public override void DoStarting(){
+		theCutEffect.run();
+	}
+
+
 
     public override void DoUpdate(MagicWallManager magicWallManager)
     {

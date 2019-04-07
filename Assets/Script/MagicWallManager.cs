@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using DG.Tweening;
 
 public class MagicWallManager : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class MagicWallManager : MonoBehaviour
 
     //layout
     public int row = 6;
-    public int column = 30;
+    public int column = 15;
 
 	GraphicRaycaster m_Raycaster;
 	PointerEventData m_PointerEventData;
@@ -64,6 +65,9 @@ public class MagicWallManager : MonoBehaviour
 
 
     #region PRIVATE
+	[SerializeField]
+	private WallStatusEnum status;
+	public WallStatusEnum Status{get { return status;} set { status = value;}}
 
     #endregion
 
@@ -82,7 +86,7 @@ public class MagicWallManager : MonoBehaviour
         #region 创建场景管理器
         sceneManager = new SceneManager();
         sceneManager.Init(this);
-        #endregion 创建场景管理器 结束
+        #endregion
 
         #region 初始化背景管理器
         backgroundManager.init();
@@ -91,6 +95,8 @@ public class MagicWallManager : MonoBehaviour
         // Raycaster - event
         m_Raycaster = GetComponent<GraphicRaycaster>();
 		m_EventSystem = GetComponent<EventSystem> ();
+
+//		DOTween.defaultAutoKill = true;
 
 
     }
@@ -103,8 +109,8 @@ public class MagicWallManager : MonoBehaviour
         #endregion
 
         #region 开启场景效果
-        sceneManager.UpdateItems(this);
-        # endregion
+        sceneManager.UpdateItems();
+        #endregion
 
 
         if (Input.GetMouseButton(0)) {
@@ -121,53 +127,67 @@ public class MagicWallManager : MonoBehaviour
 			m_Raycaster.Raycast(m_PointerEventData, results);
 
 			//For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+//			Debug.Log(results.Count);
+
+			FlockAgent choseFlockAgent = null;
+
 			foreach (RaycastResult result in results)
 			{
 				GameObject go = result.gameObject;
-				if (go != null) {
-					FlockAgent agent = result.gameObject.transform.parent.gameObject.GetComponent<FlockAgent> ();
-
-					if (agent != null) {
-						DoChosenItem (agent);
-					}  
+	
+				if (go.GetComponent<FlockAgent>() != null) {
+					choseFlockAgent = go.GetComponent<FlockAgent>();
+//					Debug.Log ("Do choose - " + agent.name);
+//					FlockAgent agent = result.gameObject.transform.parent.gameObject.GetComponent<FlockAgent> ();
+//
+//					if (agent != null) {
+//
+//						DoChosenItem (agent);
+//					}  
 				}
 			}
+				
+			if (choseFlockAgent != null) {
+				DoChosenItem (choseFlockAgent);
+			}
+
+
 				
         }
     }
 
-    //  创建一个新Agent
-    public void CreateNewAgent(int index) {
-        //设置位置
-        int real_index = index + 1;
+//    //  创建一个新Agent
+//    public void CreateNewAgent(int index) {
+//        //设置位置
+//        int real_index = index + 1;
+//
+//        Vector2 postion = new Vector2();
+//
+//        int y = real_index / column + 1;
+//        if (real_index % column == 0) {
+//            y--;
+//        }
+//       
+//        int x = real_index % column;
+//        if (x == 0) {
+//            x = column;
+//        }
+//        
+//        FlockAgent newAgent = Instantiate(
+//                                    agentPrefab,
+//                                    mainPanel
+//                                    );
+//        newAgent.name = "Agent(" + x + "," + y + ")";
+//
+//        postion.x = (x-1) * flock_width + (flock_width / 2);
+//        postion.y = (y-1) * flock_width + (flock_width / 2);
+//        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
+//
+//        newAgent.Initialize(this, postion);
+//        agents.Add(newAgent);
+//    }
 
-        Vector2 postion = new Vector2();
-
-        int y = real_index / column + 1;
-        if (real_index % column == 0) {
-            y--;
-        }
-       
-        int x = real_index % column;
-        if (x == 0) {
-            x = column;
-        }
-        
-        FlockAgent newAgent = Instantiate(
-                                    agentPrefab,
-                                    mainPanel
-                                    );
-        newAgent.name = "Agent(" + x + "," + y + ")";
-
-        postion.x = (x-1) * flock_width + (flock_width / 2);
-        postion.y = (y-1) * flock_width + (flock_width / 2);
-        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
-
-        newAgent.Initialize(this, postion);
-        agents.Add(newAgent);
-    }
-
-    //  创建一个新Agent
+//    //  创建一个新Agent
     public FlockAgent CreateNewAgent(float x,float y,float tar_x,float tar_y,int row,int column)
     {
         //设置位置
@@ -230,26 +250,32 @@ public class MagicWallManager : MonoBehaviour
     #region 选中 agent
     public void DoChosenItem(FlockAgent agent)
     {
+		Debug.Log ("Status : " + Status + " agent name : " + agent.name);	
         if (!agent.IsChoosing)
         {
-            //Debug.Log("[" + agent.name + "] Do Chosen Item !");
+//            Debug.Log("[" + agent.name + "] Do Chosen Item !");
+			// 将被选中的 agent 加入列表
             agent.IsChoosing = true;
+			effectAgent.Add(agent.GetComponent<RectTransform>());
+			updateAgents ();
 
-            //Debug.Log("The Distance : " + TheDistance);
-            foreach (FlockAgent item in Agents)
-            {
-                RectTransform agent_rect = agent.GetComponent<RectTransform>();
-                RectTransform item_rect = item.GetComponent<RectTransform>();
-                float dis = Vector2.Distance(agent_rect.anchoredPosition, item_rect.anchoredPosition);
 
-                if (dis < TheDistance) {
-                    if (!item.isChoosing) {
-                        Debug.Log(item.name + "is in the effect");
-                        item.isChanging = true;
-                        item.effectTransform = agent_rect;
-                    }
-                }
-            }
+
+//            //Debug.Log("The Distance : " + TheDistance);
+//            foreach (FlockAgent item in Agents)
+//            {
+//                RectTransform agent_rect = agent.GetComponent<RectTransform>();
+//                RectTransform item_rect = item.GetComponent<RectTransform>();
+//                float dis = Vector2.Distance(agent_rect.anchoredPosition, item_rect.anchoredPosition);
+//
+//                if (dis < TheDistance) {
+//                    if (!item.isChoosing) {
+//                        item.isChanging = true;
+//                        item.effectTransform = agent_rect;
+//						item.updatePosition ();
+//                    }
+//                }
+//            }
         }
         else
         {
@@ -258,10 +284,23 @@ public class MagicWallManager : MonoBehaviour
     }
     #endregion
 
+	public void updateAgents(){
+		foreach(FlockAgent ag in Agents){
+			ag.updatePosition ();
+		}
+	}
+
+
+
+
+
 }
 
 public enum ItemType {
     env,activity,product
 }
 
+public enum WallStatusEnum{
+	Cutting,Displaying
+}
 

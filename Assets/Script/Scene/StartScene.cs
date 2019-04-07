@@ -24,7 +24,13 @@ public class StartScene : IScene
         //magicWall.DoDestory();
     }
 
-    public override void DoInit(MagicWallManager magicWall, CutEffect cutEffect)
+	public override void DoStarting ()
+	{
+		
+	}
+
+
+	public override void DoInit(MagicWallManager magicWall, CutEffect cutEffect)
     {
         //for (int i = 0; i < magicWall.row * magicWall.column; i++)
         //{

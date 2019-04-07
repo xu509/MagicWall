@@ -13,9 +13,12 @@ public class SceneManager : ScriptableObject
 
     CutEffect cutEffect;
 
+	private MagicWallManager magicWallManager;
+
 
     // 加载场景信息
     public void Init(MagicWallManager magicWall) {
+		magicWallManager = magicWall;
         Scenes = new List<IScene>();
 
         // 装载场景
@@ -34,35 +37,49 @@ public class SceneManager : ScriptableObject
 
 
     // 开始场景调整
-    public void UpdateItems(MagicWallManager magicWall) {
+    public void UpdateItems() {
+		// 准备状态
         if (Scenes[index].Status == SceneStatus.PREPARING) {
             start_time = Time.time;
-            Scenes[index].DoInit(magicWall, cutEffect);
+			Scenes[index].DoInit(magicWallManager, cutEffect);
             //Scenes[index].Status = SceneStatus.RUNNING;
             Scenes[index].Status = SceneStatus.STARTTING;
+			Debug.Log ("Scene is Cutting");
+			magicWallManager.Status = WallStatusEnum.Cutting;
+
         }
 
+		// 过场动画
         if (Scenes[index].Status == SceneStatus.STARTTING) {
             //Debug.Log("IS START");
 
-            if ((Time.time - start_time) > Scenes[index].StartTime) {
-                Scenes[index].Status = SceneStatus.RUNNING;
-            }
+			if ((Time.time - start_time) > Scenes [index].StartTime) {
+				Scenes [index].Status = SceneStatus.RUNNING;
+				Debug.Log ("Scene is Displaying");
+				magicWallManager.Status = WallStatusEnum.Displaying;
+
+			} else {
+				Scenes [index].DoStarting ();
+			}
+
         }
                
+		// 正常展示
         if (Scenes[index].Status == SceneStatus.RUNNING)
         {
             if ((Time.time - start_time) > Scenes[index].Durtime)
             {
-                Scenes[index].DoDestory(magicWall);
+				Scenes[index].DoDestory(magicWallManager);
                 Scenes[index].Status = SceneStatus.DESTORING;
             }
             else
             {
-                Scenes[index].DoUpdate(magicWall);
+				Scenes[index].DoUpdate(magicWallManager);
             }
+
         }
 
+		// 销毁中
         if (Scenes[index].Status == SceneStatus.DESTORING)
         {
             if ((Time.time + destoryTime - start_time) > Scenes[index].Durtime) {
