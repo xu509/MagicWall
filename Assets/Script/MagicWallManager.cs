@@ -230,7 +230,9 @@ public class MagicWallManager : MonoBehaviour
         return newAgent;
     }
 
+	//
     // TO DO DESTORY
+	//
     public void DoDestory() {
         // 删除 MainPanel下所有的东西
         foreach (FlockAgent agent in agents)

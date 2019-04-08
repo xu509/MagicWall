@@ -9,11 +9,10 @@ public class SceneManager : ScriptableObject
     int index; // 当前的索引
 
     float start_time;
-
     float destoryingDuringTime = 2f; // 销毁的时间
     float destory_time; // Destory_Time
 
-    CutEffect cutEffect;
+    CutEffect cutEffect; // 当前的过场动画	
 
 	private MagicWallManager magicWallManager;
 
@@ -28,12 +27,9 @@ public class SceneManager : ScriptableObject
         //Scenes.Add(startScene);
         EnvScene envScene = new EnvScene();
         Scenes.Add(envScene);
-
         index = 0;
 
-        cutEffect = new CutEffect3();
-        //currentScene = envScene;
-        //currentScene.DoInit(magicWall);
+//		cutEffect = CutEffectFactory.GetInstance ().getByRandom ();
     }
 
     //
@@ -43,6 +39,7 @@ public class SceneManager : ScriptableObject
 		// 准备状态
         if (Scenes[index].Status == SceneStatus.PREPARING) {
             start_time = Time.time;
+			loadCutEffect ();
 			Scenes[index].DoInit(magicWallManager, cutEffect);
             Scenes[index].Status = SceneStatus.STARTTING;
 			Debug.Log ("Scene is Cutting");
@@ -97,6 +94,12 @@ public class SceneManager : ScriptableObject
         //Debug.Log("(Time.time - start_time) :" + (Time.time - start_time) + " -> Scene[0].Durtime :" + Scene[0].Durtime);
     }
 
+	//
+	//	Load effect
+	//
+	private void loadCutEffect(){
+		cutEffect = CutEffectFactory.GetInstance(magicWallManager).getByRandom();
+	}
 
 
 }

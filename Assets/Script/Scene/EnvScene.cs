@@ -28,7 +28,7 @@ public class EnvScene : IScene
 
         //初始化过场效果
 
-        cutEffect.init(itemPrefab, magicWall);
+        cutEffect.init(magicWall);
 
     }
 
@@ -48,9 +48,6 @@ public class EnvScene : IScene
 
         // 调整所有agent
         theMagicWallManager.updateAgents();
-
-
-        
 
         //Debug.Log("Update Env Scene Success !");
 

@@ -21,7 +21,7 @@ public class CutEffect3 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init(FlockAgent prefab, MagicWallManager magicWallManager) {
+    public override void init(MagicWallManager magicWallManager) {
         // 初始化内容
         DurTime = 15f;
         this.dur_time = DurTime;

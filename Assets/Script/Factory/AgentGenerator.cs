@@ -11,7 +11,9 @@ public class AgentGenerator : ScriptableObject{
 	//	生成物的 panel
 	public Transform generatorPanel;
 
-	#region Construct
+	//
+	// Construct
+	//
 	private static AgentGenerator instance;
 	public static AgentGenerator GetInstance(){
 		if (instance == null) {
@@ -20,8 +22,6 @@ public class AgentGenerator : ScriptableObject{
 			return instance; 
 		}
 	}
-	#endregion
-
 
 	//
 	//	originPosition : item 应该身处的位置

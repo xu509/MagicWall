@@ -14,7 +14,7 @@ public abstract class CutEffect : MonoBehaviour
     float durTime;
     public float DurTime { set { durTime = value; } get { return durTime; } }
 
-    public abstract void init(FlockAgent prefab, MagicWallManager magicWallManager);
+    public abstract void init(MagicWallManager magicWallManager);
 
 
     public abstract void run();
