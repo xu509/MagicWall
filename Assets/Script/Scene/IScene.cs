@@ -8,17 +8,19 @@ public abstract class IScene : ScriptableObject
     SceneStatus status = SceneStatus.PREPARING; //场景状态
     public SceneStatus Status { get { return status; } set { status = value; } }
 
-    float durtime = 20;
+    float durtime;
     public float Durtime { set { durtime = value; } get { return durtime; } }
 
-    float startTime = 5;
-    public float StartTime { set { startTime = value; } get { return startTime; } }
+    float cutDurTime;
+    public float CutDurTime { set { cutDurTime = value; } get { return cutDurTime; } }
+
+    float deleteDurTime;
+    public float DeleteDurTime { set { deleteDurTime = value; } get { return deleteDurTime; } }
 
     public void Awake()
     {
 
     }
-
 
 	public abstract void DoInit(MagicWallManager magicWall,CutEffect cutEffect);
 
@@ -27,9 +29,11 @@ public abstract class IScene : ScriptableObject
 	//
 	public abstract void DoStarting ();
 
-    public abstract void DoUpdate(MagicWallManager magicWall);
+    public abstract void OnStartComplete();
 
-    public abstract void DoDestory(MagicWallManager magicWall);
+    public abstract void DoUpdate();
+
+    public abstract void DoDestory();
 
 
 }

@@ -9,7 +9,9 @@ public class SceneManager : ScriptableObject
     int index; // 当前的索引
 
     float start_time;
-    float destoryTime = 2f;
+
+    float destoryingDuringTime = 2f; // 销毁的时间
+    float destory_time; // Destory_Time
 
     CutEffect cutEffect;
 
@@ -29,52 +31,49 @@ public class SceneManager : ScriptableObject
 
         index = 0;
 
-        cutEffect = new CutEffect1();
+        cutEffect = new CutEffect3();
         //currentScene = envScene;
         //currentScene.DoInit(magicWall);
     }
 
-
-
+    //
     // 开始场景调整
+    //
     public void UpdateItems() {
 		// 准备状态
         if (Scenes[index].Status == SceneStatus.PREPARING) {
             start_time = Time.time;
 			Scenes[index].DoInit(magicWallManager, cutEffect);
-            //Scenes[index].Status = SceneStatus.RUNNING;
             Scenes[index].Status = SceneStatus.STARTTING;
 			Debug.Log ("Scene is Cutting");
 			magicWallManager.Status = WallStatusEnum.Cutting;
-
+            destoryingDuringTime = Scenes[index].DeleteDurTime;
         }
 
 		// 过场动画
         if (Scenes[index].Status == SceneStatus.STARTTING) {
-            //Debug.Log("IS START");
-
-			if ((Time.time - start_time) > Scenes [index].StartTime) {
+			if ((Time.time - start_time) > cutEffect.DurTime) {
+                // 完成开场动画
+                Debug.Log ("Scene is Displaying");
 				Scenes [index].Status = SceneStatus.RUNNING;
-				Debug.Log ("Scene is Displaying");
 				magicWallManager.Status = WallStatusEnum.Displaying;
-
 			} else {
 				Scenes [index].DoStarting ();
 			}
-
         }
                
 		// 正常展示
         if (Scenes[index].Status == SceneStatus.RUNNING)
         {
-            if ((Time.time - start_time) > Scenes[index].Durtime)
+            if (!cutEffect.HasRuning || (Time.time - start_time) > Scenes[index].Durtime)
             {
-				Scenes[index].DoDestory(magicWallManager);
+                Scenes[index].DoDestory();
                 Scenes[index].Status = SceneStatus.DESTORING;
+                destory_time = Time.time;
             }
             else
             {
-				Scenes[index].DoUpdate(magicWallManager);
+                Scenes[index].DoUpdate();
             }
 
         }
@@ -82,7 +81,7 @@ public class SceneManager : ScriptableObject
 		// 销毁中
         if (Scenes[index].Status == SceneStatus.DESTORING)
         {
-            if ((Time.time + destoryTime - start_time) > Scenes[index].Durtime) {
+            if ((Time.time - destory_time) > destoryingDuringTime) {
                 Scenes[index].Status = SceneStatus.PREPARING;
 
                 if (index == Scenes.Count - 1)
@@ -91,7 +90,6 @@ public class SceneManager : ScriptableObject
                 }
                 else {
                     index++;
-
                 }
             }
         }

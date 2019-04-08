@@ -31,12 +31,17 @@ public class MagicWallManager : MonoBehaviour
     [Range(0, 20)]
     public float ScaleFactor; // 缩放因素
 
+    // 面板的差值
+    float panelOffset = 0f;
+    public float PanelOffset { get { return panelOffset; } set { panelOffset = value; } }
+
     // OVER
 
 
 
     // flock width
-    public int flock_width = 106;
+    float itemWidth;
+    public float ItemWidth { get { return itemWidth; } set { itemWidth = value; } }
 
     [SerializeField,Range(1f, 100f)]
 	public float MoveFactor_Panel;
@@ -62,15 +67,25 @@ public class MagicWallManager : MonoBehaviour
 
     #endregion
 
-
-
     #region PRIVATE
 	[SerializeField]
 	private WallStatusEnum status;
 	public WallStatusEnum Status{get { return status;} set { status = value;}}
 
-    #endregion
+    private RectTransform operationPanel;
 
+
+    // 上一次点击的时间
+    float lastClickDownTime = 0f;
+
+    // 按下与抬起的间隔
+    float clickIntervalTime = 0.5f;
+
+    // 选中的agent
+    FlockAgent chooseFlockAgent = null;
+
+
+    #endregion
     SceneManager sceneManager;
 
 
@@ -78,9 +93,9 @@ public class MagicWallManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         effectAgent = new List<RectTransform>();
         changeAgents = new List<Dictionary<FlockAgent, Vector2>>();
+        operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
         //wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
 
         #region 创建场景管理器
@@ -96,9 +111,6 @@ public class MagicWallManager : MonoBehaviour
         m_Raycaster = GetComponent<GraphicRaycaster>();
 		m_EventSystem = GetComponent<EventSystem> ();
 
-//		DOTween.defaultAutoKill = true;
-
-
     }
 
     // Update is called once per frame
@@ -113,81 +125,91 @@ public class MagicWallManager : MonoBehaviour
         #endregion
 
 
-        if (Input.GetMouseButton(0)) {
 
-			//Set up the new Pointer Event
-			m_PointerEventData = new PointerEventData(m_EventSystem);
-			//Set the Pointer Event Position to that of the mouse position
-			m_PointerEventData.position = Input.mousePosition;
-
-			//Create a list of Raycast Results
-			List<RaycastResult> results = new List<RaycastResult>();
-
-			//Raycast using the Graphics Raycaster and mouse click position
-			m_Raycaster.Raycast(m_PointerEventData, results);
-
-			//For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-//			Debug.Log(results.Count);
-
-			FlockAgent choseFlockAgent = null;
-
-			foreach (RaycastResult result in results)
-			{
-				GameObject go = result.gameObject;
-	
-				if (go.GetComponent<FlockAgent>() != null) {
-					choseFlockAgent = go.GetComponent<FlockAgent>();
-//					Debug.Log ("Do choose - " + agent.name);
-//					FlockAgent agent = result.gameObject.transform.parent.gameObject.GetComponent<FlockAgent> ();
-//
-//					if (agent != null) {
-//
-//						DoChosenItem (agent);
-//					}  
-				}
-			}
-				
-			if (choseFlockAgent != null) {
-				DoChosenItem (choseFlockAgent);
-			}
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("GetMouseButtonDown");
 
 
-				
+            if (lastClickDownTime == 0f)
+            {
+                lastClickDownTime = Time.time;
+            }
+
+            chooseFlockAgent = getAgentsByMousePosition();
+            Debug.Log("chooseFlockAgent : " + chooseFlockAgent);
+
         }
+
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("GetMouseButton");
+
+            if ((Time.time - lastClickDownTime) > clickIntervalTime)
+            {
+                Debug.Log("recognize Drag");
+
+                // 此处为拖拽事件
+                if (chooseFlockAgent != null)
+                {
+                    DoDragItem(chooseFlockAgent);
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("GetMouseButtonUp");
+
+            if ((Time.time - lastClickDownTime) < clickIntervalTime)
+            {
+                Debug.Log("recognize click");
+
+                // 此处为点击事件
+                if (chooseFlockAgent != null)
+                {
+                    DoChosenItem(chooseFlockAgent);
+                }
+
+            }
+
+            lastClickDownTime = 0f;
+        }
+
     }
 
-//    //  创建一个新Agent
-//    public void CreateNewAgent(int index) {
-//        //设置位置
-//        int real_index = index + 1;
-//
-//        Vector2 postion = new Vector2();
-//
-//        int y = real_index / column + 1;
-//        if (real_index % column == 0) {
-//            y--;
-//        }
-//       
-//        int x = real_index % column;
-//        if (x == 0) {
-//            x = column;
-//        }
-//        
-//        FlockAgent newAgent = Instantiate(
-//                                    agentPrefab,
-//                                    mainPanel
-//                                    );
-//        newAgent.name = "Agent(" + x + "," + y + ")";
-//
-//        postion.x = (x-1) * flock_width + (flock_width / 2);
-//        postion.y = (y-1) * flock_width + (flock_width / 2);
-//        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
-//
-//        newAgent.Initialize(this, postion);
-//        agents.Add(newAgent);
-//    }
+    //    //  创建一个新Agent
+    //    public void CreateNewAgent(int index) {
+    //        //设置位置
+    //        int real_index = index + 1;
+    //
+    //        Vector2 postion = new Vector2();
+    //
+    //        int y = real_index / column + 1;
+    //        if (real_index % column == 0) {
+    //            y--;
+    //        }
+    //       
+    //        int x = real_index % column;
+    //        if (x == 0) {
+    //            x = column;
+    //        }
+    //        
+    //        FlockAgent newAgent = Instantiate(
+    //                                    agentPrefab,
+    //                                    mainPanel
+    //                                    );
+    //        newAgent.name = "Agent(" + x + "," + y + ")";
+    //
+    //        postion.x = (x-1) * flock_width + (flock_width / 2);
+    //        postion.y = (y-1) * flock_width + (flock_width / 2);
+    //        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
+    //
+    //        newAgent.Initialize(this, postion);
+    //        agents.Add(newAgent);
+    //    }
 
-//    //  创建一个新Agent
+    //    //  创建一个新Agent
     public FlockAgent CreateNewAgent(float x,float y,float tar_x,float tar_y,int row,int column)
     {
         //设置位置
@@ -201,37 +223,12 @@ public class MagicWallManager : MonoBehaviour
         newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
 
         Vector2 ori_position = new Vector2(tar_x, tar_y);
+        newAgent.GenVector2 = postion;
 
-        newAgent.Initialize(this, ori_position);
+        newAgent.Initialize(this, ori_position,postion,row,column);
         agents.Add(newAgent);
         return newAgent;
     }
-
-
-
-    //// 判断附近是否有 items
-    //public bool HasItemsInNear(FlockAgent flockAgent){
-    //	bool has = false;
-
-    //       //Debug.Log("flockAgent.AgentRectTransform.position : " + flockAgent.AgentRectTransform.position + " | neighborRadius : " + neighborRadius);
-
-    //       if (flockAgent.AgentRectTransform == null) {
-    //           return has;
-    //       }
-
-
-    //       Collider2D[] contextColliders = Physics2D.OverlapCircleAll(flockAgent.AgentRectTransform.position,neighborRadius);
-
-    //	foreach (Collider2D c in contextColliders) {
-    //		if(c.gameObject.layer == 9 && c.gameObject.name != flockAgent.name)
-    //           {
-    //			has = true;
-    //		}
-    //	}
-
-    //	return has;
-    //}
-
 
     // TO DO DESTORY
     public void DoDestory() {
@@ -250,46 +247,129 @@ public class MagicWallManager : MonoBehaviour
     #region 选中 agent
     public void DoChosenItem(FlockAgent agent)
     {
-		Debug.Log ("Status : " + Status + " agent name : " + agent.name);	
         if (!agent.IsChoosing)
         {
-//            Debug.Log("[" + agent.name + "] Do Chosen Item !");
-			// 将被选中的 agent 加入列表
+            // 将选中的 agent 放入操作层
+            agent.transform.parent = operationPanel;
+            agent.GetComponent<RectTransform>().anchoredPosition -= new Vector2(PanelOffset , 0 );
+
+            // 将被选中的 agent 加入列表
             agent.IsChoosing = true;
 			effectAgent.Add(agent.GetComponent<RectTransform>());
-			updateAgents ();
+
+            // 选中后的动画效果，逐渐变大
+
+            Vector2 newSizeDelta = new Vector2(ItemWidth * 2, ItemWidth * 2);
+
+            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
 
 
-
-//            //Debug.Log("The Distance : " + TheDistance);
-//            foreach (FlockAgent item in Agents)
-//            {
-//                RectTransform agent_rect = agent.GetComponent<RectTransform>();
-//                RectTransform item_rect = item.GetComponent<RectTransform>();
-//                float dis = Vector2.Distance(agent_rect.anchoredPosition, item_rect.anchoredPosition);
-//
-//                if (dis < TheDistance) {
-//                    if (!item.isChoosing) {
-//                        item.isChanging = true;
-//                        item.effectTransform = agent_rect;
-//						item.updatePosition ();
-//                    }
-//                }
-//            }
+			//updateAgents ();
         }
         else
         {
+            agent.transform.parent = mainPanel;
+            agent.IsChoosing = false;
+            effectAgent.Remove(agent.GetComponent<RectTransform>());
+
+            Vector2 newSizeDelta = new Vector2(ItemWidth, ItemWidth);
+            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
+            agent.GetComponent<RectTransform>().DOAnchorPos(agent.OriVector2,2f);
+
+
+
 
         }
     }
     #endregion
 
-	public void updateAgents(){
-		foreach(FlockAgent ag in Agents){
-			ag.updatePosition ();
-		}
-	}
+    void DoSizeDeltaUpdateCallBack(FlockAgent agent) {
+        //Debug.Log(agent.AgentRectTransform.sizeDelta.x);
+        agent.Width = agent.AgentRectTransform.sizeDelta.x;
 
+    }
+
+
+    public void DoDragItem(FlockAgent agent) {
+        if (agent.IsChoosing) {
+
+            //Vector3 v = Camera.main.WorldToScreenPoint(Input.mousePosition);
+            //Debug.Log(Input.mousePosition);
+            //Input.mousePosition
+
+            agent.GetComponent<RectTransform>().DOAnchorPos((Vector2)Input.mousePosition, Time.deltaTime);
+            updateAgents();
+
+        }
+    }
+
+    
+
+
+    #region 更新所有的 agent
+    public void updateAgents(){
+            //Debug.Log("DOING UPDATEAGENTS!");
+            foreach (FlockAgent ag in Agents)
+            {
+                ag.updatePosition();
+            }
+        		
+	}
+    #endregion
+
+    #region 根据鼠标点击位置获取 agent
+    FlockAgent getAgentsByMousePosition() {
+        //Set up the new Pointer Event
+        m_PointerEventData = new PointerEventData(m_EventSystem);
+        //Set the Pointer Event Position to that of the mouse position
+        m_PointerEventData.position = Input.mousePosition;
+
+        //Create a list of Raycast Results
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        //Raycast using the Graphics Raycaster and mouse click position
+        m_Raycaster.Raycast(m_PointerEventData, results);
+
+        FlockAgent choseFlockAgent = null;
+
+        foreach (RaycastResult result in results)
+        {
+            GameObject go = result.gameObject;
+
+            // 通过layer取到agents的子图片
+            if (go.layer == 10)
+            {
+                //Debug.Log(go.name);
+                choseFlockAgent = go.transform.parent.GetComponent<FlockAgent>();
+            }
+            if (go.GetComponent<FlockAgent>() != null)
+            {
+                choseFlockAgent = go.GetComponent<FlockAgent>();
+            }
+        }
+        return choseFlockAgent;
+    }
+    #endregion
+
+
+    #region 获取两块画布的偏移量
+    public void updateOffsetOfCanvas() {
+        if (status == WallStatusEnum.Cutting)
+        {
+            PanelOffset = 0f;
+        }
+        else {
+            Vector2 v1 = mainPanel.anchoredPosition;
+            Vector2 v2 = operationPanel.anchoredPosition;
+
+            float offset = (v2.x - v1.x);
+
+            PanelOffset = offset;
+        }
+
+        //Debug.Log("OFFSET IS " + PanelOffset);
+    }
+    #endregion
 
 
 

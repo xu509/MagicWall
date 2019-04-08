@@ -16,7 +16,7 @@ public class StartScene : IScene
     }
 
 
-    public override void DoDestory(MagicWallManager magicWall)
+    public override void DoDestory()
     {
         // 消失logo
 
@@ -45,10 +45,13 @@ public class StartScene : IScene
         Debug.Log("Load Start Scene Success !");
     }
 
-    public override void DoUpdate(MagicWallManager magicWallManager)
+    public override void DoUpdate()
     {
         //Debug.Log("Update Start Scene Success !");
 
     }
 
+    public override void OnStartComplete()
+    {
+    }
 }

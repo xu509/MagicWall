@@ -15,41 +15,54 @@ public class EnvScene : IScene
 	public override void DoInit(MagicWallManager magicWall,CutEffect cutEffect)
     {
         // 设置动画时间
-        StartTime = 6f;
         Durtime = 30;
+        DeleteDurTime = 2f;
 
         // 设置预制体
         itemPrefab = magicWall.agentPrefab;
 		theCutEffect = cutEffect;
 		theMagicWallManager = magicWall;
 
+        //初始化panel
+        theMagicWallManager.updateOffsetOfCanvas();
+
         //初始化过场效果
-		cutEffect.init(itemPrefab, magicWall,StartTime);
+
+        cutEffect.init(itemPrefab, magicWall);
 
     }
 
-	public override void DoStarting(){
+    public override void DoStarting(){
 		theCutEffect.run();
 	}
 
-
-
-    public override void DoUpdate(MagicWallManager magicWallManager)
+    public override void DoUpdate()
     {
-
         // 面板向左移动
-        float x = magicWallManager.mainPanel.anchoredPosition.x - Time.deltaTime * magicWallManager.MoveFactor_Panel;
-        Vector2 to = new Vector2(x, magicWallManager.mainPanel.anchoredPosition.y);
-        magicWallManager.mainPanel.DOAnchorPos(to, Time.deltaTime);
-        // 面板向左移动结束 
+        float x = theMagicWallManager.mainPanel.anchoredPosition.x - Time.deltaTime * theMagicWallManager.MoveFactor_Panel;
+        Vector2 to = new Vector2(x, theMagicWallManager.mainPanel.anchoredPosition.y);
+        theMagicWallManager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+
+        // 调整panel
+        theMagicWallManager.updateOffsetOfCanvas();
+
+        // 调整所有agent
+        theMagicWallManager.updateAgents();
+
+
+        
 
         //Debug.Log("Update Env Scene Success !");
 
     }
 
-    public override void DoDestory(MagicWallManager magicWall)
+    public override void DoDestory()
     {
-        magicWall.DoDestory();
+        theMagicWallManager.DoDestory();
     }
 
+    public override void OnStartComplete()
+    {
+        theMagicWallManager.updateAgents();
+    }
 }

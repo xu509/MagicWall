@@ -10,8 +10,35 @@ public class FlockAgent : MonoBehaviour
     int x;
     int y;
 
+    float delayX;
+    public float DelayX { set { delayX = value; } get { return delayX; } }
+
+    float delayY;
+    public float DelayY { set { delayY = value; } get { return delayY; } }
+
+    float delay;
+    public float Delay { set { delay = value; } get { return delay; } }
+
+
+
+    // 宽度
+    [SerializeField]
+    float width;
+    public float Width
+    {
+        set
+        {
+            width = value;
+        }
+        get
+        {
+            return width;
+        }
+    }
+
     // 原位
-    public Vector2 oriVector2;
+    [SerializeField]
+    Vector2 oriVector2;
 	public Vector2 OriVector2
     {
 		set {
@@ -22,8 +49,23 @@ public class FlockAgent : MonoBehaviour
 		}
 	}
 
-	// 下个移动的位置
-	private Vector2 nextVector2;
+    // 生成的位置
+    Vector2 genVector2;
+    public Vector2 GenVector2
+    {
+        set
+        {
+            genVector2 = value;
+        }
+        get
+        {
+            return genVector2;
+        }
+    }
+
+    // 下个移动的位置
+    [SerializeField]
+    Vector2 nextVector2;
 	public Vector2 NextVector2
 	{
 		set {
@@ -33,11 +75,6 @@ public class FlockAgent : MonoBehaviour
 			return nextVector2;
 		}
 	}
-
-
-
-
-
 
 	// 是否被选中
     public bool isChoosing = false;
@@ -78,6 +115,17 @@ public class FlockAgent : MonoBehaviour
     public Text signTextComponent2;
 
 
+
+    [SerializeField]
+    Vector2 showTargetVector2;
+    [SerializeField]
+    Vector2 showRefVector2;
+    [SerializeField]
+    Vector2 showRefVector2WithOffset;
+    [SerializeField]
+    float showMoveOffset;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,10 +133,25 @@ public class FlockAgent : MonoBehaviour
 //        nameTextComponent.text = name;
     }
 
-	public void Initialize(MagicWallManager magicWall,Vector2 originVector)
+    //
+    //  初始化 Agent 信息
+    //      originVector : 在屏幕上显示的位置
+    //      genVector ： 出生的位置
+    //
+	public void Initialize(MagicWallManager magicWall,Vector2 originVector,Vector2 genVector,int row,int column)
     {
         agentMagicWall = magicWall;
-        this.oriVector2 = originVector;
+        OriVector2 = originVector;
+        GenVector2 = genVector;
+        x = row;
+        y = column;
+        Width = magicWall.ItemWidth;
+
+        // 定义 agent 的名字
+        nameTextComponent.text = row + " - " + column;
+
+
+
     }
 
     public void Move(Vector2 velocity)
@@ -110,7 +173,7 @@ public class FlockAgent : MonoBehaviour
 //		}
 
 		if (IsChoosing) {
-			GetComponent<Image> ().color = Color.black;
+			GetComponentInChildren<Image> ().color = Color.black;
 		}
 
 
@@ -128,59 +191,79 @@ public class FlockAgent : MonoBehaviour
 			//当前场景为正常展示时，参考位置为固定位置
 			refVector2 = oriVector2;
 		}
+        Vector2 refVector2WithOffset = refVector2 - new Vector2(AgentMagicWall.PanelOffset, 0); //获取带偏移量的参考位置
+        showRefVector2 = refVector2;
+        showRefVector2WithOffset = refVector2WithOffset;
 
-		// 如果是被选中的，则不要移动
-		if (IsChoosing){
+        // 如果是被选中的，则不要移动
+        if (IsChoosing){
 			return;
 		}
 
-			
+        // 此时的坐标位置可能已处于偏移状态
 		RectTransform m_transform = GetComponent<RectTransform>();
-		List<RectTransform> transforms = AgentMagicWall.EffectAgent;
-		RectTransform targetTransform = null;
 
+        //判断是否有多个影响体，如有多个，取距离最近的那个
+        List<RectTransform> transforms = AgentMagicWall.EffectAgent;
+        RectTransform targetTransform = null;
+        float distance = 1000f;
 
-		//判断是否有多个影响体，如有多个，取距离最近的那个
-		float distance = 1000f;
 		foreach (RectTransform item in transforms)
 		{
-			float newDistance = Vector2.Distance(refVector2, item.anchoredPosition);
+            float newDistance = Vector2.Distance(refVector2WithOffset, item.anchoredPosition);
 		    if (newDistance < distance)
 		    {
 		        distance = newDistance;
 		        targetTransform = item;
 		    }
 		}
+        float w;
+        if (targetTransform != null)
+        {
+            showTargetVector2 = targetTransform.anchoredPosition;
+            w = targetTransform.gameObject.GetComponent<FlockAgent>().Width;
+        }
+        else {
+            w = 0;
+        }
 
-		//获取距离影响点与原点的距离
-//		float distance = Vector2.Distance(oriVector2, effectTransform.anchoredPosition);
+        // 判断结束
 
-		// 判断结束
+        //获取影响距离与实际距离的差值
 
-		//获取影响距离与实际距离的差值
-		float offset = AgentMagicWall.TheDistance - distance;
-		//            signTextComponent.text = distance.ToString();
-		//            signTextComponent2.text = "offset : " + offset.ToString();
+        float effectDistance = (w / 2) + AgentMagicWall.TheDistance;
+        float offset = effectDistance - distance;
+        signTextComponent.text = "OFFSET : " + offset.ToString();
+        signTextComponent2.text = "ed : " + effectDistance.ToString();
 
 
-		// 进入影响范围
-		if (offset > 0)
+        // 进入影响范围
+        if (offset >= 0)
 		{
-			m_transform.gameObject.GetComponent<Image> ().color = Color.blue;
-			float m_scale = -(1f / 255f) * offset + 1f;
 
-			if (refVector2.y > targetTransform.anchoredPosition.y)
-			{
-				float to = refVector2.y + AgentMagicWall.MoveFactor * offset;
-				Vector2 toy = new Vector2(refVector2.x, to);
-				m_transform.DOAnchorPos(toy, Time.deltaTime);
-			}
-			else if (refVector2.y < targetTransform.anchoredPosition.y)
-			{
-				float to = refVector2.y - (AgentMagicWall.MoveFactor * offset);
-				Vector2 toy = new Vector2(refVector2.x, to);
-				m_transform.DOAnchorPos(toy, Time.deltaTime);
-			}
+            m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.blue;
+            float m_scale = -(1f / effectDistance) * offset + 1f;
+            float move_offset =  offset * (((w / 2) + 50) / effectDistance);
+
+            showMoveOffset = move_offset;
+
+            if (refVector2.y > targetTransform.anchoredPosition.y)
+            {
+                float to = refVector2.y + move_offset;
+                Vector2 toy = new Vector2(refVector2.x, to);
+                m_transform.DOAnchorPos(toy, Time.deltaTime);
+            }
+            else if (refVector2.y < targetTransform.anchoredPosition.y)
+            {
+                float to = refVector2.y - move_offset;
+                Vector2 toy = new Vector2(refVector2.x, to);
+                m_transform.DOAnchorPos(toy, Time.deltaTime);
+            }
+            else {
+                float to = refVector2.y;
+                Vector2 toy = new Vector2(refVector2.x, to);
+                m_transform.DOAnchorPos(toy, Time.deltaTime);
+            }
 
 			m_transform.DOScale(m_scale, Time.deltaTime);
 
@@ -195,7 +278,7 @@ public class FlockAgent : MonoBehaviour
 				Vector2 toy = new Vector2(refVector2.x, refVector2.y);
 				m_transform.DOAnchorPos(toy, Time.deltaTime);
 				m_transform.DOScale(1, Time.deltaTime);
-				m_transform.gameObject.GetComponent<Image> ().color = Color.green;
+				m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.green;
 
 				IsChanging = false;
 //				return toy;
@@ -203,11 +286,6 @@ public class FlockAgent : MonoBehaviour
 		}
 
 	}
-
-
-
-
-
 
 
     void OnCollisionEnter2D(Collision2D collision)

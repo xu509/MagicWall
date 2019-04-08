@@ -44,7 +44,7 @@ public class AgentGenerator : ScriptableObject{
 		Vector2 ori_position = originPosition;
 
 		// 初始化实体内容
-		newAgent.Initialize(manager, ori_position);
+		//newAgent.Initialize(manager, ori_position);
 
 		manager.Agents.Add(newAgent);
 
