@@ -16,7 +16,6 @@ public abstract class CutEffect : MonoBehaviour
 
     public abstract void init(MagicWallManager magicWallManager);
 
-
     public abstract void run();
 
     public abstract void OnCompleted();

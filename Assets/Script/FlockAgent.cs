@@ -19,7 +19,8 @@ public class FlockAgent : MonoBehaviour
     float delay;
     public float Delay { set { delay = value; } get { return delay; } }
 
-
+    float delayTime;
+    public float DelayTime { set { delayTime = value; } get { return delayTime; } }
 
     // 宽度
     [SerializeField]
@@ -114,8 +115,6 @@ public class FlockAgent : MonoBehaviour
     public Text nameTextComponent;
     public Text signTextComponent2;
 
-
-
     [SerializeField]
     Vector2 showTargetVector2;
     [SerializeField]
@@ -124,7 +123,6 @@ public class FlockAgent : MonoBehaviour
     Vector2 showRefVector2WithOffset;
     [SerializeField]
     float showMoveOffset;
-
 
     // Start is called before the first frame update
     void Start()
@@ -149,9 +147,6 @@ public class FlockAgent : MonoBehaviour
 
         // 定义 agent 的名字
         nameTextComponent.text = row + " - " + column;
-
-
-
     }
 
     public void Move(Vector2 velocity)
@@ -175,7 +170,6 @@ public class FlockAgent : MonoBehaviour
 		if (IsChoosing) {
 			GetComponentInChildren<Image> ().color = Color.black;
 		}
-
 
     }
 
@@ -226,12 +220,10 @@ public class FlockAgent : MonoBehaviour
         else {
             w = 0;
         }
-
         // 判断结束
 
         //获取影响距离与实际距离的差值
-
-        float effectDistance = (w / 2) + AgentMagicWall.TheDistance;
+         float effectDistance = (w / 2) + AgentMagicWall.TheDistance;
         float offset = effectDistance - distance;
         signTextComponent.text = "OFFSET : " + offset.ToString();
         signTextComponent2.text = "ed : " + effectDistance.ToString();
@@ -264,11 +256,8 @@ public class FlockAgent : MonoBehaviour
                 Vector2 toy = new Vector2(refVector2.x, to);
                 m_transform.DOAnchorPos(toy, Time.deltaTime);
             }
-
 			m_transform.DOScale(m_scale, Time.deltaTime);
-
 			IsChanging = true;
-
 		}
 		else
 			// 未进入影响范围
@@ -288,28 +277,6 @@ public class FlockAgent : MonoBehaviour
 	}
 
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-
-    }
-
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        //gameObject.GetComponentInChildren<Image>().color = Color.red;
-
-    }
-
-    void OnCollisionExit2D(Collision2D collision) {
-//        confictItems.Remove(collision.gameObject.name);
-    }
-
-
-
-
 }
 
 
-public enum AgentStatus{
-	NORMAL,MOVING,CHOOSING
-}

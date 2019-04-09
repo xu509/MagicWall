@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//
+//  过场效果工厂类
+//
 public class CutEffectFactory{
 
 	private static CutEffectFactory instance;
@@ -39,19 +42,28 @@ public class CutEffectFactory{
 		CutEffect cutEffect3 = new CutEffect3 ();
 //		cutEffect3.init (magicWallManager);
 		cutEffects.Add (cutEffect3);
-	}
+
+        CutEffect cutEffect4 = new CutEffect4();
+        cutEffects.Add(cutEffect4);
+
+        CutEffect cutEffect5 = new CutEffect5();
+        cutEffects.Add(cutEffect5);
+    }
 
 	//
 	//	随机获取过场
 	//
 	public CutEffect getByRandom(){
-		int count = cutEffects.Count;
-		if (count == 0) {
-			return null;
-		}
-		int index = Random.Range (0,count);
-//		Debug.Log ("Random : " + index);
-		return cutEffects [index];
+        int count = cutEffects.Count;
+        if (count == 0)
+        {
+            return null;
+        }
+        int index = Random.Range(0, count);
+
+        //int index = 4;
+
+        return cutEffects [index];
 	}
 
 }

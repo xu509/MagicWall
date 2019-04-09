@@ -8,10 +8,11 @@ using DG.Tweening;
 public class BackgroundManager : ScriptableObject
 {
 
-    public GameObject bubblePrefab;//气泡预制体
-    public float upDuration = 20f;//气泡上升时间
-    public float bubbleInterval = 0.4f;//生成气泡时间间隔
+    //public GameObject bubblePrefab;//气泡预制体
+    //public float upDuration = 20f;//气泡上升时间
+    //public float bubbleInterval = 0.4f;//生成气泡时间间隔
 
+    private MagicWallManager magicWallManager;
     private Transform bubblesBackground;
     private float last_create_time = 0f;
 
@@ -21,15 +22,15 @@ public class BackgroundManager : ScriptableObject
        
     }
 
-    public void init() {
+    public void init(MagicWallManager manager) {
         bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
         this.last_create_time = 0.0f;
-        Debug.Log("Awake BG MANAGER : " + last_create_time);
+        magicWallManager = manager;
     }
 
 
     public void run() {
-        if ((Time.time - last_create_time) > bubbleInterval) {
+        if ((Time.time - last_create_time) > magicWallManager.backgroundUubbleInterval) {
             CreateBubble();
             last_create_time = Time.time;
         }
@@ -40,7 +41,7 @@ public class BackgroundManager : ScriptableObject
     //创建气泡
     void CreateBubble()
     {
-        GameObject bubble = Instantiate(bubblePrefab) as GameObject;
+        GameObject bubble = Instantiate(magicWallManager.backgroundPrefab) as GameObject;
         float random = Random.Range(0.0f, 1.0f);
         if (random < 0.5)
         {
@@ -58,7 +59,7 @@ public class BackgroundManager : ScriptableObject
         //print(alpha);
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
         rectTransform.anchoredPosition3D = new Vector3(x, -2500, z);
-        rectTransform.DOLocalMoveY(2000, upDuration).OnComplete(() => BubbleMoveComplete(bubble));
+        rectTransform.DOLocalMoveY(2000, magicWallManager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
 
     }
 

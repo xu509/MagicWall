@@ -17,7 +17,7 @@ public class MoveBehavior : FlockBehavior
 
 		// 获取两个点之间点距离
 		float distance = (tar.position - agent.AgentRectTransform.transform.position).sqrMagnitude;
-		float rdistance = (tar.position - magicWall.RefObj.position).sqrMagnitude;
+        float rdistance = 0f;
 		Debug.Log ("[" + rdistance + "] -> " + distance + " - distance");
 
 

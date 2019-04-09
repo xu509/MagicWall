@@ -53,7 +53,6 @@ public class CutEffect3 : CutEffect
 
                 // ori_x;ori_y
                 float ori_x, ori_y;
-
                 ori_x = x;
                 ori_y = y;
                 
@@ -69,7 +68,6 @@ public class CutEffect3 : CutEffect
                 rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 300);
 
                 go.gameObject.SetActive(false);
-
             }
         }
 
@@ -101,14 +99,16 @@ public class CutEffect3 : CutEffect
     }
 
 
-	public void DOAnchorPosCompleteCallback(FlockAgent agent)
+    #region Tween Callback
+    public void DOAnchorPosCompleteCallback(FlockAgent agent)
     {
         RectTransform rect = agent.GetComponent<RectTransform>();
         Image image = agent.GetComponentInChildren<Image>();
-
-        rect.DOScale(1.5f, 0.2f);
-        image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
-
+        if (!agent.IsChoosing)
+        {
+            rect.DOScale(1.5f, 0.2f);
+            image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
+        }
     }
 
     public void DOFadeCompleteCallback(FlockAgent agent)
@@ -118,7 +118,7 @@ public class CutEffect3 : CutEffect
         Image image = agent.GetComponentInChildren<Image>();
         rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, Time.deltaTime);
-
     }
+    #endregion
 
 }
