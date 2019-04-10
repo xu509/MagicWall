@@ -101,7 +101,7 @@ public class MagicWallManager : MonoBehaviour
     private void FixedUpdate()
     {
         // 开启场景效果
-        sceneManager.UpdateItems();
+        sceneManager.Run();
 
         if (Input.GetMouseButtonDown(0))
         {

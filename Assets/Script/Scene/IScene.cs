@@ -24,6 +24,13 @@ public abstract class IScene : ScriptableObject
 
 	public abstract void DoInit(MagicWallManager magicWall,CutEffect cutEffect);
 
+    //
+    //  运行
+    //
+    public abstract void Run();
+
+
+
 	//
 	//	过场动画
 	//

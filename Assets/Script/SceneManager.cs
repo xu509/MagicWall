@@ -33,8 +33,8 @@ public class SceneManager : ScriptableObject
         Scenes = new List<IScene>();
 
         // 装载场景
-        //StartScene startScene = new StartScene();
-        //Scenes.Add(startScene);
+        StartScene startScene = new StartScene();
+        Scenes.Add(startScene);
         EnvScene envScene = new EnvScene();
         Scenes.Add(envScene);
         index = 0;
@@ -49,7 +49,7 @@ public class SceneManager : ScriptableObject
     //
     // 开始场景调整
     //
-    public void UpdateItems() {
+    public void Run() {
 
         // 背景始终运行
         backgroundManager.run();

@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-
-// Environment 
+//
+//   启动的场景 
+//  - 需在此处完成数据模块的加载
+//
 public class StartScene : IScene
 {
     Transform logo;
@@ -32,17 +34,20 @@ public class StartScene : IScene
 
 	public override void DoInit(MagicWallManager magicWall, CutEffect cutEffect)
     {
-        //for (int i = 0; i < magicWall.row * magicWall.column; i++)
-        //{
-        //    magicWall.CreateNewAgent(i);
-        //}
+        Debug.Log("Load Start Scene now !");
 
-        Durtime = 10;
-        // 显示 logo
+        // 加载 Config.xml
+        Debug.Log("加载 Config.xml 成功");
 
-        logo.gameObject.GetComponent<RawImage>().DOFade(1, 2);
+        // 根据 tid 获取信息
+        Debug.Log("根据 tid 获取信息列表成功 ");
 
-        Debug.Log("Load Start Scene Success !");
+        // 加载关联资源
+        Debug.Log("加载关联的资源");
+
+        // 完成数据加载, 提供字典
+        Debug.Log("完成数据加载,提供字典");
+
     }
 
     public override void DoUpdate()
