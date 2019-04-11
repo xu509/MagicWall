@@ -8,7 +8,6 @@ using DG.Tweening;
 public class CutEffect3 : CutEffect
 {
 
-    private MagicWallManager the_magicWallManager;
     private int row;
     private int column;
     private float the_time;
@@ -21,23 +20,23 @@ public class CutEffect3 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init(MagicWallManager magicWallManager) {
+    public override void init() {
+        manager = MagicWallManager.Instance;
+
         // 初始化内容
-        DurTime = 15f;
+        DurTime = 7f;
         this.dur_time = DurTime;
-        the_magicWallManager = magicWallManager;
         HasRuning = false;
 
         // 获取栅格信息
-        row = magicWallManager.row;
-        int h = (int)magicWallManager.mainPanel.rect.height;
-        int w = (int)magicWallManager.mainPanel.rect.width;
+        row = manager.row;
+        int h = (int)manager.mainPanel.rect.height;
+        int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
         int itemWidth = h / row - gap;
         int itemHeight = itemWidth;
-        the_magicWallManager.ItemWidth = itemWidth;
 
         // 从后往前的效果列数不需要很多
         column = w / itemWidth;
@@ -60,7 +59,7 @@ public class CutEffect3 : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = magicWallManager.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1,itemWidth,itemHeight);
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
@@ -81,9 +80,9 @@ public class CutEffect3 : CutEffect
         if (Time.time - last_generate_time > generate_agent_interval) {
 
             // 随机选择
-            int count = the_magicWallManager.Agents.Count;
+            int count = AgentManager.Instance.Agents.Count;
             int index = Random.Range(0, count - 1);
-            FlockAgent agent = the_magicWallManager.Agents[index];
+            FlockAgent agent = AgentManager.Instance.Agents[index];
             agent.gameObject.SetActive(true);
 
             Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
@@ -95,7 +94,7 @@ public class CutEffect3 : CutEffect
     }
 
     public override void OnCompleted(){
-        the_magicWallManager.updateAgents();
+        AgentManager.Instance.UpdateAgents();
     }
 
 

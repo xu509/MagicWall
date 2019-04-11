@@ -4,33 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-[CreateAssetMenu(menuName = "Flock/Manager/BackgroundManager")]
-public class BackgroundManager : ScriptableObject
+public class BackgroundManager : Singleton<BackgroundManager>
 {
 
-    //public GameObject bubblePrefab;//气泡预制体
-    //public float upDuration = 20f;//气泡上升时间
-    //public float bubbleInterval = 0.4f;//生成气泡时间间隔
+    public int test = 0;
 
-    private MagicWallManager magicWallManager;
+    private MagicWallManager manager;
     private Transform bubblesBackground;
     private float last_create_time = 0f;
 
-
+    //
+    // Awake instead of Constructor
+    //
     private void Awake()
     {
-       
+        Debug.Log("AWAKE!!!!");
+        bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
+        last_create_time = 0.0f;
+
+        manager = MagicWallManager.Instance;
     }
 
-    public void init(MagicWallManager manager) {
-        bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
-        this.last_create_time = 0.0f;
-        magicWallManager = manager;
-    }
+    //
+    //  Constructor
+    //
+    protected BackgroundManager(){}
 
 
     public void run() {
-        if ((Time.time - last_create_time) > magicWallManager.backgroundUubbleInterval) {
+        if ((Time.time - last_create_time) > manager.backgroundUubbleInterval) {
             CreateBubble();
             last_create_time = Time.time;
         }
@@ -41,7 +43,7 @@ public class BackgroundManager : ScriptableObject
     //创建气泡
     void CreateBubble()
     {
-        GameObject bubble = Instantiate(magicWallManager.backgroundPrefab) as GameObject;
+        GameObject bubble = Instantiate(manager.backgroundPrefab) as GameObject;
         float random = Random.Range(0.0f, 1.0f);
         if (random < 0.5)
         {
@@ -59,7 +61,7 @@ public class BackgroundManager : ScriptableObject
         //print(alpha);
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
         rectTransform.anchoredPosition3D = new Vector3(x, -2500, z);
-        rectTransform.DOLocalMoveY(2000, magicWallManager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
+        rectTransform.DOLocalMoveY(2000, manager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
 
     }
 

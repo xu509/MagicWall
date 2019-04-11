@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 过场效果 1 
-public abstract class CutEffect : MonoBehaviour
+public abstract class CutEffect : Object
 {
+    //
+    //  Parameter
+    //
+    public MagicWallManager manager;
 
     // 运行状态标志
     bool hasRuning = true;
@@ -14,10 +18,11 @@ public abstract class CutEffect : MonoBehaviour
     float durTime;
     public float DurTime { set { durTime = value; } get { return durTime; } }
 
-    public abstract void init(MagicWallManager magicWallManager);
+    public abstract void init();
 
     public abstract void run();
 
     public abstract void OnCompleted();
+
 
 }

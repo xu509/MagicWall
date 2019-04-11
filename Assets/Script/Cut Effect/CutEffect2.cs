@@ -8,7 +8,6 @@ using DG.Tweening;
 public class CutEffect2 : CutEffect
 {
 
-    private MagicWallManager the_magicWallManager;
     private int row;
     private int column;
     private float the_time;
@@ -17,21 +16,20 @@ public class CutEffect2 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init(MagicWallManager magicWallManager) {
-        DurTime = 6f;
+    public override void init() {
+        DurTime = 3f;
         this.dur_time = DurTime;
 
+        manager = MagicWallManager.Instance;
 
-        row = magicWallManager.row;
-        column = magicWallManager.column;
-        the_magicWallManager = magicWallManager;
+        row = manager.row;
+        column = manager.column;
 
-        int h = (int)magicWallManager.mainPanel.rect.height;
+        int h = (int)manager.mainPanel.rect.height;
         int gap = 10;
 
         int itemWidth = h / row - gap;
         int itemHeight = itemWidth;
-        the_magicWallManager.ItemWidth = itemWidth;
 
 
         //从下往上，从左往右
@@ -57,7 +55,7 @@ public class CutEffect2 : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = magicWallManager.CreateNewAgent(ori_x, ori_y, x, y, i, j);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j,itemWidth,itemHeight);
                 go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
 
@@ -73,8 +71,8 @@ public class CutEffect2 : CutEffect
 
 
     public override void run() {
-        for (int i = 0; i < the_magicWallManager.Agents.Count; i++) {
-            FlockAgent agent = the_magicWallManager.Agents[i];
+        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++) {
+            FlockAgent agent = AgentManager.Instance.Agents[i];
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
@@ -89,8 +87,6 @@ public class CutEffect2 : CutEffect
                 //Debug.Log(agent.name);
             }
 
-
-
             float t = (Time.time - the_time) / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
@@ -100,7 +96,7 @@ public class CutEffect2 : CutEffect
     }
 
     public override void OnCompleted(){
-        the_magicWallManager.updateAgents();
+        AgentManager.Instance.UpdateAgents();
     }
 
 

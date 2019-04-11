@@ -37,6 +37,21 @@ public class FlockAgent : MonoBehaviour
         }
     }
 
+    // 高度
+    [SerializeField]
+    float height;
+    public float Height
+    {
+        set
+        {
+            height = value;
+        }
+        get
+        {
+            return height;
+        }
+    }
+
     // 原位
     [SerializeField]
     Vector2 oriVector2;
@@ -108,6 +123,8 @@ public class FlockAgent : MonoBehaviour
     MagicWallManager agentMagicWall;
     public MagicWallManager AgentMagicWall { get { return agentMagicWall; } }
 
+    AgentManager agentManager;
+
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
 
@@ -139,11 +156,11 @@ public class FlockAgent : MonoBehaviour
 	public void Initialize(MagicWallManager magicWall,Vector2 originVector,Vector2 genVector,int row,int column)
     {
         agentMagicWall = magicWall;
+        agentManager = AgentManager.Instance;
         OriVector2 = originVector;
         GenVector2 = genVector;
         x = row;
         y = column;
-        Width = magicWall.ItemWidth;
 
         // 定义 agent 的名字
         nameTextComponent.text = row + " - " + column;
@@ -198,7 +215,7 @@ public class FlockAgent : MonoBehaviour
 		RectTransform m_transform = GetComponent<RectTransform>();
 
         //判断是否有多个影响体，如有多个，取距离最近的那个
-        List<RectTransform> transforms = AgentMagicWall.EffectAgent;
+        List<RectTransform> transforms = agentManager.EffectAgent;
         RectTransform targetTransform = null;
         float distance = 1000f;
 
@@ -223,10 +240,10 @@ public class FlockAgent : MonoBehaviour
         // 判断结束
 
         //获取影响距离与实际距离的差值
-         float effectDistance = (w / 2) + AgentMagicWall.TheDistance;
+        float effectDistance = (w / 2) + AgentMagicWall.TheDistance;
         float offset = effectDistance - distance;
         signTextComponent.text = "OFFSET : " + offset.ToString();
-        signTextComponent2.text = "ed : " + effectDistance.ToString();
+        //signTextComponent2.text = "ed : " + effectDistance.ToString();
 
 
         // 进入影响范围
@@ -235,7 +252,12 @@ public class FlockAgent : MonoBehaviour
 
             m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.blue;
             float m_scale = -(1f / effectDistance) * offset + 1f;
-            float move_offset =  offset * (((w / 2) + 50) / effectDistance);
+
+            float move_offset = offset * (((w / 2) + 50) / effectDistance);
+            //float move_offset = (offset /= 200) * offset * offset ;
+
+            signTextComponent2.text = "move_offset : " + move_offset.ToString();
+
 
             showMoveOffset = move_offset;
 

@@ -8,7 +8,6 @@ using DG.Tweening;
 public class CutEffect1 : CutEffect
 {
 
-    private MagicWallManager the_magicWallManager;
     private int row;
     private int column;
     private float the_time;
@@ -19,21 +18,21 @@ public class CutEffect1 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init(MagicWallManager magicWallManager) {
-        the_magicWallManager = magicWallManager;
-        DurTime = 6f;
+    public override void init() {
+
+        manager = MagicWallManager.Instance;
+
+        DurTime = 3f;
         this.dur_time = DurTime;
 
-        row = magicWallManager.row;
-        column = magicWallManager.column;
+        row = manager.row;
+        column = manager.column;
 
-        int h = (int)magicWallManager.mainPanel.rect.height;
+        int h = (int)manager.mainPanel.rect.height;
         int gap = 10;
 
-        int itemWidth = h / row - gap;
-        int itemHeight = itemWidth;
-        the_magicWallManager.ItemWidth = itemWidth;
-
+        float itemWidth = h / row - gap;
+        float itemHeight = itemWidth;
 
         //从左往右，从下往上
         for (int i = 0; i < row; i++)
@@ -71,7 +70,8 @@ public class CutEffect1 : CutEffect
                 string name = "Agent" + (x + 1) + "-" + (y + 1);
                 Vector2 ori_position = new Vector2(ori_x, ori_y);
                 Vector2 gen_position = new Vector2(x, y);
-                FlockAgent go = magicWallManager.CreateNewAgent(ori_x, ori_y, x, y, i, j);
+
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -85,7 +85,6 @@ public class CutEffect1 : CutEffect
                 go.GetComponentInChildren<Image>().DOFade(0, dur_time - delayX + delayY).From();
 
 
-
             }
         }
 
@@ -97,12 +96,11 @@ public class CutEffect1 : CutEffect
 
 
     public override void run() {
-        for (int i = 0; i < the_magicWallManager.Agents.Count; i++) {
-            FlockAgent agent = the_magicWallManager.Agents[i];
+        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++) {
+            FlockAgent agent = AgentManager.Instance.Agents[i];
             //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
-
 
             float run_time = (dur_time - agent.DelayX + agent.DelayY) - 1f; // 动画运行的总时间
 
@@ -113,7 +111,6 @@ public class CutEffect1 : CutEffect
                 continue;
                 //Debug.Log(agent.name);
             }
-
 
             // 模拟 DOTWEEN InOutQuad
             if ((time /= run_time * 0.5f) < 1f)
@@ -133,7 +130,7 @@ public class CutEffect1 : CutEffect
     }
 
     public override void OnCompleted(){
-        the_magicWallManager.updateAgents();
+        AgentManager.Instance.UpdateAgents();
     }
 
 

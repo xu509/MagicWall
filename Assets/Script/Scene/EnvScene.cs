@@ -6,67 +6,76 @@ using DG.Tweening;
 // 企业场景
 public class EnvScene : IScene
 {
+    //
+    //  Parameter
+    //
     private FlockAgent itemPrefab;
-	private CutEffect theCutEffect;
-	private MagicWallManager theMagicWallManager;
-
     DaoService daoService;
 
     //
-    //  Construct
+    //  Init
     //
-    public EnvScene() {
-        daoService = new DaoService();
-    }
-    
+	public override void DoInit()
+    {        
+        // 初始化展示时间
+        string durtimeValue = DaoService.GetInstance().GetConfigByKey(AppConfig.KEY_THEME_ID).Value;
+        float durtime = 10f; // 默认10秒
+        if (float.TryParse(durtimeValue, out durtime)) {
+            Durtime = durtime;
+        }
 
-	public override void DoInit(MagicWallManager magicWall,CutEffect cutEffect)
-    {
-        //  设置动画时间
-        Durtime = 30;
-        DeleteDurTime = 2f;
+        // 初始化销毁的时间
+        DestoryDurTime = 2f; //默认
 
-        //  设置预制体
-        itemPrefab = magicWall.agentPrefab;
-		theCutEffect = cutEffect;
-		theMagicWallManager = magicWall;
+        // 初始化过场效果
+        TheCutEffect = CutEffectFactory.Instance.GetByScenes(SceneType.env);
 
-        //  设置agent类型
-        theMagicWallManager.TheItemType = ItemType.env;
+        // 启动过场效果
+        TheCutEffect.init();
 
-        //  初始化过场效果
-        cutEffect.init(magicWall);
+        Debug.Log("AGENTS: " + AgentManager.Instance.Agents.Count);
+
+        //      //  设置动画时间
+        //      Durtime = 30;
+        //      DeleteDurTime = 2f;
+
+        //      //  设置预制体
+        //      itemPrefab = magicWall.agentPrefab;
+        //theCutEffect = cutEffect;
+        //theMagicWallManager = magicWall;
+
+        //      //  设置agent类型
+        //      theMagicWallManager.TheItemType = AgentType.env;
+
+        //      //  初始化过场效果
+        //      cutEffect.init(magicWall);
     }
 
     public override void DoStarting(){
-		theCutEffect.run();
+		TheCutEffect.run();
 	}
 
-    public override void DoUpdate()
+    public override void DoDisplaying()
     {
-        // 面板向左移动
-        float x = theMagicWallManager.mainPanel.anchoredPosition.x - Time.deltaTime * theMagicWallManager.MoveFactor_Panel;
-        Vector2 to = new Vector2(x, theMagicWallManager.mainPanel.anchoredPosition.y);
-        theMagicWallManager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+        MagicWallManager manager = MagicWallManager.Instance;
 
-        // 调整panel
-        theMagicWallManager.updateOffsetOfCanvas();
+        // 面板向左移动
+        float x = manager.mainPanel.anchoredPosition.x - Time.deltaTime * manager.MoveFactor_Panel;
+        Vector2 to = new Vector2(x, manager.mainPanel.anchoredPosition.y);
+        manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+
+        // 调整panel的差值
+        manager.updateOffsetOfCanvas();
 
         // 调整所有agent
-        theMagicWallManager.updateAgents();
+        manager.UpdateAgents();
 
         //Debug.Log("Update Env Scene Success !");
     }
 
-    public override void DoDestory()
+    public override void DoDestorying()
     {
-        //初始化panel
-        theMagicWallManager.updateOffsetOfCanvas();
-        theMagicWallManager.DoDestory();
+        // 销毁的动画
     }
 
-    public override void OnStartComplete()
-    {
-        theMagicWallManager.updateAgents();
-    }
 }

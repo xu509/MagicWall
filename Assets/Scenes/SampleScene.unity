@@ -393,9 +393,8 @@ MonoBehaviour:
   backgroundUubbleInterval: 0.4
   TheDistance: 350
   MoveFactor: 1
-  ScaleFactor: 1
-  MoveFactor_Panel: 44
-  refObj: {fileID: 43690616}
+  panelOffset: 0
+  MoveFactor_Panel: 60
   row: 6
   column: 30
   status: 0

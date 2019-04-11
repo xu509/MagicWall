@@ -4,7 +4,23 @@ using UnityEngine;
 
 public class DaoService
 {
+    //
+    //  single pattern
+    // 
+    private static DaoService instance;
 
+    public static DaoService GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new DaoService();
+        }
+        return instance;
+    }
+
+    //
+    //  Constructor
+    //
     public DaoService() {
 
     }
@@ -63,6 +79,16 @@ public class DaoService
     {
         // todo
         return null;
+    }
+
+    //
+    //  获取config
+    //
+    public AppConfig GetConfigByKey(string key) {
+        AppConfig appConfig = new AppConfig();
+        appConfig.Value = "20";
+
+        return appConfig;
     }
 
 }

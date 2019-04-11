@@ -8,7 +8,6 @@ using DG.Tweening;
 public class CutEffect4 : CutEffect
 {
 
-    private MagicWallManager the_magicWallManager;
     private int row;
     private int column;
     private float the_time;
@@ -21,22 +20,22 @@ public class CutEffect4 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init(MagicWallManager magicWallManager) {
+    public override void init() {
+        manager = MagicWallManager.Instance;
+
         // 初始化内容
-        DurTime = 2f;
+        DurTime = 1f;
         this.dur_time = DurTime; // 动画时长2秒
-        the_magicWallManager = magicWallManager;
 
         // 获取栅格信息
-        row = magicWallManager.row;
-        int h = (int)magicWallManager.mainPanel.rect.height;
-        int w = (int)magicWallManager.mainPanel.rect.width;
+        row = manager.row;
+        int h = (int)manager.mainPanel.rect.height;
+        int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
         int itemWidth = h / row - gap;
         int itemHeight = itemWidth;
-        the_magicWallManager.ItemWidth = itemWidth;
 
         // 从后往前的效果列数不需要很多
         column = w / itemWidth;
@@ -67,7 +66,7 @@ public class CutEffect4 : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
                 
                 // 生成 agent
-                FlockAgent go = magicWallManager.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1,itemWidth,itemHeight);
 
                 // agent 一定时间内从透明至无透明
                 go.GetComponentInChildren<Image>().DOFade(0, dur_time).From();
@@ -82,9 +81,9 @@ public class CutEffect4 : CutEffect
 
     public override void run() {
 
-        for (int i = 0; i < the_magicWallManager.Agents.Count; i++)
+        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
         {
-            FlockAgent agent = the_magicWallManager.Agents[i];
+            FlockAgent agent = AgentManager.Instance.Agents[i];
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
@@ -107,14 +106,10 @@ public class CutEffect4 : CutEffect
             agent.NextVector2 = to;
             agent.updatePosition();
         }
-
-
-
-
     }
 
     public override void OnCompleted(){
-        the_magicWallManager.updateAgents();
+        AgentManager.Instance.UpdateAgents();
     }
 
 

@@ -5,8 +5,16 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
 
-public class MagicWallManager : MonoBehaviour
+//
+//  入口类
+//
+public class MagicWallManager : Singleton<MagicWallManager>
 {
+    //
+    //  Single
+    //
+    protected MagicWallManager() { }
+
 
     #region PUBLIC PARAMETER
     public RectTransform mainPanel;
@@ -19,14 +27,6 @@ public class MagicWallManager : MonoBehaviour
     [Range(0.1f, 10f)]
     public float backgroundUubbleInterval = 0.4f;//生成气泡时间间隔
 
-    //  当前界面的 agents
-    List<FlockAgent> agents = new List<FlockAgent>();
-    public List<FlockAgent> Agents { get { return agents; } }
-
-    //  正在操作的 agents
-    List<RectTransform> effectAgent;
-    public List<RectTransform> EffectAgent { get { return effectAgent; } }
-
     [Range(0, 6000)]
     public float TheDistance;   // 影响距离
     [Range(0, 20)]
@@ -37,15 +37,11 @@ public class MagicWallManager : MonoBehaviour
     float panelOffset = 0f;
     public float PanelOffset { get { return panelOffset; } set { panelOffset = value; } }
 
-    // flock width
-    float itemWidth;
-    public float ItemWidth { get { return itemWidth; } set { itemWidth = value; } }
-
     [SerializeField,Range(1f, 100f)]
 	public float MoveFactor_Panel;
 
-    private ItemType theItemType;
-    public ItemType TheItemType { set { theItemType = value; } get { return theItemType; } }
+    private AgentType theItemType;
+    public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
 
 
     //顶部logo
@@ -74,23 +70,36 @@ public class MagicWallManager : MonoBehaviour
     // 选中的agent
     FlockAgent chooseFlockAgent = null;
 
-    SceneManager sceneManager;
 
     GraphicRaycaster m_Raycaster;
     PointerEventData m_PointerEventData;
     EventSystem m_EventSystem;
     #endregion
 
+    // Awake - init manager of Singleton
+    private void Awake()
+    {
+        // 初始化场景管理器
+        SceneManager sceneManager = SceneManager.Instance;
+
+        // 初始化背景管理器
+        BackgroundManager backgroundManager = BackgroundManager.Instance;
+
+        // 初始化实体管理器
+        AgentManager agentManager = AgentManager.Instance;
+
+        // 初始化效果工厂
+        CutEffectFactory cutEffectFactory = CutEffectFactory.Instance;
+
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        effectAgent = new List<RectTransform>();
+        // 初始化 UI 索引
         operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
-        //wallLogo = GameObject.Find("WallLogo").GetComponent<Transform>();
-
-        // 创建场景管理器
-        sceneManager = new SceneManager();
-        sceneManager.Init(this);
 
         // Raycaster - event
         m_Raycaster = GetComponent<GraphicRaycaster>();
@@ -101,8 +110,9 @@ public class MagicWallManager : MonoBehaviour
     private void FixedUpdate()
     {
         // 开启场景效果
-        sceneManager.Run();
+        SceneManager.Instance.Run();
 
+        // 开启手势监听
         if (Input.GetMouseButtonDown(0))
         {
             //Debug.Log("GetMouseButtonDown");
@@ -137,7 +147,7 @@ public class MagicWallManager : MonoBehaviour
                 // 此处为点击事件
                 if (chooseFlockAgent != null)
                 {
-                    DoChosenItem(chooseFlockAgent);
+                    AgentManager.Instance.DoChosenItem(chooseFlockAgent);
                 }
             }
             lastClickDownTime = 0f;
@@ -145,115 +155,22 @@ public class MagicWallManager : MonoBehaviour
 
     }
 
-    //    //  创建一个新Agent
-    //    public void CreateNewAgent(int index) {
-    //        //设置位置
-    //        int real_index = index + 1;
-    //
-    //        Vector2 postion = new Vector2();
-    //
-    //        int y = real_index / column + 1;
-    //        if (real_index % column == 0) {
-    //            y--;
-    //        }
-    //       
-    //        int x = real_index % column;
-    //        if (x == 0) {
-    //            x = column;
-    //        }
-    //        
-    //        FlockAgent newAgent = Instantiate(
-    //                                    agentPrefab,
-    //                                    mainPanel
-    //                                    );
-    //        newAgent.name = "Agent(" + x + "," + y + ")";
-    //
-    //        postion.x = (x-1) * flock_width + (flock_width / 2);
-    //        postion.y = (y-1) * flock_width + (flock_width / 2);
-    //        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
-    //
-    //        newAgent.Initialize(this, postion);
-    //        agents.Add(newAgent);
-    //    }
+    #region 清理面板
+    public bool Clear() {
+        Debug.Log("进行销毁！");
 
-    #region 创建一个新Agent
-    public FlockAgent CreateNewAgent(float gen_x,float gen_y,float ori_x,float ori_y,int row,int column)
-    {
-        //设置位置
-        FlockAgent newAgent = Instantiate(
-                                    agentPrefab,
-                                    mainPanel
-                                    );
-        newAgent.name = "Agent(" + row + "," + column + ")";
-
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
-
-        Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.GenVector2 = postion;
-
-        newAgent.Initialize(this, ori_position,postion,row,column);
-        agents.Add(newAgent);
-        return newAgent;
-    }
-    #endregion
-
-    #region 销毁场景回调
-    public void DoDestory() {
-        // 删除 MainPanel下所有的东西
-        foreach (FlockAgent agent in agents)
-        {
-            if (!agent.IsChoosing) {
-                Destroy(agent.gameObject);
-            }   
-        }
-        agents.Clear(); //清理 agent 袋
-        mainPanel.anchoredPosition = Vector3.zero;  //主面板归位
+        AgentManager.Instance.ClearAgents(); //清理 agent 袋
+        mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
         PanelOffset = 0f;   // 清理两个panel偏移量
 
+        while (mainPanel.anchoredPosition != Vector2.zero) {
+            StartCoroutine(AfterFixedUpdate());
+        }
+        return true;
     }
     #endregion
 
 
-    #region 选中 agent
-    public void DoChosenItem(FlockAgent agent)
-    {
-        if (!agent.IsChoosing)
-        {
-            // 将选中的 agent 放入操作层
-            agent.transform.parent = operationPanel;
-            Vector2 positionInMainPanel = agent.GetComponent<RectTransform>().anchoredPosition;
-            //Vector2 positionInOperPanel = positionInMainPanel - new Vector2(PanelOffset, 0);
-            agent.GetComponent<RectTransform>().DOAnchorPos(positionInMainPanel, Time.deltaTime);
-
-            // 将被选中的 agent 加入列表
-            agent.IsChoosing = true;
-			effectAgent.Add(agent.GetComponent<RectTransform>());
-
-            // 选中后的动画效果，逐渐变大
-            Vector2 newSizeDelta = new Vector2(ItemWidth * 2, ItemWidth * 2);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
-
-			//updateAgents ();
-        }
-        else
-        {
-            agent.transform.parent = mainPanel;
-            agent.IsChoosing = false;
-            effectAgent.Remove(agent.GetComponent<RectTransform>());
-
-            Vector2 newSizeDelta = new Vector2(ItemWidth, ItemWidth);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
-            agent.GetComponent<RectTransform>().DOAnchorPos(agent.OriVector2,2f);
-        }
-    }
-
-    void DoSizeDeltaUpdateCallBack(FlockAgent agent) {
-        //Debug.Log(agent.AgentRectTransform.sizeDelta.x);
-        agent.Width = agent.AgentRectTransform.sizeDelta.x;
-
-    }
-    #endregion
 
     #region 拖拽动作
     public void DoDragItem(FlockAgent agent) {
@@ -264,22 +181,13 @@ public class MagicWallManager : MonoBehaviour
             //Input.mousePosition
 
             agent.GetComponent<RectTransform>().DOAnchorPos((Vector2)Input.mousePosition, Time.deltaTime);
-            updateAgents();
+            UpdateAgents();
 
         }
     }
     #endregion
 
-    #region 更新所有的 agent
-    public void updateAgents(){
-            //Debug.Log("DOING UPDATEAGENTS!");
-            foreach (FlockAgent ag in Agents)
-            {
-                ag.updatePosition();
-            }
-        		
-	}
-    #endregion
+
 
     #region 根据鼠标点击位置获取 agent
     FlockAgent getAgentsByMousePosition() {
@@ -331,20 +239,53 @@ public class MagicWallManager : MonoBehaviour
     }
     #endregion
 
+    #region 更新 Agents 
+    public void UpdateAgents() {
+        AgentManager.Instance.UpdateAgents();
+    }
+    #endregion
+
+
+    IEnumerator AfterFixedUpdate()
+    {
+        yield return new WaitForFixedUpdate();
+    }
+
 }
 
-public enum ItemType {
-    env,activity,product
+public enum AgentType {
+    env, // 企业
+    activity, // 活动
+    product // 产品
 }
+
+public enum AgentStatus
+{
+    NORMAL, // 正常
+    MOVING, // 移动中
+    CHOOSING    //已选择
+}
+
 
 public enum WallStatusEnum{
 	Cutting, // 过场中
     Displaying // 显示中
 }
 
-public enum AgentStatus
+public enum SceneType
 {
-    NORMAL, MOVING, CHOOSING
+    env, // 企业
+    activity, // 活动
+    product // 产品
 }
+
+public enum SceneStatus
+{
+    PREPARING, // 准备中
+    STARTTING, // 启动动画中
+    DISPLAYING, // 运行中
+    DESTORING //  销毁中
+}
+
 
 

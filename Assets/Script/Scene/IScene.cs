@@ -2,49 +2,165 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class IScene : ScriptableObject
+public abstract class IScene : Object
 {
+    //
+    //  Parameter
+    //
 
+    //  场景状态
     SceneStatus status = SceneStatus.PREPARING; //场景状态
     public SceneStatus Status { get { return status; } set { status = value; } }
 
+    //  场景开始的时间
+    float startTime;
+    public float StartTime { set { startTime = value; } get { return startTime; } }
+
+    // 运行时间
     float durtime;
     public float Durtime { set { durtime = value; } get { return durtime; } }
 
+    // 过场动画持续时间
     float cutDurTime;
     public float CutDurTime { set { cutDurTime = value; } get { return cutDurTime; } }
 
-    float deleteDurTime;
-    public float DeleteDurTime { set { deleteDurTime = value; } get { return deleteDurTime; } }
+    //  场景显示的时间点
+    float displayTime;
+    public float DisplayTime { set { displayTime = value; } get { return displayTime; } }
 
-    public void Awake()
-    {
+    //  场景开始销毁的时间点
+    float destoryTime;
+    public float DestoryTime { set { destoryTime = value; } get { return destoryTime; } }
 
+    // 销毁动画持续时间
+    float destoryDurTime;
+    public float DestoryDurTime { set { destoryDurTime = value; } get { return destoryDurTime; } }
+
+    // 使用的过场效果
+    CutEffect theCutEffect;
+    public CutEffect TheCutEffect { set { theCutEffect = value; } get { return theCutEffect; } }
+
+    // Dao Service
+    DaoService daoService;
+    public DaoService TheDaoService { get { return daoService; } }
+
+    //
+    //  Constructor
+    //
+    public IScene() {        
     }
 
-	public abstract void DoInit(MagicWallManager magicWall,CutEffect cutEffect);
+
+    //
+    //  Abstract Methods
+    //
+
+	//	过场动画
+	public abstract void DoStarting ();
+
+    //  展示动画
+    public abstract void DoDisplaying();
+
+    //  销毁动画
+    public abstract void DoDestorying();
+
+    //销毁动画已完成
+    public bool DoDestoryCompleted() {
+        // 清理面板
+        return MagicWallManager.Instance.Clear();
+    }
+
+
+    //
+    //  初始化
+    // -- 初始化 Display时间
+    // -- 初始化当前的过场效果
+    //
+    public abstract void DoInit();
+
+    //
+    //  Methods
+    //
 
     //
     //  运行
     //
-    public abstract void Run();
+    public bool Run()
+    {
+        MagicWallManager magicWallManager = MagicWallManager.Instance;
 
+        // 准备状态
+        if (Status == SceneStatus.PREPARING)
+        {
+            // 进入过场状态
+            Debug.Log("Scene is Cutting");
+            StartTime = Time.time; //标记开始的时间
 
+            MagicWallManager.Instance.Status = WallStatusEnum.Cutting;   //标记项目进入过场状态
 
-	//
-	//	过场动画
-	//
-	public abstract void DoStarting ();
+            DoInit();  //初始化场景
 
-    public abstract void OnStartComplete();
+            // 将状态标志设置为开始
+            Status = SceneStatus.STARTTING;
+        }
 
-    public abstract void DoUpdate();
+        // 过场动画
+        if (Status == SceneStatus.STARTTING)
+        {
+            if ((Time.time - StartTime) > theCutEffect.DurTime)
+            {
+                // 完成开场动画，场景进入展示状态
+                Debug.Log("Scene is Displaying");
+                DisplayTime = Time.time;
+                Status = SceneStatus.DISPLAYING;
+                magicWallManager.Status = WallStatusEnum.Displaying;
+            }
+            else
+            {
+                DoStarting();
+            }
+        }
 
-    public abstract void DoDestory();
+        // 正常展示
+        if (Status == SceneStatus.DISPLAYING)
+        {
+            // 过场状态具有运行状态 或 已达到运行的时间
+            if (!theCutEffect.HasRuning || (Time.time - DisplayTime) > Durtime)
+            {
+                // 完成展示阶段，进行销毁
+                DoDestorying();
+                Status = SceneStatus.DESTORING;
+                destoryTime = Time.time;
+            }
+            else
+            {
+                DoDisplaying();
+            }
+        }
+
+        // 销毁中
+        if (Status == SceneStatus.DESTORING)
+        {
+            // 达到销毁的时间
+            if ((Time.time - destoryTime) > destoryDurTime)
+            {
+                if (DoDestoryCompleted())
+                {
+                    Status = SceneStatus.PREPARING;
+                    return false;
+                }
+                else {
+                    DoDestorying();
+                }
+            }
+            else {
+                DoDestorying();
+            }
+        }
+
+        return true;
+    }
 
 
 }
 
-public enum SceneStatus{
-    RUNNING,DESTORING,PREPARING,STARTTING
-}

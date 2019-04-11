@@ -18,7 +18,7 @@ public class StartScene : IScene
     }
 
 
-    public override void DoDestory()
+    public override void DoDestorying()
     {
         // 消失logo
 
@@ -32,7 +32,7 @@ public class StartScene : IScene
 	}
 
 
-	public override void DoInit(MagicWallManager magicWall, CutEffect cutEffect)
+	public override void DoInit()
     {
         Debug.Log("Load Start Scene now !");
 
@@ -50,13 +50,10 @@ public class StartScene : IScene
 
     }
 
-    public override void DoUpdate()
+    public override void DoDisplaying()
     {
-        //Debug.Log("Update Start Scene Success !");
-
+        throw new System.NotImplementedException();
     }
 
-    public override void OnStartComplete()
-    {
-    }
+
 }
