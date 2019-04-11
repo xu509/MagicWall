@@ -27,10 +27,11 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(0.1f, 10f)]
     public float backgroundUubbleInterval = 0.4f;//生成气泡时间间隔
 
-    [Range(0, 6000)]
-    public float TheDistance;   // 影响距离
-    [Range(0, 20)]
-    public float MoveFactor; // 移动因素
+    [Range(0f, 10f)]
+    public float InfluenceFactor;   // 影响距离
+
+    [Range(0f, 10f)]
+    public float InfluenceMoveFactor;   // 影响移动距离
 
     // 面板的差值
     [SerializeField]
@@ -175,11 +176,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region 拖拽动作
     public void DoDragItem(FlockAgent agent) {
         if (agent.IsChoosing) {
-
-            //Vector3 v = Camera.main.WorldToScreenPoint(Input.mousePosition);
-            //Debug.Log(Input.mousePosition);
-            //Input.mousePosition
-
             agent.GetComponent<RectTransform>().DOAnchorPos((Vector2)Input.mousePosition, Time.deltaTime);
             UpdateAgents();
 

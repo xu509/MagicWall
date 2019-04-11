@@ -20,8 +20,8 @@ public class AgentManager : Singleton<AgentManager>
     public List<FlockAgent> Agents { get { return agents; } }
 
     //  正在操作的 agents
-    List<RectTransform> effectAgent;
-    public List<RectTransform> EffectAgent { get { return effectAgent; } }
+    List<FlockAgent> effectAgent;
+    public List<FlockAgent> EffectAgent { get { return effectAgent; } }
 
     //
     //  Paramater UI
@@ -34,7 +34,7 @@ public class AgentManager : Singleton<AgentManager>
     // 
     void Awake() {
         manager = MagicWallManager.Instance;
-        effectAgent = new List<RectTransform>();
+        effectAgent = new List<FlockAgent>();
         agents = new List<FlockAgent>();
         operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
     }
@@ -51,24 +51,43 @@ public class AgentManager : Singleton<AgentManager>
     //
     public FlockAgent CreateNewAgent(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height)
     {
-        //设置位置
+        //  创建 Agent
         FlockAgent newAgent = Instantiate(
                                     manager.agentPrefab,
                                     manager.mainPanel
                                     );
+        //  命名
         newAgent.name = "Agent(" + row + "," + column + ")";
 
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        newAgent.GetComponent<RectTransform>().anchoredPosition = postion;
+        //  获取rect引用
+        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
 
+        //  定出生位置
+        Vector2 postion = new Vector2(gen_x, gen_y);
+        rectTransform.anchoredPosition = postion;
+
+        //  定面板位置
         Vector2 ori_position = new Vector2(ori_x, ori_y);
         newAgent.GenVector2 = postion;
 
-        //初始化内容
-        newAgent.Initialize(manager, ori_position, postion, row, column);
+        //  初始化内容
+        newAgent.Initialize(ori_position, postion, row, column);
         newAgent.Width = width;
         newAgent.Height = height;
 
+        // 调整agent的长与宽
+        Vector2 sizeDelta = new Vector2(width, height);
+        rectTransform.sizeDelta = sizeDelta;
+
+        // 调整显示颜色
+
+        // 调整 collider
+        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
+        boxCollider2D.size = new Vector2(width, height);
+
+
+
+        //  添加到组件袋
         Agents.Add(newAgent);
         return newAgent;
     }
@@ -112,11 +131,14 @@ public class AgentManager : Singleton<AgentManager>
 
             // 将被选中的 agent 加入列表
             agent.IsChoosing = true;
-            effectAgent.Add(agent.GetComponent<RectTransform>());
+            effectAgent.Add(agent);
 
             // 选中后的动画效果，逐渐变大
-            Vector2 newSizeDelta = new Vector2(agent.Width * 2, agent.Width * 2);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
+            Vector2 newSizeDelta = new Vector2(agent.Width * 2f, agent.Height * 2f);
+            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 0.5f)
+                .OnUpdate(() => DoSizeDeltaUpdateCallBack(agent))
+                .SetEase(Ease.OutQuint);
+                ;
 
             UpdateAgents ();
         }
@@ -124,10 +146,10 @@ public class AgentManager : Singleton<AgentManager>
         {
             agent.transform.parent = manager.mainPanel;
             agent.IsChoosing = false;
-            effectAgent.Remove(agent.GetComponent<RectTransform>());
+            effectAgent.Remove(agent);
 
-            Vector2 newSizeDelta = new Vector2(agent.Width, agent.Width);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 2f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
+            Vector2 newSizeDelta = new Vector2(agent.Width / 2f, agent.Height / 2f);
+            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 1f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
             agent.GetComponent<RectTransform>().DOAnchorPos(agent.OriVector2, 2f);
         }
     }
@@ -136,6 +158,8 @@ public class AgentManager : Singleton<AgentManager>
     {
         //Debug.Log(agent.AgentRectTransform.sizeDelta.x);
         agent.Width = agent.AgentRectTransform.sizeDelta.x;
+        agent.Height = agent.AgentRectTransform.sizeDelta.y;
+
 
     }
 
