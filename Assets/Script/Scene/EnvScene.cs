@@ -19,10 +19,12 @@ public class EnvScene : IScene
     {        
         // 初始化展示时间
         string durtimeValue = DaoService.GetInstance().GetConfigByKey(AppConfig.KEY_THEME_ID).Value;
-        float durtime = 10f; // 默认10秒
+        float durtime = 60f; // 默认10秒
         if (float.TryParse(durtimeValue, out durtime)) {
             Durtime = durtime;
         }
+
+        Durtime = 30;
 
         // 初始化销毁的时间
         DestoryDurTime = 2f; //默认

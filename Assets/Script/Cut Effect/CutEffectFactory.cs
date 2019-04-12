@@ -27,8 +27,8 @@ public class CutEffectFactory : Singleton<CutEffectFactory>
         CutEffect cutEffect2 = new CutEffect2();
         cutEffects.Add(cutEffect2);
 
-        CutEffect cutEffect3 = new CutEffect3();
-        cutEffects.Add(cutEffect3);
+        //CutEffect cutEffect3 = new CutEffect3();
+        //cutEffects.Add(cutEffect3);
 
         CutEffect cutEffect4 = new CutEffect4();
         cutEffects.Add(cutEffect4);

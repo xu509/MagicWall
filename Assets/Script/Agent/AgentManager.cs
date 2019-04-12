@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 //
@@ -124,23 +125,48 @@ public class AgentManager : Singleton<AgentManager>
     {
         if (!agent.IsChoosing)
         {
-            // 将选中的 agent 放入操作层
-            agent.transform.parent = operationPanel;
-            Vector2 positionInMainPanel = agent.GetComponent<RectTransform>().anchoredPosition;
-            agent.GetComponent<RectTransform>().DOAnchorPos(positionInMainPanel, Time.deltaTime);
-
-            // 将被选中的 agent 加入列表
             agent.IsChoosing = true;
-            effectAgent.Add(agent);
+            float offset = MagicWallManager.Instance.PanelOffset;
 
-            // 选中后的动画效果，逐渐变大
-            Vector2 newSizeDelta = new Vector2(agent.Width * 2f, agent.Height * 2f);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 0.5f)
-                .OnUpdate(() => DoSizeDeltaUpdateCallBack(agent))
-                .SetEase(Ease.OutQuint);
-                ;
+            //  先缩小（向后退）
+            RectTransform rect = agent.GetComponent<RectTransform>();
+            Vector2 positionInMainPanel = rect.anchoredPosition;
+            Debug.Log("Click it : " + positionInMainPanel);
 
-            UpdateAgents ();
+            ////  将选中的 agent 放入操作层
+            //rect.transform.SetParent(operationPanel);
+
+            //  移到后方
+            Debug.Log("New Position: " + rect.anchoredPosition + " [offset] - " + offset);
+            Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 1000);
+            rect.DOAnchorPos3D(to, 1f);
+
+            
+            //  创建新的对应卡片
+
+
+
+
+
+            //// 将选中的 agent 放入操作层
+            //agent.transform.parent = operationPanel;
+            //Vector2 positionInMainPanel = agent.GetComponent<RectTransform>().anchoredPosition;
+            //agent.GetComponent<RectTransform>().DOAnchorPos(positionInMainPanel, Time.deltaTime);
+
+            //// 将被选中的 agent 加入列表
+            //agent.IsChoosing = true;
+            //effectAgent.Add(agent);
+
+            //// 选中后的动画效果，逐渐变大
+            //Vector2 newSizeDelta = new Vector2(agent.Width * 3f, agent.Height * 3f);
+            //agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 0.3f)
+            //    .OnUpdate(() => DoSizeDeltaUpdateCallBack(agent))
+            //    .SetEase(Ease.OutQuint);
+            //    ;
+            //Image i = agent.GetComponentInChildren<Image>();
+            //i.DOFade(0.3f, 0.3f);
+
+
         }
         else
         {
@@ -148,8 +174,8 @@ public class AgentManager : Singleton<AgentManager>
             agent.IsChoosing = false;
             effectAgent.Remove(agent);
 
-            Vector2 newSizeDelta = new Vector2(agent.Width / 2f, agent.Height / 2f);
-            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 1f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
+            Vector2 newSizeDelta = new Vector2(agent.Width / 3f, agent.Height / 3f);
+            agent.AgentRectTransform.DOSizeDelta(newSizeDelta, 0.3f).OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
             agent.GetComponent<RectTransform>().DOAnchorPos(agent.OriVector2, 2f);
         }
     }
@@ -159,7 +185,7 @@ public class AgentManager : Singleton<AgentManager>
         //Debug.Log(agent.AgentRectTransform.sizeDelta.x);
         agent.Width = agent.AgentRectTransform.sizeDelta.x;
         agent.Height = agent.AgentRectTransform.sizeDelta.y;
-
+        UpdateAgents();
 
     }
 

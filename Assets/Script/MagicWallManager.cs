@@ -19,6 +19,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region PUBLIC PARAMETER
     public RectTransform mainPanel;
 	public FlockAgent agentPrefab;
+    public CardAgent crossCardgent;
+
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
@@ -27,7 +29,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(0.1f, 10f)]
     public float backgroundUubbleInterval = 0.4f;//生成气泡时间间隔
 
-    [Range(0f, 10f)]
+    [Range(0f, 2f), Header("影响距离（当为1时，表示半径）")]
     public float InfluenceFactor;   // 影响距离
 
     [Range(0f, 10f)]
@@ -38,12 +40,11 @@ public class MagicWallManager : Singleton<MagicWallManager>
     float panelOffset = 0f;
     public float PanelOffset { get { return panelOffset; } set { panelOffset = value; } }
 
-    [SerializeField,Range(1f, 100f)]
+    [SerializeField,Range(1f, 600f)]
 	public float MoveFactor_Panel;
 
     private AgentType theItemType;
     public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
-
 
     //顶部logo
  //   Transform wallLogo;
@@ -171,8 +172,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
     }
     #endregion
 
-
-
     #region 拖拽动作
     public void DoDragItem(FlockAgent agent) {
         if (agent.IsChoosing) {
@@ -182,8 +181,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
         }
     }
     #endregion
-
-
 
     #region 根据鼠标点击位置获取 agent
     FlockAgent getAgentsByMousePosition() {

@@ -25,34 +25,38 @@ public class FlockAgent : MonoBehaviour
     // 宽度
     [SerializeField]
     float width;
-    public float Width { set { width = value;} get { return width;} }
+    public float Width { set { width = value; } get { return width; } }
 
     // 高度
     [SerializeField]
     float height;
-    public float Height { set { height = value; } get { return height;} }
+    public float Height { set { height = value; } get { return height; } }
 
     // 原位
     [SerializeField]
     Vector2 oriVector2;
-	public Vector2 OriVector2 { set { oriVector2 = value; } get { return oriVector2; } }
+    public Vector2 OriVector2 { set { oriVector2 = value; } get { return oriVector2; } }
 
     // 生成的位置
     Vector2 genVector2;
-    public Vector2 GenVector2{ set { genVector2 = value; } get { return genVector2; } }
+    public Vector2 GenVector2 { set { genVector2 = value; } get { return genVector2; } }
 
     // 下个移动的位置
     [SerializeField]
     Vector2 nextVector2;
-	public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
+    public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
 
-	// 是否被选中
+    // 是否被选中
     public bool isChoosing = false;
     public bool IsChoosing { set { isChoosing = value; } get { return isChoosing; } }
 
-	// 是否被改变
+    // 是否被改变
     public bool isChanging = false;
     public bool IsChanging { set { isChanging = value; } get { return isChanging; } }
+
+    // 卡片代理
+    CardAgent cardAgent;
+    public CardAgent GetCardAgent{ get {return cardAgent; }}
 		
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
@@ -106,9 +110,9 @@ public class FlockAgent : MonoBehaviour
 
 	void FixedUpdate(){
 
-		if (IsChoosing) {
-			GetComponentInChildren<Image> ().color = Color.black;
-		}
+		//if (IsChoosing) {
+		//	GetComponentInChildren<Image> ().color = Color.black;
+		//}
 
     }
 
@@ -117,7 +121,6 @@ public class FlockAgent : MonoBehaviour
 	//
 	public void updatePosition(){
         MagicWallManager manager = MagicWallManager.Instance;
-
 
 		Vector2 refVector2; // 参照的目标位置
 		if(manager.Status == WallStatusEnum.Cutting){
@@ -131,9 +134,6 @@ public class FlockAgent : MonoBehaviour
         showRefVector2 = refVector2;
         showRefVector2WithOffset = refVector2WithOffset;
 
-        Vector2 targetVector2; // 目标物位置
-
-
         // 如果是被选中的，则不要移动
         if (IsChoosing){
 			return;
@@ -142,9 +142,11 @@ public class FlockAgent : MonoBehaviour
         // 此时的坐标位置可能已处于偏移状态
 		RectTransform m_transform = GetComponent<RectTransform>();
 
-        //判断是否有多个影响体，如有多个，取距离最近的那个
+        // 获取施加影响的目标物
+        //  判断是否有多个影响体，如有多个，取距离最近的那个
         List<FlockAgent> transforms = AgentManager.Instance.EffectAgent;
         FlockAgent targetAgent = null;
+        Vector2 targetVector2; // 目标物位置
         float distance = 1000f;
 
 		foreach (FlockAgent item in transforms)
@@ -158,82 +160,92 @@ public class FlockAgent : MonoBehaviour
                 targetAgent = item;
 		    }
 		}
-        float w;
+        float w,h;
         if (targetAgent != null)
         {
             showTargetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
             w = targetAgent.Width;
+            h = targetAgent.Height;
         }
         else {
             w = 0;
+            h = 0;
         }
         // 判断结束
 
-        //
-        //获取影响距离与实际距离的差值
-        //
-        //
-        //  
-        //
-        float effectDistance = (w / 2) + w * MagicWallManager.Instance.InfluenceFactor;
+
+        // 获取有效影响范围，是宽度一半以上
+        float effectDistance = (w / 2) + (w / 2) * MagicWallManager.Instance.InfluenceFactor;
+        // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
         signTextComponent.text = "OFFSET : " + offset.ToString();
         //signTextComponent2.text = "ed : " + effectDistance.ToString();
 
-
         // 进入影响范围
         if (offset >= 0)
 		{
-
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
-
-
-            m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.blue;
+            m_transform.gameObject.GetComponentInChildren<Image>().color = Color.blue;
             float m_scale = -(1f / effectDistance) * offset + 1f;
 
-            float randomFactor = Random.Range(0, 1);
 
-            float move_offset = offset * (((w / 2) + randomFactor * (w/10)) / effectDistance);
-            //float move_offset = (offset /= 200) * offset * offset ;
-
-            signTextComponent2.text = "move_offset : " + move_offset.ToString();
+            //
+            //  上下移动
+            //
+            float move_offset = offset * ((h / 2) / effectDistance);
             showMoveOffset = move_offset;
+            move_offset += h/10 * manager.InfluenceMoveFactor;
 
-            //float y1 = refVector2WithOffset.y;
-            //float x1 = refVector2WithOffset.x;
-            //float y2 = targetAgent.GetComponent<RectTransform>().anchoredPosition.y;
-            //float x2 = targetAgent.GetComponent<RectTransform>().anchoredPosition.x;
+            float move_offset_x = offset * ((w / 2) / effectDistance);
+            move_offset_x += w / 10 * manager.InfluenceMoveFactor;
 
-            //float k = (y1 - y2) / (x1 - x2);
-            //float b = ((x1 * y2) - (x2 * y1)) / (x1 - x2);
-
-            //Vector2 move = MagicWallManager.Instance.InfluenceMoveFactor * offset
-
-            //Vector2 normlizeMove = (refVector2WithOffset -
-            //    targetAgent.GetComponent<RectTransform>().anchoredPosition).normalized;
-            //normlizeMove = normlizeMove * (MagicWallManager.Instance.InfluenceMoveFactor);
-            //normlizeMove += refVector2WithOffset;
-
-            //m_transform.DOAnchorPos(normlizeMove, Time.deltaTime);
+            signTextComponent2.text = "mo: " + move_offset.ToString() + " / " + move_offset_x.ToString();
 
 
-            if (refVector2.y >= targetVector2.y)
+            float to_y,to_x;
+            if (refVector2.y > targetVector2.y)
             {
-                float to = refVector2.y + move_offset;
-                Vector2 toy = new Vector2(refVector2.x, to);
-                m_transform.DOAnchorPos(toy, Time.deltaTime);
+                to_y = refVector2.y + move_offset;
             }
             else if (refVector2.y < targetVector2.y)
             {
-                float to = refVector2.y - move_offset;
-                Vector2 toy = new Vector2(refVector2.x, to);
-                m_transform.DOAnchorPos(toy, Time.deltaTime);
+                to_y = refVector2.y - move_offset;
+            }
+            else {
+                to_y = refVector2.y;
             }
 
+            if (refVector2WithOffset.x > targetVector2.x)
+            {
+                //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.red;
+                to_x = refVector2.x + move_offset_x;
+            }
+            else if (refVector2WithOffset.x < targetVector2.x)
+            {
+                //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.grey;
+                to_x = refVector2.x - move_offset_x;
+            }
+            else {
+                to_x = refVector2.x;
+            }
+
+            Vector2 to = new Vector2(to_x, to_y); //目标位置
+
+            //float k = offset / effectDistance;
+            float overshootOrAmplitude = 3f;
+            float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
+
+            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), 0.1f);
+            m_transform.DOScale(Mathf.Lerp(1f, 0.3f, k), Time.deltaTime);
+            
+            //
             // 尝试向外扩散
+            //
+            //Vector2 toV = refVector2WithOffset + (refVector2WithOffset - targetVector2).normalized * offset * manager.InfluenceMoveFactor;
+            //float k = offset / effectDistance;
+            //Vector2 to = Vector2.Lerp(refVector2WithOffset, toV, k);
+            //m_transform.DOAnchorPos(to, Time.deltaTime);
 
-
-            m_transform.DOScale(m_scale, 1f);
 			IsChanging = true;
 		}
 		else
