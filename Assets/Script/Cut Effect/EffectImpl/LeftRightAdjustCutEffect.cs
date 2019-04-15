@@ -7,8 +7,8 @@ using DG.Tweening;
 // 过场效果 5，左右校准
 public class LeftRightAdjustCutEffect : CutEffect
 {
+    private MagicWallManager manager;
 
-    private MagicWallManager the_magicWallManager;
     private int row;
     private int column;
     private float the_time;
@@ -124,11 +124,6 @@ public class LeftRightAdjustCutEffect : CutEffect
     public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
-
-	public override void Displaying()
-	{
-		throw new System.NotImplementedException();
-	}
 
 	public override void Destorying()
 	{

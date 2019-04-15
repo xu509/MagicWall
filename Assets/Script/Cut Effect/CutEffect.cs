@@ -22,7 +22,7 @@ public abstract class CutEffect : MonoBehaviour
     float displayDurTime;
     public float DisplayDurTime { set { displayDurTime = value; } get { return displayDurTime; } }
 
-    internal CutEffectDisplayBehavior DisplayBehavior { get => displayBehavior; set => displayBehavior = value; }
+    internal CutEffectDisplayBehavior DisplayBehavior { get { return displayBehavior; } set { displayBehavior = value; } }
 
     //
     //  Method

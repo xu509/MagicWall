@@ -7,6 +7,7 @@ using DG.Tweening;
 // 过场效果 1 ，曲线麻花效果
 public class CurveStaggerCutEffect : CutEffect
 {
+    private MagicWallManager manager;
 
     private int row;
     private int column;
@@ -158,11 +159,6 @@ public class CurveStaggerCutEffect : CutEffect
 
 
 //		go.updatePosition ();
-	}
-
-	public override void Displaying()
-	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void Destorying()

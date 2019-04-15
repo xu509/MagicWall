@@ -130,7 +130,7 @@ public class FlockAgent : MonoBehaviour
 			//当前场景为正常展示时，参考位置为固定位置
 			refVector2 = oriVector2;
 		}
-        Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffset, 0); //获取带偏移量的参考位置
+        Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffsetX, 0); //获取带偏移量的参考位置
         showRefVector2 = refVector2;
         showRefVector2WithOffset = refVector2WithOffset;
 

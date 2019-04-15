@@ -7,6 +7,7 @@ using DG.Tweening;
 // 过场效果 4，上下校准
 public class UpDownAdjustCutEffect : CutEffect
 {
+    MagicWallManager manager;
 
     private int row;
     private int column;
@@ -132,11 +133,6 @@ public class UpDownAdjustCutEffect : CutEffect
         image.DOFade(1, Time.deltaTime);
 
     }
-
-	public override void Displaying()
-	{
-		throw new System.NotImplementedException();
-	}
 
 	public override void Destorying()
 	{

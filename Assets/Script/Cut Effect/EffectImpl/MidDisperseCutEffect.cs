@@ -7,6 +7,7 @@ using DG.Tweening;
 // 过场效果 2 中间散开 
 public class MidDisperseCutEffect : CutEffect
 {
+    MagicWallManager manager;
 
     private int row;
     private int column;
@@ -108,11 +109,6 @@ public class MidDisperseCutEffect : CutEffect
 
 
 //		go.updatePosition ();
-	}
-
-	public override void Displaying()
-	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void Destorying()

@@ -7,6 +7,7 @@ using DG.Tweening;
 // 过场效果 3 从后往前, 星空效果
 public class StarsCutEffect : CutEffect
 {
+    MagicWallManager manager;
 
     private int row;
     private int column;
@@ -118,11 +119,6 @@ public class StarsCutEffect : CutEffect
         rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, Time.deltaTime);
     }
-
-	public override void Displaying()
-	{
-		throw new System.NotImplementedException();
-	}
 
 	public override void Destorying()
 	{

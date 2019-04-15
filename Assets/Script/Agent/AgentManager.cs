@@ -126,7 +126,7 @@ public class AgentManager : Singleton<AgentManager>
         if (!agent.IsChoosing)
         {
             agent.IsChoosing = true;
-            float offset = MagicWallManager.Instance.PanelOffset;
+            float offset = MagicWallManager.Instance.PanelOffsetX;
 
             //  先缩小（向后退）
             RectTransform rect = agent.GetComponent<RectTransform>();
