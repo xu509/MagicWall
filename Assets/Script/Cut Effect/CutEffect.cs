@@ -2,27 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 过场效果 1 
-public abstract class CutEffect : Object
+// 过场效果
+public abstract class CutEffect : MonoBehaviour
 {
     //
     //  Parameter
     //
-    public MagicWallManager manager;
+    CutEffectDisplayBehavior displayBehavior; //表现
 
     // 运行状态标志
     bool hasRuning = true;
     public bool HasRuning { set { hasRuning = value; } get { return hasRuning; } }
 
-    // 持续的运行时间
-    float durTime;
-    public float DurTime { set { durTime = value; } get { return durTime; } }
+    // 切换动画时长
+    float startingDurTime;
+    public float StartingDurTime { set { startingDurTime = value; } get { return startingDurTime; } }
 
-    public abstract void init();
+    // 显示动画的时长
+    float displayDurTime;
+    public float DisplayDurTime { set { displayDurTime = value; } get { return displayDurTime; } }
 
-    public abstract void run();
+    internal CutEffectDisplayBehavior DisplayBehavior { get => displayBehavior; set => displayBehavior = value; }
 
-    public abstract void OnCompleted();
+    //
+    //  Method
+    //
+    public abstract void Create();
 
+    public abstract void Starting();
+
+    //	显示中
+    public void Displaying() {
+        DisplayBehavior.Run();
+    }
+
+	
+	//	销毁中
+	public abstract void Destorying();
+
+    public abstract void OnStartingCompleted();
 
 }
+

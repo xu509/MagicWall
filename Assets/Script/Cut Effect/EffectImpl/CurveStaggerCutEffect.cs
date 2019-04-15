@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-// 过场效果 1 
-public class CutEffect1 : CutEffect
+// 过场效果 1 ，曲线麻花效果
+public class CurveStaggerCutEffect : CutEffect
 {
 
     private int row;
@@ -15,15 +15,34 @@ public class CutEffect1 : CutEffect
 
     private bool isStartingCompleted; //是否已完成
 
+
+
+
+    //
+    //  Awake
+    //
+    void Awake() {
+
+        // 获取曲线交错动画的持续时间
+        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
+
+
+        // 获取Display的动画
+        GoLeftDisplayBehavior goLeftDisplayBehavior = new GoLeftDisplayBehavior();
+        DisplayBehavior = goLeftDisplayBehavior;
+
+    }
+
+
     //
     //	初始化 MagicWallManager
     //
-    public override void init() {
+    public override void Create() {
 
         manager = MagicWallManager.Instance;
 
-        DurTime = 3f;
-        this.dur_time = DurTime;
+        StartingDurTime = 3f;
+        this.dur_time = StartingDurTime;
 
         row = manager.row;
         column = manager.column;
@@ -93,9 +112,7 @@ public class CutEffect1 : CutEffect
 
     }
 
-
-
-    public override void run() {
+    public override void Starting() {
         for (int i = 0; i < AgentManager.Instance.Agents.Count; i++) {
             FlockAgent agent = AgentManager.Instance.Agents[i];
             //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
@@ -129,10 +146,9 @@ public class CutEffect1 : CutEffect
         }
     }
 
-    public override void OnCompleted(){
+    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
-
 
 	//
 	public void CutEffectUpdateCallback(FlockAgent go){
@@ -144,4 +160,13 @@ public class CutEffect1 : CutEffect
 //		go.updatePosition ();
 	}
 
+	public override void Displaying()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void Destorying()
+	{
+		throw new System.NotImplementedException();
+	}
 }

@@ -37,10 +37,14 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     // 面板的差值
     [SerializeField]
-    float panelOffset = 0f;
-    public float PanelOffset { get { return panelOffset; } set { panelOffset = value; } }
+    float panelOffsetX = 0f;
+    public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
-    [SerializeField,Range(1f, 600f)]
+	[SerializeField]
+	float panelOffsetY = 0f;
+	public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
+
+	[SerializeField,Range(1f, 600f)]
 	public float MoveFactor_Panel;
 
     private AgentType theItemType;
@@ -163,9 +167,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-        PanelOffset = 0f;   // 清理两个panel偏移量
+        PanelOffsetX = 0f;   // 清理两个panel偏移量
+		PanelOffsetY = 0f;   // 清理两个panel偏移量
 
-        while (mainPanel.anchoredPosition != Vector2.zero) {
+		while (mainPanel.anchoredPosition != Vector2.zero) {
             StartCoroutine(AfterFixedUpdate());
         }
         return true;
@@ -220,16 +225,22 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public void updateOffsetOfCanvas() {
         if (status == WallStatusEnum.Cutting)
         {
-            PanelOffset = 0f;
+            PanelOffsetX = 0f;
         }
         else {
             Vector2 v1 = mainPanel.anchoredPosition;
             Vector2 v2 = operationPanel.anchoredPosition;
             float offset = (v2.x - v1.x);
-            PanelOffset = offset;
-        }
-        //Debug.Log("OFFSET IS " + PanelOffset);
-    }
+			PanelOffsetX = offset;
+
+
+			Vector2 v3 = mainPanel.anchoredPosition;
+			Vector2 v4 = operationPanel.anchoredPosition;
+			float offsety = (v3.y - v4.y);
+			PanelOffsetY = offsety;
+		}
+		//Debug.Log("OFFSET IS " + PanelOffset);
+	}
     #endregion
 
     #region 更新 Agents 
@@ -265,7 +276,7 @@ public enum WallStatusEnum{
     Displaying // 显示中
 }
 
-public enum SceneType
+public enum SceneContentType
 {
     env, // 企业
     activity, // 活动

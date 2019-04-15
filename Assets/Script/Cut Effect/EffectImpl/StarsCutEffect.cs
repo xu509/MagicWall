@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-// 过场效果 3 从后往前
-public class CutEffect3 : CutEffect
+// 过场效果 3 从后往前, 星空效果
+public class StarsCutEffect : CutEffect
 {
 
     private int row;
@@ -20,12 +20,12 @@ public class CutEffect3 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init() {
+    public override void Create() {
         manager = MagicWallManager.Instance;
 
         // 初始化内容
-        DurTime = 7f;
-        this.dur_time = DurTime;
+        StartingDurTime = 7f;
+        this.dur_time = StartingDurTime;
         HasRuning = false;
 
         // 获取栅格信息
@@ -76,7 +76,7 @@ public class CutEffect3 : CutEffect
     }
 
 
-    public override void run() {
+    public override void Starting() {
         if (Time.time - last_generate_time > generate_agent_interval) {
 
             // 随机选择
@@ -93,7 +93,7 @@ public class CutEffect3 : CutEffect
 
     }
 
-    public override void OnCompleted(){
+    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 
@@ -118,6 +118,16 @@ public class CutEffect3 : CutEffect
         rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, Time.deltaTime);
     }
-    #endregion
+
+	public override void Displaying()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void Destorying()
+	{
+		throw new System.NotImplementedException();
+	}
+	#endregion
 
 }

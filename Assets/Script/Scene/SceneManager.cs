@@ -37,9 +37,9 @@ public class SceneManager : Singleton<SceneManager>
         //  加载场景
         //StartScene startScene = new StartScene(magicWallManager);
         //Scenes.Add(startScene);
-        EnvScene envScene = new EnvScene();
+        CommonScene scene = new CommonScene();
         Debug.Log("Do Set EnvScene Wall Manager!");
-        Scenes.Add(envScene);
+		Scenes.Add(scene);
 
         //  初始化当前场景索引
         this.index = 0;

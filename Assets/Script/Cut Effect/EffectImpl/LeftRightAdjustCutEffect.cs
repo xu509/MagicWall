@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 // 过场效果 5，左右校准
-public class CutEffect5 : CutEffect
+public class LeftRightAdjustCutEffect : CutEffect
 {
 
     private MagicWallManager the_magicWallManager;
@@ -21,12 +21,12 @@ public class CutEffect5 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init() {
+    public override void Create() {
         manager = MagicWallManager.Instance;
 
         // 设置动画时间
-        DurTime = 2f;
-        this.dur_time = DurTime;
+        StartingDurTime = 2f;
+        this.dur_time = StartingDurTime;
 
         // 获取栅格信息
         row = manager.row;
@@ -87,7 +87,7 @@ public class CutEffect5 : CutEffect
     }
 
 
-    public override void run() {
+    public override void Starting() {
 
         for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
         {
@@ -121,9 +121,17 @@ public class CutEffect5 : CutEffect
 
     }
 
-    public override void OnCompleted(){
+    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 
+	public override void Displaying()
+	{
+		throw new System.NotImplementedException();
+	}
 
+	public override void Destorying()
+	{
+		throw new System.NotImplementedException();
+	}
 }

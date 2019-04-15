@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 // 过场效果 2 中间散开 
-public class CutEffect2 : CutEffect
+public class MidDisperseCutEffect : CutEffect
 {
 
     private int row;
@@ -16,9 +16,9 @@ public class CutEffect2 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init() {
-        DurTime = 3f;
-        this.dur_time = DurTime;
+    public override void Create() {
+        StartingDurTime = 3f;
+        this.dur_time = StartingDurTime;
 
         manager = MagicWallManager.Instance;
 
@@ -70,7 +70,7 @@ public class CutEffect2 : CutEffect
     }
 
 
-    public override void run() {
+    public override void Starting() {
         for (int i = 0; i < AgentManager.Instance.Agents.Count; i++) {
             FlockAgent agent = AgentManager.Instance.Agents[i];
             Vector2 agent_vector2 = agent.GenVector2;
@@ -95,7 +95,7 @@ public class CutEffect2 : CutEffect
         }
     }
 
-    public override void OnCompleted(){
+    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 
@@ -110,4 +110,13 @@ public class CutEffect2 : CutEffect
 //		go.updatePosition ();
 	}
 
+	public override void Displaying()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void Destorying()
+	{
+		throw new System.NotImplementedException();
+	}
 }

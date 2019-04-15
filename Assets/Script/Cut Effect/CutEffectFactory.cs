@@ -20,21 +20,20 @@ public class CutEffectFactory : Singleton<CutEffectFactory>
     void Awake()
     {
         cutEffects = new List<CutEffect>();
-        CutEffect cutEffect1 = new CutEffect1();
-        //		cutEffect1.init (magicWallManager);
-        cutEffects.Add(cutEffect1);
+        CutEffect curveStaggerCutEffect = new CurveStaggerCutEffect();
+        cutEffects.Add(curveStaggerCutEffect);
 
-        CutEffect cutEffect2 = new CutEffect2();
-        cutEffects.Add(cutEffect2);
+        CutEffect midDisperseCutEffect = new MidDisperseCutEffect();
+        cutEffects.Add(midDisperseCutEffect);
 
         //CutEffect cutEffect3 = new CutEffect3();
         //cutEffects.Add(cutEffect3);
 
-        CutEffect cutEffect4 = new CutEffect4();
-        cutEffects.Add(cutEffect4);
+        CutEffect leftRightAdjustCutEffect = new LeftRightAdjustCutEffect();
+        cutEffects.Add(leftRightAdjustCutEffect);
 
-        CutEffect cutEffect5 = new CutEffect5();
-        cutEffects.Add(cutEffect5);
+        CutEffect starsCutEffect = new StarsCutEffect();
+        cutEffects.Add(starsCutEffect);
     }
 
     //
@@ -62,7 +61,7 @@ public class CutEffectFactory : Singleton<CutEffectFactory>
     //
     //	根据场景类型获取过场
     //
-    public CutEffect GetByScenes(SceneType type)
+    public CutEffect GetByScenes(SceneContentType type)
     {
         int count = cutEffects.Count;
         if (count == 0)

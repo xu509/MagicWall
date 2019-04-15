@@ -2,28 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DaoService
+public class DaoService : Singleton<DaoService>
 {
+  
     //
-    //  single pattern
-    // 
-    private static DaoService instance;
-
-    public static DaoService GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new DaoService();
-        }
-        return instance;
-    }
-
+    //  Construct
     //
-    //  Constructor
-    //
-    public DaoService() {
+    protected DaoService() { }
 
-    }
 
     //
     //  获取首页企业

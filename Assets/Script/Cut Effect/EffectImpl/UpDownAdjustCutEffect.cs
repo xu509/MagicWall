@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 // 过场效果 4，上下校准
-public class CutEffect4 : CutEffect
+public class UpDownAdjustCutEffect : CutEffect
 {
 
     private int row;
@@ -20,12 +20,12 @@ public class CutEffect4 : CutEffect
     //
     //	初始化 MagicWallManager
     //
-    public override void init() {
+    public override void Create() {
         manager = MagicWallManager.Instance;
 
         // 初始化内容
-        DurTime = 1f;
-        this.dur_time = DurTime; // 动画时长2秒
+        StartingDurTime = 1f;
+        this.dur_time = StartingDurTime; // 动画时长2秒
 
         // 获取栅格信息
         row = manager.row;
@@ -79,7 +79,7 @@ public class CutEffect4 : CutEffect
     }
 
 
-    public override void run() {
+    public override void Starting() {
 
         for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
         {
@@ -108,7 +108,7 @@ public class CutEffect4 : CutEffect
         }
     }
 
-    public override void OnCompleted(){
+    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 
@@ -133,4 +133,13 @@ public class CutEffect4 : CutEffect
 
     }
 
+	public override void Displaying()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void Destorying()
+	{
+		throw new System.NotImplementedException();
+	}
 }
