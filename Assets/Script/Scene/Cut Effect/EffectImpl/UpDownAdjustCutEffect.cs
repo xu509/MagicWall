@@ -7,27 +7,44 @@ using DG.Tweening;
 // 过场效果 4，上下校准
 public class UpDownAdjustCutEffect : CutEffect
 {
-    MagicWallManager manager;
 
+    MagicWallManager manager;
     private int row;
     private int column;
-    private float the_time;
-    private float dur_time; // 持续时间
 
-    private float generate_agent_interval = 0.3f; // 生成的间隔
-    private float last_generate_time = 0f; // 最后生成的时间
+    private float _startingTimeWithOutDelay;
+    private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
 
 
     //
-    //	初始化 MagicWallManager
+    //  Init
     //
-    public override void Create() {
-        manager = MagicWallManager.Instance;
-
-        // 初始化内容
+    protected override void Init()
+    {
+        //  获取持续时间
         StartingDurTime = 1f;
-        this.dur_time = StartingDurTime; // 动画时长2秒
+        _startingTimeWithOutDelay = StartingDurTime;
+        DestoryDurTime = 0.5f;
 
+        //  设置显示的时间
+        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_UpDownAdjust).Value;
+        DisplayDurTime = AppUtils.ConvertToFloat(t);
+
+        // 获取Display的动画
+        DisplayBehavior = new GoDownDisplayBehavior();
+        DisplayBehavior.Init(sceneContentType);
+
+        DestoryBehavior = new FadeOutDestoryBehavior();
+
+        //  初始化 manager
+        manager = MagicWallManager.Instance;
+    }
+
+    //
+    //  创建产品 | Logo 
+    //
+    protected override void CreateProductOrLogo()
+    {
         // 获取栅格信息
         row = manager.row;
         int h = (int)manager.mainPanel.rect.height;
@@ -41,7 +58,8 @@ public class UpDownAdjustCutEffect : CutEffect
         // 从后往前的效果列数不需要很多
         column = w / itemWidth;
 
-        for (int j = 0; j < column; j++) { 
+        for (int j = 0; j < column; j++)
+        {
             for (int i = 0; i < row; i++)
             {
                 float ori_x = j * (itemHeight + gap) + itemHeight / 2;
@@ -56,7 +74,59 @@ public class UpDownAdjustCutEffect : CutEffect
                     //偶数列向下偏移itemHeight
                     gen_y = ori_y - itemHeight + gap;
                 }
-                else {
+                else
+                {
+                    //奇数列向上偏移itemHeight
+                    gen_y = ori_y + itemHeight + gap + i * gap;
+                }
+                gen_x = ori_x; //横坐标不变
+
+
+                // 生成 agent
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, itemWidth, itemHeight);
+
+                // agent 一定时间内从透明至无透明
+                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime).From();
+            }
+        }
+    }
+
+    //
+    //  创建活动
+    //
+    protected override void CreateActivity()
+    {
+        // 获取栅格信息
+        row = manager.row;
+        int h = (int)manager.mainPanel.rect.height;
+        int w = (int)manager.mainPanel.rect.width;
+
+        int gap = 10;
+
+        int itemWidth = h / row - gap;
+        int itemHeight = itemWidth;
+
+        // 从后往前的效果列数不需要很多
+        column = w / itemWidth;
+
+        for (int j = 0; j < column; j++)
+        {
+            for (int i = 0; i < row; i++)
+            {
+                float ori_x = j * (itemHeight + gap) + itemHeight / 2;
+                float ori_y = i * (itemWidth + gap) + itemWidth / 2;
+
+                // 获取出生位置
+                float gen_x, gen_y;
+
+                // 计算移动的目标位置
+                if (j % 2 == 0)
+                {
+                    //偶数列向下偏移itemHeight
+                    gen_y = ori_y - itemHeight + gap;
+                }
+                else
+                {
                     //奇数列向上偏移itemHeight
                     gen_y = ori_y + itemHeight + gap + i * gap;
                 }
@@ -65,20 +135,15 @@ public class UpDownAdjustCutEffect : CutEffect
                 // 定义出生位置与目标位置
                 Vector2 ori_position = new Vector2(ori_x, ori_y);
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
-                
+
                 // 生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1,itemWidth,itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, itemWidth, itemHeight);
 
                 // agent 一定时间内从透明至无透明
-                go.GetComponentInChildren<Image>().DOFade(0, dur_time).From();
+                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime).From();
             }
         }
-
-        // 初始化完成后更新时间
-        the_time = Time.time;
-
     }
-
 
     public override void Starting() {
 
@@ -89,10 +154,10 @@ public class UpDownAdjustCutEffect : CutEffect
             Vector2 ori_vector2 = agent.OriVector2;
 
             // 获取此 agent 需要的动画时间
-            float run_time = dur_time - 0.1f;
+            float run_time = StartingDurTime - _timeBetweenStartAndDisplay;
 
             // 当前总运行的时间;
-            float time = Time.time - the_time;
+            float time = Time.time - StartTime;
             
             // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
             if (time > run_time)
@@ -101,7 +166,7 @@ public class UpDownAdjustCutEffect : CutEffect
                 //Debug.Log(agent.name);
             }
 
-            float t = (Time.time - the_time) / run_time;
+            float t = (Time.time - StartTime) / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
             agent.NextVector2 = to;
@@ -134,8 +199,4 @@ public class UpDownAdjustCutEffect : CutEffect
 
     }
 
-	public override void Destorying()
-	{
-		throw new System.NotImplementedException();
-	}
 }

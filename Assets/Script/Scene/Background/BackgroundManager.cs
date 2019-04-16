@@ -18,7 +18,6 @@ public class BackgroundManager : Singleton<BackgroundManager>
     //
     private void Awake()
     {
-        Debug.Log("AWAKE!!!!");
         bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
         last_create_time = 0.0f;
 

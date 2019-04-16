@@ -14,36 +14,29 @@ public class SceneManager : Singleton<SceneManager>
     //
     //  paramater
     //
-    List<IScene> Scenes; // 场景列表
-    int index; // 当前的索引
+    List<IScene> _scenes; // 场景列表
+    int _index; // 当前的索引
     private MagicWallManager magicWallManager; // 主管理器
-
-    float start_time;
-    float destoryingDuringTime = 2f; // 销毁的时间
-    float destory_time; // Destory_Time
-
-    CutEffect cutEffect; // 当前的过场动画	
-
 
     //
     // Awake instead of Constructor
     //
     private void Awake()
     {
-
         //  初始化场景列表
-        this.Scenes = new List<IScene>();
-
-        //  加载场景
-        //StartScene startScene = new StartScene(magicWallManager);
-        //Scenes.Add(startScene);
-        CommonScene scene = new CommonScene();
-        Debug.Log("Do Set EnvScene Wall Manager!");
-		Scenes.Add(scene);
+        _scenes = new List<IScene>();
 
         //  初始化当前场景索引
-        this.index = 0;
+        _index = 0;
 
+        //  加载场景
+        // -- 加载开始场景
+        List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
+        for (int i = 0; i < sceneConfigs.Count; i++) {
+            CommonScene commonScene = new CommonScene();
+            commonScene.DoConfig(sceneConfigs[i]);
+            _scenes.Add(commonScene);
+        }
     }
 
     //
@@ -61,16 +54,16 @@ public class SceneManager : Singleton<SceneManager>
         BackgroundManager.Instance.run();
 
         // 运行场景
-        if (!Scenes[index].Run())
+        if (!_scenes[_index].Run())
         {
             // 返回为false时，表示场景已运行结束
-            if (index == Scenes.Count - 1)
+            if (_index == _scenes.Count - 1)
             {
-                index = 0;
+                _index = 0;
             }
             else
             {
-                index++;
+                _index++;
             }
         }
    

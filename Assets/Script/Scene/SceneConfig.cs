@@ -7,22 +7,8 @@ using UnityEngine;
 //
 public class SceneConfig
 {
-    private string _durtime;    //持续时间
-    private CutEffectDisplayBehavior _cutEffectDisplayBehavior;     //表现形式
-    private SceneContentType _sceneContentType;     // 场景内容
-
-    public string Durtime
-    {
-        get
-        {
-            return _durtime;
-        }
-
-        set
-        {
-            _durtime = value;
-        }
-    }
+    private CutEffect _cutEffect;   //  过场效果
+    private SceneContentType _sceneContentType;     //  场景内容
 
     public SceneContentType SceneContentType
     {
@@ -37,16 +23,17 @@ public class SceneConfig
         }
     }
 
-    internal CutEffectDisplayBehavior CutEffectDisplayBehavior
+    public CutEffect CutEffect
     {
         get
         {
-            return _cutEffectDisplayBehavior;
+            return _cutEffect;
         }
 
         set
         {
-            _cutEffectDisplayBehavior = value;
+            _cutEffect = value;
         }
     }
+
 }

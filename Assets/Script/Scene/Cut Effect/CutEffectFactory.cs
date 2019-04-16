@@ -45,7 +45,7 @@ public class CutEffectFactory : Singleton<CutEffectFactory>
 	//
 	//	随机获取过场
 	//
-	public CutEffect getByRandom(){
+	public CutEffect GetByRandom(){
         int count = cutEffects.Count;
         if (count == 0)
         {

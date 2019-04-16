@@ -15,12 +15,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
     //
     protected MagicWallManager() { }
 
-
     #region PUBLIC PARAMETER
     public RectTransform mainPanel;
 	public FlockAgent agentPrefab;
     public CardAgent crossCardgent;
-
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
@@ -56,8 +54,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     //layout
     public int row = 6;
-    public int column = 15;
-
+    public int Row { get { return row; } }
     #endregion
 
     #region PRIVATE PARAMETER
@@ -98,7 +95,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
         CutEffectFactory cutEffectFactory = CutEffectFactory.Instance;
 
     }
-
 
 
     // Start is called before the first frame update
@@ -163,8 +159,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region 清理面板
     public bool Clear() {
-        Debug.Log("进行销毁！");
-
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
         PanelOffsetX = 0f;   // 清理两个panel偏移量

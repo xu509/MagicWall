@@ -11,24 +11,38 @@ public class StarsCutEffect : CutEffect
 
     private int row;
     private int column;
-    private float the_time;
-    private float dur_time; // 持续时间
 
     private float generate_agent_interval = 0.3f; // 生成的间隔
     private float last_generate_time = 0f; // 最后生成的时间
 
-
     //
-    //	初始化 MagicWallManager
+    //  Init
     //
-    public override void Create() {
-        manager = MagicWallManager.Instance;
-
-        // 初始化内容
+    protected override void Init()
+    {
+        //  获取动画的持续时间
         StartingDurTime = 7f;
-        this.dur_time = StartingDurTime;
-        HasRuning = false;
+        DestoryDurTime = 0.5f;
 
+        //  设置显示的时间
+        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_Stars).Value;
+        DisplayDurTime = AppUtils.ConvertToFloat(t);
+
+        //  设置销毁
+        DestoryBehavior = new FadeOutDestoryBehavior();
+
+        //  设置运行时间点
+        HasDisplaying = false;
+
+        //  初始化 manager
+        manager = MagicWallManager.Instance;
+    }
+
+    //
+    //  创建产品 | Logo 
+    //
+    protected override void CreateProductOrLogo()
+    {
         // 获取栅格信息
         row = manager.row;
         int h = (int)manager.mainPanel.rect.height;
@@ -43,7 +57,8 @@ public class StarsCutEffect : CutEffect
         column = w / itemWidth;
 
         //从左往右，从上往下
-        for (int j = 0; j < column; j++) { 
+        for (int j = 0; j < column; j++)
+        {
             for (int i = 0; i < row; i++)
             {
                 float x = j * (itemWidth + gap) + itemWidth / 2;
@@ -55,12 +70,12 @@ public class StarsCutEffect : CutEffect
                 float ori_x, ori_y;
                 ori_x = x;
                 ori_y = y;
-                
+
                 Vector2 ori_position = new Vector2(ori_x, ori_y);
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1,itemWidth,itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
@@ -70,13 +85,58 @@ public class StarsCutEffect : CutEffect
                 go.gameObject.SetActive(false);
             }
         }
-
-        // 初始化完成后更新时间
-        the_time = Time.time;
-
     }
 
+    //
+    //  创建活动
+    //
+    protected override void CreateActivity()
+    {
+        // 获取栅格信息
+        row = manager.row;
+        int h = (int)manager.mainPanel.rect.height;
+        int w = (int)manager.mainPanel.rect.width;
 
+        int gap = 10;
+
+        int itemWidth = h / row - gap;
+        int itemHeight = itemWidth;
+
+        // 从后往前的效果列数不需要很多
+        column = w / itemWidth;
+
+        //从左往右，从上往下
+        for (int j = 0; j < column; j++)
+        {
+            for (int i = 0; i < row; i++)
+            {
+                float x = j * (itemWidth + gap) + itemWidth / 2;
+                float y = i * (itemHeight + gap) + itemHeight / 2;
+
+                int middleX = (column - 1) / 2;
+
+                // ori_x;ori_y
+                float ori_x, ori_y;
+                ori_x = x;
+                ori_y = y;
+
+                Vector2 ori_position = new Vector2(ori_x, ori_y);
+                Vector2 gen_position = new Vector2(x, y);
+
+                //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+
+                // 将agent的z轴定义在后方
+                RectTransform rect = go.GetComponent<RectTransform>();
+                Vector3 position = rect.anchoredPosition3D;
+                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 300);
+
+                go.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    
     public override void Starting() {
         if (Time.time - last_generate_time > generate_agent_interval) {
 
@@ -119,11 +179,6 @@ public class StarsCutEffect : CutEffect
         rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, Time.deltaTime);
     }
-
-	public override void Destorying()
-	{
-		throw new System.NotImplementedException();
-	}
 	#endregion
 
 }

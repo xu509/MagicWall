@@ -74,7 +74,65 @@ public class DaoService : Singleton<DaoService>
         AppConfig appConfig = new AppConfig();
         appConfig.Value = "20";
 
+        if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
+        {
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
+        {
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
+        {
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
+        {
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
+        {
+            appConfig.Value = "20";
+        }
+        else
+        {
+
+        }
         return appConfig;
+    }
+
+    //
+    //  获取显示配置
+    //
+    public List<SceneConfig> GetShowConfigs() {
+        List<SceneConfig> sceneConfigs = new List<SceneConfig>();
+
+        SceneConfig sceneConfig1 = new SceneConfig();
+        sceneConfig1.CutEffect = new CurveStaggerCutEffect();
+        sceneConfig1.SceneContentType = SceneContentType.env;
+        sceneConfigs.Add(sceneConfig1);
+
+        SceneConfig sceneConfig2 = new SceneConfig();
+        sceneConfig2.CutEffect = new LeftRightAdjustCutEffect();
+        sceneConfig2.SceneContentType = SceneContentType.product;
+        sceneConfigs.Add(sceneConfig2);
+
+        SceneConfig sceneConfig3 = new SceneConfig();
+        sceneConfig3.CutEffect = new MidDisperseCutEffect();
+        sceneConfig3.SceneContentType = SceneContentType.activity;
+        sceneConfigs.Add(sceneConfig3);
+
+        SceneConfig sceneConfig4 = new SceneConfig();
+        sceneConfig4.CutEffect = new StarsCutEffect();
+        sceneConfig4.SceneContentType = SceneContentType.product;
+        sceneConfigs.Add(sceneConfig4);
+
+        SceneConfig sceneConfig5 = new SceneConfig();
+        sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
+        sceneConfig5.SceneContentType = SceneContentType.activity;
+        sceneConfigs.Add(sceneConfig5);
+
+        return sceneConfigs;
     }
 
 }

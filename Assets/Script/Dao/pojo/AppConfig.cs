@@ -19,7 +19,7 @@ public class AppConfig
     public static string KEY_CutEffectDuring_MidDisperseAdjust = "cuteffectduring_middisperse";
 
     // 星空效果持续时间
-    public static string KEY_CutEffectDuring_stars = "cuteffectduring_stars";
+    public static string KEY_CutEffectDuring_Stars = "cuteffectduring_stars";
 
     // 上下校准持续时间
     public static string KEY_CutEffectDuring_UpDownAdjust = "cuteffectduring_updownadjust";

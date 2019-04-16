@@ -10,48 +10,48 @@ public class FlockAgent : MonoBehaviour
     int x;
     int y;
 
-    float delayX;
+    private float delayX;
     public float DelayX { set { delayX = value; } get { return delayX; } }
 
-    float delayY;
+    private float delayY;
     public float DelayY { set { delayY = value; } get { return delayY; } }
 
-    float delay;
+    private float delay;
     public float Delay { set { delay = value; } get { return delay; } }
 
-    float delayTime;
+    private float delayTime;
     public float DelayTime { set { delayTime = value; } get { return delayTime; } }
 
     // 宽度
     [SerializeField]
-    float width;
+    private float width;
     public float Width { set { width = value; } get { return width; } }
 
     // 高度
     [SerializeField]
-    float height;
+    private float height;
     public float Height { set { height = value; } get { return height; } }
 
     // 原位
     [SerializeField]
-    Vector2 oriVector2;
+    private Vector2 oriVector2;
     public Vector2 OriVector2 { set { oriVector2 = value; } get { return oriVector2; } }
 
     // 生成的位置
-    Vector2 genVector2;
+    private Vector2 genVector2;
     public Vector2 GenVector2 { set { genVector2 = value; } get { return genVector2; } }
 
     // 下个移动的位置
     [SerializeField]
-    Vector2 nextVector2;
+    private Vector2 nextVector2;
     public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
 
     // 是否被选中
-    public bool isChoosing = false;
+    private bool isChoosing = false;
     public bool IsChoosing { set { isChoosing = value; } get { return isChoosing; } }
 
     // 是否被改变
-    public bool isChanging = false;
+    private bool isChanging = false;
     public bool IsChanging { set { isChanging = value; } get { return isChanging; } }
 
     // 卡片代理

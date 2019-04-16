@@ -8,7 +8,17 @@ using DG.Tweening;
 //
 public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
-	public void Run()
+    private SceneContentType _sceneContentType;
+
+    //
+    //  初始化 （参数：内容类型，X索引）
+    //
+    public void Init(SceneContentType sceneContentType)
+    {
+        _sceneContentType = sceneContentType;
+    }
+
+    public void Run()
 	{
 		MagicWallManager manager = MagicWallManager.Instance;
 
@@ -23,7 +33,13 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 		// 调整所有agent
 		manager.UpdateAgents();
 
-	}
+        UpdateAgents();
+    }
 
+    private void UpdateAgents()
+    {
+        // 查看是否需要生成新的组件、是否有组件需要作废
 
+        // 组件需要了解是哪个
+    }
 }
