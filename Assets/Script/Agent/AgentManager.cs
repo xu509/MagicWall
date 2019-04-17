@@ -14,7 +14,7 @@ public class AgentManager : Singleton<AgentManager>
     //
 
     // 主管理器
-    private MagicWallManager manager;
+    private MagicWallManager _manager;
 
     //  当前界面的 agents
     List<FlockAgent> agents;
@@ -34,7 +34,7 @@ public class AgentManager : Singleton<AgentManager>
     //  single pattern
     // 
     void Awake() {
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
         effectAgent = new List<FlockAgent>();
         agents = new List<FlockAgent>();
         operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
@@ -54,11 +54,11 @@ public class AgentManager : Singleton<AgentManager>
     {
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
-                                    manager.agentPrefab,
-                                    manager.mainPanel
+                                    _manager.agentPrefab,
+                                    _manager.mainPanel
                                     );
         //  命名
-        newAgent.name = "Agent(" + row + "," + column + ")";
+        newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
         //  获取rect引用
         RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
@@ -72,7 +72,7 @@ public class AgentManager : Singleton<AgentManager>
         newAgent.GenVector2 = postion;
 
         //  初始化内容
-        newAgent.Initialize(ori_position, postion, row, column);
+        newAgent.Initialize(ori_position, postion, row + 1, column + 1);
         newAgent.Width = width;
         newAgent.Height = height;
 
@@ -87,24 +87,67 @@ public class AgentManager : Singleton<AgentManager>
         boxCollider2D.size = new Vector2(width, height);
 
 
-
         //  添加到组件袋
         Agents.Add(newAgent);
         return newAgent;
     }
 
     //
+    //  创建items
+    //
+    public FlockAgent CreateNewAgent(int row, int column)
+    {
+        row = row - 1;
+        column = column - 1;
+
+        // width
+        int h = (int)_manager.mainPanel.rect.height;
+        //int w = (int)_manager.mainPanel.rect.width;
+        int gap = 10;
+
+        float itemHeight = h / _manager.Row - gap;
+        float itemWidth = itemHeight;
+
+        float x = column * (itemWidth + gap) + itemWidth / 2;
+        float y = row * (itemHeight + gap) + itemHeight / 2;
+
+        return CreateNewAgent(x, y, x, y, row, column, itemWidth, itemHeight);
+    }
+
+
+    //
+    //  清理所有的agents
+    //
+    public void ClearAgent(FlockAgent agent)
+    {
+        if (!agent.IsChoosing)
+        {
+            Destroy(agent.gameObject);
+            agents.Remove(agent);
+        }
+        
+    }
+
+    //
     //  清理所有的agents
     //
     public void ClearAgents() {
-        foreach (FlockAgent agent in agents)
+        foreach (FlockAgent agent in Agents.ToArray())
         {
-            if (!agent.IsChoosing)
-            {
-                Destroy(agent.gameObject);
-            }
+            ClearAgent(agent);
+        }       
+        //agents.Clear(); //清理 agent 袋
+    }
+
+    //
+    //  清理
+    //
+    public void ClearAgentsByList(List<FlockAgent> flockAgents)
+    {
+        foreach (FlockAgent agent in flockAgents)
+        {
+            ClearAgent(agent);
         }
-        agents.Clear(); //清理 agent 袋
     }
 
     //
@@ -170,7 +213,7 @@ public class AgentManager : Singleton<AgentManager>
         }
         else
         {
-            agent.transform.parent = manager.mainPanel;
+            agent.transform.parent = _manager.mainPanel;
             agent.IsChoosing = false;
             effectAgent.Remove(agent);
 

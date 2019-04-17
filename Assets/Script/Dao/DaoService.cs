@@ -76,23 +76,23 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "10";
         }
         else
         {
@@ -119,7 +119,8 @@ public class DaoService : Singleton<DaoService>
 
         SceneConfig sceneConfig3 = new SceneConfig();
         sceneConfig3.CutEffect = new MidDisperseCutEffect();
-        sceneConfig3.SceneContentType = SceneContentType.activity;
+        //sceneConfig3.SceneContentType = SceneContentType.activity;
+        sceneConfig3.SceneContentType = SceneContentType.env;
         sceneConfigs.Add(sceneConfig3);
 
         SceneConfig sceneConfig4 = new SceneConfig();
@@ -129,7 +130,8 @@ public class DaoService : Singleton<DaoService>
 
         SceneConfig sceneConfig5 = new SceneConfig();
         sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
-        sceneConfig5.SceneContentType = SceneContentType.activity;
+        //sceneConfig5.SceneContentType = SceneContentType.activity;
+        sceneConfig5.SceneContentType = SceneContentType.env;
         sceneConfigs.Add(sceneConfig5);
 
         return sceneConfigs;

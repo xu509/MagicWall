@@ -56,6 +56,7 @@ public class SceneManager : Singleton<SceneManager>
         // 运行场景
         if (!_scenes[_index].Run())
         {
+            Debug.Log("切换场景");
             // 返回为false时，表示场景已运行结束
             if (_index == _scenes.Count - 1)
             {

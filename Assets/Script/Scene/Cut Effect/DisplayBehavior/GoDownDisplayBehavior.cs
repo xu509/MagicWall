@@ -8,40 +8,85 @@ using DG.Tweening;
 //
 public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 {
-    private SceneContentType _sceneContentType;
+    private MagicWallManager _manager;
+    private DisplayBehaviorConfig _displayBehaviorConfig;
 
     //
     //  初始化 （参数：内容类型，row）
     //
-    public void Init(SceneContentType sceneContentType)
+    public void Init(DisplayBehaviorConfig displayBehaviorConfig)
     {
-        _sceneContentType = sceneContentType;
+        _displayBehaviorConfig = displayBehaviorConfig;
     }
 
     public void Run()
 	{
-		MagicWallManager manager = MagicWallManager.Instance;
+		_manager = MagicWallManager.Instance;
 
 		// 面板向下移动
-		float y = manager.mainPanel.anchoredPosition.y - Time.deltaTime * manager.MoveFactor_Panel;
-		Vector2 to = new Vector2(manager.mainPanel.anchoredPosition.x, y);
-		manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+		float y = _manager.mainPanel.anchoredPosition.y - Time.deltaTime * _manager.MoveFactor_Panel;
+		Vector2 to = new Vector2(_manager.mainPanel.anchoredPosition.x, y);
+        _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
-		// 调整panel的差值
-		manager.updateOffsetOfCanvas();
+        // 调整panel的差值
+        _manager.updateOffsetOfCanvas();
 
-		// 调整所有agent
-		manager.UpdateAgents();
+        // 调整所有agent
+        _manager.UpdateAgents();
 
         UpdateAgents();
-
     }
 
     private void UpdateAgents() {
-        // 查看是否需要生成新的组件、是否有组件需要作废
-
-        // 组件需要了解是哪个
+        if (_displayBehaviorConfig.SceneContentType == SceneContentType.activity){
+            UpdateAgentsOfActivity();
+        }
+        else {
+            UpdateAgentsOfEnvProduct();
+        }
     }
+
+    private void UpdateAgentsOfActivity() {
+
+    }
+
+    private void UpdateAgentsOfEnvProduct()
+    {
+
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
+
+        int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
+        int page = _displayBehaviorConfig.Page;
+
+        if (h + _manager.PanelOffsetY - (offsetUnit * page) > 0)
+        {
+            float i = h + _manager.PanelOffsetY - (offsetUnit * page);
+
+            // 需要获得当前的 column
+            int rows_offsets = Mathf.CeilToInt(_displayBehaviorConfig.Row * 1.0f / 3);
+            int x = page * rows_offsets + 1;
+            int cols = _displayBehaviorConfig.Column;
+
+            for (int y = 1; y <= cols; y++)
+            {
+                for (int z = x; z < (x + rows_offsets); z++)
+                {
+                    FlockAgent agent = AgentManager.Instance.CreateNewAgent(z, y); // 创建新的
+                    _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
+                }
+            }
+            _displayBehaviorConfig.Page += 1;
+
+            if ((_displayBehaviorConfig.Page - 5) > 0)
+                AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
+        }
+        else
+        {
+
+        }
+    }
+
 
 
 

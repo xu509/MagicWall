@@ -159,6 +159,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region 清理面板
     public bool Clear() {
+        Debug.Log("清理面板");
+
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
         PanelOffsetX = 0f;   // 清理两个panel偏移量
@@ -230,7 +232,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
 			Vector2 v3 = mainPanel.anchoredPosition;
 			Vector2 v4 = operationPanel.anchoredPosition;
-			float offsety = (v3.y - v4.y);
+			float offsety = (v4.y - v3.y);
 			PanelOffsetY = offsety;
 		}
 		//Debug.Log("OFFSET IS " + PanelOffset);

@@ -15,6 +15,9 @@ public class StarsCutEffect : CutEffect
     private float generate_agent_interval = 0.3f; // 生成的间隔
     private float last_generate_time = 0f; // 最后生成的时间
 
+    private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
+
+
     //
     //  Init
     //
@@ -147,7 +150,8 @@ public class StarsCutEffect : CutEffect
             agent.gameObject.SetActive(true);
 
             Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
-            agent.GetComponent<RectTransform>().DOAnchorPos3D(to, 3f).OnComplete(() => DOAnchorPosCompleteCallback(agent));
+            agent.GetComponent<RectTransform>().DOAnchorPos3D(to, 3f)
+                .OnComplete(() => DOAnchorPosCompleteCallback(agent));
 
             last_generate_time = Time.time;
         }

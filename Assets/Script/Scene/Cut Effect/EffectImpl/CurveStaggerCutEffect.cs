@@ -11,10 +11,14 @@ public class CurveStaggerCutEffect : CutEffect
 
     private int _row;
     private int _column;
+    private float _itemHeight;  // item height
+    private float _itemWidth;   // item width
+    private int _page;  // 页码
+
+    private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
-    private Dictionary<int, float> _lastPositionXDic;
 
     //
     //  Init
@@ -32,11 +36,16 @@ public class CurveStaggerCutEffect : CutEffect
 
         // 获取Display的动画
         DisplayBehavior = new GoLeftDisplayBehavior();
-        DisplayBehavior.Init(sceneContentType);
+
+        // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
         manager = MagicWallManager.Instance;
+
+        //  初始化 config
+        _displayBehaviorConfig = new DisplayBehaviorConfig();
+
     }
 
     //
@@ -113,6 +122,12 @@ public class CurveStaggerCutEffect : CutEffect
                 if ((delayY - delayX) > _startDelayTime) {
                     _startDelayTime = delayY - delayX;
                 }
+
+                // 装载进 pagesAgents
+                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
+                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
+
             }
         }
 
@@ -129,18 +144,18 @@ public class CurveStaggerCutEffect : CutEffect
         int w = (int)manager.mainPanel.rect.width;
         int gap = 10;
 
-        float itemHeight = h / _row - gap;
-        float itemWidth = itemHeight;
+        _itemHeight = h / _row - gap;
+        _itemWidth = _itemHeight;
 
-        _column = Mathf.CeilToInt(w / itemWidth);
+        _column = Mathf.CeilToInt(w / _itemWidth);
 
         //从左往右，从下往上
         for (int i = 0; i < _row; i++)
         {
             for (int j = 0; j < _column; j++)
             {
-                float x = j * (itemWidth + gap) + itemWidth / 2;
-                float y = i * (itemHeight + gap) + itemHeight / 2;
+                float x = j * (_itemWidth + gap) + _itemWidth / 2;
+                float y = i * (_itemHeight + gap) + _itemHeight / 2;
 
                 int middleY = _row / 2;
                 int middleX = _column / 2;
@@ -154,20 +169,20 @@ public class CurveStaggerCutEffect : CutEffect
                 if (i < middleY)
                 {
                     delayY = System.Math.Abs(middleY - i) * 0.3f;
-                    ori_x = (_column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2;
-                    ori_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                    ori_x = (_column + middleY - i - 1) * (_itemWidth + gap) + _itemWidth / 2;
+                    ori_y = (_column - j - middleY) * (_itemHeight + gap) + _itemHeight / 2;
                     //the_RectTransform.DOLocalMove(new Vector3((column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2, (column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
                 }
                 else
                 {
                     delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    ori_x = (_column + i - middleY) * (itemWidth + gap) + itemWidth / 2;
-                    ori_y = -(_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                    ori_x = (_column + i - middleY) * (_itemWidth + gap) + _itemWidth / 2;
+                    ori_y = -(_column - j - middleY) * (_itemHeight + gap) + _itemHeight / 2;
                     //the_RectTransform.DOLocalMove(new Vector3((column + i - middleY) * (itemWidth + gap) + itemWidth / 2, -(column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
                 }
 
                 //生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -175,7 +190,7 @@ public class CurveStaggerCutEffect : CutEffect
 
                 // 调整大小
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
-                the_RectTransform.sizeDelta = new Vector2(itemWidth, itemWidth);
+                the_RectTransform.sizeDelta = new Vector2(_itemWidth, _itemWidth);
 
                 // 生成透明度动画
                 go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
@@ -223,6 +238,15 @@ public class CurveStaggerCutEffect : CutEffect
             agent.NextVector2 = to;
             agent.updatePosition();
         }
+
+        //  初始化表现形式
+        _displayBehaviorConfig.Row = _row;
+        _displayBehaviorConfig.Column = _column;
+        _displayBehaviorConfig.ItemWidth = _itemWidth;
+        _displayBehaviorConfig.ItemHeight = _itemHeight;
+        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.Page = _page;
+        DisplayBehavior.Init(_displayBehaviorConfig);
     }
 
     public override void OnStartingCompleted(){

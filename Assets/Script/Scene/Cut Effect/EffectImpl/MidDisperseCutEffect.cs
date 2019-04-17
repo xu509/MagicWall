@@ -9,12 +9,17 @@ public class MidDisperseCutEffect : CutEffect
 {
     MagicWallManager manager;
 
-    private int row;
-    private int column;
+    private int _row;
+    private int _column;
+    private float _itemHeight;  // item height
+    private float _itemWidth;   // item width
+    private int _page;  // 页码
+
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
 
+    private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
 
     //
@@ -33,12 +38,15 @@ public class MidDisperseCutEffect : CutEffect
 
         // 获取Display的动画
         DisplayBehavior = new GoDownDisplayBehavior();
-        DisplayBehavior.Init(sceneContentType);
 
+        // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
         manager = MagicWallManager.Instance;
+
+        //  初始化 config
+        _displayBehaviorConfig = new DisplayBehaviorConfig();
     }
 
     //
@@ -46,37 +54,37 @@ public class MidDisperseCutEffect : CutEffect
     //
     protected override void CreateProductOrLogo()
     {
-        row = manager.row;
+        _row = manager.row;
 
         int h = (int)manager.mainPanel.rect.height;
         int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
-        int itemWidth = h / row - gap;
-        int itemHeight = itemWidth;
+        _itemWidth = h / _row - gap;
+        _itemHeight = _itemWidth;
 
-        column = Mathf.CeilToInt(w / itemWidth);
+        _column = Mathf.CeilToInt(w / _itemWidth);
 
 
         //从下往上，从左往右
-        for (int j = 0; j < column; j++)
+        for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < _row; i++)
             {
-                float x = j * (itemWidth + gap) + itemWidth / 2;
-                float y = i * (itemHeight + gap) + itemHeight / 2;
-                int middleX = (column - 1) / 2;
+                float x = j * (_itemWidth + gap) + _itemWidth / 2;
+                float y = i * (_itemHeight + gap) + _itemHeight / 2;
+                int middleX = (_column - 1) / 2;
                 float delay = System.Math.Abs(middleX - i) * 0.05f;
 
                 // ori_x;ori_y
                 float ori_x, ori_y;
 
-                ori_x = middleX * (itemWidth + gap) + (itemWidth / 2);
-                ori_y = y + itemWidth;
+                ori_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
+                ori_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
                 go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
 
@@ -87,6 +95,11 @@ public class MidDisperseCutEffect : CutEffect
                 {
                     _startDelayTime = delay;
                 }
+
+                // 装载进 pagesAgents
+                int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
+                _page = Mathf.CeilToInt((i + 1) * 1.0f / rowUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
             }
         }
 
@@ -99,37 +112,37 @@ public class MidDisperseCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
-        row = manager.row;
+        _row = manager.row;
 
         int h = (int)manager.mainPanel.rect.height;
         int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
-        int itemWidth = h / row - gap;
-        int itemHeight = itemWidth;
+        _itemWidth = h / _row - gap;
+        _itemHeight = _itemWidth;
 
-        column = Mathf.CeilToInt(w / itemWidth);
+        _column = Mathf.CeilToInt(w / _itemWidth);
 
 
         //从下往上，从左往右
-        for (int j = 0; j < column; j++)
+        for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < _row; i++)
             {
-                float x = j * (itemWidth + gap) + itemWidth / 2;
-                float y = i * (itemHeight + gap) + itemHeight / 2;
-                int middleX = (column - 1) / 2;
+                float x = j * (_itemWidth + gap) + _itemWidth / 2;
+                float y = i * (_itemHeight + gap) + _itemHeight / 2;
+                int middleX = (_column - 1) / 2;
                 float delay = System.Math.Abs(middleX - i) * 0.05f;
 
                 // ori_x;ori_y
                 float ori_x, ori_y;
 
-                ori_x = middleX * (itemWidth + gap) + (itemWidth / 2);
-                ori_y = y + itemWidth;
+                ori_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
+                ori_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
                 go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
 
@@ -170,6 +183,16 @@ public class MidDisperseCutEffect : CutEffect
             agent.NextVector2 = to;
             agent.updatePosition();
         }
+
+        //  初始化表现形式
+        _displayBehaviorConfig = new DisplayBehaviorConfig();
+        _displayBehaviorConfig.Row = _row;
+        _displayBehaviorConfig.Column = _column;
+        _displayBehaviorConfig.ItemWidth = _itemWidth;
+        _displayBehaviorConfig.ItemHeight = _itemHeight;
+        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.Page = _page;
+        DisplayBehavior.Init(_displayBehaviorConfig);
     }
 
     public override void OnStartingCompleted(){

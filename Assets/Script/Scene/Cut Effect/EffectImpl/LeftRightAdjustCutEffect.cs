@@ -9,10 +9,18 @@ public class LeftRightAdjustCutEffect : CutEffect
 {
     private MagicWallManager manager;
 
-    private int row;
-    private int column;
+    private int _row;
+    private int _column;
+    private float _itemHeight;  // item height
+    private float _itemWidth;   // item width
+    private int _page;  // 页码
+
+    private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
+
+
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
+
 
     //
     //  Init
@@ -30,12 +38,15 @@ public class LeftRightAdjustCutEffect : CutEffect
 
         // 获取Display的动画
         DisplayBehavior = new GoLeftDisplayBehavior();
-        DisplayBehavior.Init(sceneContentType);
 
+        // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
         manager = MagicWallManager.Instance;
+
+        //  初始化 config
+        _displayBehaviorConfig = new DisplayBehaviorConfig();
     }
 
     //
@@ -44,29 +55,29 @@ public class LeftRightAdjustCutEffect : CutEffect
     protected override void CreateProductOrLogo()
     {
         // 获取栅格信息
-        row = manager.row;
+        _row = manager.row;
         int h = (int)manager.mainPanel.rect.height;
         int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
-        int itemWidth = h / row - gap;
-        int itemHeight = itemWidth;
+        _itemWidth = h / _row - gap;
+        _itemHeight = _itemWidth;
 
         // 从后往前的效果列数不需要很多
-        column = w / itemWidth;
+        _column = Mathf.CeilToInt(w / _itemWidth);
 
-        for (int j = 0; j < column; j++)
+        for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < _row; i++)
             {
                 // 定义源位置
-                float ori_x = j * (itemHeight + gap) + itemHeight / 2;
-                float ori_y = i * (itemWidth + gap) + itemWidth / 2;
+                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
+                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
 
                 // 获取参照点
-                int middleY = row / 2;
-                int middleX = column / 2;
+                int middleY = _row / 2;
+                int middleX = _column / 2;
 
                 // 定义出生位置
                 float gen_x, gen_y;
@@ -76,12 +87,12 @@ public class LeftRightAdjustCutEffect : CutEffect
                 if (i < middleY)
                 {
                     delay = (System.Math.Abs(middleY - i)) * 0.3f;
-                    gen_x = (column + j) * (itemWidth + gap) + itemWidth / 2;
+                    gen_x = (_column + j) * (_itemWidth + gap) + _itemWidth / 2;
                 }
                 else
                 {
                     delay = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    gen_x = -(column - j) * (itemWidth + gap) + itemWidth / 2;
+                    gen_x = -(_column - j) * (_itemWidth + gap) + _itemWidth / 2;
                 }
                 gen_y = ori_y; //纵坐标不变
 
@@ -90,11 +101,17 @@ public class LeftRightAdjustCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
 
                 // 生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
                 go.Delay = delay;
                 go.DelayTime = delay;
+
+                // 装载进 pagesAgents
+                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
+                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
             }
         }
+
     }
 
     //
@@ -103,29 +120,29 @@ public class LeftRightAdjustCutEffect : CutEffect
     protected override void CreateActivity()
     {
         // 获取栅格信息
-        row = manager.row;
+        _row = manager.row;
         int h = (int)manager.mainPanel.rect.height;
         int w = (int)manager.mainPanel.rect.width;
 
         int gap = 10;
 
-        int itemWidth = h / row - gap;
-        int itemHeight = itemWidth;
+        _itemWidth = h / _row - gap;
+        _itemHeight = _itemWidth;
 
         // 从后往前的效果列数不需要很多
-        column = w / itemWidth;
+        _column = Mathf.CeilToInt(w / _itemWidth);
 
-        for (int j = 0; j < column; j++)
+        for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < _row; i++)
             {
                 // 定义源位置
-                float ori_x = j * (itemHeight + gap) + itemHeight / 2;
-                float ori_y = i * (itemWidth + gap) + itemWidth / 2;
+                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
+                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
 
                 // 获取参照点
-                int middleY = row / 2;
-                int middleX = column / 2;
+                int middleY = _row / 2;
+                int middleX = _column / 2;
 
                 // 定义出生位置
                 float gen_x, gen_y;
@@ -135,17 +152,17 @@ public class LeftRightAdjustCutEffect : CutEffect
                 if (i < middleY)
                 {
                     delay = (System.Math.Abs(middleY - i)) * 0.3f;
-                    gen_x = (column + j) * (itemWidth + gap) + itemWidth / 2;
+                    gen_x = (_column + j) * (_itemWidth + gap) + _itemWidth / 2;
                 }
                 else
                 {
                     delay = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    gen_x = -(column - j) * (itemWidth + gap) + itemWidth / 2;
+                    gen_x = -(_column - j) * (_itemWidth + gap) + _itemWidth / 2;
                 }
                 gen_y = ori_y; //纵坐标不变
 
                 // 生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = AgentManager.Instance.CreateNewAgent(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
                 go.Delay = delay;
                 go.DelayTime = delay;
             }
@@ -184,6 +201,15 @@ public class LeftRightAdjustCutEffect : CutEffect
             agent.updatePosition();
         }
 
+
+        //  初始化表现形式
+        _displayBehaviorConfig.Row = _row;
+        _displayBehaviorConfig.Column = _column;
+        _displayBehaviorConfig.ItemWidth = _itemWidth;
+        _displayBehaviorConfig.ItemHeight = _itemHeight;
+        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.Page = _page;
+        DisplayBehavior.Init(_displayBehaviorConfig);
 
     }
 

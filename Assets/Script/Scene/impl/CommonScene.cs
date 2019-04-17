@@ -6,9 +6,12 @@ using DG.Tweening;
 // 普通场景
 public class CommonScene : IScene
 {
-	//
-	//  Parameter
-	//
+    //
+    //  Parameter
+    //
+
+    //
+    private bool isDoDestoryCompleting = false;
 
     //  使用的过场效果
     private CutEffect _theCutEffect;
@@ -46,18 +49,33 @@ public class CommonScene : IScene
 	private void DoDisplaying()
 	{
         _theCutEffect.Displaying();
-	}
 
-	//  销毁动画
-	private void DoDestorying() {
+        
+    }
+
+    //  销毁动画
+    private void DoDestorying() {
         _theCutEffect.Destorying();
     }
 
 	//销毁动画已完成
 	private bool DoDestoryCompleted()
 	{
-		// 清理面板
-		return MagicWallManager.Instance.Clear();
+        Debug.Log("DoDestoryCompleted " + isDoDestoryCompleting);
+
+        if (!isDoDestoryCompleting)
+        {
+             Debug.Log("DoDestoryCompleted 1");
+            isDoDestoryCompleting = true;
+            // 清理面板
+            return MagicWallManager.Instance.Clear();
+        }
+        else {
+            Debug.Log("DoDestoryCompleted 2");
+
+            return false;
+        }
+
 	}
 
 	//
@@ -68,7 +86,9 @@ public class CommonScene : IScene
 	private void DoCreating()
 	{
         _theCutEffect.Create(_sceneContentType);
-	}
+
+        isDoDestoryCompleting = false;
+    }
 
 
 	//
@@ -80,6 +100,7 @@ public class CommonScene : IScene
 	{
         _theCutEffect = sceneConfig.CutEffect; // 设置过场效果
         _sceneContentType = sceneConfig.SceneContentType; // 设置类型
+
     }
 
 	//  运行
@@ -139,17 +160,19 @@ public class CommonScene : IScene
 		// 销毁中
 		if (Status == SceneStatus.DESTORING)
 		{
-			// 达到销毁的时间
-			if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
+            // 达到销毁的时间
+            if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
 			{
-				if (DoDestoryCompleted())
+                if (DoDestoryCompleted())
 				{
-					Status = SceneStatus.PREPARING;
+                    Status = SceneStatus.PREPARING;
 					return false;
 				}
 				else
 				{
-					DoDestorying();
+
+                    Debug.Log("DoDestorying 4");
+                    DoDestorying();
 				}
 			}
 			else

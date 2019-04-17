@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 interface CutEffectDisplayBehavior
 {
-    void Init(SceneContentType sceneContentType);
+    void Init(DisplayBehaviorConfig displayBehaviorConfig);
 
 	void Run();
 }
