@@ -14,10 +14,8 @@ public abstract class CutEffect : MonoBehaviour
     private SceneContentType _sceneContentType;
     public SceneContentType sceneContentType { set { _sceneContentType = value; } get { return _sceneContentType; } }
 
-
     private float _startTime;
     protected float StartTime { get { return _startTime; } }
-
 
     // 运行状态标志
     private bool hasDisplaying = true;
@@ -50,7 +48,6 @@ public abstract class CutEffect : MonoBehaviour
     //
     public void Create(SceneContentType st) {
         Init();
-        Debug.Log("Current Effect During Time : " + StartingDurTime);
 
         sceneContentType = st;
 
@@ -65,8 +62,6 @@ public abstract class CutEffect : MonoBehaviour
 
         // 初始化完成后更新时间
         _startTime = Time.time;
-
-        Debug.Log("Current Effect During Time After : " + StartingDurTime);
     }
 
     public abstract void Starting();

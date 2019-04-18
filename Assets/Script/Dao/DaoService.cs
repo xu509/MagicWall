@@ -80,19 +80,19 @@ public class DaoService : Singleton<DaoService>
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else
         {
@@ -107,6 +107,12 @@ public class DaoService : Singleton<DaoService>
     public List<SceneConfig> GetShowConfigs() {
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
+        SceneConfig sceneConfig3 = new SceneConfig();
+        sceneConfig3.CutEffect = new MidDisperseCutEffect();
+        //sceneConfig3.SceneContentType = SceneContentType.activity;
+        sceneConfig3.SceneContentType = SceneContentType.env;
+        sceneConfigs.Add(sceneConfig3);
+
         SceneConfig sceneConfig1 = new SceneConfig();
         sceneConfig1.CutEffect = new CurveStaggerCutEffect();
         sceneConfig1.SceneContentType = SceneContentType.env;
@@ -116,12 +122,6 @@ public class DaoService : Singleton<DaoService>
         sceneConfig2.CutEffect = new LeftRightAdjustCutEffect();
         sceneConfig2.SceneContentType = SceneContentType.product;
         sceneConfigs.Add(sceneConfig2);
-
-        SceneConfig sceneConfig3 = new SceneConfig();
-        sceneConfig3.CutEffect = new MidDisperseCutEffect();
-        //sceneConfig3.SceneContentType = SceneContentType.activity;
-        sceneConfig3.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig3);
 
         SceneConfig sceneConfig4 = new SceneConfig();
         sceneConfig4.CutEffect = new StarsCutEffect();

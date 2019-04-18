@@ -9,5 +9,10 @@ public interface IScene
 	//
 	bool Run();
 
+    //
+    //  获取内容类型
+    //
+    SceneContentType GetContentType();
+
 }
 

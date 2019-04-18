@@ -19,6 +19,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public RectTransform mainPanel;
 	public FlockAgent agentPrefab;
     public CardAgent crossCardgent;
+    public CardAgent sliceCardgent;
+
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
@@ -58,11 +60,19 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #endregion
 
     #region PRIVATE PARAMETER
-	[SerializeField]
-	private WallStatusEnum status;
+    [SerializeField]
+    private int _sceneIndex = 0; // 场景索引
+    public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
+
+    [SerializeField]
+    private IScene _currentScene; // 当前场景
+    public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
+
+
+    private WallStatusEnum status;
 	public WallStatusEnum Status{get { return status;} set { status = value;}}
 
-    private RectTransform operationPanel;
+    private RectTransform _operationPanel;
 
     // 上一次点击的时间
     float lastClickDownTime = 0f;
@@ -101,7 +111,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     void Start()
     {
         // 初始化 UI 索引
-        operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
+        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
 
         // Raycaster - event
         m_Raycaster = GetComponent<GraphicRaycaster>();
@@ -159,8 +169,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region 清理面板
     public bool Clear() {
-        Debug.Log("清理面板");
-
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
         PanelOffsetX = 0f;   // 清理两个panel偏移量
@@ -225,13 +233,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
         }
         else {
             Vector2 v1 = mainPanel.anchoredPosition;
-            Vector2 v2 = operationPanel.anchoredPosition;
+            Vector2 v2 = _operationPanel.anchoredPosition;
             float offset = (v2.x - v1.x);
 			PanelOffsetX = offset;
 
 
 			Vector2 v3 = mainPanel.anchoredPosition;
-			Vector2 v4 = operationPanel.anchoredPosition;
+			Vector2 v4 = _operationPanel.anchoredPosition;
 			float offsety = (v4.y - v3.y);
 			PanelOffsetY = offsety;
 		}
@@ -252,40 +260,4 @@ public class MagicWallManager : Singleton<MagicWallManager>
     }
 
 }
-
-public enum AgentType {
-    env, // 企业
-    activity, // 活动
-    product // 产品
-}
-
-public enum AgentStatus
-{
-    NORMAL, // 正常
-    MOVING, // 移动中
-    CHOOSING    //已选择
-}
-
-
-public enum WallStatusEnum{
-	Cutting, // 过场中
-    Displaying // 显示中
-}
-
-public enum SceneContentType
-{
-    env, // 企业
-    activity, // 活动
-    product // 产品
-}
-
-public enum SceneStatus
-{
-    PREPARING, // 准备中
-    STARTTING, // 启动动画中
-    DISPLAYING, // 运行中
-    DESTORING //  销毁中
-}
-
-
 

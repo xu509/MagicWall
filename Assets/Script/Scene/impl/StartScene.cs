@@ -12,8 +12,14 @@ public class StartScene : IScene
 {
     Transform logo;
 
-	public bool Run()
+    public SceneContentType GetContentType()
+    {
+        return SceneContentType.none;
+    }
+
+    public bool Run()
 	{
+        // TODO 
 		throw new System.NotImplementedException();
 	}
 

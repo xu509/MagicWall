@@ -61,18 +61,15 @@ public class CommonScene : IScene
 	//销毁动画已完成
 	private bool DoDestoryCompleted()
 	{
-        Debug.Log("DoDestoryCompleted " + isDoDestoryCompleting);
 
         if (!isDoDestoryCompleting)
         {
-             Debug.Log("DoDestoryCompleted 1");
             isDoDestoryCompleting = true;
             // 清理面板
             return MagicWallManager.Instance.Clear();
         }
         else {
-            Debug.Log("DoDestoryCompleted 2");
-
+ 
             return false;
         }
 
@@ -119,6 +116,8 @@ public class CommonScene : IScene
 
 			DoCreating();  //初始化场景
 
+            Debug.Log("当前场景 ： " + GetContentType());
+
 			// 将状态标志设置为开始
 			Status = SceneStatus.STARTTING;
 		}
@@ -128,8 +127,11 @@ public class CommonScene : IScene
 		{
 			if ((Time.time - _startTime) > _theCutEffect.StartingDurTime)
 			{
-				// 完成开场动画，场景进入展示状态
-				//Debug.Log("Scene is Displaying");
+                // 完成开场动画，场景进入展示状态
+                
+                // 调用效果完成回调
+                _theCutEffect.OnStartingCompleted();
+
                 _displayTime = Time.time;
 				Status = SceneStatus.DISPLAYING;
 				magicWallManager.Status = WallStatusEnum.Displaying;
@@ -183,4 +185,8 @@ public class CommonScene : IScene
 		return true;
 	}
 
+    public SceneContentType GetContentType()
+    {
+        return _sceneContentType;
+    }
 }

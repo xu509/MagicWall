@@ -16,13 +16,15 @@ public class SceneManager : Singleton<SceneManager>
     //
     List<IScene> _scenes; // 场景列表
     int _index; // 当前的索引
-    private MagicWallManager magicWallManager; // 主管理器
+    private MagicWallManager _manager; // 主管理器
 
     //
     // Awake instead of Constructor
     //
     private void Awake()
     {
+        _manager = MagicWallManager.Instance;
+
         //  初始化场景列表
         _scenes = new List<IScene>();
 
@@ -37,6 +39,9 @@ public class SceneManager : Singleton<SceneManager>
             commonScene.DoConfig(sceneConfigs[i]);
             _scenes.Add(commonScene);
         }
+
+        // 初始化管理器标志
+        _manager.CurrentScene = _scenes[0];
     }
 
     //
@@ -56,7 +61,6 @@ public class SceneManager : Singleton<SceneManager>
         // 运行场景
         if (!_scenes[_index].Run())
         {
-            Debug.Log("切换场景");
             // 返回为false时，表示场景已运行结束
             if (_index == _scenes.Count - 1)
             {
@@ -66,6 +70,8 @@ public class SceneManager : Singleton<SceneManager>
             {
                 _index++;
             }
+            _manager.SceneIndex  = _manager.SceneIndex + 1;
+            _manager.CurrentScene = _scenes[_index];
         }
    
     }

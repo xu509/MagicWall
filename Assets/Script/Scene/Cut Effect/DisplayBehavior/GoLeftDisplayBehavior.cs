@@ -36,7 +36,6 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 
         UpdateAgents();
 
-        Debug.Log("GO LEFT RUNNING!");
     }
 
     private void UpdateAgents()

@@ -4,7 +4,10 @@ using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
-public class CrossCardAgent : CardAgent
+//
+//  滑动卡片代理，用于product和activity
+//
+public class SliceCardAgent : CardAgent
 {
        
     void Awake() {

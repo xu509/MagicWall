@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5464528655419869913
+--- !u!1 &2247757197020260754
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5464528655419869910}
-  - component: {fileID: 5464528655419869908}
-  - component: {fileID: 5464528655419869911}
-  - component: {fileID: 5464528655419869909}
-  - component: {fileID: 1868005146837076239}
+  - component: {fileID: 511508763543045258}
+  - component: {fileID: 3765581809811723095}
+  - component: {fileID: 5522469409673069153}
+  - component: {fileID: 1877555270172104401}
+  - component: {fileID: 2429258555300052348}
   m_Layer: 5
-  m_Name: CrossCardAgent
+  m_Name: SliceCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5464528655419869910
+--- !u!224 &511508763543045258
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5464528655419869913}
+  m_GameObject: {fileID: 2247757197020260754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -36,53 +36,51 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4096, y: 910}
-  m_SizeDelta: {x: 900, y: 900}
+  m_AnchoredPosition: {x: 65.4, y: 69.8}
+  m_SizeDelta: {x: 99.82, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5464528655419869908
+--- !u!222 &3765581809811723095
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5464528655419869913}
+  m_GameObject: {fileID: 2247757197020260754}
   m_CullTransparentMesh: 0
---- !u!114 &5464528655419869911
+--- !u!114 &5522469409673069153
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5464528655419869913}
+  m_GameObject: {fileID: 2247757197020260754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5235849, b: 0.5235849, a: 0.6862745}
+  m_Color: {r: 1, g: 0.46750388, b: 0.4481132, a: 0.7137255}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
---- !u!61 &5464528655419869909
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!61 &1877555270172104401
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5464528655419869913}
+  m_GameObject: {fileID: 2247757197020260754}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -102,24 +100,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1868005146837076239
+--- !u!114 &2429258555300052348
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5464528655419869913}
+  m_GameObject: {fileID: 2247757197020260754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f899d054115ff847b5b4819fb4f3d77, type: 3}
+  m_Script: {fileID: 11500000, guid: c9a1feb7e9f52824a90a51f99443bd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0
   height: 0
   oriVector2: {x: 0, y: 0}
   nextVector2: {x: 0, y: 0}
-  isChoosing: 0
-  isChanging: 0
   signTextComponent: {fileID: 0}
   nameTextComponent: {fileID: 0}
   signTextComponent2: {fileID: 0}

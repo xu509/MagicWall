@@ -86,7 +86,7 @@ public class FlockAgent : MonoBehaviour
     //      originVector : 在屏幕上显示的位置
     //      genVector ： 出生的位置
     //
-	public void Initialize(Vector2 originVector,Vector2 genVector,int row,int column)
+	public virtual void Initialize(Vector2 originVector,Vector2 genVector,int row,int column)
     {
         OriVector2 = originVector;
         GenVector2 = genVector;
@@ -130,7 +130,7 @@ public class FlockAgent : MonoBehaviour
 			//当前场景为正常展示时，参考位置为固定位置
 			refVector2 = oriVector2;
 		}
-        Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffsetX, 0); //获取带偏移量的参考位置
+        Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffsetX, manager.PanelOffsetY); //获取带偏移量的参考位置
         showRefVector2 = refVector2;
         showRefVector2WithOffset = refVector2WithOffset;
 
@@ -164,8 +164,9 @@ public class FlockAgent : MonoBehaviour
         if (targetAgent != null)
         {
             showTargetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
-            w = targetAgent.Width;
-            h = targetAgent.Height;
+            Vector3 scaleVector3 = targetAgent.GetComponent<RectTransform>().localScale;
+            w = targetAgent.Width * scaleVector3.x;
+            h = targetAgent.Height * scaleVector3.y;
         }
         else {
             w = 0;
@@ -185,9 +186,8 @@ public class FlockAgent : MonoBehaviour
         if (offset >= 0)
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
-            m_transform.gameObject.GetComponentInChildren<Image>().color = Color.blue;
+            //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.blue;
             float m_scale = -(1f / effectDistance) * offset + 1f;
-
 
             //
             //  上下移动
@@ -200,7 +200,6 @@ public class FlockAgent : MonoBehaviour
             move_offset_x += w / 10 * manager.InfluenceMoveFactor;
 
             signTextComponent2.text = "mo: " + move_offset.ToString() + " / " + move_offset_x.ToString();
-
 
             float to_y,to_x;
             if (refVector2.y > targetVector2.y)
@@ -235,7 +234,7 @@ public class FlockAgent : MonoBehaviour
             float overshootOrAmplitude = 3f;
             float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
 
-            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), 0.1f);
+            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), 0.5f);
             m_transform.DOScale(Mathf.Lerp(1f, 0.3f, k), Time.deltaTime);
             
             //
@@ -256,7 +255,7 @@ public class FlockAgent : MonoBehaviour
 				Vector2 toy = new Vector2(refVector2.x, refVector2.y);
 				m_transform.DOAnchorPos(toy, Time.deltaTime);
 				m_transform.DOScale(1, Time.deltaTime);
-				m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.green;
+				//m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.green;
 
 				IsChanging = false;
 //				return toy;

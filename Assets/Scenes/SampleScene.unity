@@ -387,17 +387,21 @@ MonoBehaviour:
   mainPanel: {fileID: 577667532}
   agentPrefab: {fileID: 3679100315635514291, guid: dca75ace6c0d1e54eaa146ecda9b9789,
     type: 3}
+  crossCardgent: {fileID: 8137593796822784393, guid: 0005f6786f0b4884baf9fe2d95708c5b,
+    type: 3}
+  sliceCardgent: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
+    type: 3}
   backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
     type: 3}
   backgroundUpDuration: 20
   backgroundUubbleInterval: 0.4
   InfluenceFactor: 0.6
   InfluenceMoveFactor: 0
-  panelOffset: 0
+  panelOffsetX: 0
+  panelOffsetY: 0
   MoveFactor_Panel: 100
   row: 6
-  column: 30
-  status: 0
+  _sceneIndex: 0
 --- !u!114 &438711672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,7 +469,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 32
+  field of view: 33
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
