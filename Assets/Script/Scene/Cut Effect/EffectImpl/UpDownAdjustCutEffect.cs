@@ -192,7 +192,6 @@ public class UpDownAdjustCutEffect : CutEffect
         }
 
         //  初始化表现形式
-        _displayBehaviorConfig = new DisplayBehaviorConfig();
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

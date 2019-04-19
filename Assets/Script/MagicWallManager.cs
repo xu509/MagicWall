@@ -104,6 +104,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 初始化效果工厂
         CutEffectFactory cutEffectFactory = CutEffectFactory.Instance;
 
+        //  装载内容
+        TheDataSource theDataSource = TheDataSource.Instance;
     }
 
 

@@ -52,7 +52,6 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnvProduct()
     {
-
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -78,8 +77,9 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
             }
             _displayBehaviorConfig.Page += 1;
 
-            if ((_displayBehaviorConfig.Page - 5) > 0)
-                AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
+            if ((_displayBehaviorConfig.Page - 5) > 0) {
+                AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最下侧
+            }
         }
         else
         {

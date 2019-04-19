@@ -99,7 +99,7 @@ public class MidDisperseCutEffect : CutEffect
                 // 装载进 pagesAgents
                 int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
                 _page = Mathf.CeilToInt((i + 1) * 1.0f / rowUnit);
-                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
+                 _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
             }
         }
 
@@ -185,7 +185,6 @@ public class MidDisperseCutEffect : CutEffect
         }
 
         //  初始化表现形式
-        _displayBehaviorConfig = new DisplayBehaviorConfig();
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

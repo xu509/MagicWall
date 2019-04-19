@@ -77,7 +77,7 @@ public class CardAgent : FlockAgent
         RectTransform rectTransform = GetComponent<RectTransform>();
 
         //  定义缩放
-        Vector3 scaleVector3 = new Vector3(1.5f, 1.5f, 1.5f);
+        Vector3 scaleVector3 = new Vector3(2f, 2f, 2f);
         AgentManager.Instance.DoScaleAgency(this, scaleVector3, 2f);
     }
 

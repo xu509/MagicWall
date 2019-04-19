@@ -10,6 +10,12 @@ public class DaoService : Singleton<DaoService>
     //
     protected DaoService() { }
 
+    //
+    //  加载信息
+    //
+    public void LoadInformation() {
+
+    }
 
     //
     //  获取首页企业
@@ -17,6 +23,10 @@ public class DaoService : Singleton<DaoService>
     public List<Enterprise> GetEnterprises()
     {
         // todo
+        Enterprise enterprise = new Enterprise();
+        
+
+
 
         return null;
     }
