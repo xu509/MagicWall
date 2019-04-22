@@ -84,11 +84,11 @@ public class MidDisperseCutEffect : CutEffect
                 ori_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
                 go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
 
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime + delay).From();
+                go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime + delay).From();
 
                 // 获取启动动画的延迟时间
                 if (delay > _startDelayTime)
@@ -142,7 +142,7 @@ public class MidDisperseCutEffect : CutEffect
                 ori_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
                 go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
 
@@ -191,6 +191,8 @@ public class MidDisperseCutEffect : CutEffect
         _displayBehaviorConfig.ItemHeight = _itemHeight;
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
+        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+
         DisplayBehavior.Init(_displayBehaviorConfig);
     }
 

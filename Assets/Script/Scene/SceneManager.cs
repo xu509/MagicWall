@@ -32,7 +32,10 @@ public class SceneManager : Singleton<SceneManager>
         _index = 0;
 
         //  加载场景
-        // -- 加载开始场景
+        // - 加载开始场景
+        _scenes.Add(new StartScene());  
+        
+        // - 加载普通场景
         List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++) {
             CommonScene commonScene = new CommonScene();

@@ -47,72 +47,6 @@ public class AgentManager : Singleton<AgentManager>
 
 
     #region Public Methods
-    //
-    //  创建一个新Agent
-    //
-    public FlockAgent CreateNewAgent(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height)
-    {
-        //  创建 Agent
-        FlockAgent newAgent = Instantiate(
-                                    _manager.agentPrefab,
-                                    _manager.mainPanel
-                                    );
-        //  命名
-        newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
-
-        //  获取rect引用
-        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
-
-        //  定出生位置
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        rectTransform.anchoredPosition = postion;
-
-        //  定面板位置
-        Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.GenVector2 = postion;
-
-        //  初始化内容
-        newAgent.Initialize(ori_position, postion, row + 1, column + 1);
-        newAgent.Width = width;
-        newAgent.Height = height;
-
-        // 调整agent的长与宽
-        Vector2 sizeDelta = new Vector2(width, height);
-        rectTransform.sizeDelta = sizeDelta;
-
-        // 调整显示颜色
-
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
-
-
-        //  添加到组件袋
-        Agents.Add(newAgent);
-        return newAgent;
-    }
-
-    //
-    //  创建items
-    //
-    public FlockAgent CreateNewAgent(int row, int column)
-    {
-        row = row - 1;
-        column = column - 1;
-
-        // width
-        int h = (int)_manager.mainPanel.rect.height;
-        //int w = (int)_manager.mainPanel.rect.width;
-        int gap = 10;
-
-        float itemHeight = h / _manager.Row - gap;
-        float itemWidth = itemHeight;
-
-        float x = column * (itemWidth + gap) + itemWidth / 2;
-        float y = row * (itemHeight + gap) + itemHeight / 2;
-
-        return CreateNewAgent(x, y, x, y, row, column, itemWidth, itemHeight);
-    }
 
     //
     //  清理所有的agents
@@ -361,6 +295,9 @@ public class AgentManager : Singleton<AgentManager>
 
         // 添加到effect agent
         EffectAgent.Add(crossCardAgent);
+
+        // 初始化 CrossAgent 数据
+        crossCardAgent.InitData();
 
         return crossCardAgent;
     }

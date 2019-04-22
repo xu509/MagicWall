@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Enterprise : Generator<Enterprise>
 {
+    #region Data Parameter
+
     // 企业 ID
     private int ent_id;
     public int Ent_id { set { ent_id = value; } get { return ent_id; } }
@@ -21,6 +23,17 @@ public class Enterprise : Generator<Enterprise>
     private string catalog;
     public string Catalog { set { catalog = value; } get { return catalog; } }
 
+    private bool isCustom;
+    public bool IsCustom { set { isCustom = value; } get { return isCustom; } }
+
+    #endregion
+
+    #region Component Parameter
+    private Texture _texture;
+    public Texture Texture { set { _texture = value; } get { return _texture; } }
+    #endregion
+
+
     public Enterprise Generator()
     {
         string[] names = new string[] { "百度","可口可乐","谷歌","阿里巴巴","豆瓣","哔哩哔哩","微软","搜狗","印象笔记","迅雷"};
@@ -30,6 +43,7 @@ public class Enterprise : Generator<Enterprise>
             "21.jpg","22.jpg","23.jpg","24.jpg","25.jpg","26.jpg","27.jpg","28.jpg","29.jpg","30.jpg",
             "31.jpg","32.jpg"
         };
+        bool[] customs = new bool[] { true,false};
 
         Enterprise env = new Enterprise();
         int id = Random.Range(1, 10);
@@ -40,6 +54,8 @@ public class Enterprise : Generator<Enterprise>
 
         int logo_index = Random.Range(1, logos.Length - 1);
         env.logo = logos[logo_index];
+
+        env.isCustom = customs[Random.Range(0, 2)];
 
         return env;
     }

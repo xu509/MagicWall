@@ -10,6 +10,7 @@ public abstract class CutEffect : MonoBehaviour
     //
     CutEffectDisplayBehavior displayBehavior; //表现
     CutEffectDestoryBehavior destoryBehavior; //销毁时间
+    ItemsFactory _itemsFactory; // 工厂
 
     private SceneContentType _sceneContentType;
     public SceneContentType sceneContentType { set { _sceneContentType = value; } get { return _sceneContentType; } }
@@ -37,6 +38,9 @@ public abstract class CutEffect : MonoBehaviour
 
     internal CutEffectDestoryBehavior DestoryBehavior { get { return destoryBehavior; } set { destoryBehavior = value; } }
 
+    internal ItemsFactory ItemsFactory { get { return _itemsFactory; }}
+
+
     protected abstract void Init();
 
     protected abstract void CreateActivity();
@@ -53,10 +57,18 @@ public abstract class CutEffect : MonoBehaviour
 
         if (sceneContentType == SceneContentType.activity)
         {
+            // TODO 修改工厂实现
+            _itemsFactory = new EnvFactory();
             CreateActivity();
         }
-        else
+        else if (sceneContentType == SceneContentType.env)
         {
+            _itemsFactory = new EnvFactory();
+            CreateProductOrLogo();
+        }
+        else {
+            // TODO 修改工厂实现
+            _itemsFactory = new EnvFactory();
             CreateProductOrLogo();
         }
 

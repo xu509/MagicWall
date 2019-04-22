@@ -71,7 +71,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
             {
                 for (int z = x; z < (x + rows_offsets); z++)
                 {
-                    FlockAgent agent = AgentManager.Instance.CreateNewAgent(z, y); // 创建新的
+                    FlockAgent agent = CreateItem(_displayBehaviorConfig.ItemsFactory, z, y); // 创建新的
                     _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
                 }
             }
@@ -87,7 +87,25 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
+    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
+    {
+        row = row - 1;
+        column = column - 1;
 
+        // width
+        int h = (int)_manager.mainPanel.rect.height;
+        //int w = (int)_manager.mainPanel.rect.width;
+        int gap = 10;
+
+        float itemHeight = h / _manager.Row - gap;
+        float itemWidth = itemHeight;
+
+        float x = column * (itemWidth + gap) + itemWidth / 2;
+        float y = row * (itemHeight + gap) + itemHeight / 2;
+
+        return factory.Generate(x, y, x, y, row, column, itemWidth, itemHeight);
+
+    }
 
 
 }

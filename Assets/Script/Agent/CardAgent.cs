@@ -68,7 +68,9 @@ public class CardAgent : FlockAgent
             }
         }
     }
+    #endregion
 
+    #region Private Methods
     //
     //  第一步的销毁
     //

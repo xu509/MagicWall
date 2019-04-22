@@ -89,6 +89,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     EventSystem m_EventSystem;
     #endregion
 
+    #region Private Parameter - Data
+
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+
+    #endregion
+
+
     // Awake - init manager of Singleton
     private void Awake()
     {

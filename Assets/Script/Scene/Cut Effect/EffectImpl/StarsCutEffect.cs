@@ -39,6 +39,9 @@ public class StarsCutEffect : CutEffect
 
         //  初始化 manager
         manager = MagicWallManager.Instance;
+
+        //  初始化 config
+        _displayBehaviorConfig = new DisplayBehaviorConfig();
     }
 
     //
@@ -78,7 +81,9 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                // 星空效果不会被物理特效影响
+                go.CanEffected = false;
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
@@ -127,7 +132,9 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                // 星空效果不会被物理特效影响
+                go.CanEffected = false;
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
@@ -155,6 +162,8 @@ public class StarsCutEffect : CutEffect
 
             last_generate_time = Time.time;
         }
+
+
 
     }
 

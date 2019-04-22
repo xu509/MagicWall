@@ -105,7 +105,8 @@ public class CurveStaggerCutEffect : CutEffect
                 }
 
                 //生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                //AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -116,7 +117,7 @@ public class CurveStaggerCutEffect : CutEffect
                 the_RectTransform.sizeDelta = new Vector2(itemWidth, itemWidth);
 
                 // 生成透明度动画
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
+                go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime - delayX + delayY).From();
 
                 // 获取启动动画的延迟时间
                 if ((delayY - delayX) > _startDelayTime) {
@@ -182,7 +183,7 @@ public class CurveStaggerCutEffect : CutEffect
                 }
 
                 //生成 agent
-                FlockAgent go = AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -246,6 +247,7 @@ public class CurveStaggerCutEffect : CutEffect
         _displayBehaviorConfig.ItemHeight = _itemHeight;
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
+        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         DisplayBehavior.Init(_displayBehaviorConfig);
     }
 

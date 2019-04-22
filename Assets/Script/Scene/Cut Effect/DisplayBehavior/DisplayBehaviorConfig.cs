@@ -17,6 +17,13 @@ public class DisplayBehaviorConfig
     private SceneContentType _sceneContentType;
     private Dictionary<int, List<FlockAgent>> _agentsOfPages = new Dictionary<int, List<FlockAgent>>();
     private int _page = 0;
+    private ItemsFactory _itemsFactory;
+
+    public ItemsFactory ItemsFactory
+    {
+        set { _itemsFactory = value; }
+        get { return _itemsFactory; }
+    }
 
     public int Row {
         set { _row = value; }

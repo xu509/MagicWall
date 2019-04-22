@@ -45,7 +45,7 @@ public class TheDataSource : Singleton<TheDataSource>
         _datas.Enterprises = enterprises;
 
         //  将数据持久化
-        SaveItems();
+        //SaveItems();
 
     }
 

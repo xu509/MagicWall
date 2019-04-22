@@ -7,6 +7,22 @@ using DG.Tweening;
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
+    #region Data Parameter 
+    private int _data_type;  //类型 0:env 1:prod 2:act
+    private bool _data_iscustom; // 是定制的
+    private string _data_img;    //背景图片
+    private int _data_id; // id
+
+    public int DataType { set { _data_type = value; } get { return _data_type; } }
+    public string DataImg { set { _data_img = value; } get { return _data_img; } }
+    public int DataId { set { _data_id = value; } get { return _data_id; } }
+    public bool DataIsCustom { set { _data_iscustom = value; } get { return _data_iscustom; } }
+
+    #endregion
+
+
+    #region Component Parameter
+
     int x;
     int y;
 
@@ -61,6 +77,12 @@ public class FlockAgent : MonoBehaviour
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
 
+    // 能被影响
+    private bool _canEffected = true;
+    public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
+
+
+
     public Text signTextComponent;
     public Text nameTextComponent;
     public Text signTextComponent2;
@@ -73,6 +95,8 @@ public class FlockAgent : MonoBehaviour
     Vector2 showRefVector2WithOffset;
     [SerializeField]
     float showMoveOffset;
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -97,29 +121,46 @@ public class FlockAgent : MonoBehaviour
         nameTextComponent.text = row + " - " + column;
     }
 
-    public void Move(Vector2 velocity)
+
+    //
+    // 更新位置
+    //
+    public void updatePosition()
     {
-//		GetComponent<RectTransform> ().DOAnchorPos (velocity, Time.deltaTime);
+        if (CanEffected)
+        {
+            UpdatePositionEffect();
+        }
+        else {
+            //Debug.Log("Can Not Effected");
+
+            //MagicWallManager manager = MagicWallManager.Instance;
+
+            //Vector2 refVector2; // 参照的目标位置
+            //if (manager.Status == WallStatusEnum.Cutting)
+            //{
+            //    Debug.Log("WallStatusEnum.Cutting");
+
+            //    // 当前场景正在切换时，参考位置为目标的下个移动位置
+            //    refVector2 = NextVector2;
+            //}
+            //else
+            //{
+            //    Debug.Log("WallStatusEnum Not Cutting");
+
+            //    //当前场景为正常展示时，参考位置为固定位置
+            //    refVector2 = oriVector2;
+            //}
+
+            //Vector2 toy = new Vector2(refVector2.x, refVector2.y);
+            //GetComponent<RectTransform>().DOAnchorPos(toy, Time.deltaTime);
+        }
 
     }
 
-	public void MoveToPosition(Vector2 postion){
-//		agentRectTransform.DOAnchorPos (updatePosition(postion),Time.deltaTime);
-	}
 
 
-	void FixedUpdate(){
-
-		//if (IsChoosing) {
-		//	GetComponentInChildren<Image> ().color = Color.black;
-		//}
-
-    }
-
-	//
-	// 更新位置
-	//
-	public void updatePosition(){
+    private void UpdatePositionEffect(){
         MagicWallManager manager = MagicWallManager.Instance;
 
 		Vector2 refVector2; // 参照的目标位置
@@ -263,6 +304,34 @@ public class FlockAgent : MonoBehaviour
 		}
 
 	}
+
+    //
+    //  获取Logo
+    //
+    public RectTransform GetLogo() {
+        Transform transform_thumb = null;
+        Transform transform_logo = null;
+        foreach(Transform child in transform){
+            if (child.name == "thumb") {
+                transform_thumb = child;
+                break;
+            }
+        }
+
+        if (transform_thumb != null) {
+            foreach (Transform child in transform_thumb)
+            {
+                if (child.name == "logo")
+                {
+                    transform_logo = child;
+                    return transform_logo.GetComponent<RectTransform>();
+                }
+            }
+
+        }
+        
+        return null;
+    }
 
 
 }
