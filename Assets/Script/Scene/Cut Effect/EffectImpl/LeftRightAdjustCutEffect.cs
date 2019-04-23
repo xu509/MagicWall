@@ -7,16 +7,11 @@ using DG.Tweening;
 // 过场效果 5，左右校准
 public class LeftRightAdjustCutEffect : CutEffect
 {
-    private MagicWallManager manager;
+    private MagicWallManager _manager;
 
-    private int _row;
-    private int _column;
-    private float _itemHeight;  // item height
-    private float _itemWidth;   // item width
     private int _page;  // 页码
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
-
 
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
@@ -43,7 +38,7 @@ public class LeftRightAdjustCutEffect : CutEffect
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -54,26 +49,23 @@ public class LeftRightAdjustCutEffect : CutEffect
     //
     protected override void CreateProductOrLogo()
     {
-        // 获取栅格信息
-        _row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        // 从后往前的效果列数不需要很多
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
         for (int j = 0; j < _column; j++)
         {
             for (int i = 0; i < _row; i++)
             {
                 // 定义源位置
-                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
-                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
+                //float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
+                //float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
+
+                Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                float ori_x = vector2.x;
+                float ori_y = vector2.y;
 
                 // 获取参照点
                 int middleY = _row / 2;
@@ -120,17 +112,12 @@ public class LeftRightAdjustCutEffect : CutEffect
     protected override void CreateActivity()
     {
         // 获取栅格信息
-        _row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        // 从后往前的效果列数不需要很多
-        _column = Mathf.CeilToInt(w / _itemWidth);
 
         for (int j = 0; j < _column; j++)
         {
@@ -203,6 +190,11 @@ public class LeftRightAdjustCutEffect : CutEffect
 
 
         //  初始化表现形式
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

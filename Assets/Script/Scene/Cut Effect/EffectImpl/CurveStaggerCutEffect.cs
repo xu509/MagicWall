@@ -7,12 +7,9 @@ using DG.Tweening;
 // 过场效果 1 ，曲线麻花效果
 public class CurveStaggerCutEffect : CutEffect
 {
-    private MagicWallManager manager;
+    private MagicWallManager _manager;
 
-    private int _row;
-    private int _column;
-    private float _itemHeight;  // item height
-    private float _itemWidth;   // item width
+
     private int _page;  // 页码
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
@@ -41,7 +38,7 @@ public class CurveStaggerCutEffect : CutEffect
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -62,23 +59,25 @@ public class CurveStaggerCutEffect : CutEffect
     //  创建产品 | Logo 
     //
     protected override void CreateProductOrLogo() {
-        _row = manager.Row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-        int gap = 10;
 
-        float itemHeight = h / _row - gap;
-        float itemWidth = itemHeight;
-
-        _column = Mathf.CeilToInt(w / itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float itemWidth = ItemsFactory.GetItemWidth();
+        float itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
         for (int i = 0; i < _row; i++)
         {
             for (int j = 0; j < _column; j++)
             {
-                float x = j * (itemWidth + gap) + itemWidth / 2;
-                float y = i * (itemHeight + gap) + itemHeight / 2;
+                //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+                //float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                float x = vector2.x;
+                float y = vector2.y;
+
 
                 int middleY = _row / 2;
                 int middleX = _column / 2;
@@ -140,15 +139,12 @@ public class CurveStaggerCutEffect : CutEffect
     //  创建活动
     //
     protected override void CreateActivity() {
-        _row = manager.Row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-        int gap = 10;
 
-        _itemHeight = h / _row - gap;
-        _itemWidth = _itemHeight;
-
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
         for (int i = 0; i < _row; i++)
@@ -241,6 +237,11 @@ public class CurveStaggerCutEffect : CutEffect
         }
 
         //  初始化表现形式
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

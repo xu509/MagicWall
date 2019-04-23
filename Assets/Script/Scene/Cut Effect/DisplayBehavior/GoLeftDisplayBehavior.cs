@@ -93,19 +93,11 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         row = row - 1;
         column = column - 1;
 
-        // width
-        int h = (int)_manager.mainPanel.rect.height;
-        //int w = (int)_manager.mainPanel.rect.width;
-        int gap = 10;
+        Vector2 vector2 = factory.GetOriginPosition(row, column);
+        float x = vector2.x;
+        float y = vector2.y;
 
-        float itemHeight = h / _manager.Row - gap;
-        float itemWidth = itemHeight;
-
-        float x = column * (itemWidth + gap) + itemWidth / 2;
-        float y = row * (itemHeight + gap) + itemHeight / 2;
-
-        return factory.Generate(x, y, x, y, row, column, itemWidth, itemHeight);
-
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight());
     }
 
 }

@@ -8,11 +8,8 @@ using DG.Tweening;
 public class UpDownAdjustCutEffect : CutEffect
 {
 
-    MagicWallManager manager;
-    private int _row;
-    private int _column;
-    private float _itemHeight;  // item height
-    private float _itemWidth;   // item width
+    MagicWallManager _manager;
+
     private int _page;  // 页码
 
     private float _startingTimeWithOutDelay;
@@ -42,7 +39,7 @@ public class UpDownAdjustCutEffect : CutEffect
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -53,25 +50,22 @@ public class UpDownAdjustCutEffect : CutEffect
     //
     protected override void CreateProductOrLogo()
     {
-        // 获取栅格信息
-        _row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        // 从后往前的效果列数不需要很多
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
         for (int j = 0; j < _column; j++)
         {
             for (int i = 0; i < _row; i++)
             {
-                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
-                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
+                //float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
+                //float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
+
+                Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                float ori_x = vector2.x;
+                float ori_y = vector2.y;
 
                 // 获取出生位置
                 float gen_x, gen_y;
@@ -110,17 +104,11 @@ public class UpDownAdjustCutEffect : CutEffect
     protected override void CreateActivity()
     {
         // 获取栅格信息
-        _row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        // 从后往前的效果列数不需要很多
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
         for (int j = 0; j < _column; j++)
         {
@@ -192,6 +180,11 @@ public class UpDownAdjustCutEffect : CutEffect
         }
 
         //  初始化表现形式
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

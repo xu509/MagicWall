@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5522469409673069153}
   - component: {fileID: 1877555270172104401}
   - component: {fileID: 2429258555300052348}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: SliceCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}

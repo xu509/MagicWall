@@ -7,12 +7,8 @@ using DG.Tweening;
 // 过场效果 2 中间散开 
 public class MidDisperseCutEffect : CutEffect
 {
-    MagicWallManager manager;
+    MagicWallManager _manager;
 
-    private int _row;
-    private int _column;
-    private float _itemHeight;  // item height
-    private float _itemWidth;   // item width
     private int _page;  // 页码
 
     private float _startDelayTime = 0f;  //启动的延迟时间
@@ -43,7 +39,7 @@ public class MidDisperseCutEffect : CutEffect
         DestoryBehavior = new FadeOutDestoryBehavior();
 
         //  初始化 manager
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -54,17 +50,11 @@ public class MidDisperseCutEffect : CutEffect
     //
     protected override void CreateProductOrLogo()
     {
-        _row = manager.row;
-
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
 
         //从下往上，从左往右
@@ -72,8 +62,14 @@ public class MidDisperseCutEffect : CutEffect
         {
             for (int i = 0; i < _row; i++)
             {
-                float x = j * (_itemWidth + gap) + _itemWidth / 2;
-                float y = i * (_itemHeight + gap) + _itemHeight / 2;
+                Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                float x = vector2.x;
+                float y = vector2.y;
+
+                //float x = j * (_itemWidth + gap) + _itemWidth / 2;
+                //float y = i * (_itemHeight + gap) + _itemHeight / 2;
+
+
                 int middleX = (_column - 1) / 2;
                 float delay = System.Math.Abs(middleX - i) * 0.05f;
 
@@ -112,17 +108,11 @@ public class MidDisperseCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
-        _row = manager.row;
-
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
-
-        int gap = 10;
-
-        _itemWidth = h / _row - gap;
-        _itemHeight = _itemWidth;
-
-        _column = Mathf.CeilToInt(w / _itemWidth);
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+        float gap = ItemsFactory.GetSceneGap();
 
 
         //从下往上，从左往右
@@ -185,6 +175,11 @@ public class MidDisperseCutEffect : CutEffect
         }
 
         //  初始化表现形式
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+
         _displayBehaviorConfig.Row = _row;
         _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.ItemWidth = _itemWidth;

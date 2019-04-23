@@ -57,6 +57,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
     //layout
     public int row = 6;
     public int Row { get { return row; } }
+
+    int gap = 58;
+    public int Gap { get { return gap; } }
     #endregion
 
     #region PRIVATE PARAMETER
@@ -74,19 +77,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     private RectTransform _operationPanel;
 
-    // 上一次点击的时间
-    float lastClickDownTime = 0f;
-
-    // 按下与抬起的间隔
-    float clickIntervalTime = 0.5f;
-
-    // 选中的agent
-    FlockAgent chooseFlockAgent = null;
 
 
-    GraphicRaycaster m_Raycaster;
-    PointerEventData m_PointerEventData;
-    EventSystem m_EventSystem;
+
+
     #endregion
 
     #region Private Parameter - Data
@@ -113,6 +107,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
         //  装载内容
         TheDataSource theDataSource = TheDataSource.Instance;
+
+        //  初始化操作监听
+        OperateManager _operateManager = OperateManager.Instance;
     }
 
 
@@ -122,9 +119,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 初始化 UI 索引
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
 
-        // Raycaster - event
-        m_Raycaster = GetComponent<GraphicRaycaster>();
-		m_EventSystem = GetComponent<EventSystem> ();
+  //      // Raycaster - event
+  //      m_Raycaster = GetComponent<GraphicRaycaster>();
+		//m_EventSystem = GetComponent<EventSystem> ();
     }
 
     // Update is called once per frame
@@ -133,47 +130,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 开启场景效果
         SceneManager.Instance.Run();
 
-        // 开启手势监听
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log("GetMouseButtonDown");
-            if (lastClickDownTime == 0f)
-            {
-                lastClickDownTime = Time.time;
-            }
-            chooseFlockAgent = getAgentsByMousePosition();
-            //Debug.Log("chooseFlockAgent : " + chooseFlockAgent);
-        }
+        //  启动监听
+        OperateManager.Instance.DoListening();
 
-        if (Input.GetMouseButton(0))
-        {
-            //Debug.Log("GetMouseButton");
-            if ((Time.time - lastClickDownTime) > clickIntervalTime)
-            {
-                Debug.Log("recognize Drag");
-                // 此处为拖拽事件
-                if (chooseFlockAgent != null)
-                {
-                    DoDragItem(chooseFlockAgent);
-                }
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            //Debug.Log("GetMouseButtonUp");
-            if ((Time.time - lastClickDownTime) < clickIntervalTime)
-            {
-                Debug.Log("recognize click");
-                // 此处为点击事件
-                if (chooseFlockAgent != null)
-                {
-                    AgentManager.Instance.DoChosenItem(chooseFlockAgent);
-                }
-            }
-            lastClickDownTime = 0f;
-        }
-
+       
     }
 
     #region 清理面板
@@ -200,39 +160,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
     }
     #endregion
 
-    #region 根据鼠标点击位置获取 agent
-    FlockAgent getAgentsByMousePosition() {
-        //Set up the new Pointer Event
-        m_PointerEventData = new PointerEventData(m_EventSystem);
-        //Set the Pointer Event Position to that of the mouse position
-        m_PointerEventData.position = Input.mousePosition;
-
-        //Create a list of Raycast Results
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        //Raycast using the Graphics Raycaster and mouse click position
-        m_Raycaster.Raycast(m_PointerEventData, results);
-
-        FlockAgent choseFlockAgent = null;
-
-        foreach (RaycastResult result in results)
-        {
-            GameObject go = result.gameObject;
-
-            // 通过layer取到agents的子图片
-            if (go.layer == 10)
-            {
-                //Debug.Log(go.name);
-                choseFlockAgent = go.transform.parent.GetComponent<FlockAgent>();
-            }
-            if (go.GetComponent<FlockAgent>() != null)
-            {
-                choseFlockAgent = go.GetComponent<FlockAgent>();
-            }
-        }
-        return choseFlockAgent;
-    }
-    #endregion
 
     #region 获取两块画布的偏移量
     public void updateOffsetOfCanvas() {

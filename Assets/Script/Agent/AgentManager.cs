@@ -158,11 +158,7 @@ public class AgentManager : Singleton<AgentManager>
         }
 
         cardAgent.OriginAgent.IsChoosing = false;
-
-
-
-
-        Debug.Log("DELETE CARD");
+        
     }
 
     //
@@ -173,6 +169,13 @@ public class AgentManager : Singleton<AgentManager>
         agent.GetComponent<RectTransform>().DOScale(scaleVector, second)
             .OnUpdate(() => DoSizeDeltaUpdateCallBack(agent));
 
+    }
+
+    /// <summary>
+    ///     销毁卡片
+    /// </summary>
+    public void DestoryCardAgent(CardAgent cardAgent) {
+        Destroy(cardAgent.gameObject);
     }
     
 
@@ -196,6 +199,8 @@ public class AgentManager : Singleton<AgentManager>
         if (vector3Scale == Vector3.zero) {
             effectAgent.Remove(agent);
             Destroy(agent);
+
+            DestoryCardAgent(agent as CardAgent);
         }
 
     }
@@ -227,6 +232,8 @@ public class AgentManager : Singleton<AgentManager>
 
         Vector3 scaleVector3 = Vector3.one;
         DoScaleAgency(originAgent, scaleVector3, 1f);
+
+        DestoryCardAgent(agent);
     }
 
     //
@@ -251,8 +258,9 @@ public class AgentManager : Singleton<AgentManager>
         Vector3 to = new Vector3(pos.x, pos.y, 0);
         cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to, 0.3f);
 
-        Vector3 scaleVector3 = new Vector3(3f, 3f, 3f);
+        Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
         DoScaleAgency(cardAgent, scaleVector3, 0.5f);
+
     }
 
 
