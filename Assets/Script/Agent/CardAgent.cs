@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
 
@@ -68,6 +69,45 @@ public class CardAgent : FlockAgent
             }
         }
     }
+
+    //
+    //  Click Button
+    //
+    public void DoClick() {
+        Debug.Log("Click");
+
+        DoRecover();
+
+    }
+
+    //
+    //  Click Button
+    //
+    public void DoDrag()
+    {
+
+        Debug.Log("DoDrag");
+
+        DoRecover();
+
+    }
+
+    //
+    //  当卡片被操作
+    //
+    public void DoUpdate() {
+        Debug.Log("DO UPDATE");
+
+        if (CardStatus == CardStatusEnum.NORMAL) {
+            _recentActiveTime = Time.time;
+        }
+        else if (CardStatus == CardStatusEnum.DESTORING) {
+            DoRecover();
+        }
+    }
+
+
+
     #endregion
 
     #region Private Methods
@@ -88,7 +128,49 @@ public class CardAgent : FlockAgent
     //
     private void DoDestoriedForSecondStep()
     {
-        AgentManager.Instance.DoDestoryCardAgent(this);
+        MagicWallManager _manager = MagicWallManager.Instance;
+
+
+        //  如果场景没有变，则回到原位置
+        if (_sceneIndex == _manager.SceneIndex)
+        {
+            //恢复并归位
+            // 缩到很小很小
+            RectTransform rect = GetComponent<RectTransform>();
+
+            //  移到后方、缩小、透明
+            rect.DOScale(0.2f, 1f);
+
+            //  获取位置
+            FlockAgent oriAgent = _originAgent;
+
+            Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX, oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
+
+            rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
+                //  使卡片消失
+                gameObject.SetActive(false);
+                AgentManager.Instance.RemoveItemFromEffectItems(this);
+
+                Destroy(this.gameObject);
+
+                OriginAgent.DoRecoverAfterChoose();
+            }); ;
+        }
+        //  直接消失
+        else
+        {
+            // 慢慢缩小直到消失
+            Vector3 vector3 = Vector3.zero;
+
+            GetComponent<RectTransform>().DOScale(vector3, 1.5f)
+                .OnUpdate(() => {
+                    Width = GetComponent<RectTransform>().sizeDelta.x;
+                    Height = GetComponent<RectTransform>().sizeDelta.y;
+                    AgentManager.Instance.UpdateAgents();
+                })
+                .OnComplete(() => DoScaleCompletedCallBack(this, vector3));
+        }
+
     }
 
     //
@@ -96,10 +178,32 @@ public class CardAgent : FlockAgent
     //
     private void DoRecover()
     {
+
+        Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
+        AgentManager.Instance.DoScaleAgency(this, scaleVector3, 0.5f);
+
         Debug.Log("恢复");
+        CardStatus = CardStatusEnum.NORMAL;
+        _recentActiveTime = Time.time;
+
     }
 
+
     #endregion
+
+
+    //
+    //  Private Methods
+    //
+
+
+
+
+
+    //
+    //  Call Back
+    //
+
 
 
 

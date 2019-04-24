@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 企业工厂
 /// </summary>
-public class EnvFactory : MonoBehaviour,ItemsFactory
+public class ActivityFactory : MonoBehaviour,ItemsFactory
 {
     private float _gap = 58;
     private float _itemWidth;   // Item Width
@@ -33,7 +33,7 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
 
     }
 
-    public EnvFactory() {
+    public ActivityFactory() {
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
         _manager = MagicWallManager.Instance;
         _agentManager = AgentManager.Instance;
@@ -106,20 +106,20 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
     }
     #endregion
 
-    #region 生成十字卡片
+    #region 生成滑动卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
     {
         //  创建 Agent
-        CrossCardAgent crossCardAgent = Instantiate(
-                                    _manager.crossCardgent,
+        SliceCardAgent sliceCardAgent = Instantiate(
+                                    _manager.sliceCardgent,
                                     _operationPanel
-                                    ) as CrossCardAgent;
+                                    ) as SliceCardAgent;
 
         //  命名
-        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+        sliceCardAgent.name = "Choose(" + flockAgent.name + ")";
 
         //  获取rect引用
-        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
+        RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
 
         //  定出生位置
         rectTransform.anchoredPosition3D = genPos;
@@ -133,22 +133,19 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
         rectTransform.localScale = scaleVector3;
 
         //  初始化内容
-        crossCardAgent.Width = rectTransform.rect.width;
-        crossCardAgent.Height = rectTransform.rect.height;
+        sliceCardAgent.Width = rectTransform.rect.width;
+        sliceCardAgent.Height = rectTransform.rect.height;
 
         //  添加原组件
-        crossCardAgent.OriginAgent = flockAgent;
+        sliceCardAgent.OriginAgent = flockAgent;
 
         //  配置scene
-        crossCardAgent.SceneIndex = _manager.SceneIndex;
+        sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
         // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(crossCardAgent);
+        _agentManager.Agents.Add(sliceCardAgent);
 
-        // 初始化 CrossAgent 数据
-        crossCardAgent.InitData();
-
-        return crossCardAgent;
+        return sliceCardAgent;
     }
     #endregion
 

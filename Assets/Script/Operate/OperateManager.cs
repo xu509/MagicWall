@@ -21,7 +21,8 @@ public class OperateManager : Singleton<OperateManager>
 
     //  滑块浮层
     int Flock_Layer = 10;
-    int Button_Layer = 11;
+    int Card_Layer = 11;
+    int Button_Layer = 12;
 
 
     // 选中的agent
@@ -92,7 +93,8 @@ public class OperateManager : Singleton<OperateManager>
                 // 此处为点击事件
                 if (chooseFlockAgent != null)
                 {
-                    AgentManager.Instance.DoChosenItem(chooseFlockAgent);
+                    chooseFlockAgent.DoChoose();
+                    
                 }
             }
             lastClickDownTime = 0f;
@@ -121,7 +123,7 @@ public class OperateManager : Singleton<OperateManager>
             GameObject go = result.gameObject;
 
             // 通过layer取到agents的子图片
-            if (go.layer == Button_Layer) {
+            if (go.layer == Card_Layer) {
                 Debug.Log("Click Button_Layer : " + go.name);
             }
             else if (go.layer == Flock_Layer)

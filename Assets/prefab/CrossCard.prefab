@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5387376799272988941}
   - component: {fileID: 1133702449953901793}
   - component: {fileID: 8510757660009471912}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 1702068175313341596}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22.499996, y: -0.1749999}
-  m_SizeDelta: {x: 15, y: 15}
+  m_AnchorMin: {x: 0.69200003, y: 0.15870306}
+  m_AnchorMax: {x: 0.86, y: 1}
+  m_AnchoredPosition: {x: -0.5000038, y: -1.175}
+  m_SizeDelta: {x: 1, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5387376799272988941
 CanvasRenderer:
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.5283019, g: 0.042363837, b: 0.042363837, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 3530828607989563303}
   - component: {fileID: 4972178131090613991}
   - component: {fileID: 3351056014540192192}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,8 @@ GameObject:
   - component: {fileID: 5522469409673069153}
   - component: {fileID: 1877555270172104401}
   - component: {fileID: 8137593796822784393}
-  m_Layer: 10
+  - component: {fileID: 6055682436084122556}
+  m_Layer: 11
   m_Name: CrossCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,8 +349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f899d054115ff847b5b4819fb4f3d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
+  _width: 0
+  _height: 0
   oriVector2: {x: 0, y: 0}
   nextVector2: {x: 0, y: 0}
   signTextComponent: {fileID: 0}
@@ -359,6 +360,20 @@ MonoBehaviour:
   showRefVector2: {x: 0, y: 0}
   showRefVector2WithOffset: {x: 0, y: 0}
   showMoveOffset: 0
+--- !u!114 &6055682436084122556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2247757197020260754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  delegates: []
 --- !u!1 &2583294288687138182
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +385,7 @@ GameObject:
   - component: {fileID: 9121859438228417491}
   - component: {fileID: 4373654928911710169}
   - component: {fileID: 8317737339786223367}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: ProductCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +458,8 @@ GameObject:
   - component: {fileID: 305361198191142788}
   - component: {fileID: 4025155605447068868}
   - component: {fileID: 1073372764626404936}
-  m_Layer: 11
+  - component: {fileID: 4134636343575347165}
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -548,6 +564,37 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &4134636343575347165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2954498930006253560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8137593796822784393}
+          m_MethodName: DoClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1 &4328976818704725790
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +607,7 @@ GameObject:
   - component: {fileID: 2498423520678977272}
   - component: {fileID: 5476344708826472631}
   - component: {fileID: 3362350998684948888}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,10 +628,10 @@ RectTransform:
   m_Father: {fileID: 1702068175313341596}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.5, y: 0.175}
-  m_SizeDelta: {x: 15, y: 15}
+  m_AnchorMin: {x: 0.5, y: 0.15870306}
+  m_AnchorMax: {x: 0.632, y: 0.97777826}
+  m_AnchoredPosition: {x: 2, y: -0.82500005}
+  m_SizeDelta: {x: 4, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2498423520678977272
 CanvasRenderer:
@@ -676,7 +723,7 @@ GameObject:
   - component: {fileID: 8133512979022407630}
   - component: {fileID: 5584060965938520414}
   - component: {fileID: 1631693733699777347}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: CatalogCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +795,8 @@ GameObject:
   - component: {fileID: 7412938963414864753}
   - component: {fileID: 6045898848391427071}
   - component: {fileID: 3635306732433681687}
-  m_Layer: 11
+  - component: {fileID: 921139294133042848}
+  m_Layer: 12
   m_Name: EnvCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,6 +857,37 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &921139294133042848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846020698637166242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 5
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8137593796822784393}
+          m_MethodName: DoDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1 &6992849682977382672
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +899,7 @@ GameObject:
   - component: {fileID: 9092079739855570156}
   - component: {fileID: 5086211410110327543}
   - component: {fileID: 8279656731266907193}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: VideoCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -892,7 +971,7 @@ GameObject:
   - component: {fileID: 8171844738888900691}
   - component: {fileID: 9133168512810746990}
   - component: {fileID: 6903282802771745840}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: ActivityCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,7 +1041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702068175313341596}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7532093076969296949}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: images
   m_TagString: Untagged
   m_Icon: {fileID: 0}

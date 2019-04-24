@@ -40,13 +40,13 @@ public class FlockAgent : MonoBehaviour
 
     // 宽度
     [SerializeField]
-    private float width;
-    public float Width { set { width = value; } get { return width; } }
+    private float _width;
+    public float Width { set { _width = value; } get { return _width; } }
 
     // 高度
     [SerializeField]
-    private float height;
-    public float Height { set { height = value; } get { return height; } }
+    private float _height;
+    public float Height { set { _height = value; } get { return _height; } }
 
     // 原位
     [SerializeField]
@@ -63,16 +63,16 @@ public class FlockAgent : MonoBehaviour
     public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
 
     // 是否被选中
-    private bool isChoosing = false;
-    public bool IsChoosing { set { isChoosing = value; } get { return isChoosing; } }
+    private bool _isChoosing = false;
+    public bool IsChoosing { set { _isChoosing = value; } get { return _isChoosing; } }
 
     // 是否被改变
     private bool isChanging = false;
     public bool IsChanging { set { isChanging = value; } get { return isChanging; } }
 
     // 卡片代理
-    CardAgent cardAgent;
-    public CardAgent GetCardAgent{ get {return cardAgent; }}
+    CardAgent _cardAgent;
+    public CardAgent GetCardAgent{ get {return _cardAgent; }}
 		
     RectTransform agentRectTransform;
     public RectTransform AgentRectTransform { get { return agentRectTransform; } }
@@ -80,6 +80,10 @@ public class FlockAgent : MonoBehaviour
     // 能被影响
     private bool _canEffected = true;
     public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
+
+
+    //  工厂 & 管理器
+    ItemsFactory _itemsFactory;
 
 
 
@@ -110,21 +114,41 @@ public class FlockAgent : MonoBehaviour
     //      originVector : 在屏幕上显示的位置
     //      genVector ： 出生的位置
     //
-	public virtual void Initialize(Vector2 originVector,Vector2 genVector,int row,int column)
-    {
+	public virtual void Initialize(Vector2 originVector,Vector2 genVector,int row,
+        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom,int dataType)
+    {    
         OriVector2 = originVector;
         GenVector2 = genVector;
         x = row;
         y = column;
+        _width = width;
+        _height = height;
+        _data_id = dataId;
+        _data_img = dataImg;
+        _data_iscustom = dataIsCustom;
+        _data_type = dataType;
 
         // 定义 agent 的名字
         nameTextComponent.text = row + " - " + column;
+
+        if (dataType == 0)
+        {
+            _itemsFactory = new EnvFactory();
+        }
+        else if (dataType == 1)
+        {
+            _itemsFactory = new ProductFactory();
+        }
+        else {
+            _itemsFactory = new ActivityFactory();
+        }
+
+
+
     }
 
 
-    //
-    // 更新位置
-    //
+    #region 更新位置
     public void updatePosition()
     {
         if (CanEffected)
@@ -302,8 +326,109 @@ public class FlockAgent : MonoBehaviour
 //				return toy;
 //			}
 		}
-
 	}
+    #endregion
+
+    #region 点击选择
+
+    public void DoChoose() {
+        MagicWallManager _manager = MagicWallManager.Instance;
+
+        if (!_isChoosing)
+        {
+            _isChoosing = true;
+            float offset = _manager.PanelOffsetX;
+
+            //  先缩小（向后退）
+            RectTransform rect = GetComponent<RectTransform>();
+            Vector2 positionInMainPanel = rect.anchoredPosition;
+
+            //  移到后方、缩小、透明
+            rect.DOScale(0.2f, 0.3f);
+            Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
+            Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+
+            // 完成缩小与移动后创建十字卡片
+            rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
+                // 使原组件消失
+                gameObject.SetActive(false);
+
+                // 此处需要区分
+                _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
+
+                Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
+                _cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+
+                Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
+                DoScaleAgency(_cardAgent,scaleVector3, 0.5f);
+            }); ;
+
+            // TODO: 当两个选择框体相近时，需要处理
+
+        }
+    }
+
+
+    #endregion
+
+    #region 恢复
+
+    public void DoRecoverAfterChoose()
+    {
+        MagicWallManager _manager = MagicWallManager.Instance;
+
+        //  将原组件启用
+        gameObject.SetActive(true);
+
+        // 调整位置
+        RectTransform rect = GetComponent<RectTransform>();
+        RectTransform cardRect = _cardAgent.GetComponent<RectTransform>();
+
+        rect.anchoredPosition3D = new Vector3(cardRect.anchoredPosition3D.x + _manager.PanelOffsetX,
+            cardRect.anchoredPosition3D.y + _manager.PanelOffsetY,
+            cardRect.anchoredPosition3D.z);
+
+        // 恢复原位
+        Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
+        rect.DOAnchorPos3D(to, 0.3f);
+
+        // 放大至原大小
+        Vector3 scaleVector3 = Vector3.one;
+        DoScaleAgency(this,scaleVector3, 1f);
+
+    }
+
+
+    #endregion
+
+    //
+    //  缩放代理
+    //
+    public void DoScaleAgency(FlockAgent agent ,Vector3 scaleVector, float second)
+    {
+        agent.GetComponent<RectTransform>().DOScale(scaleVector, second)
+            .OnUpdate(() => {
+                Width = GetComponent<RectTransform>().sizeDelta.x;
+                Height = GetComponent<RectTransform>().sizeDelta.y;
+                AgentManager.Instance.UpdateAgents();
+            });
+    }
+
+
+
+    protected void DoScaleCompletedCallBack(FlockAgent agent, Vector3 vector3Scale)
+    {
+
+        // 进行销毁
+        if (vector3Scale == Vector3.zero)
+        {
+            AgentManager.Instance.RemoveItemFromEffectItems(agent as CardAgent);
+            Destroy(agent.gameObject);
+        }
+
+    }
+
+
 
     //
     //  获取Logo

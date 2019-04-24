@@ -54,7 +54,7 @@ public enum SceneStatus
 public enum CardStatusEnum
 {
     NORMAL, // 正常
-    DESTORING, // 启动动画中
+    DESTORING, // 销毁动画中
     DESTORYED, // 已销毁
     
 }

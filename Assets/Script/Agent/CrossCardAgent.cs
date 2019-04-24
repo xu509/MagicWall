@@ -7,10 +7,6 @@ using DG.Tweening;
 public class CrossCardAgent : CardAgent
 {
     #region Data Parameter
-    private string _data_id;    //  企业id
-    private string _data_name; // 企业名
-    private string _data_card; // 企业名片
-    private string[] _data_catalog; //  企业的 catalog
 
     #endregion
 

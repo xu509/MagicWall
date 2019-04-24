@@ -131,7 +131,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
         SceneManager.Instance.Run();
 
         //  启动监听
-        OperateManager.Instance.DoListening();
+        //OperateManager.Instance.DoListening();
 
        
     }
@@ -159,7 +159,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
         }
     }
     #endregion
-
 
     #region 获取两块画布的偏移量
     public void updateOffsetOfCanvas() {

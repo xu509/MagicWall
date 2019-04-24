@@ -94,6 +94,24 @@ public class AgentManager : Singleton<AgentManager>
         }
     }
 
+
+    //
+    //  移除效果列表中的项
+    //
+    public bool RemoveItemFromEffectItems(CardAgent agent) {
+        return effectAgent.Remove(agent);
+    }
+
+    //
+    //  移除效果列表中的项
+    //
+    public void AddEffectItem(CardAgent agent)
+    {
+        effectAgent.Add(agent);
+    }
+
+
+
     //
     //  选择某个
     //
@@ -124,42 +142,7 @@ public class AgentManager : Singleton<AgentManager>
         }
     }
 
-    //
-    //  销毁card
-    //
-    public void DoDestoryCardAgent(CardAgent cardAgent) {
-        //  如果场景没有变，则回到原位置
-        if (cardAgent.SceneIndex == _manager.SceneIndex)
-        {
-            //恢复并归位
-            // 缩到很小很小
-            RectTransform rect = cardAgent.GetComponent<RectTransform>();
-
-            //  移到后方、缩小、透明
-            rect.DOScale(0.2f, 1f);
-
-            //  获取位置
-            FlockAgent oriAgent = cardAgent.OriginAgent;
-
-            Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX, oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
-
-            rect.DOAnchorPos3D(to, 1f).OnComplete(() => DoDestoryCompletedCallBack(cardAgent)); ;
-
-
-        }
-        //  直接消失
-        else {
-            // 慢慢缩小直到消失
-            Vector3 vector3 = Vector3.zero;
-
-            cardAgent.GetComponent<RectTransform>().DOScale(vector3, 1.5f)
-                .OnUpdate(() => DoSizeDeltaUpdateCallBack(cardAgent))
-                .OnComplete(() => DoScaleCompletedCallBack(cardAgent, vector3));
-        }
-
-        cardAgent.OriginAgent.IsChoosing = false;
-        
-    }
+   
 
     //
     //  缩放代理
