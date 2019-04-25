@@ -38,3 +38,9 @@ sysinfo.txt
 ProjectSettings/ProjectVersion.txt
 UnityPackageManager/manifest.json
 ProjectSettings/ProjectVersion.txt
+Assets/Editor.meta
+Assets/Script/Scene/Cut Effect/ContentListener.meta
+Assets/third/AipSdk/AipSdk.csproj.meta
+Logs/Packages-Update.log
+Packages/manifest.json
+ProjectSettings/XRSettings.asset
