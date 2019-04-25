@@ -93,7 +93,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j , _itemWidth, _itemHeight);
                 go.Delay = delay;
                 go.DelayTime = delay;
 
@@ -149,7 +149,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                 gen_y = ori_y; //纵坐标不变
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight);
                 go.Delay = delay;
                 go.DelayTime = delay;
             }

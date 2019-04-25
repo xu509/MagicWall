@@ -89,7 +89,7 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
 
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.Texture;
+        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
 
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
@@ -100,7 +100,7 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
             width, height, env.Ent_id, env.Logo, env.IsCustom, 0);
 
         //  添加到组件袋
-        _agentManager.Agents.Add(newAgent);
+        _agentManager.AddItem(newAgent);
 
         return newAgent;
     }

@@ -24,7 +24,7 @@ public class StarsCutEffect : CutEffect
     protected override void Init()
     {
         //  获取动画的持续时间
-        StartingDurTime = 7f;
+        StartingDurTime = 17f;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
@@ -81,7 +81,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
@@ -132,7 +132,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i + 1, j + 1, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , itemWidth, itemHeight);
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
@@ -154,6 +154,8 @@ public class StarsCutEffect : CutEffect
             int count = AgentManager.Instance.Agents.Count;
             int index = Random.Range(0, count - 1);
             FlockAgent agent = AgentManager.Instance.Agents[index];
+
+            // TODO 这里挑错，显示索引的内容已经没了
             agent.gameObject.SetActive(true);
 
             Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
