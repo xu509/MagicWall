@@ -61,14 +61,7 @@ public class DaoService : Singleton<DaoService>
     //
     public Enterprise GetEnterprisesDetail()
     {
-        //  基础数据（企业名，企业简介，企业点赞数）
-        //  企业名片数据
-        //  catelog数据
-        //  活动数据
-        //  产品数据
-        //  视频数据
-
-
+        // todo
 
         return null;
     }

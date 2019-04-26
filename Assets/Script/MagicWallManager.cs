@@ -85,10 +85,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region Private Parameter - Data
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
 
     #endregion
 

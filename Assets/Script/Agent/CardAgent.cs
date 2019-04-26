@@ -11,6 +11,7 @@ public class CardAgent : FlockAgent
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
     private float _activeFirstStageDuringTime = 7f;   //  最大的时间
     private float _activeSecondStageDuringTime = 4f;   //  第二段缩小的时间
+    private int _sceneIndex;    //  场景的索引
 
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
@@ -26,6 +27,11 @@ public class CardAgent : FlockAgent
         get { return _originAgent; }
     }
 
+    public int SceneIndex
+    {
+        set { _sceneIndex = value; }
+        get { return _sceneIndex; }
+    }
     #endregion
 
     #region Protected Method
@@ -109,11 +115,12 @@ public class CardAgent : FlockAgent
     //  第一步的销毁
     //
     private void DoDestoriedForFirstStep() {
+        //  获取rect引用
+        RectTransform rectTransform = GetComponent<RectTransform>();
 
-        //  缩放至2倍大
+        //  定义缩放
         Vector3 scaleVector3 = new Vector3(2f, 2f, 2f);
-        DoScaleAgency(this, scaleVector3, 2f);
-
+        AgentManager.Instance.DoScaleAgency(this, scaleVector3, 2f);
     }
 
     //
@@ -123,8 +130,9 @@ public class CardAgent : FlockAgent
     {
         MagicWallManager _manager = MagicWallManager.Instance;
 
+
         //  如果场景没有变，则回到原位置
-        if (SceneIndex == _manager.SceneIndex)
+        if (_sceneIndex == _manager.SceneIndex)
         {
             //恢复并归位
             // 缩到很小很小
@@ -135,14 +143,15 @@ public class CardAgent : FlockAgent
 
             //  获取位置
             FlockAgent oriAgent = _originAgent;
+
             Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX, oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
             rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
                 //  使卡片消失
+                gameObject.SetActive(false);
                 AgentManager.Instance.RemoveItemFromEffectItems(this);
 
-                gameObject.SetActive(false);
-                Destroy(gameObject);
+                Destroy(this.gameObject);
 
                 OriginAgent.DoRecoverAfterChoose();
             }); ;
@@ -159,9 +168,7 @@ public class CardAgent : FlockAgent
                     Height = GetComponent<RectTransform>().sizeDelta.y;
                     AgentManager.Instance.UpdateAgents();
                 })
-                .OnComplete(() => DoDestoryOnCompleteCallBack(this));
-
-            // 将原
+                .OnComplete(() => DoScaleCompletedCallBack(this, vector3));
         }
 
     }
@@ -173,7 +180,7 @@ public class CardAgent : FlockAgent
     {
 
         Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
-        DoScaleAgency(this, scaleVector3, 0.5f);
+        AgentManager.Instance.DoScaleAgency(this, scaleVector3, 0.5f);
 
         Debug.Log("恢复");
         CardStatus = CardStatusEnum.NORMAL;
