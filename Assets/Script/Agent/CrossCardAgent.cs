@@ -6,11 +6,15 @@ using DG.Tweening;
 
 public class CrossCardAgent : CardAgent
 {
+
+    [SerializeField] CrossCardScrollView crossCardScrollView;
+
     #region Data Parameter
 
+
+
+
     #endregion
-
-
 
 
     //
@@ -25,6 +29,11 @@ public class CrossCardAgent : CardAgent
 
     void Awake() {
         AwakeAgency();
+
+
+
+
+
     }
 
     //
@@ -32,6 +41,13 @@ public class CrossCardAgent : CardAgent
     //
     void Update() {
         UpdateAgency();
+
+        CrossCardScrollViewCellData data = new CrossCardScrollViewCellData();
+        IList<CrossCardScrollViewCellData> datas = new List<CrossCardScrollViewCellData>();
+        datas.Add(data);
+
+        crossCardScrollView.UpdateData(datas);
+
     }
    
 }

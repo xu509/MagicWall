@@ -85,7 +85,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight);
 
                 // agent 一定时间内从透明至无透明
                 go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime).From();
@@ -138,7 +138,7 @@ public class UpDownAdjustCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i + 1, j + 1, _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight);
 
                 // agent 一定时间内从透明至无透明
                 go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime).From();

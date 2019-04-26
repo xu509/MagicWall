@@ -105,7 +105,6 @@ public class CurveStaggerCutEffect : CutEffect
 
                 //生成 agent
                 FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
-                //AgentManager.Instance.CreateNewAgent(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
 
                 // 装载延迟参数
                 go.DelayX = delayX;

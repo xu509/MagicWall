@@ -40,7 +40,7 @@ public class StartScene : IScene
         foreach (Enterprise env in enterprises) {
             string logo = env.Logo;
             // 加载图片资源
-            env.Texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + logo);
+            env.TextureLogo = AppUtils.LoadPNG(MagicWallManager.URL_ASSET_LOGO + logo);
         }
 
         _resourseIsChecked = true;

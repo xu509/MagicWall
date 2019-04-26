@@ -23,6 +23,13 @@ public class FlockAgent : MonoBehaviour
 
     #region Component Parameter
 
+    private int _sceneIndex;    //  场景的索引
+    public int SceneIndex
+    {
+        set { _sceneIndex = value; }
+        get { return _sceneIndex; }
+    }
+
     int x;
     int y;
 
@@ -131,6 +138,9 @@ public class FlockAgent : MonoBehaviour
         // 定义 agent 的名字
         nameTextComponent.text = row + " - " + column;
 
+        _sceneIndex = MagicWallManager.Instance.SceneIndex;
+
+        // 定义工厂
         if (dataType == 0)
         {
             _itemsFactory = new EnvFactory();
@@ -377,6 +387,13 @@ public class FlockAgent : MonoBehaviour
     {
         MagicWallManager _manager = MagicWallManager.Instance;
 
+        // 如果组件已不在原场景，则不进行恢复
+        if (_sceneIndex != _manager.SceneIndex) {
+            gameObject.SetActive(true);
+            Destroy(gameObject);
+            return;
+        }
+
         //  将原组件启用
         gameObject.SetActive(true);
 
@@ -416,13 +433,20 @@ public class FlockAgent : MonoBehaviour
 
 
 
-    protected void DoScaleCompletedCallBack(FlockAgent agent, Vector3 vector3Scale)
+    protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
     {
 
         // 进行销毁
-        if (vector3Scale == Vector3.zero)
-        {
+        if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
             AgentManager.Instance.RemoveItemFromEffectItems(agent as CardAgent);
+
+            CardAgent ca = agent as CardAgent;
+
+            Destroy(ca.gameObject);
+            Destroy(ca.OriginAgent.gameObject);
+
+        }
+        else if (typeof(FlockAgent).IsAssignableFrom(agent.GetType())) {
             Destroy(agent.gameObject);
         }
 

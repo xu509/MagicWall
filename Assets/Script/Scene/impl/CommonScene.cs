@@ -173,13 +173,14 @@ public class CommonScene : IScene
 				else
 				{
 
-                    Debug.Log("DoDestorying 4");
                     DoDestorying();
 				}
 			}
 			else
 			{
-				DoDestorying();
+                Debug.Log("DoDestorying 4");
+
+                DoDestorying();
 			}
 		}
 		return true;
