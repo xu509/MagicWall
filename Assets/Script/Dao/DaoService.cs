@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ public class DaoService : Singleton<DaoService>
     //
     //  获取企业的详细信息
     //
-    public Enterprise GetEnterprisesDetail()
+    public EnterpriseDetail GetEnterprisesDetail()
     {
         //  基础数据（企业名，企业简介，企业点赞数）
         //  企业名片数据
@@ -67,10 +68,9 @@ public class DaoService : Singleton<DaoService>
         //  活动数据
         //  产品数据
         //  视频数据
+        EnterpriseDetail enterpriseDetail = new EnterpriseDetail().Generator();
 
-
-
-        return null;
+        return enterpriseDetail;
     }
 
     //
@@ -118,7 +118,7 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {

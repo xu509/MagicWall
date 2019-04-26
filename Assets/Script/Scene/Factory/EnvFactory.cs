@@ -125,8 +125,8 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
         rectTransform.anchoredPosition3D = genPos;
 
         //  定义大小
-        Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        rectTransform.sizeDelta = sizeDelta;
+        //Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
+        //rectTransform.sizeDelta = sizeDelta;
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);

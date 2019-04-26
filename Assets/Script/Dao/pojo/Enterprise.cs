@@ -34,7 +34,7 @@ public class Enterprise : Generator<Enterprise>
     private string _description;
     public string Description { set { _description = value; } get { return _description; } }
 
-    //  喜欢数量
+    //  喜欢数量 - 针对企业
     private int _likes;
     public int likes { set { _likes = value; } get { return _likes; } }
 

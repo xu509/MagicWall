@@ -111,7 +111,7 @@ public class CardAgent : FlockAgent
     private void DoDestoriedForFirstStep() {
 
         //  缩放至2倍大
-        Vector3 scaleVector3 = new Vector3(2f, 2f, 2f);
+        Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         DoScaleAgency(this, scaleVector3, 2f);
 
     }

@@ -354,7 +354,7 @@ public class FlockAgent : MonoBehaviour
             Vector2 positionInMainPanel = rect.anchoredPosition;
 
             //  移到后方、缩小、透明
-            rect.DOScale(0.2f, 0.3f);
+            rect.DOScale(0.1f, 0.3f);
             Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
@@ -369,7 +369,7 @@ public class FlockAgent : MonoBehaviour
                 Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
                 _cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
 
-                Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
+                Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
                 DoScaleAgency(_cardAgent,scaleVector3, 0.5f);
             }); ;
 

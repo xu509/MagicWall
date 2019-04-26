@@ -10,9 +10,9 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
     List<Product> _products; //  产品信息
     List<Activity> _activities; // 活动信息
     List<Video> _videos;    //  视频
-    List<string> _catalog; // catalog 视频
+    List<Catalog> _catalog; // catalog 视频
 
-    public Enterprise enterprise { set { _enterprise = value; } get { return _enterprise; } }
+    public Enterprise Enterprise { set { _enterprise = value; } get { return _enterprise; } }
 
     public List<Product> products { set { _products = value; } get { return _products; } }
 
@@ -20,7 +20,7 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
 
     public List<Video> videos { set { _videos = value; } get { return _videos; } }
 
-    public List<string> catalog { set { _catalog = value; } get { return _catalog; } }
+    public List<Catalog> catalog { set { _catalog = value; } get { return _catalog; } }
 
 
     public EnterpriseDetail Generator()
@@ -28,12 +28,36 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
         EnterpriseDetail enterpriseDetail = new EnterpriseDetail();
 
         Enterprise enterprise = new Enterprise();
-        enterprise = enterprise.Generator();
+        enterpriseDetail.Enterprise = enterprise.Generator();
 
+        Product product = new Product();
+        enterpriseDetail._products = new List<Product>();
+        products.Add(product.Generator());
+        products.Add(product.Generator());
+        products.Add(product.Generator());
+        products.Add(product.Generator());
 
+        Catalog catalog = new Catalog();
+        List<Catalog> _catalogs = new List<Catalog>();
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        enterpriseDetail._catalog = _catalogs;
 
+        Activity activity = new Activity();
+        List<Activity> _activities = new List<Activity>();
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        enterpriseDetail._activities = _activities;
 
-
+        Video video = new Video();
+        List<Video> _videos = new List<Video>();
+        _videos.Add(video.Generator());
+        _videos.Add(video.Generator());
+        enterpriseDetail._videos = _videos;
 
         return enterpriseDetail;
     }
