@@ -54,7 +54,7 @@ public class Product : Generator<Product>
 
         product.likes = Random.Range(1, 100);
 
-        product.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "//product//" + product.image);
+        product.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "product\\" + product.image);
 
         // detail
         ProductDetail productDetail = new ProductDetail();

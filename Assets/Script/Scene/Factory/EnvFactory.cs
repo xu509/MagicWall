@@ -6,14 +6,12 @@ using UnityEngine.UI;
 /// <summary>
 /// 企业工厂
 /// </summary>
-public class EnvFactory : MonoBehaviour,ItemsFactory
+public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 {
     private float _gap = 58;
     private float _itemWidth;   // Item Width
     private float _itemHeight;  // Item Height
     private int _column;    // 列数
-
-
 
     // Generate Panel
     private RectTransform _operationPanel;
@@ -27,13 +25,8 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
     // Data
     private DaoService _daoService;
 
-
     void Awake() {
 
-
-    }
-
-    public EnvFactory() {
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
         _manager = MagicWallManager.Instance;
         _agentManager = AgentManager.Instance;
@@ -47,6 +40,12 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
+    }
+
+
+
+    public EnvFactory() {
+
 
     }
 
@@ -194,5 +193,50 @@ public class EnvFactory : MonoBehaviour,ItemsFactory
         return _gap;
     }
 
+    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
+    {
+        //  创建 Agent
+        CrossCardAgent crossCardAgent = Instantiate(
+                                    _manager.crossCardgent,
+                                    _operationPanel
+                                    ) as CrossCardAgent;
 
+        //  命名
+        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+
+        //  获取rect引用
+        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
+
+        //  定出生位置
+        rectTransform.anchoredPosition3D = genPos;
+
+        //  定义大小
+        //Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
+        //rectTransform.sizeDelta = sizeDelta;
+
+        //  定义缩放
+        Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
+        rectTransform.localScale = scaleVector3;
+
+        //  初始化内容
+        crossCardAgent.Width = rectTransform.rect.width;
+        crossCardAgent.Height = rectTransform.rect.height;
+
+        //  添加原组件
+        crossCardAgent.OriginAgent = flockAgent;
+
+        //  配置scene
+        crossCardAgent.SceneIndex = _manager.SceneIndex;
+
+        // 添加到effect agent
+        AgentManager.Instance.AddEffectItem(crossCardAgent);
+
+        // 初始化 CrossAgent 数据
+        crossCardAgent.InitData();
+
+        // 设置显示状态
+        crossCardAgent.gameObject.SetActive(isActive);
+
+        return crossCardAgent;
+    }
 }

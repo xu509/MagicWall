@@ -10,7 +10,7 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
     List<Product> _products; //  产品信息
     List<Activity> _activities; // 活动信息
     List<Video> _videos;    //  视频
-    List<Catalog> _catalog; // catalog 视频
+    List<Catalog> _catalogs; // catalog 视频
 
     public Enterprise Enterprise { set { _enterprise = value; } get { return _enterprise; } }
 
@@ -20,7 +20,7 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
 
     public List<Video> videos { set { _videos = value; } get { return _videos; } }
 
-    public List<Catalog> catalog { set { _catalog = value; } get { return _catalog; } }
+    public List<Catalog> catalog { set { _catalogs = value; } get { return _catalogs; } }
 
 
     public EnterpriseDetail Generator()
@@ -31,11 +31,13 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
         enterpriseDetail.Enterprise = enterprise.Generator();
 
         Product product = new Product();
-        enterpriseDetail._products = new List<Product>();
-        products.Add(product.Generator());
-        products.Add(product.Generator());
-        products.Add(product.Generator());
-        products.Add(product.Generator());
+        List<Product> _products = new List<Product>();
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        enterpriseDetail._products = _products;
+
 
         Catalog catalog = new Catalog();
         List<Catalog> _catalogs = new List<Catalog>();
@@ -43,7 +45,7 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
         _catalogs.Add(catalog.Generator());
         _catalogs.Add(catalog.Generator());
         _catalogs.Add(catalog.Generator());
-        enterpriseDetail._catalog = _catalogs;
+        enterpriseDetail._catalogs = _catalogs;
 
         Activity activity = new Activity();
         List<Activity> _activities = new List<Activity>();

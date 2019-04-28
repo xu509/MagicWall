@@ -25,8 +25,8 @@ public class Catalog : Generator<Catalog>
         Catalog catalog = new Catalog();
 
         string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
-        catalog._img = imgs[Random.Range(1, imgs.Length - 1)];
-        catalog._texture_img = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "//env//" + _img);
+        catalog._img = imgs[Random.Range(0, imgs.Length - 1)];
+        catalog._texture_img = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + catalog._img);
 
         return catalog;
     }

@@ -12,6 +12,7 @@ public interface ItemsFactory
 
     CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent);
 
+    CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive);
 
     Vector2 GetOriginPosition(int row,int column);
 

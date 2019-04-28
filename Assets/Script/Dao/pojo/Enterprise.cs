@@ -78,21 +78,21 @@ public class Enterprise : Generator<Enterprise>
         int id = Random.Range(1, 10);
         env._ent_id = id;
 
-        int name_index = Random.Range(1, names.Length - 1);
+        int name_index = Random.Range(0, names.Length - 1);
         env._name = names[name_index];
 
-        int logo_index = Random.Range(1, logos.Length - 1);
+        int logo_index = Random.Range(0, logos.Length - 1);
         env._logo = logos[logo_index];
 
         env._isCustom = customs[Random.Range(0, 2)];
 
-        env._description = descriptions[Random.Range(1, descriptions.Length - 1)];
+        env._description = descriptions[Random.Range(0, descriptions.Length - 1)];
 
         env.likes = Random.Range(1, 1000);
 
-        env._business_card = businessCards[Random.Range(1, businessCards.Length - 1)];
+        env._business_card = businessCards[Random.Range(0, businessCards.Length - 1)];
 
-        env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "//env//" + env._business_card);
+        env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + env._business_card);
 
         return env;
     }

@@ -43,25 +43,27 @@ public class CardAgent : FlockAgent
     //
     protected void UpdateAgency()
     {
-        // 缩小一半
-        if (_cardStatus == CardStatusEnum.NORMAL)
-        {
-            if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-            {
-                DoDestoriedForFirstStep();
-                _cardStatus = CardStatusEnum.DESTORING;
-            }
-        }
+        Debug.Log("暂时屏蔽缩小");
 
-        // 第二次缩小
-        if (_cardStatus == CardStatusEnum.DESTORING)
-        {
-            if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
-            {
-                DoDestoriedForSecondStep();
-                _cardStatus = CardStatusEnum.DESTORYED;
-            }
-        }
+        //// 缩小一半
+        //if (_cardStatus == CardStatusEnum.NORMAL)
+        //{
+        //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+        //    {
+        //        DoDestoriedForFirstStep();
+        //        _cardStatus = CardStatusEnum.DESTORING;
+        //    }
+        //}
+
+        //// 第二次缩小
+        //if (_cardStatus == CardStatusEnum.DESTORING)
+        //{
+        //    if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
+        //    {
+        //        DoDestoriedForSecondStep();
+        //        _cardStatus = CardStatusEnum.DESTORYED;
+        //    }
+        //}
     }
 
     //

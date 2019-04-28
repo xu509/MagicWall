@@ -58,17 +58,17 @@ public abstract class CutEffect : MonoBehaviour
         if (sceneContentType == SceneContentType.activity)
         {
             // TODO 修改工厂实现
-            _itemsFactory = new EnvFactory();
+            _itemsFactory = EnvFactory.Instance;
             CreateActivity();
         }
         else if (sceneContentType == SceneContentType.env)
         {
-            _itemsFactory = new EnvFactory();
+            _itemsFactory = EnvFactory.Instance;
             CreateProductOrLogo();
         }
         else {
             // TODO 修改工厂实现
-            _itemsFactory = new EnvFactory();
+            _itemsFactory = EnvFactory.Instance;
             CreateProductOrLogo();
         }
 

@@ -191,5 +191,8 @@ public class ActivityFactory : MonoBehaviour,ItemsFactory
         return _gap;
     }
 
-
+    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
+    {
+        throw new System.NotImplementedException();
+    }
 }

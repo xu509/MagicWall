@@ -15,17 +15,18 @@ public class CrossCardAgent : CardAgent
     bool _hasActivity;  //  活动
     bool _hasVideo; //  视频
 
-    [SerializeField] List<CrossCardIndexItem> _CrossCardIndexItems;
+    [SerializeField] List<CrossCardScrollCell> _cardScrollCells;
 
     #endregion
 
     #region Component Parameter
     [SerializeField, Header("十字卡片 - 标题")] Text title;
+    [SerializeField] RectTransform scrollView;
+
+    [SerializeField] CrossCardScrollView crossCardScrollView;
+
 
     private int _index = 0; //  当前索引
-
-
-
 
     #endregion
 
@@ -42,30 +43,57 @@ public class CrossCardAgent : CardAgent
         // 设置标题
         title.text = enterpriseDetail.Enterprise.Name;
 
-        // 判断几个类型
+        //// 判断几个类型
         _hasCatalog = enterpriseDetail.catalog.Count > 0;
         _hasProduct = enterpriseDetail.products.Count > 0;
         _hasActivity = enterpriseDetail.activities.Count > 0;
         _hasVideo = enterpriseDetail.videos.Count > 0;
 
-
         int index = 0;
-        _CrossCardIndexItems = new List<CrossCardIndexItem>();
-        _CrossCardIndexItems.Add(new CrossCardIndexItem(index, "公司名片"));
+        _cardScrollCells = new List<CrossCardScrollCell>();
+        List<CrossCardCellData> cellDatas = new List<CrossCardCellData>();
 
-        if (_hasProduct)
-            _CrossCardIndexItems.Add(new CrossCardIndexItem(index++, "产品"));
 
+
+        CrossCardCellData item2 = new CrossCardCellData(index, "公司名片");
+        cellDatas.Add(item2);
+        //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
+
+        if (_hasProduct) {
+            CrossCardCellData item = new CrossCardCellData(index++, "产品");
+            cellDatas.Add(item);
+            //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
+        }
         if (_hasActivity)
-            _CrossCardIndexItems.Add(new CrossCardIndexItem(index++, "活动"));
+        {
+            CrossCardCellData item = new CrossCardCellData(index++, "活动");
+            cellDatas.Add(item);
+            //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
+        }
 
-        if (_hasVideo)
-            _CrossCardIndexItems.Add(new CrossCardIndexItem(index++, "视频"));
+        if (_hasVideo) {
+            CrossCardCellData item = new CrossCardCellData(index++, "视频");
+            cellDatas.Add(item);
+            //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
+        }
 
         if (_hasCatalog)
-            _CrossCardIndexItems.Add(new CrossCardIndexItem(index++, "CATALOG"));
+        {
+            CrossCardCellData item = new CrossCardCellData(index++, "CATALOG");
+            cellDatas.Add(item);
+            //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
+        }
 
-        //  绘制ui
+        //  设置动画
+        //for (int i = 0; i < _cardScrollCells.Count; i++) {
+        //    CardScrollCell cardScrollCell = _cardScrollCells[i];
+        //    cardScrollCell.UpdatePosition(CalculatePostion(cardScrollCell.Index));
+        //}
+
+        // TODO Updatedata
+        crossCardScrollView.UpdateData(cellDatas);
+
+
 
     }
 
@@ -84,20 +112,49 @@ public class CrossCardAgent : CardAgent
 
     }
 
+    //private CrossCardScrollCell CreateCardScrollCell(RectTransform scrollPanel, CrossCardCellData item) {
+    //    //  创建 Agent
+    //    CrossCardScrollCell cardScrollCell = Instantiate(
+    //                                cardScrollCellPrefab,
+    //                                scrollPanel
+    //                                ) as CrossCardScrollCell;
+    //    cardScrollCell.name = "ScrollCell" + item.Index;
+    //    //cardScrollCell.Initialize(item);
 
-    class CrossCardIndexItem {
-        int _index;
-        string _title;
+    //    //cardScrollCell.UpdatePosition(CalculatePostion(item.Index));
+    //    return cardScrollCell;
+    //}
 
-        public string Title { set { _title = value; } get { return _title; } }
-        public int Index { set { _index = value; } get { return _index; } }
 
-        public CrossCardIndexItem(int index,string title) {
-            _index = index;
-            _title = title;
+    private float CalculatePostion(int index) {
+        float postion = 0.9f;
+
+        if (index == 0)
+        {
+            postion = 0;
+        }
+        else if (index == 1) {
+            postion = 0.25f;
+        }
+        else if (index == 2)
+        {
+            postion = 0.5f;
+        }
+        else if (index == 3)
+        {
+            postion = 0.75f;
+        }
+        else if (index == 4)
+        {
+            postion = 1f;
         }
 
+
+        return postion;
     }
+
+
+
 
 }
 

@@ -37,7 +37,7 @@ public class Activity : Generator<Activity>
         activity.ent_id = 1;
 
         string[] images = {"1.jpg","2.png","3.png","4.png","5.png"
-                ,"6.jpg","7.png","8.png"};
+                ,"6.png","7.png","8.png"};
         activity._image = images[Random.Range(0, images.Length - 1)];
 
         string[] names = { "2018年春夏巴黎时装秀", "巴黎时装周（Paris Fashion Week）1910年，由法国时装协会主办。", "在米兰和伦敦的时装周相当保守，它们更喜欢本土的设计"};
@@ -46,7 +46,7 @@ public class Activity : Generator<Activity>
         string[] descriptions = { "由法国时装协会主办", "它们更喜欢本土的设计" };
         activity._description = descriptions[Random.Range(0, descriptions.Length - 1)];
 
-        activity._texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "//activity//" + activity._image);
+        activity._texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "activity\\" + activity._image);
 
 
         _activityDetails = new List<ActivityDetail>();
