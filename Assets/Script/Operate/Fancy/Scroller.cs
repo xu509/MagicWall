@@ -2,34 +2,39 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using EasingCore;
 
 
-public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+
+public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    [SerializeField] RectTransform viewport;
+    [SerializeField] RectTransform viewport = default;
     [SerializeField] ScrollDirection directionOfRecognize = ScrollDirection.Vertical;
     [SerializeField] MovementType movementType = MovementType.Elastic;
     [SerializeField] float elasticity = 0.1f;
     [SerializeField] float scrollSensitivity = 1f;
     [SerializeField] bool inertia = true;
-
-    [SerializeField, Tooltip("Only used when inertia is enabled")]
-    float decelerationRate = 0.03f;
-
-    [SerializeField, Tooltip("Only used when inertia is enabled")]
-    Snap snap = new Snap { Enable = true, VelocityThreshold = 0.5f, Duration = 0.3f };
-
-    [SerializeField] int dataCount;
+    [SerializeField] float decelerationRate = 0.03f;
+    [SerializeField]
+    Snap snap = new Snap
+    {
+        Enable = true,
+        VelocityThreshold = 0.5f,
+        Duration = 0.3f,
+        Easing = Ease.InOutCubic
+    };
 
     readonly AutoScrollState autoScrollState = new AutoScrollState();
 
-    Action<float> onUpdatePosition;
-    Action<int> onSelectedIndexChanged;
+    Action<float> onValueChanged;
+    Action<int> onSelectionChanged;
 
     Vector2 pointerStartLocalPosition;
     float dragStartScrollPosition;
     float prevScrollPosition;
     float currentScrollPosition;
+
+    int totalCount;
 
     bool dragging;
     float velocity;
@@ -40,7 +45,7 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
         Horizontal,
     }
 
-    enum MovementType
+    public enum MovementType
     {
         Unrestricted = ScrollRect.MovementType.Unrestricted,
         Elastic = ScrollRect.MovementType.Elastic,
@@ -48,18 +53,22 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
     }
 
     [Serializable]
-    struct Snap
+    class Snap
     {
         public bool Enable;
         public float VelocityThreshold;
         public float Duration;
+        public Ease Easing;
     }
+
+    readonly static Func<float, float> defaultEasingFunction = EasingFunction.Get(Ease.OutCubic);
 
     class AutoScrollState
     {
         public bool Enable;
         public bool Elastic;
         public float Duration;
+        public Func<float, float> EasingFunction;
         public float StartTime;
         public float EndScrollPosition;
 
@@ -69,28 +78,40 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
             Elastic = false;
             Duration = 0f;
             StartTime = 0f;
+            EasingFunction = defaultEasingFunction;
             EndScrollPosition = 0f;
         }
     }
 
-    public void OnUpdatePosition(Action<float> callback) => onUpdatePosition = callback;
+    public void OnValueChanged(Action<float> callback) => onValueChanged = callback;
 
-    public void OnSelectedIndexChanged(Action<int> callback) => onSelectedIndexChanged = callback;
+    public void OnSelectionChanged(Action<int> callback) => onSelectionChanged = callback;
 
-    public void SetDataCount(int dataCount) => this.dataCount = dataCount;
+    public void SetTotalCount(int totalCount) => this.totalCount = totalCount;
 
-    public void ScrollTo(int index, float duration)
+    public void ScrollTo(int index, float duration) => ScrollTo(index, duration, Ease.OutCubic);
+
+    public void ScrollTo(int index, float duration, Ease easing) => ScrollTo(index, duration, EasingFunction.Get(easing));
+
+    public void ScrollTo(int index, float duration, Func<float, float> easingFunction)
     {
+        if (duration <= 0f)
+        {
+            JumpTo(index);
+            return;
+        }
+
         autoScrollState.Reset();
         autoScrollState.Enable = true;
         autoScrollState.Duration = duration;
+        autoScrollState.EasingFunction = easingFunction ?? defaultEasingFunction;
         autoScrollState.StartTime = Time.unscaledTime;
         autoScrollState.EndScrollPosition = CalculateDestinationIndex(index);
 
         velocity = 0f;
         dragStartScrollPosition = currentScrollPosition;
 
-        UpdateSelectedIndex(Mathf.RoundToInt(GetCircularPosition(autoScrollState.EndScrollPosition, dataCount)));
+        UpdateSelection(Mathf.RoundToInt(CircularPosition(autoScrollState.EndScrollPosition, totalCount)));
     }
 
     public void JumpTo(int index)
@@ -102,7 +123,7 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
 
         index = CalculateDestinationIndex(index);
 
-        UpdateSelectedIndex(index);
+        UpdateSelection(index);
         UpdatePosition(index);
     }
 
@@ -149,9 +170,9 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
 
         var pointerDelta = localCursor - pointerStartLocalPosition;
         var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
-                        / ViewportSize
-                        * scrollSensitivity
-                        + dragStartScrollPosition;
+                       / ViewportSize
+                       * scrollSensitivity
+                       + dragStartScrollPosition;
 
         var offset = CalculateOffset(position);
         position += offset;
@@ -178,8 +199,8 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
     }
 
     float ViewportSize => directionOfRecognize == ScrollDirection.Horizontal
-            ? viewport.rect.size.x
-            : viewport.rect.size.y;
+        ? viewport.rect.size.x
+        : viewport.rect.size.y;
 
     float CalculateOffset(float position)
     {
@@ -193,9 +214,9 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
             return -position;
         }
 
-        if (position > dataCount - 1)
+        if (position > totalCount - 1)
         {
-            return dataCount - 1 - position;
+            return totalCount - 1 - position;
         }
 
         return 0f;
@@ -204,10 +225,10 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
     void UpdatePosition(float position)
     {
         currentScrollPosition = position;
-        onUpdatePosition?.Invoke(currentScrollPosition);
+        onValueChanged?.Invoke(currentScrollPosition);
     }
 
-    void UpdateSelectedIndex(int index) => onSelectedIndexChanged?.Invoke(index);
+    void UpdateSelection(int index) => onSelectionChanged?.Invoke(index);
 
     float RubberDelta(float overStretching, float viewSize) =>
         (1 - 1 / (Mathf.Abs(overStretching) * 0.55f / viewSize + 1)) * viewSize * Mathf.Sign(overStretching);
@@ -228,7 +249,7 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
 
                 if (Mathf.Abs(velocity) < 0.01f)
                 {
-                    position = Mathf.Clamp(Mathf.RoundToInt(position), 0, dataCount - 1);
+                    position = Mathf.Clamp(Mathf.RoundToInt(position), 0, totalCount - 1);
                     velocity = 0f;
                     autoScrollState.Reset();
                 }
@@ -236,9 +257,9 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
             else
             {
                 var alpha = Mathf.Clamp01((Time.unscaledTime - autoScrollState.StartTime) /
-                                            Mathf.Max(autoScrollState.Duration, float.Epsilon));
-                position = Mathf.Lerp(dragStartScrollPosition, autoScrollState.EndScrollPosition,
-                    EaseInOutCubic(0, 1, alpha));
+                                          Mathf.Max(autoScrollState.Duration, float.Epsilon));
+                position = Mathf.LerpUnclamped(dragStartScrollPosition, autoScrollState.EndScrollPosition,
+                    autoScrollState.EasingFunction(alpha));
 
                 if (Mathf.Approximately(alpha, 1f))
                 {
@@ -258,7 +279,7 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
                 autoScrollState.Enable = true;
                 autoScrollState.Elastic = true;
 
-                UpdateSelectedIndex(Mathf.Clamp(Mathf.RoundToInt(position), 0, dataCount - 1));
+                UpdateSelection(Mathf.Clamp(Mathf.RoundToInt(position), 0, totalCount - 1));
             }
             else if (inertia)
             {
@@ -273,7 +294,7 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
 
                 if (snap.Enable && Mathf.Abs(velocity) < snap.VelocityThreshold)
                 {
-                    ScrollTo(Mathf.RoundToInt(currentScrollPosition), snap.Duration);
+                    ScrollTo(Mathf.RoundToInt(currentScrollPosition), snap.Duration, snap.Easing);
                 }
             }
             else
@@ -288,10 +309,10 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
                     offset = CalculateOffset(position);
                     position += offset;
 
-                    if (Mathf.Approximately(position, 0f) || Mathf.Approximately(position, dataCount - 1f))
+                    if (Mathf.Approximately(position, 0f) || Mathf.Approximately(position, totalCount - 1f))
                     {
                         velocity = 0f;
-                        UpdateSelectedIndex(Mathf.RoundToInt(position));
+                        UpdateSelection(Mathf.RoundToInt(position));
                     }
                 }
 
@@ -310,36 +331,21 @@ public class ScrollPositionController : UIBehaviour, IBeginDragHandler, IEndDrag
 
     int CalculateDestinationIndex(int index) => movementType == MovementType.Unrestricted
         ? CalculateClosestIndex(index)
-        : Mathf.Clamp(index, 0, dataCount - 1);
+        : Mathf.Clamp(index, 0, totalCount - 1);
 
     int CalculateClosestIndex(int index)
     {
-        var diff = GetCircularPosition(index, dataCount)
-                    - GetCircularPosition(currentScrollPosition, dataCount);
+        var diff = CircularPosition(index, totalCount)
+                   - CircularPosition(currentScrollPosition, totalCount);
 
-        if (Mathf.Abs(diff) > dataCount * 0.5f)
+        if (Mathf.Abs(diff) > totalCount * 0.5f)
         {
-            diff = Mathf.Sign(-diff) * (dataCount - Mathf.Abs(diff));
+            diff = Mathf.Sign(-diff) * (totalCount - Mathf.Abs(diff));
         }
 
         return Mathf.RoundToInt(diff + currentScrollPosition);
     }
 
-    float GetCircularPosition(float position, int length) =>
-        position < 0 ? length - 1 + (position + 1) % length : position % length;
-
-    float EaseInOutCubic(float start, float end, float value)
-    {
-        value /= 0.5f;
-        end -= start;
-
-        if (value < 1f)
-        {
-            return end * 0.5f * value * value * value + start;
-        }
-
-        value -= 2f;
-        return end * 0.5f * (value * value * value + 2f) + start;
-    }
+    float CircularPosition(float p, int size) => size < 1 ? 0 : p < 0 ? size - 1 + (p + 1) % size : p % size;
 }
 

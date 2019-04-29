@@ -4,7 +4,7 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
+public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
 {
 
     [SerializeField] Scroller scroller = default;
@@ -41,7 +41,6 @@ public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardS
     public void UpdateData(IList<CrossCardCellData> items)
     {
         UpdateContents(items);
-        Debug.Log("items.Count : " + items.Count);
         scroller.SetTotalCount(items.Count);
     }
 

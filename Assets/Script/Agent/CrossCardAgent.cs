@@ -15,18 +15,16 @@ public class CrossCardAgent : CardAgent
     bool _hasActivity;  //  活动
     bool _hasVideo; //  视频
 
-    [SerializeField] List<CrossCardScrollCell> _cardScrollCells;
+    List<CrossCardCellData> _cellDatas;
 
     #endregion
 
     #region Component Parameter
     [SerializeField, Header("十字卡片 - 标题")] Text title;
-    [SerializeField] RectTransform scrollView;
 
     [SerializeField] CrossCardScrollView crossCardScrollView;
+    [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
-
-    private int _index = 0; //  当前索引
 
     #endregion
 
@@ -50,37 +48,41 @@ public class CrossCardAgent : CardAgent
         _hasVideo = enterpriseDetail.videos.Count > 0;
 
         int index = 0;
-        _cardScrollCells = new List<CrossCardScrollCell>();
-        List<CrossCardCellData> cellDatas = new List<CrossCardCellData>();
+        _cellDatas = new List<CrossCardCellData>();
 
 
 
         CrossCardCellData item2 = new CrossCardCellData(index, "公司名片");
-        cellDatas.Add(item2);
+        index++; 
+        _cellDatas.Add(item2);
         //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
 
         if (_hasProduct) {
-            CrossCardCellData item = new CrossCardCellData(index++, "产品");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData(index, "产品");
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
         if (_hasActivity)
         {
-            CrossCardCellData item = new CrossCardCellData(index++, "活动");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData(index, "活动");
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasVideo) {
-            CrossCardCellData item = new CrossCardCellData(index++, "视频");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData(index, "视频");
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasCatalog)
         {
-            CrossCardCellData item = new CrossCardCellData(index++, "CATALOG");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData(index, "CATALOG");
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
@@ -91,8 +93,33 @@ public class CrossCardAgent : CardAgent
         //}
 
         // TODO Updatedata
-        crossCardScrollView.UpdateData(cellDatas);
+        crossCardScrollView.OnSelectionChanged(OnSelectionChanged);
 
+        crossCardScrollView.UpdateData(_cellDatas);
+        crossCardScrollView.SelectCell(0);
+
+        crossCardScrollBar.UpdateData(_cellDatas);
+        crossCardScrollBar.SelectCell(0);
+        crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
+
+
+    }
+
+    void OnSelectionChanged(int index) {
+        GameObject obj = GameObject.Find("CrossCardScrollCell" + index);
+        obj.GetComponent<RectTransform>().SetAsLastSibling();
+
+        Debug.Log("On Select Changed : " + _cellDatas[index].Title);
+        crossCardScrollBar.SelectCell(index);
+    }
+
+    void OnBarSelectionChanged(int index)
+    {
+        crossCardScrollView.SelectCell(index);
+
+        // TODO 左侧标记移动
+
+        // TODO 左右增加符号 | 
 
 
     }
@@ -111,50 +138,6 @@ public class CrossCardAgent : CardAgent
 
 
     }
-
-    //private CrossCardScrollCell CreateCardScrollCell(RectTransform scrollPanel, CrossCardCellData item) {
-    //    //  创建 Agent
-    //    CrossCardScrollCell cardScrollCell = Instantiate(
-    //                                cardScrollCellPrefab,
-    //                                scrollPanel
-    //                                ) as CrossCardScrollCell;
-    //    cardScrollCell.name = "ScrollCell" + item.Index;
-    //    //cardScrollCell.Initialize(item);
-
-    //    //cardScrollCell.UpdatePosition(CalculatePostion(item.Index));
-    //    return cardScrollCell;
-    //}
-
-
-    private float CalculatePostion(int index) {
-        float postion = 0.9f;
-
-        if (index == 0)
-        {
-            postion = 0;
-        }
-        else if (index == 1) {
-            postion = 0.25f;
-        }
-        else if (index == 2)
-        {
-            postion = 0.5f;
-        }
-        else if (index == 3)
-        {
-            postion = 0.75f;
-        }
-        else if (index == 4)
-        {
-            postion = 1f;
-        }
-
-
-        return postion;
-    }
-
-
-
 
 }
 
