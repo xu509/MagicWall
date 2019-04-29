@@ -147,6 +147,9 @@ public class DaoService : Singleton<DaoService>
     //  获取显示配置
     //
     public List<SceneConfig> GetShowConfigs() {
+        List<SceneConfig> sceneConfigs2 = new List<SceneConfig>();
+
+
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         SceneConfig sceneConfig1 = new SceneConfig();
