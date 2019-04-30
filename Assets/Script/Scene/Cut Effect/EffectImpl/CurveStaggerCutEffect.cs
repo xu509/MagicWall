@@ -252,7 +252,6 @@ public class CurveStaggerCutEffect : CutEffect
     }
 
     public override void OnStartingCompleted(){
-        Debug.Log("Starting is Completed");
         AgentManager.Instance.UpdateAgents();
     }
 

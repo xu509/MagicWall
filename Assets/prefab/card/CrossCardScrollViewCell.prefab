@@ -79,6 +79,122 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
+--- !u!1 &2145217855714136617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2023887377428806986}
+  m_Layer: 12
+  m_Name: Context
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2023887377428806986
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145217855714136617}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 107710451360277412}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000038146973, y: 0.000024796}
+  m_SizeDelta: {x: 270.34, y: 135.4}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &5413590619543713705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 107710451360277412}
+  - component: {fileID: 730977976168885611}
+  - component: {fileID: 1877629833449859918}
+  m_Layer: 12
+  m_Name: ScrollViewer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &107710451360277412
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413590619543713705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2023887377428806986}
+  m_Father: {fileID: 7376553475564942248}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.17770371, y: 0.1777778}
+  m_AnchorMax: {x: 0.84074074, y: 0.8}
+  m_AnchoredPosition: {x: -3.2, y: 0.9}
+  m_SizeDelta: {x: -87.7, y: -88.6}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &730977976168885611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413590619543713705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd681b833849d645924cbc65296172e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewport: {fileID: 107710451360277412}
+  directionOfRecognize: 1
+  movementType: 1
+  elasticity: 0.1
+  scrollSensitivity: 1
+  inertia: 1
+  decelerationRate: 0.03
+  snap:
+    Enable: 1
+    VelocityThreshold: 0.5
+    Duration: 0.3
+    Easing: 24
+--- !u!114 &1877629833449859918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413590619543713705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13182027b1e691f4c9623399e94a2df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellSpacing: 0.2
+  scrollOffset: 0.5
+  loop: 0
+  cellContainer: {fileID: 2023887377428806986}
+  scroller: {fileID: 730977976168885611}
+  cellPrefab: {fileID: 3104021846296284657, guid: b2c87845ea251c54a948956f58b22037,
+    type: 3}
 --- !u!1 &6899294134729377403
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,12 +205,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7376553475564942248}
   - component: {fileID: 6006003118130991910}
-  - component: {fileID: 3660846839576251854}
   - component: {fileID: 3700372940185028281}
   - component: {fileID: 8874642496501376834}
   - component: {fileID: 1516517987685607015}
   m_Layer: 12
-  m_Name: CardScrollCell
+  m_Name: CrossCardScrollViewCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,6 +228,7 @@ RectTransform:
   m_Children:
   - {fileID: 4914376958541753476}
   - {fileID: 7840020735590044489}
+  - {fileID: 107710451360277412}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -129,33 +245,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6899294134729377403}
   m_CullTransparentMesh: 0
---- !u!114 &3660846839576251854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6899294134729377403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.31706125, g: 0.8248763, b: 0.8962264, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!114 &3700372940185028281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +262,7 @@ MonoBehaviour:
   _position: 0
   text_index: {fileID: 4677219212961205314}
   text_position: {fileID: 1326801816336033511}
+  crossCardScrollViewCellItem: {fileID: 1877629833449859918}
 --- !u!95 &8874642496501376834
 Animator:
   serializedVersion: 3

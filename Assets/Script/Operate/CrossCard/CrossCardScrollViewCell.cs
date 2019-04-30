@@ -17,6 +17,8 @@ public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, Cr
     [SerializeField] Text text_index;
     [SerializeField] Text text_position;
 
+    [SerializeField] CrossCardScrollViewCellItem crossCardScrollViewCellItem;
+
 
 
     static class AnimatorHash
@@ -41,7 +43,14 @@ public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, Cr
         text_index.text = cellData.Index.ToString();
         text_position.text = cellData.Title.ToString();
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
-        
+
+        // TODO 更新内容
+        Debug.Log("UpdateContent : " + cellData.Category);
+
+        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
+        crossCardScrollViewCellItem.UpdateData(datas);
+
+
     }
 
     public override void UpdatePosition(float position)

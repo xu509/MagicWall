@@ -58,6 +58,16 @@ public class DaoService : Singleton<DaoService>
     }
 
     //
+    //  获取 catalog
+    //
+    public Catalog GetCatalog()
+    {
+        return new Catalog().Generator();
+    }
+
+
+
+    //
     //  获取企业的详细信息
     //
     public EnterpriseDetail GetEnterprisesDetail()
@@ -87,8 +97,8 @@ public class DaoService : Singleton<DaoService>
     //
     public Activity GetActivityDetail()
     {
-        // todo
-        return null;
+        Activity activity = new Activity();
+        return activity.Generator();
     }
 
     //
@@ -106,7 +116,13 @@ public class DaoService : Singleton<DaoService>
     public Product GetProductDetail()
     {
         // todo
-        return null;
+        return new Product().Generator();
+    }
+
+    public Video GetVideoDetail()
+    {
+        // todo
+        return new Video().Generator();
     }
 
     //

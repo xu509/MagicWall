@@ -4,16 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
+public class CrossCardScrollViewCellItemCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
 {
     string _title;  // 标题
     [SerializeField] int _index; //  索引
     [SerializeField] Animator _animator;
+    [SerializeField] float _position;
 
     //
     //  Component Paramater 
     //
-    [SerializeField] Text text;
+    [SerializeField] Text text_index;
+    [SerializeField] Text text_position;
+
+
 
     static class AnimatorHash
     {
@@ -31,14 +35,8 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
-        _index = cellData.Index;
-        _title = cellData.Title;
-
-        text.text = cellData.Title.ToString();
-        gameObject.name = "CrossCardScrollCell" + cellData.Index;
-
-
-
+        gameObject.name = "ItemCell" + cellData.Id;
+        
     }
 
     public override void UpdatePosition(float position)
@@ -47,6 +45,7 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         _animator.Play(AnimatorHash.Scroll, -1, position);
         _animator.speed = 0;
 
+        _position = position;
 
     }
 

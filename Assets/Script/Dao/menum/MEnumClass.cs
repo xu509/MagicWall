@@ -56,5 +56,17 @@ public enum CardStatusEnum
     NORMAL, // 正常
     DESTORING, // 销毁动画中
     DESTORYED, // 已销毁
-    
 }
+
+//
+//  十字卡片类型
+//
+public enum CrossCardCategoryEnum {
+    INDEX, //       公司卡片
+    PRODUCT, //     产品
+    ACTIVITY, //    活动
+    VIDEO,  //      视频
+    CATALOG //      CATALOG
+}
+
+

@@ -148,6 +148,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        Debug.Log("On Drag !!!");
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -169,10 +171,26 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         }
 
         var pointerDelta = localCursor - pointerStartLocalPosition;
-        var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
+        //var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
+        //               / ViewportSize
+        //               * scrollSensitivity
+        //               + dragStartScrollPosition;
+        float param;
+
+        if (directionOfRecognize == ScrollDirection.Horizontal)
+        {
+            param = (-pointerDelta.x);
+            Debug.Log("Drag Horizontal !");
+        }
+        else {
+            Debug.Log("Drag Vertical !");
+            param = pointerDelta.y;
+        }
+        var position = param
                        / ViewportSize
-                       * scrollSensitivity
-                       + dragStartScrollPosition;
+                        * scrollSensitivity
+                        + dragStartScrollPosition;
+
 
         var offset = CalculateOffset(position);
         position += offset;

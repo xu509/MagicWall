@@ -4,14 +4,13 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
+public class CrossCardScrollViewCellItem : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
 {
 
     [SerializeField] Scroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
 
     Action<int> onSelectionChanged;
-
 
     protected override GameObject CellPrefab => cellPrefab;
 
@@ -24,9 +23,6 @@ public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardS
     {
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
-
-        Debug.Log("On Start : Do Created");
-
     }
 
     void UpdateSelection(int index)
@@ -45,6 +41,7 @@ public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardS
     public void UpdateData(IList<CrossCardCellData> items)
     {
         UpdateContents(items);
+        Debug.Log("items.Count : " + items.Count);
         scroller.SetTotalCount(items.Count);
     }
 
