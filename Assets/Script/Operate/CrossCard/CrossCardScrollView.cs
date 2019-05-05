@@ -4,16 +4,19 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
+public class CrossCardScrollView : FancyScrollView1<CrossCardCellData, CrossCardScrollViewContext>
 {
 
     [SerializeField] Scroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
+    [SerializeField] GameObject cellItemPrefab = default;
+
 
     Action<int> onSelectionChanged;
 
-
     protected override GameObject CellPrefab => cellPrefab;
+
+    protected override GameObject CellItemPrefab => cellItemPrefab;
 
     void Awake()
     {
@@ -22,11 +25,9 @@ public class CrossCardScrollView : FancyScrollView<CrossCardCellData, CrossCardS
 
     void Start()
     {
+        Debug.Log("Cross Card Scroll View Is Start !");
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
-
-        Debug.Log("On Start : Do Created");
-
     }
 
     void UpdateSelection(int index)

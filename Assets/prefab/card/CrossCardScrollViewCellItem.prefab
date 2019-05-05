@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1171603218583925937}
   - component: {fileID: 5463534574190590278}
   - component: {fileID: 2356641710744020391}
-  - component: {fileID: 6100197806698826645}
+  - component: {fileID: 3387824287110021484}
   m_Layer: 12
   m_Name: CrossCardScrollViewCellItem
   m_TagString: Untagged
@@ -106,7 +106,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &6100197806698826645
+--- !u!114 &3387824287110021484
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,11 +115,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3104021846296284657}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a306c25b73277a4894e1f1ca31e4791, type: 3}
+  m_Script: {fileID: 11500000, guid: a685d21e09bf3964bb9c5239345c7143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
-  _animator: {fileID: 5463534574190590278}
+  _animator: {fileID: 0}
   _position: 0
   text_index: {fileID: 0}
   text_position: {fileID: 0}

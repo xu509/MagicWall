@@ -9,6 +9,7 @@ public class CrossCardCellData
     string _title;  //  标题
     CrossCardCategoryEnum _category;    //  类别
     Texture _imageTexture;
+    List<CrossCardCellData> _datas;//二级内容
 
     public int Id { set { _id = value; } get { return _id; } }
 
@@ -19,6 +20,9 @@ public class CrossCardCellData
     public CrossCardCategoryEnum Category { set { _category = value; } get { return _category; } }
 
     public Texture ImageTexture { set { _imageTexture = value; } get { return _imageTexture; } }
+
+    public List<CrossCardCellData> Datas { set { _datas = value; } get { return _datas; } }
+
 
 
 }

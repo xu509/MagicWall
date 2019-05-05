@@ -7,7 +7,7 @@ using EasingCore;
 public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
 {
 
-    [SerializeField] Scroller scroller = default;
+    [SerializeField] ScrollerDefault scroller = default;
     [SerializeField] GameObject cellPrefab = default;
 
     Action<int> onSelectionChanged;

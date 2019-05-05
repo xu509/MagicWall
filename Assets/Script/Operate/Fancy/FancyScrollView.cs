@@ -2,142 +2,144 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class FancyScrollView<TItemData, TContext> : MonoBehaviour where TContext : class, new()
-{
-    [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;
-    [SerializeField, Range(0f, 1f)] protected float scrollOffset = 0.5f;
-    [SerializeField] protected bool loop = false;
-    [SerializeField] protected Transform cellContainer = default;
 
-    readonly IList<FancyScrollViewCell<TItemData, TContext>> pool =
-        new List<FancyScrollViewCell<TItemData, TContext>>();
-
-    float currentPosition;
-
-    protected abstract GameObject CellPrefab { get; }
-    protected IList<TItemData> ItemsSource { get; set; } = new List<TItemData>();
-    protected TContext Context { get; } = new TContext();
-
-    /// <summary>
-    /// Updates the contents.
-    /// </summary>
-    /// <param name="itemsSource">Items source.</param>
-    protected void UpdateContents(IList<TItemData> itemsSource)
+    public abstract class FancyScrollView<TItemData, TContext> : MonoBehaviour where TContext : class, new()
     {
-        ItemsSource = itemsSource;
-        Refresh();
-    }
+        [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;
+        [SerializeField, Range(0f, 1f)] protected float scrollOffset = 0.5f;
+        [SerializeField] protected bool loop = false;
+        [SerializeField] protected Transform cellContainer = default;
 
-    /// <summary>
-    /// Refreshes the cells.
-    /// </summary>
-    protected void Refresh() => UpdatePosition(currentPosition, true);
+        readonly IList<FancyScrollViewCell<TItemData, TContext>> pool =
+            new List<FancyScrollViewCell<TItemData, TContext>>();
 
-    /// <summary>
-    /// Updates the scroll position.
-    /// </summary>
-    /// <param name="position">Position.</param>
-    protected void UpdatePosition(float position) => UpdatePosition(position, false);
+        float currentPosition;
 
-    void UpdatePosition(float position, bool forceRefresh)
-    {
-        currentPosition = position;
+        protected abstract GameObject CellPrefab { get; }
+        protected IList<TItemData> ItemsSource { get; set; } = new List<TItemData>();
+        protected TContext Context { get; } = new TContext();
 
-        var p = position - scrollOffset / cellSpacing;
-        var firstIndex = Mathf.CeilToInt(p);
-        var firstPosition = (Mathf.Ceil(p) - p) * cellSpacing;
-
-        if (firstPosition + pool.Count * cellSpacing < 1f)
+        /// <summary>
+        /// Updates the contents.
+        /// </summary>
+        /// <param name="itemsSource">Items source.</param>
+        protected void UpdateContents(IList<TItemData> itemsSource)
         {
-            ResizePool(firstPosition);
+            ItemsSource = itemsSource;
+            Refresh();
         }
 
-        UpdateCells(firstPosition, firstIndex, forceRefresh);
-    }
+        /// <summary>
+        /// Refreshes the cells.
+        /// </summary>
+        protected void Refresh() => UpdatePosition(currentPosition, true);
 
-    void ResizePool(float firstPosition)
-    {
-        if (CellPrefab == null)
-        {
-            throw new NullReferenceException(nameof(CellPrefab));
-        }
+        /// <summary>
+        /// Updates the scroll position.
+        /// </summary>
+        /// <param name="position">Position.</param>
+        protected void UpdatePosition(float position) => UpdatePosition(position, false);
 
-        if (cellContainer == null)
+        void UpdatePosition(float position, bool forceRefresh)
         {
-            throw new MissingComponentException(nameof(cellContainer));
-        }
+            currentPosition = position;
 
-        var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
-        for (var i = 0; i < addCount; i++)
-        {
-            var cell = Instantiate(CellPrefab, cellContainer).GetComponent<FancyScrollViewCell<TItemData, TContext>>();
-            if (cell == null)
+            var p = position - scrollOffset / cellSpacing;
+            var firstIndex = Mathf.CeilToInt(p);
+            var firstPosition = (Mathf.Ceil(p) - p) * cellSpacing;
+
+            if (firstPosition + pool.Count * cellSpacing < 1f)
             {
-                throw new MissingComponentException(
-                    $"FancyScrollViewCell<{typeof(TItemData).FullName}, {typeof(TContext).FullName}> " +
-                    $"component not found in {CellPrefab.name}.");
+                ResizePool(firstPosition);
             }
 
-            cell.SetupContext(Context);
-            cell.SetVisible(false);
-            pool.Add(cell);
+            UpdateCells(firstPosition, firstIndex, forceRefresh);
         }
-    }
 
-    void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
-    {
-        for (var i = 0; i < pool.Count; i++)
+        void ResizePool(float firstPosition)
         {
-            var index = firstIndex + i;
-            var position = firstPosition + i * cellSpacing;
-            var cell = pool[CircularIndex(index, pool.Count)];
-
-            if (loop)
+            if (CellPrefab == null)
             {
-                index = CircularIndex(index, ItemsSource.Count);
+                throw new NullReferenceException(nameof(CellPrefab));
             }
 
-            if (index < 0 || index >= ItemsSource.Count || position > 1f)
+            if (cellContainer == null)
             {
+                throw new MissingComponentException(nameof(cellContainer));
+            }
+
+            var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+            for (var i = 0; i < addCount; i++)
+            {
+                var cell = Instantiate(CellPrefab, cellContainer).GetComponent<FancyScrollViewCell<TItemData, TContext>>();
+                if (cell == null)
+                {
+                    throw new MissingComponentException(
+                        $"FancyScrollViewCell<{typeof(TItemData).FullName}, {typeof(TContext).FullName}> " +
+                        $"component not found in {CellPrefab.name}.");
+                }
+
+                cell.SetupContext(Context);
                 cell.SetVisible(false);
-                continue;
+                pool.Add(cell);
             }
-
-            if (forceRefresh || cell.Index != index || !cell.IsVisible)
-            {
-                cell.Index = index;
-                cell.SetVisible(true);
-                cell.UpdateContent(ItemsSource[index]);
-            }
-
-            cell.UpdatePosition(position);
         }
-    }
 
-    int CircularIndex(int i, int size) => size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
+        void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
+        {
+            for (var i = 0; i < pool.Count; i++)
+            {
+                var index = firstIndex + i;
+                var position = firstPosition + i * cellSpacing;
+                var cell = pool[CircularIndex(index, pool.Count)];
+
+                if (loop)
+                {
+                    index = CircularIndex(index, ItemsSource.Count);
+                }
+
+                if (index < 0 || index >= ItemsSource.Count || position > 1f)
+                {
+                    cell.SetVisible(false);
+                    continue;
+                }
+
+                if (forceRefresh || cell.Index != index || !cell.IsVisible)
+                {
+                    cell.Index = index;
+                    cell.SetVisible(true);
+                    cell.UpdateContent(ItemsSource[index]);
+                }
+
+                cell.UpdatePosition(position);
+            }
+        }
+
+        int CircularIndex(int i, int size) => size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
 
 #if UNITY_EDITOR
-    bool cachedLoop;
-    float cachedCellSpacing, cachedScrollOffset;
+        bool cachedLoop;
+        float cachedCellSpacing, cachedScrollOffset;
 
-    void LateUpdate()
-    {
-        if (cachedLoop != loop || cachedCellSpacing != cellSpacing || cachedScrollOffset != scrollOffset)
+        void LateUpdate()
         {
-            cachedLoop = loop;
-            cachedCellSpacing = cellSpacing;
-            cachedScrollOffset = scrollOffset;
+            if (cachedLoop != loop || cachedCellSpacing != cellSpacing || cachedScrollOffset != scrollOffset)
+            {
+                cachedLoop = loop;
+                cachedCellSpacing = cellSpacing;
+                cachedScrollOffset = scrollOffset;
 
-            UpdatePosition(currentPosition);
+                UpdatePosition(currentPosition);
+            }
         }
-    }
 #endif
-}
+    }
 
-public sealed class FancyScrollViewNullContext
-{
-}
+    public sealed class FancyScrollViewNullContext
+    {
+    }
 
-public abstract class FancyScrollView<TItemData> : FancyScrollView<TItemData, FancyScrollViewNullContext>
-{
-}
+    public abstract class FancyScrollView<TItemData> : FancyScrollView<TItemData, FancyScrollViewNullContext>
+    {
+    }
+

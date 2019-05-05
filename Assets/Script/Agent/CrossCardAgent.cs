@@ -129,6 +129,11 @@ public class CrossCardAgent : CardAgent
         obj.GetComponent<RectTransform>().SetAsLastSibling();
 
         Debug.Log("On Select Changed : " + _cellDatas[index].Title);
+
+        CrossCardScrollViewCell current_cell = obj.GetComponent<CrossCardScrollViewCell>();
+
+        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(1, CrossCardCategoryEnum.ACTIVITY);
+
         crossCardScrollBar.SelectCell(index);
     }
 

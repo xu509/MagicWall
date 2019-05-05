@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+//
+//  分类选项卡
+//
 public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
 {
     string _title;  // 标题
@@ -16,8 +18,6 @@ public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, Cr
     //
     [SerializeField] Text text_index;
     [SerializeField] Text text_position;
-
-    [SerializeField] CrossCardScrollViewCellItem crossCardScrollViewCellItem;
 
 
 
@@ -44,11 +44,9 @@ public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, Cr
         text_position.text = cellData.Title.ToString();
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
-        // TODO 更新内容
-        Debug.Log("UpdateContent : " + cellData.Category);
-
+        // TODO 更新横向的选项卡
         IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
-        crossCardScrollViewCellItem.UpdateData(datas);
+        //crossCardScrollViewCellItem.UpdateData(datas);
 
 
     }
@@ -67,5 +65,8 @@ public class CrossCardScrollViewCell : FancyScrollViewCell<CrossCardCellData, Cr
 
     void OnEnable() => UpdatePosition(currentPosition);
 
+
+    public void DoTest() {
+    }
 
 }
