@@ -30,7 +30,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     readonly AutoScrollState autoScrollState = new AutoScrollState();
 
-    Action<float,bool> onValueChanged;
+    Action<float> onValueChanged;
     Action<int> onSelectionChanged;
 
     Vector2 pointerStartLocalPosition;
@@ -88,7 +88,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         }
     }
 
-    public void OnValueChanged(Action<float,bool> callback) => onValueChanged = callback;
+    public void OnValueChanged(Action<float> callback) => onValueChanged = callback;
 
     public void OnSelectionChanged(Action<int> callback) => onSelectionChanged = callback;
 
@@ -151,12 +151,12 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         dragging = true;
         autoScrollState.Reset();
 
+        Debug.Log("### ON BEGIN DRAG ! ###");
+
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Scroller 1 Do Drag!");
-
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -171,48 +171,63 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
             return;
         }
 
-        Vector2 localCursor;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            viewport,
-            eventData.position,
-            eventData.pressEventCamera,
-            out localCursor))
+        if (recognizeDirection == ScrollDirection.Vertical)
         {
-            return;
-        }
+            Vector2 localCursor;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                viewport,
+                eventData.position,
+                eventData.pressEventCamera,
+                out localCursor))
+            {
+                return;
+            }
 
-        var pointerDelta = localCursor - pointerStartLocalPosition;
-        //var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
-        //               / ViewportSize
-        //               * scrollSensitivity
-        //               + dragStartScrollPosition;
-        float param;
+            var pointerDelta = localCursor - pointerStartLocalPosition;
+            //var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
+            //               / ViewportSize
+            //               * scrollSensitivity
+            //               + dragStartScrollPosition;
+            float param = 0f;
 
-        if (recognizeDirection == ScrollDirection.Horizontal)
-        {
-            param = (-pointerDelta.x);
+            if (recognizeDirection == ScrollDirection.Horizontal)
+            {
+                param = (-pointerDelta.x);
+            }
+            else if (recognizeDirection == ScrollDirection.Vertical)
+            {
+                param = pointerDelta.y;
+            }
+            float viewportSize = ViewportSize();
+
+
+            var position = param
+                           / viewportSize
+                            * scrollSensitivity
+                            + dragStartScrollPosition;
+
+
+            var offset = CalculateOffset(position);
+            position += offset;
+
+            if (movementType == MovementType.Elastic)
+            {
+                if (offset != 0f)
+                {
+                    position -= RubberDelta(offset, scrollSensitivity);
+                }
+            }
+
+            UpdatePosition(position);
         }
         else {
-            param = pointerDelta.y;
-        }
-        var position = param
-                       / ViewportSize
-                        * scrollSensitivity
-                        + dragStartScrollPosition;
 
+            Debug.Log("DRAGING HOR");
 
-        var offset = CalculateOffset(position);
-        position += offset;
-
-        if (movementType == MovementType.Elastic)
-        {
-            if (offset != 0f)
-            {
-                position -= RubberDelta(offset, scrollSensitivity);
-            }
         }
 
-        UpdatePosition(position);
+
+       
     }
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
@@ -224,12 +239,25 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
         dragging = false;
         recognizeDirection = ScrollDirection.Unknow;
+        Debug.Log("### ON END DRAGING ###");
 
     }
 
-    float ViewportSize => recognizeDirection == ScrollDirection.Horizontal
-        ? viewport.rect.size.x
-        : viewport.rect.size.y;
+    float ViewportSize()
+    {
+        if (recognizeDirection == ScrollDirection.Horizontal)
+        {
+            return viewport.rect.size.x;
+        }
+        else if (recognizeDirection == ScrollDirection.Vertical)
+        {
+            return viewport.rect.size.y;
+        }
+        else {
+            return 0;
+        }
+    }
+
 
     float CalculateOffset(float position)
     {
@@ -254,7 +282,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
     void UpdatePosition(float position)
     {
         currentScrollPosition = position;
-        onValueChanged?.Invoke(currentScrollPosition,DirectionIsHorizontal());
+        onValueChanged?.Invoke(currentScrollPosition);
     }
 
     void UpdateSelection(int index) => onSelectionChanged?.Invoke(index);
@@ -267,6 +295,9 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         var deltaTime = Time.unscaledDeltaTime;
         var offset = CalculateOffset(currentScrollPosition);
 
+
+        bool velocityIsZero = Mathf.Approximately(velocity, 0f);
+        
         if (autoScrollState.Enable)
         {
             var position = 0f;
@@ -298,8 +329,9 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
             UpdatePosition(position);
         }
-        else if (!dragging && (!Mathf.Approximately(offset, 0f) || !Mathf.Approximately(velocity, 0f)))
+        else if ((!dragging) || (!velocityIsZero))
         {
+
             var position = currentScrollPosition;
 
             if (movementType == MovementType.Elastic && !Mathf.Approximately(offset, 0f))
@@ -358,9 +390,23 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         prevScrollPosition = currentScrollPosition;
     }
 
-    int CalculateDestinationIndex(int index) => movementType == MovementType.Unrestricted
-        ? CalculateClosestIndex(index)
-        : Mathf.Clamp(index, 0, totalCount - 1);
+    //int CalculateDestinationIndex(int index) => movementType == MovementType.Unrestricted
+    //    ? CalculateClosestIndex(index)
+    //    : Mathf.Clamp(index, 0, totalCount - 1);
+
+
+    int CalculateDestinationIndex(int index)
+    {
+        if (movementType == MovementType.Unrestricted)
+        {
+            return CalculateClosestIndex(index);
+        }
+        else {
+            return Mathf.Clamp(index, 0, totalCount - 1);
+        }
+    }
+
+
 
     int CalculateClosestIndex(int index)
     {
@@ -375,7 +421,26 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         return Mathf.RoundToInt(diff + currentScrollPosition);
     }
 
-    float CircularPosition(float p, int size) => size < 1 ? 0 : p < 0 ? size - 1 + (p + 1) % size : p % size;
+    //float CircularPosition(float p, int size) => size < 1 ? 0 : p < 0 ? size - 1 + (p + 1) % size : p % size;
+
+    float CircularPosition(float p, int size)
+    {
+        if (size < 1)
+        {
+            return 0;
+        }
+        else {
+            if (p < 0)
+            {
+                return size - 1 + (p + 1) % size;
+            }
+            else
+            {
+                return p % size;
+            }
+
+        }
+    }
 
 
     //
@@ -399,10 +464,16 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
         Vector2 pointerDelta = localCursor - pointerStartLocalPosition;
 
-        if ((pointerDelta.x - pointerDelta.y) == 0) {
+        float abs_x = Mathf.Abs(pointerDelta.x);
+        float abs_y = Mathf.Abs(pointerDelta.y);
+
+
+        if ((abs_x - abs_y) == 0) {
             // 判定为未移动
+            recognizeDirection = ScrollDirection.Unknow;
+            return false;
         }
-        else if ((pointerDelta.x - pointerDelta.y) > 0)
+        else if ((abs_x - abs_y) > 0)
         {
             //  判定为横向移动
             recognizeDirection = ScrollDirection.Horizontal;
@@ -418,7 +489,6 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     public bool DirectionIsHorizontal() {
         return recognizeDirection == ScrollDirection.Horizontal;
-
     }
 
 

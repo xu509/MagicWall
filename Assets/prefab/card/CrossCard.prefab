@@ -514,7 +514,7 @@ MonoBehaviour:
   showMoveOffset: 0
   _title: {fileID: 4231419099656867917}
   _description: {fileID: 7536231062420814249}
-  crossCardScrollView: {fileID: 5208434741152138702}
+  crossCardScrollViewController: {fileID: 6388220598021548340}
   crossCardScrollBar: {fileID: 7748574175968625818}
 --- !u!114 &6055682436084122556
 MonoBehaviour:
@@ -1185,8 +1185,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2326974851693279577}
-  - component: {fileID: 5208434741152138702}
   - component: {fileID: 2971315810053268928}
+  - component: {fileID: 6388220598021548340}
   m_Layer: 11
   m_Name: scrollview
   m_TagString: Untagged
@@ -1214,27 +1214,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 15.1}
   m_SizeDelta: {x: 865, y: 487.7}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5208434741152138702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8902797353648955604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebef87525fdff76448d818a674cf91b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellSpacing: 0.31
-  scrollOffset: 0.5
-  loop: 1
-  cellContainer: {fileID: 7543289434758531802}
-  scroller: {fileID: 2971315810053268928}
-  cellPrefab: {fileID: 6899294134729377403, guid: 34ab18067abe3c34c900161a85725c98,
-    type: 3}
-  cellItemPrefab: {fileID: 3104021846296284657, guid: b2c87845ea251c54a948956f58b22037,
-    type: 3}
 --- !u!114 &2971315810053268928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1249,13 +1228,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewport: {fileID: 7543289434758531802}
   directionOfRecognize: 0
-  movementType: 1
+  movementType: 0
   elasticity: 0.1
-  scrollSensitivity: 7
+  scrollSensitivity: 4
   inertia: 1
   decelerationRate: 0.03
   snap:
     Enable: 1
     VelocityThreshold: 0.5
     Duration: 0.3
-    Easing: 8
+    Easing: 3
+--- !u!114 &6388220598021548340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8902797353648955604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebef87525fdff76448d818a674cf91b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellSpacing: 0.2
+  scrollOffset: 0.5
+  loop: 1
+  cellContainer: {fileID: 7543289434758531802}
+  scroller: {fileID: 2971315810053268928}
+  cellPrefab: {fileID: 6899294134729377403, guid: 34ab18067abe3c34c900161a85725c98,
+    type: 3}
+  cellItemPrefab: {fileID: 3104021846296284657, guid: b2c87845ea251c54a948956f58b22037,
+    type: 3}

@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
-  _animator: {fileID: 0}
+  _animator: {fileID: 5463534574190590278}
   _position: 0
   text_index: {fileID: 0}
   text_position: {fileID: 0}

@@ -24,7 +24,7 @@ public class CrossCardAgent : CardAgent
     [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
 
-    [SerializeField] CrossCardScrollView crossCardScrollView;
+    [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
 
@@ -112,10 +112,10 @@ public class CrossCardAgent : CardAgent
         //}
 
         // TODO Updatedata
-        crossCardScrollView.OnSelectionChanged(OnSelectionChanged);
+        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
 
-        crossCardScrollView.UpdateData(_cellDatas);
-        crossCardScrollView.SelectCell(0);
+        crossCardScrollViewController.UpdateData(_cellDatas);
+        crossCardScrollViewController.SelectCell(0);
 
         crossCardScrollBar.UpdateData(_cellDatas);
         crossCardScrollBar.SelectCell(0);
@@ -128,18 +128,12 @@ public class CrossCardAgent : CardAgent
         GameObject obj = GameObject.Find("CrossCardScrollCell" + index);
         obj.GetComponent<RectTransform>().SetAsLastSibling();
 
-        Debug.Log("On Select Changed : " + _cellDatas[index].Title);
-
-        CrossCardScrollViewCell current_cell = obj.GetComponent<CrossCardScrollViewCell>();
-
-        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(1, CrossCardCategoryEnum.ACTIVITY);
-
         crossCardScrollBar.SelectCell(index);
     }
 
     void OnBarSelectionChanged(int index)
     {
-        crossCardScrollView.SelectCell(index);
+        crossCardScrollViewController.SelectCell(index);
 
         // TODO 左侧标记移动
 

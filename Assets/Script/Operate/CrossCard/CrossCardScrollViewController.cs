@@ -4,13 +4,13 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollView : FancyScrollView1<CrossCardCellData, CrossCardScrollViewContext>
+public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCellData, CrossCardScrollViewContext>
 {
+    IList<CrossCardCellData> _items;
 
     [SerializeField] Scroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
     [SerializeField] GameObject cellItemPrefab = default;
-
 
     Action<int> onSelectionChanged;
 
@@ -25,7 +25,6 @@ public class CrossCardScrollView : FancyScrollView1<CrossCardCellData, CrossCard
 
     void Start()
     {
-        Debug.Log("Cross Card Scroll View Is Start !");
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
     }
@@ -39,12 +38,16 @@ public class CrossCardScrollView : FancyScrollView1<CrossCardCellData, CrossCard
 
         Context.SelectedIndex = index;
         Refresh();
-
         onSelectionChanged?.Invoke(index);
+
+        Debug.Log("UpdateSelection !");
+        InitDetailData(index);
+
     }
 
     public void UpdateData(IList<CrossCardCellData> items)
     {
+        _items = items;
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
     }
@@ -65,5 +68,24 @@ public class CrossCardScrollView : FancyScrollView1<CrossCardCellData, CrossCard
     {
         onSelectionChanged = callback;
     }
+
+    public void InitDetailData(int index) {
+
+        Debug.Log("初始化数据 INDEX : " + index);
+
+        //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
+        CrossCardCellData cellData = _items[index];
+        Debug.Log("Cell Data : " + cellData.Title);
+        IList<CrossCardCellData> cellDatas =  CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
+
+        // 初始化celldatas
+        Debug.Log("Cell Datas : " + cellDatas.Count);
+
+       
+
+
+    }
+
+
 
 }
