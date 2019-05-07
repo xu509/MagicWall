@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScrollViewContext> : MonoBehaviour where CrossCardScrollViewContext : class, new()
+public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScrollViewContext> : MonoBehaviour where CrossCardScrollViewContext : class, new()
 {
     [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;
     [SerializeField, Range(0f, 1f)] protected float scrollOffset = 0.5f;
     [SerializeField] protected bool loop = false;
     [SerializeField] protected Transform cellContainer = default;
 
-    readonly IList<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>> pool =
-        new List<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
+    readonly IList<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>> pool =
+        new List<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
 
 
-    public CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index) {
+    public SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
+    {
         return pool[index];
     }
+
 
     float currentPosition;
 
@@ -71,7 +73,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         {
             throw new NullReferenceException(nameof(CellPrefab));
         }
-       
+
         if (cellContainer == null)
         {
             throw new MissingComponentException(nameof(cellContainer));
@@ -80,7 +82,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
         for (var i = 0; i < addCount; i++)
         {
-            var cell = Instantiate(CellPrefab, cellContainer).GetComponent<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
+            var cell = Instantiate(CellPrefab, cellContainer).GetComponent<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
             if (cell == null)
             {
                 throw new MissingComponentException(
@@ -92,7 +94,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
             cell.InitData();
             pool.Add(cell);
 
-            CrossCardBaseCell<CrossCardCellData,CrossCardScrollViewContext> cell2 = GetCell(i);
+            Debug.Log("cREATE : ");
 
         }
         
@@ -166,10 +168,10 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
 #endif
 }
 
-public sealed class FancyScrollViewNullContext1
+public sealed class FancyScrollViewNullContext2
 {
 }
 
-public abstract class CrossCardBaseController<CrossCardCellData> : CrossCardBaseController<CrossCardCellData, FancyScrollViewNullContext>
+public abstract class SubScrollBaseController<CrossCardCellData> : SubScrollBaseController<CrossCardCellData, FancyScrollViewNullContext2>
 {
 }

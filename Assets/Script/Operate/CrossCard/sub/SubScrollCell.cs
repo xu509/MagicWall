@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //
 //  分类选项卡
 //
-public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>
+public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>
 {
     string _title;  // 标题
     [SerializeField] int _index; //  索引
@@ -16,10 +16,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
     //
     //  Component Paramater 
     //
-    [SerializeField] Text text_index;
-    [SerializeField] Text text_position;
-
-    [SerializeField] SubScrollController subScrollController;
+    [SerializeField] RawImage _image;
 
 
     static class AnimatorHash
@@ -38,17 +35,21 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
-
         _index = cellData.Index;
         _title = cellData.Title;
 
-        text_index.text = cellData.Index.ToString();
-        text_position.text = cellData.Title.ToString();
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
         // TODO 更新横向的选项卡
-        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.EnvId, cellData.Category);
-        subScrollController.UpdateData(datas);
+        //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
+        //crossCardScrollViewCellItem.UpdateData(datas);
+
+        Debug.Log("Cell Data Doing...");
+        Debug.Log(cellData.ToString());
+
+        //  设置 Image
+        _image.texture = cellData.ImageTexture;
+
 
 
     }

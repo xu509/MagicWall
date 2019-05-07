@@ -9,6 +9,9 @@ public class CrossCardAgent : CardAgent
 
     #region Data Parameter
 
+    int _id;
+
+
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
     bool _hasProduct; // 产品
@@ -39,6 +42,9 @@ public class CrossCardAgent : CardAgent
         DaoService daoService = DaoService.Instance; 
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
+        // 设置ID
+        _id = enterpriseDetail.Enterprise.Ent_id;
+
         //  设置标题
         _title.text = enterpriseDetail.Enterprise.Name;
 
@@ -52,11 +58,11 @@ public class CrossCardAgent : CardAgent
         _hasVideo = enterpriseDetail.videos.Count > 0;
 
         int index = 0;
+        
         _cellDatas = new List<CrossCardCellData>();
 
-
-
         CrossCardCellData item2 = new CrossCardCellData();
+        item2.EnvId = _id;
         item2.Category = CrossCardCategoryEnum.INDEX;
         item2.Index = index;
         item2.Title = "公司名片";
@@ -67,6 +73,7 @@ public class CrossCardAgent : CardAgent
         if (_hasProduct) {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.PRODUCT;
+            item.EnvId = _id;
             item.Index = index;
             item.Title = "产品";
             _cellDatas.Add(item);
@@ -77,6 +84,7 @@ public class CrossCardAgent : CardAgent
         {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.ACTIVITY;
+            item.EnvId = _id;
             item.Index = index;
             item.Title = "活动";
             _cellDatas.Add(item);
@@ -87,6 +95,7 @@ public class CrossCardAgent : CardAgent
         if (_hasVideo) {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.VIDEO;
+            item.EnvId = _id;
             item.Index = index;
             item.Title = "视频";
             _cellDatas.Add(item);
@@ -98,6 +107,7 @@ public class CrossCardAgent : CardAgent
         {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.CATALOG;
+            item.EnvId = _id;
             item.Index = index;
             item.Title = "CATALOG";
             _cellDatas.Add(item);
@@ -113,7 +123,6 @@ public class CrossCardAgent : CardAgent
 
         // TODO Updatedata
         crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
-
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.SelectCell(0);
 

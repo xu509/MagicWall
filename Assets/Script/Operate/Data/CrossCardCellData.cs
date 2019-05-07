@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CrossCardCellData
 {
-    int _id; // 标题
+    int _envid; // envid
+    int _id; // id
     int _index;     //  索引
     string _title;  //  标题
     CrossCardCategoryEnum _category;    //  类别
@@ -12,6 +13,8 @@ public class CrossCardCellData
     List<CrossCardCellData> _datas;//二级内容
 
     public int Id { set { _id = value; } get { return _id; } }
+
+    public int EnvId { set { _envid = value; } get { return _envid; } }
 
     public string Title { set { _title = value; } get { return _title; } }
 
@@ -23,6 +26,20 @@ public class CrossCardCellData
 
     public List<CrossCardCellData> Datas { set { _datas = value; } get { return _datas; } }
 
+    public override string ToString() {
+        string str = "";
+
+        str += "Id : " + _id;
+        str += "Env Id : " + _envid;
+        str += "Index : " + _index;
+        str += "title : " + _title;
+        str += "category : " + _category;
+        str += "Image Texture is Null : " + _imageTexture == null;
+
+
+
+        return str;
+    }
 
 
 }

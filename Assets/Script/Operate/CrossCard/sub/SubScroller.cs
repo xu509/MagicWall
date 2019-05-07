@@ -1,15 +1,17 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using EasingCore;
+using System;
 
 
 
-public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+
+public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] RectTransform viewport = default;
-    [SerializeField] ScrollDirection directionOfRecognize = ScrollDirection.Vertical;
 
     [SerializeField] MovementType movementType = MovementType.Elastic;
     [SerializeField] float elasticity = 0.1f;
@@ -151,7 +153,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         dragging = true;
         autoScrollState.Reset();
 
-        Debug.Log("### ON BEGIN DRAG2 ! ###");
+        Debug.Log("### ON BEGIN DRAG ! ###");
 
     }
 
@@ -167,11 +169,12 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
             return;
         }
 
-        if (!RecognizeDirection(eventData)) {
+        if (!RecognizeDirection(eventData))
+        {
             return;
         }
 
-        if (recognizeDirection == ScrollDirection.Vertical)
+        if (recognizeDirection == ScrollDirection.Horizontal)
         {
             Vector2 localCursor;
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -220,14 +223,13 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
             UpdatePosition(position);
         }
-        else {
-
-            Debug.Log("DRAGING HOR");
+        else
+        {
 
         }
 
 
-       
+
     }
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
@@ -239,7 +241,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
         dragging = false;
         recognizeDirection = ScrollDirection.Unknow;
-        Debug.Log("### ON END DRAGING2 ###");
+        Debug.Log("### ON END DRAGING ###");
 
     }
 
@@ -253,7 +255,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             return viewport.rect.size.y;
         }
-        else {
+        else
+        {
             return 0;
         }
     }
@@ -297,7 +300,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
 
         bool velocityIsZero = Mathf.Approximately(velocity, 0f);
-        
+
         if (autoScrollState.Enable)
         {
             var position = 0f;
@@ -401,7 +404,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             return CalculateClosestIndex(index);
         }
-        else {
+        else
+        {
             return Mathf.Clamp(index, 0, totalCount - 1);
         }
     }
@@ -429,7 +433,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             return 0;
         }
-        else {
+        else
+        {
             if (p < 0)
             {
                 return size - 1 + (p + 1) % size;
@@ -446,9 +451,11 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
     //
     //  识别方向
     //
-    bool RecognizeDirection(PointerEventData eventData) {
+    bool RecognizeDirection(PointerEventData eventData)
+    {
 
-        if (recognizeDirection != ScrollDirection.Unknow) {
+        if (recognizeDirection != ScrollDirection.Unknow)
+        {
             return false;
         }
 
@@ -468,7 +475,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         float abs_y = Mathf.Abs(pointerDelta.y);
 
 
-        if ((abs_x - abs_y) == 0) {
+        if ((abs_x - abs_y) == 0)
+        {
             // 判定为未移动
             recognizeDirection = ScrollDirection.Unknow;
             return false;
@@ -487,10 +495,10 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         return true;
     }
 
-    public bool DirectionIsHorizontal() {
+    public bool DirectionIsHorizontal()
+    {
         return recognizeDirection == ScrollDirection.Horizontal;
     }
 
 
 }
-

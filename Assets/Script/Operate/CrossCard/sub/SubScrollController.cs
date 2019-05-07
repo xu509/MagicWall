@@ -4,12 +4,11 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCellData, CrossCardScrollViewContext>
+public class SubScrollController : SubScrollBaseController<CrossCardCellData, CrossCardScrollViewContext>
 {
     IList<CrossCardCellData> _items;
-    int _envId; // env id;
 
-    [SerializeField] Scroller scroller = default;
+    [SerializeField] SubScroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
 
     Action<int> onSelectionChanged;
@@ -40,24 +39,15 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
         Debug.Log("UpdateSelection !");
         InitDetailData(index);
+
     }
 
     public void UpdateData(IList<CrossCardCellData> items)
     {
-        // 此时数据传递
         _items = items;
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
     }
-
-    //
-    //  设置 Env Id
-    //
-    public void UpdateEnvId(int env_id) {
-        this._envId = env_id;
-    }
-
-
 
     public void SelectCell(int index)
     {
@@ -78,12 +68,20 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     public void InitDetailData(int index) {
 
+        Debug.Log("Sub Scroll Controller 初始化数据 INDEX : " + index);
+
         //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
         CrossCardCellData cellData = _items[index];
+        IList<CrossCardCellData> cellDatas =  CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
 
-        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
+        // 初始化celldatas
+
+        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
         baseCell.GetComponent<RectTransform>().SetAsLastSibling();
-     
+
+
+
+
 
     }
 
