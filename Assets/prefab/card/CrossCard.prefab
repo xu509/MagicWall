@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5387376799272988941}
   - component: {fileID: 1133702449953901793}
   - component: {fileID: 8510757660009471912}
+  - component: {fileID: 3946065684759973693}
+  - component: {fileID: 7949445295741271750}
   m_Layer: 5
   m_Name: btn-close
   m_TagString: Untagged
@@ -60,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -93,7 +95,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -114,9 +116,53 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1133702449953901793}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8137593796822784393}
+        m_MethodName: DoClose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!95 &3946065684759973693
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75476965881028802}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a92a43f8fbf811140a475487f2807fca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7949445295741271750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75476965881028802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  delegates: []
 --- !u!1 &183819627490312716
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +444,6 @@ GameObject:
   - component: {fileID: 5522469409673069153}
   - component: {fileID: 1877555270172104401}
   - component: {fileID: 8137593796822784393}
-  - component: {fileID: 6055682436084122556}
   m_Layer: 11
   m_Name: CrossCard
   m_TagString: Untagged
@@ -449,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.78254396, b: 0.4292453, a: 1}
+  m_Color: {r: 1, g: 0.78254396, b: 0.4292453, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -516,20 +561,6 @@ MonoBehaviour:
   _description: {fileID: 7536231062420814249}
   crossCardScrollViewController: {fileID: 6388220598021548340}
   crossCardScrollBar: {fileID: 7748574175968625818}
---- !u!114 &6055682436084122556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2247757197020260754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &2897205843266303825
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +609,6 @@ GameObject:
   - component: {fileID: 305361198191142788}
   - component: {fileID: 4025155605447068868}
   - component: {fileID: 1073372764626404936}
-  - component: {fileID: 4134636343575347165}
   m_Layer: 5
   m_Name: btn-search
   m_TagString: Untagged
@@ -684,37 +714,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &4134636343575347165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2954498930006253560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8137593796822784393}
-          m_MethodName: DoClick
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &3294315028924488922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1255,4 @@ MonoBehaviour:
   cellContainer: {fileID: 7543289434758531802}
   scroller: {fileID: 2971315810053268928}
   cellPrefab: {fileID: 6899294134729377403, guid: 34ab18067abe3c34c900161a85725c98,
-    type: 3}
-  cellItemPrefab: {fileID: 3104021846296284657, guid: b2c87845ea251c54a948956f58b22037,
     type: 3}

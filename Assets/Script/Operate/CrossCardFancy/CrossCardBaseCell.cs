@@ -45,6 +45,9 @@ public abstract class CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewCo
     /// <param name="position">Position.</param>
     public abstract void UpdatePosition(float position);
 
+    public abstract void UpdateBtnLikeStatus();
+  
+
     public abstract void InitData();
 
 }

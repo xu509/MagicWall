@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScrollViewContext> : MonoBehaviour where CrossCardScrollViewContext : class, new()
 {
+    protected CrossCardAgent _cardAgent;  // 关联的 card agent;
+
     [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;
     [SerializeField, Range(0f, 1f)] protected float scrollOffset = 0.5f;
     [SerializeField] protected bool loop = false;

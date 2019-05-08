@@ -6,6 +6,11 @@ using EasingCore;
 
 public class SubScrollController : SubScrollBaseController<CrossCardCellData, CrossCardScrollViewContext>
 {
+    CrossCardScrollViewCell _crossCardScrollViewCell;
+    public CrossCardScrollViewCell crossCardScrollViewCell { set { _crossCardScrollViewCell = value; } get { return _crossCardScrollViewCell; } }
+
+
+
     IList<CrossCardCellData> _items;
 
     [SerializeField] SubScroller scroller = default;
@@ -37,8 +42,17 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-        Debug.Log("UpdateSelection !");
-        InitDetailData(index);
+        //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
+        CrossCardCellData cellData = _items[index];
+        IList<CrossCardCellData> cellDatas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
+
+        // 初始化celldatas
+
+        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
+        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
+
+        //  _crossCardScrollViewCell
+        _crossCardScrollViewCell.UpdateBtnLikeStatus();
 
     }
 
@@ -65,26 +79,5 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     {
         onSelectionChanged = callback;
     }
-
-    public void InitDetailData(int index) {
-
-        Debug.Log("Sub Scroll Controller 初始化数据 INDEX : " + index);
-
-        //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
-        CrossCardCellData cellData = _items[index];
-        IList<CrossCardCellData> cellDatas =  CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
-
-        // 初始化celldatas
-
-        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
-        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
-
-
-
-
-
-    }
-
-
 
 }

@@ -11,6 +11,10 @@ public class CrossCardAgent : CardAgent
 
     int _id;
 
+    int _likes;
+    public int Likes { set { _likes = value; } get { return _likes; } }
+
+
 
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
@@ -51,6 +55,9 @@ public class CrossCardAgent : CardAgent
         //  设置描述
         UpdateDescription(enterpriseDetail.Enterprise.Description);
 
+        // 设置喜欢数
+        Likes = enterpriseDetail.Enterprise.likes;
+
         //// 判断几个类型
         _hasCatalog = enterpriseDetail.catalog.Count > 0;
         _hasProduct = enterpriseDetail.products.Count > 0;
@@ -62,7 +69,9 @@ public class CrossCardAgent : CardAgent
         _cellDatas = new List<CrossCardCellData>();
 
         CrossCardCellData item2 = new CrossCardCellData();
+        item2.crossCardAgent = this;
         item2.EnvId = _id;
+        item2.Likes = Likes;
         item2.Category = CrossCardCategoryEnum.INDEX;
         item2.Index = index;
         item2.Title = "公司名片";
@@ -73,7 +82,9 @@ public class CrossCardAgent : CardAgent
         if (_hasProduct) {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.PRODUCT;
+            item.crossCardAgent = this;
             item.EnvId = _id;
+            item.Likes = Likes;
             item.Index = index;
             item.Title = "产品";
             _cellDatas.Add(item);
@@ -84,7 +95,9 @@ public class CrossCardAgent : CardAgent
         {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.ACTIVITY;
+            item.crossCardAgent = this;
             item.EnvId = _id;
+            item.Likes = Likes;
             item.Index = index;
             item.Title = "活动";
             _cellDatas.Add(item);
@@ -95,7 +108,9 @@ public class CrossCardAgent : CardAgent
         if (_hasVideo) {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.VIDEO;
+            item.crossCardAgent = this;
             item.EnvId = _id;
+            item.Likes = Likes;
             item.Index = index;
             item.Title = "视频";
             _cellDatas.Add(item);
@@ -107,7 +122,9 @@ public class CrossCardAgent : CardAgent
         {
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.CATALOG;
+            item.crossCardAgent = this;
             item.EnvId = _id;
+            item.Likes = Likes;
             item.Index = index;
             item.Title = "CATALOG";
             _cellDatas.Add(item);

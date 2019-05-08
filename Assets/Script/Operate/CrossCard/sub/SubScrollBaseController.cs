@@ -94,8 +94,6 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
             cell.InitData();
             pool.Add(cell);
 
-            Debug.Log("cREATE : ");
-
         }
         
     }

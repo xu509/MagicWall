@@ -38,8 +38,18 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-        Debug.Log("UpdateSelection !");
-        InitDetailData(index);
+
+        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
+        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
+
+        baseCell.UpdateBtnLikeStatus();
+    }
+
+    public void UpdateItemData(CrossCardAgent agent)
+    {
+        // 此时数据传递
+        _cardAgent = agent;
+
     }
 
     public void UpdateData(IList<CrossCardCellData> items)
@@ -75,18 +85,6 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     {
         onSelectionChanged = callback;
     }
-
-    public void InitDetailData(int index) {
-
-        //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
-        CrossCardCellData cellData = _items[index];
-
-        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
-        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
-     
-
-    }
-
 
 
 }

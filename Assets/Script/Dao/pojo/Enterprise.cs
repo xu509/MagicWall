@@ -53,10 +53,9 @@ public class Enterprise : Generator<Enterprise>
     {
         string[] names = new string[] { "百度","可口可乐","谷歌","阿里巴巴","豆瓣","哔哩哔哩","微软","搜狗","印象笔记","迅雷"};
         string[] logos = new string[] {
-            "1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","9.jpg","10.jpg",
-            "11.jpg","12.jpg","13.jpg","14.jpg","15.jpg","16.jpg","17.jpg","18.jpg","19.jpg","20.jpg",
-            "21.jpg","22.jpg","23.jpg","24.jpg","25.jpg","26.jpg","27.jpg","28.jpg","29.jpg","30.jpg",
-            "31.jpg","32.jpg"
+            "1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png","9.png","10.png",
+            "11.png","12.png","13.png","14.png","15.png","16.png","17.png","18.png","19.png","20.png",
+            "21.png","22.png","23.png","24.png","25.png","26.png","27.png","28.png","29.png","30.png"
         };
         string[] descriptions = new string[] {
             "京东商城京东JD.COM-专业的综合网上购物商城，销售超数万品牌、4020万种商品，囊括家电、手机、电脑、母婴、服装等13大品类。秉承客户为先的理念，京东所售商品为正品行货、全国联保、机打发票。",
@@ -88,7 +87,8 @@ public class Enterprise : Generator<Enterprise>
 
         env._description = descriptions[Random.Range(0, descriptions.Length - 1)];
 
-        env.likes = Random.Range(1, 1000);
+        bool hasLike = Random.Range(0, 5) > 5;
+        env.likes = hasLike ? Random.Range(1, 99) : 0;
 
         env._business_card = businessCards[Random.Range(0, businessCards.Length - 1)];
 

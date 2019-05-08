@@ -199,6 +199,15 @@ public class CardAgent : FlockAgent
     //  Call Back
     //
 
+    //
+    //  关闭
+    //
+    public void DoClose()
+    {
+        DoDestoriedForFirstStep();
+
+        Debug.Log("Do Closing");
+    }
 
 
 
