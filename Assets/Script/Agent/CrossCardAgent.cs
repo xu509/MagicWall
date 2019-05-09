@@ -14,8 +14,6 @@ public class CrossCardAgent : CardAgent
     int _likes;
     public int Likes { set { _likes = value; } get { return _likes; } }
 
-
-
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
     bool _hasProduct; // 产品

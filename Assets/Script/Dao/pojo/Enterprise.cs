@@ -46,6 +46,11 @@ public class Enterprise : Generator<Enterprise>
 
     private Texture _texture_business_card;
     public Texture TextureBusinessCard { set { _texture_business_card = value; } get { return _texture_business_card; } }
+
+    private List<Texture> _env_cards;
+    public List<Texture> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
+
+
     #endregion
 
 
@@ -93,6 +98,25 @@ public class Enterprise : Generator<Enterprise>
         env._business_card = businessCards[Random.Range(0, businessCards.Length - 1)];
 
         env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + env._business_card);
+
+        // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
+        int cardType = Random.Range(1, 3);
+        if (cardType == 0)
+        {
+            _env_cards = new List<Texture>();
+        }
+        else if (cardType == 1)
+        {
+            _env_cards = new List<Texture>();
+            Texture t = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-1.png");
+            _env_cards.Add(t);
+        }
+        else {
+            _env_cards = new List<Texture>();
+            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-1.png"));
+            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-2.png"));
+            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-3.png"));
+        }
 
         return env;
     }

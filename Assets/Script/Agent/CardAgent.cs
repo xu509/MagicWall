@@ -11,9 +11,14 @@ public class CardAgent : FlockAgent
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
     private float _activeFirstStageDuringTime = 7f;   //  最大的时间
     private float _activeSecondStageDuringTime = 4f;   //  第二段缩小的时间
+    private bool _showDetail = false;   // 显示企业卡片
 
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
+
+
+    [SerializeField] Animator _list_animator;    // list animator
+
 
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
@@ -209,6 +214,28 @@ public class CardAgent : FlockAgent
         Debug.Log("Do Closing");
     }
 
+    //
+    //  点击详细按钮
+    //
+    public void DoDetail()
+    {
+        // 生成企业卡片
+        Debug.Log("Do Detail");
+        _showDetail = !_showDetail;
+
+        Debug.Log("Show Detail : " + _showDetail);
+
+        if (_showDetail)
+        {
+            _list_animator.ResetTrigger("Normal");
+            _list_animator.SetTrigger("Highlighted");
+        }
+        else {
+            _list_animator.ResetTrigger("Highlighted");
+            _list_animator.SetTrigger("Normal");
+        }
+
+    }
 
 
 }
