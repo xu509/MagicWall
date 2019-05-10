@@ -48,8 +48,13 @@ public class Product : Generator<Product>
         string[] names = {"IPHONE","MAC","椅子","桌子","包包" };
         product.name = names[Random.Range(0,names.Length - 1)];
 
-        string[] images = { "1.png", "2.png", "3.png", "4.png", "5.png",
-            "6.png", "7.png", "8.png", "9.png", "10.png", "11.png" };
+        string[] images = { "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg",
+            "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg",
+            "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg",
+            "18.jpg", "19.jpg", "20.jpg", "21.jpg", "22.jpg", "23.jpg",
+            "24.jpg", "25.jpg", "26.jpg", "27.jpg", "28.jpg", "29.jpg",
+            "30.jpg"
+        };
         product.image = images[Random.Range(0, images.Length - 1)];
 
         product.likes = Random.Range(1, 100);

@@ -9,24 +9,29 @@ public class CrossCardAgent : CardAgent
 
     #region Data Parameter
 
+    int _id;
+
+    int _likes;
+    public int Likes { set { _likes = value; } get { return _likes; } }
+
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
     bool _hasProduct; // 产品
     bool _hasActivity;  //  活动
     bool _hasVideo; //  视频
 
-    [SerializeField] List<CrossCardScrollCell> _cardScrollCells;
+    List<CrossCardCellData> _cellDatas;
 
     #endregion
 
     #region Component Parameter
-    [SerializeField, Header("十字卡片 - 标题")] Text title;
-    [SerializeField] RectTransform scrollView;
-
-    [SerializeField] CrossCardScrollView crossCardScrollView;
+    [SerializeField, Header("十字卡片 - 标题")] Text _title;
+    [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
 
-    private int _index = 0; //  当前索引
+    [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
+    [SerializeField] CrossCardScrollBar crossCardScrollBar;
+
 
     #endregion
 
@@ -37,11 +42,19 @@ public class CrossCardAgent : CardAgent
     public void InitData()
     {
         DaoService daoService = DaoService.Instance; 
-        Debug.Log("Init Data : " + OriginAgent.DataId);
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
-        // 设置标题
-        title.text = enterpriseDetail.Enterprise.Name;
+        // 设置ID
+        _id = enterpriseDetail.Enterprise.Ent_id;
+
+        //  设置标题
+        _title.text = enterpriseDetail.Enterprise.Name;
+
+        //  设置描述
+        UpdateDescription(enterpriseDetail.Enterprise.Description);
+
+        // 设置喜欢数
+        Likes = enterpriseDetail.Enterprise.likes;
 
         //// 判断几个类型
         _hasCatalog = enterpriseDetail.catalog.Count > 0;
@@ -50,37 +63,70 @@ public class CrossCardAgent : CardAgent
         _hasVideo = enterpriseDetail.videos.Count > 0;
 
         int index = 0;
-        _cardScrollCells = new List<CrossCardScrollCell>();
-        List<CrossCardCellData> cellDatas = new List<CrossCardCellData>();
+        
+        _cellDatas = new List<CrossCardCellData>();
 
-
-
-        CrossCardCellData item2 = new CrossCardCellData(index, "公司名片");
-        cellDatas.Add(item2);
+        CrossCardCellData item2 = new CrossCardCellData();
+        item2.crossCardAgent = this;
+        item2.EnvId = _id;
+        item2.Likes = Likes;
+        item2.Category = CrossCardCategoryEnum.INDEX;
+        item2.Index = index;
+        item2.Title = "公司名片";
+        index++; 
+        _cellDatas.Add(item2);
         //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
 
         if (_hasProduct) {
-            CrossCardCellData item = new CrossCardCellData(index++, "产品");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData();
+            item.Category = CrossCardCategoryEnum.PRODUCT;
+            item.crossCardAgent = this;
+            item.EnvId = _id;
+            item.Likes = Likes;
+            item.Index = index;
+            item.Title = "产品";
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
         if (_hasActivity)
         {
-            CrossCardCellData item = new CrossCardCellData(index++, "活动");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData();
+            item.Category = CrossCardCategoryEnum.ACTIVITY;
+            item.crossCardAgent = this;
+            item.EnvId = _id;
+            item.Likes = Likes;
+            item.Index = index;
+            item.Title = "活动";
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasVideo) {
-            CrossCardCellData item = new CrossCardCellData(index++, "视频");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData();
+            item.Category = CrossCardCategoryEnum.VIDEO;
+            item.crossCardAgent = this;
+            item.EnvId = _id;
+            item.Likes = Likes;
+            item.Index = index;
+            item.Title = "视频";
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasCatalog)
         {
-            CrossCardCellData item = new CrossCardCellData(index++, "CATALOG");
-            cellDatas.Add(item);
+            CrossCardCellData item = new CrossCardCellData();
+            item.Category = CrossCardCategoryEnum.CATALOG;
+            item.crossCardAgent = this;
+            item.EnvId = _id;
+            item.Likes = Likes;
+            item.Index = index;
+            item.Title = "CATALOG";
+            _cellDatas.Add(item);
+            index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
@@ -91,8 +137,35 @@ public class CrossCardAgent : CardAgent
         //}
 
         // TODO Updatedata
-        crossCardScrollView.UpdateData(cellDatas);
+        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
+        crossCardScrollViewController.UpdateData(_cellDatas);
+        crossCardScrollViewController.SelectCell(0);
 
+        crossCardScrollBar.UpdateData(_cellDatas);
+        crossCardScrollBar.SelectCell(0);
+        crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
+
+        // 处理businesscard
+        hasListBtn = enterpriseDetail.Enterprise.EnvCards.Count > 0;
+        InitComponents();
+
+
+    }
+
+    void OnSelectionChanged(int index) {
+        GameObject obj = GameObject.Find("CrossCardScrollCell" + index);
+        obj.GetComponent<RectTransform>().SetAsLastSibling();
+
+        crossCardScrollBar.SelectCell(index);
+    }
+
+    void OnBarSelectionChanged(int index)
+    {
+        crossCardScrollViewController.SelectCell(index);
+
+        // TODO 左侧标记移动
+
+        // TODO 左右增加符号 | 
 
 
     }
@@ -112,49 +185,10 @@ public class CrossCardAgent : CardAgent
 
     }
 
-    //private CrossCardScrollCell CreateCardScrollCell(RectTransform scrollPanel, CrossCardCellData item) {
-    //    //  创建 Agent
-    //    CrossCardScrollCell cardScrollCell = Instantiate(
-    //                                cardScrollCellPrefab,
-    //                                scrollPanel
-    //                                ) as CrossCardScrollCell;
-    //    cardScrollCell.name = "ScrollCell" + item.Index;
-    //    //cardScrollCell.Initialize(item);
 
-    //    //cardScrollCell.UpdatePosition(CalculatePostion(item.Index));
-    //    return cardScrollCell;
-    //}
-
-
-    private float CalculatePostion(int index) {
-        float postion = 0.9f;
-
-        if (index == 0)
-        {
-            postion = 0;
-        }
-        else if (index == 1) {
-            postion = 0.25f;
-        }
-        else if (index == 2)
-        {
-            postion = 0.5f;
-        }
-        else if (index == 3)
-        {
-            postion = 0.75f;
-        }
-        else if (index == 4)
-        {
-            postion = 1f;
-        }
-
-
-        return postion;
+    void UpdateDescription(string description) {
+        _description.text = description;
     }
-
-
-
 
 }
 

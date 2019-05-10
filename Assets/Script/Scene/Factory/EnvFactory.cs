@@ -128,9 +128,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         //  定出生位置
         rectTransform.anchoredPosition3D = genPos;
 
-        //  定义大小
-        //Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        //rectTransform.sizeDelta = sizeDelta;
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
@@ -221,48 +218,50 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
     {
-        //  创建 Agent
-        CrossCardAgent crossCardAgent = Instantiate(
-                                    _manager.crossCardgent,
-                                    _operationPanel
-                                    ) as CrossCardAgent;
+        ////  创建 Agent
+        //CrossCardAgent crossCardAgent = Instantiate(
+        //                            _manager.crossCardgent,
+        //                            _operationPanel
+        //                            ) as CrossCardAgent;
 
-        //  命名
-        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+        ////  命名
+        //crossCardAgent.name = "Choose(" + flockAgent.name + ")";
 
-        //  获取rect引用
-        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
+        ////  获取rect引用
+        //RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
 
-        //  定出生位置
-        rectTransform.anchoredPosition3D = genPos;
+        ////  定出生位置
+        //rectTransform.anchoredPosition3D = genPos;
 
-        //  定义大小
-        //Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        //rectTransform.sizeDelta = sizeDelta;
+        ////  定义大小
+        ////Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
+        ////rectTransform.sizeDelta = sizeDelta;
 
-        //  定义缩放
-        Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
-        rectTransform.localScale = scaleVector3;
+        ////  定义缩放
+        //Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
+        //rectTransform.localScale = scaleVector3;
 
-        //  初始化内容
-        crossCardAgent.Width = rectTransform.rect.width;
-        crossCardAgent.Height = rectTransform.rect.height;
+        ////  初始化内容
+        //crossCardAgent.Width = rectTransform.rect.width;
+        //crossCardAgent.Height = rectTransform.rect.height;
 
-        //  添加原组件
-        crossCardAgent.OriginAgent = flockAgent;
+        ////  添加原组件
+        //crossCardAgent.OriginAgent = flockAgent;
 
-        //  配置scene
-        crossCardAgent.SceneIndex = _manager.SceneIndex;
+        ////  配置scene
+        //crossCardAgent.SceneIndex = _manager.SceneIndex;
 
-        // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(crossCardAgent);
+        //// 添加到effect agent
+        //AgentManager.Instance.AddEffectItem(crossCardAgent);
 
-        // 初始化 CrossAgent 数据
-        crossCardAgent.InitData();
+        //// 初始化 CrossAgent 数据
+        //crossCardAgent.InitData();
 
+        
+        CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
         // 设置显示状态
-        crossCardAgent.gameObject.SetActive(isActive);
+        cardAgent.gameObject.SetActive(isActive);
 
-        return crossCardAgent;
+        return cardAgent;
     }
 }
