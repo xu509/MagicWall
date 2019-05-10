@@ -85,13 +85,22 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region Private Parameter - Data
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
 
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
 
+    //从下往上 列与底
+    public Dictionary<int, float> columnAndBottoms;
+    //从上往下 列与顶
+    public Dictionary<int, float> columnAndTops;
+    //行与右
+    public Dictionary<int, float> rowAndRights;
 
     #endregion
 
+    public DaoService daoService;
 
     // Awake - init manager of Singleton
     private void Awake()
@@ -113,6 +122,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
         //  初始化操作监听
         OperateManager _operateManager = OperateManager.Instance;
+
+        daoService = DaoService.Instance;
     }
 
 

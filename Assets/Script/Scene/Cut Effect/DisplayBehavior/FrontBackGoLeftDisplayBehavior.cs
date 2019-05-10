@@ -6,7 +6,7 @@ using DG.Tweening;
 //
 //	向左移动
 //
-public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
+public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
     private DisplayBehaviorConfig _displayBehaviorConfig;
@@ -20,12 +20,12 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
     }
 
     public void Run()
-	{
+    {
         _manager = MagicWallManager.Instance;
 
-		// 面板向左移动
-		float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MoveFactor_Panel;
-		Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
+        // 面板向左移动
+        float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MoveFactor_Panel;
+        Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
         _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
         // 调整panel的差值
@@ -71,8 +71,10 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
             int y = page * cols_offsets + 1;
             int rows = _displayBehaviorConfig.Row;
 
-            for (int x = 1; x <= rows; x++) {
-                for (int z = y; z < (y + cols_offsets) ; z++) {
+            for (int x = 1; x <= rows; x++)
+            {
+                for (int z = y; z < (y + cols_offsets); z++)
+                {
 
                     FlockAgent agent = CreateItem(_displayBehaviorConfig.ItemsFactory, x, z); // 创建新的
                     _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
@@ -80,7 +82,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
             }
             _displayBehaviorConfig.Page += 1;
 
-            if((_displayBehaviorConfig.Page - 5) > 0)
+            if ((_displayBehaviorConfig.Page - 5) > 0)
                 AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
         }
         else
@@ -89,7 +91,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
-    private FlockAgent CreateItem(ItemsFactory factory, int row, int column) {
+    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
+    {
         row = row - 1;
         column = column - 1;
 
@@ -97,7 +100,14 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
+        FlockAgent agent = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
+        float z = (row + column) % 2 == 1 ? 0 : 500;
+        
+        // 将agent的z轴定义在后方
+        RectTransform rect = agent.GetComponent<RectTransform>();
+        Vector3 position = rect.anchoredPosition3D;
+        rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, z);
+        return agent;
     }
 
 }

@@ -45,6 +45,9 @@ public class FlockAgent : MonoBehaviour
     private float delayTime;
     public float DelayTime { set { delayTime = value; } get { return delayTime; } }
 
+    private float duration;
+    public float Duration { set { duration = value; } get { return duration; } }
+
     // 宽度
     [SerializeField]
     private float _width;

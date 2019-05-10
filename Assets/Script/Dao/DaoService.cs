@@ -7,7 +7,8 @@ public class DaoService : Singleton<DaoService>
 {
     private List<Enterprise> _enterprises;
 
-    void Awake() {
+    void Awake()
+    {
 
     }
 
@@ -19,7 +20,8 @@ public class DaoService : Singleton<DaoService>
     //
     //  加载信息
     //
-    public void LoadInformation() {
+    public void LoadInformation()
+    {
 
     }
 
@@ -41,10 +43,11 @@ public class DaoService : Singleton<DaoService>
 
             return _enterprises;
         }
-        else {
+        else
+        {
             return _enterprises;
         }
-     
+
     }
 
     //
@@ -79,6 +82,7 @@ public class DaoService : Singleton<DaoService>
     public List<Activity> GetActivities()
     {
         // todo
+
         return null;
     }
 
@@ -112,7 +116,8 @@ public class DaoService : Singleton<DaoService>
     //
     //  获取config
     //
-    public AppConfig GetConfigByKey(string key) {
+    public AppConfig GetConfigByKey(string key)
+    {
         AppConfig appConfig = new AppConfig();
         appConfig.Value = "20";
 
@@ -146,40 +151,47 @@ public class DaoService : Singleton<DaoService>
     //
     //  获取显示配置
     //
-    public List<SceneConfig> GetShowConfigs() {
-        List<SceneConfig> sceneConfigs2 = new List<SceneConfig>();
+    public List<SceneConfig> GetShowConfigs()
+    {
 
 
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         SceneConfig sceneConfig1 = new SceneConfig();
         sceneConfig1.CutEffect = new CurveStaggerCutEffect();
-        sceneConfig1.SceneContentType = SceneContentType.env;
+        //sceneConfig1.SceneContentType = SceneContentType.env;
+        sceneConfig1.SceneContentType = SceneContentType.activity;
+   
         sceneConfigs.Add(sceneConfig1);
 
-        SceneConfig sceneConfig4 = new SceneConfig();
-        sceneConfig4.CutEffect = new StarsCutEffect();
-        sceneConfig4.SceneContentType = SceneContentType.product;
-        sceneConfigs.Add(sceneConfig4);
+        //SceneConfig sceneConfig4 = new SceneConfig();
+        //sceneConfig4.CutEffect = new StarsCutEffect();
+        //sceneConfig4.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig4);
 
-        SceneConfig sceneConfig2 = new SceneConfig();
-        sceneConfig2.CutEffect = new LeftRightAdjustCutEffect();
-        sceneConfig2.SceneContentType = SceneContentType.product;
-        sceneConfigs.Add(sceneConfig2);
+        //SceneConfig sceneConfig2 = new SceneConfig();
+        //sceneConfig2.CutEffect = new LeftRightAdjustCutEffect();
+        //sceneConfig2.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig2);
 
-        SceneConfig sceneConfig3 = new SceneConfig();
-        sceneConfig3.CutEffect = new MidDisperseCutEffect();
+        //SceneConfig sceneConfig3 = new SceneConfig();
+        //sceneConfig3.CutEffect = new MidDisperseCutEffect();
         //sceneConfig3.SceneContentType = SceneContentType.activity;
-        sceneConfig3.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig3);
+        ////sceneConfig3.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig3);
 
 
 
-        SceneConfig sceneConfig5 = new SceneConfig();
-        sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
+        //SceneConfig sceneConfig5 = new SceneConfig();
+        //sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
         //sceneConfig5.SceneContentType = SceneContentType.activity;
-        sceneConfig5.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig5);
+        ////sceneConfig5.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig5);
+
+        //SceneConfig sceneConfig0 = new SceneConfig();
+        //sceneConfig0.CutEffect = new FrontBackUnfoldCutEffect();
+        //sceneConfig0.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig0);
 
         return sceneConfigs;
     }

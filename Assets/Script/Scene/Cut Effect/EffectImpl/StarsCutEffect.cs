@@ -12,8 +12,9 @@ public class StarsCutEffect : CutEffect
     private int row;
     private int column;
 
-    private float generate_agent_interval = 0.3f; // 生成的间隔
+    private float generate_agent_interval = 0.05f; // 生成的间隔
     private float last_generate_time = 0f; // 最后生成的时间
+    private float animation_duration = 3f;//动画持续时间
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
@@ -70,6 +71,9 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
+                Enterprise env = manager.daoService.GetEnterprise();
+                Vector2 vector2 = ResetTexture(new Vector2(env.TextureLogo.width, env.TextureLogo.height));
+
                 int middleX = (column - 1) / 2;
 
                 // ori_x;ori_y
@@ -81,18 +85,47 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, DaoService.Instance.GetEnterprise());
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
                 // 将agent的z轴定义在后方
-                RectTransform rect = go.GetComponent<RectTransform>();
-                Vector3 position = rect.anchoredPosition3D;
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 300);
+                //RectTransform rect = go.GetComponent<RectTransform>();
+                //Vector3 position = rect.anchoredPosition3D;
+                //rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 3000);
 
                 go.gameObject.SetActive(false);
             }
         }
+    }
+
+    Vector2 ResetTexture(Vector2 size)
+    {
+        print(111);
+        //图片宽高
+        float w = size.x;
+        float h = size.y;
+        //组件宽高
+        float width;
+        float height;
+        //if (w > 600 || h > 400)
+        //{
+        //    w *= 0.9f;
+        //    h *= 0.9f;
+        //    ResetTexture(new Vector2(w, h));
+        //}
+        if (w >= h)
+        {
+            //宽固定
+            width = Random.Range(300, 600);
+            height = h / w * width;
+        }   else
+        {
+            //高固定
+            height = Random.Range(200, 400);
+            width = w / h * height;
+        }
+        return new Vector2(width, height);
     }
 
     //
@@ -121,6 +154,9 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
+                Enterprise env = manager.daoService.GetEnterprise();
+                Vector2 vector2 = ResetTexture(new Vector2(env.TextureLogo.width, env.TextureLogo.height));
+
                 int middleX = (column - 1) / 2;
 
                 // ori_x;ori_y
@@ -132,16 +168,17 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , itemWidth, itemHeight);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, DaoService.Instance.GetEnterprise());
+            
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
                 // 将agent的z轴定义在后方
-                RectTransform rect = go.GetComponent<RectTransform>();
-                Vector3 position = rect.anchoredPosition3D;
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 300);
+                //RectTransform rect = go.GetComponent<RectTransform>();
+                //Vector3 position = rect.anchoredPosition3D;
+                //rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 3000);
 
-                go.gameObject.SetActive(false);
+                //go.gameObject.SetActive(false);
             }
         }
     }
@@ -154,14 +191,16 @@ public class StarsCutEffect : CutEffect
             int count = AgentManager.Instance.Agents.Count;
             int index = Random.Range(0, count - 1);
             FlockAgent agent = AgentManager.Instance.Agents[index];
-
             // TODO 这里挑错，显示索引的内容已经没了
             agent.gameObject.SetActive(true);
 
-            Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
-            agent.GetComponent<RectTransform>().DOAnchorPos3D(to, 3f)
-                .OnComplete(() => DOAnchorPosCompleteCallback(agent));
+            RectTransform rect = agent.GetComponent<RectTransform>();
+            rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 3000);
 
+            Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
+            agent.GetComponent<RectTransform>().DOAnchorPos3D(to, animation_duration)
+                .OnComplete(() => DOAnchorPosCompleteCallback(agent));
+            agent.GetComponent<RectTransform>().DOScale(new Vector3(0.5f, 0.5f, 0.5f), animation_duration).From();
             last_generate_time = Time.time;
         }
 
@@ -178,11 +217,17 @@ public class StarsCutEffect : CutEffect
     public void DOAnchorPosCompleteCallback(FlockAgent agent)
     {
         RectTransform rect = agent.GetComponent<RectTransform>();
-        Image image = agent.GetComponentInChildren<Image>();
+        //RawImage image = agent.GetComponentInChildren<RawImage>();
         if (!agent.IsChoosing)
         {
-            rect.DOScale(1.5f, 0.2f);
-            image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
+            //rect.DOScale(1.5f, 0.2f);
+            //image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
+            foreach(RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
+            {
+                rawImage.DOFade(0, 0.5F).OnComplete(() => DOFadeCompleteCallback(agent));
+             
+            }
+
         }
     }
 
@@ -190,9 +235,14 @@ public class StarsCutEffect : CutEffect
     {
         agent.gameObject.SetActive(false);
         RectTransform rect = agent.GetComponent<RectTransform>();
-        Image image = agent.GetComponentInChildren<Image>();
+        //Image image = agent.GetComponentInChildren<Image>();
         rect.DOScale(1f, Time.deltaTime);
-        image.DOFade(1, Time.deltaTime);
+        //image.DOFade(1, Time.deltaTime);
+        foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
+        {
+            rawImage.DOFade(1, 0);
+
+        }
     }
 	#endregion
 

@@ -17,7 +17,6 @@ public class UpDownAdjustCutEffect : CutEffect
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
-
     //
     //  Init
     //
@@ -33,7 +32,7 @@ public class UpDownAdjustCutEffect : CutEffect
         DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         // 获取Display的动画
-        DisplayBehavior = new GoDownDisplayBehavior();
+        DisplayBehavior = new GoUpDisplayBehavior();
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
@@ -63,7 +62,7 @@ public class UpDownAdjustCutEffect : CutEffect
                 //float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
                 //float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
 
-                Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                Vector2 vector2 = ItemsFactory.GoUpGetOriginPosition(i, j);
                 float ori_x = vector2.x;
                 float ori_y = vector2.y;
 
@@ -74,21 +73,21 @@ public class UpDownAdjustCutEffect : CutEffect
                 if (j % 2 == 0)
                 {
                     //偶数列向下偏移itemHeight
-                    gen_y = ori_y - _itemHeight + gap;
+                    gen_y = ori_y - (_itemHeight + gap);
                 }
                 else
                 {
                     //奇数列向上偏移itemHeight
-                    gen_y = ori_y + _itemHeight + gap + i * gap;
+                    gen_y = ori_y + _itemHeight + gap;
                 }
                 gen_x = ori_x; //横坐标不变
 
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.daoService.GetEnterprise());
 
                 // agent 一定时间内从透明至无透明
-                go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime).From();
+                go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
 
                 // 装载进 pagesAgents
                 int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
@@ -103,56 +102,58 @@ public class UpDownAdjustCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
+        _manager.columnAndBottoms = new Dictionary<int, float>();
+
         // 获取栅格信息
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
+        float _itemWidth = 300;
+        float _itemHeight = 0;
         float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
 
         for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < _row; i++)
+            float y = h;
+            for (int i = 0; i < _row+1; i++)
             {
-                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
-                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
-
-                // 获取出生位置
-                float gen_x, gen_y;
-
-                // 计算移动的目标位置
-                if (j % 2 == 0)
+                if (y>0)
                 {
-                    //偶数列向下偏移itemHeight
-                    gen_y = ori_y - _itemHeight + gap;
+                    float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                    float ori_y = y;
+
+                    Enterprise env = _manager.daoService.GetEnterprise();
+                    //宽固定
+                    _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                    ori_y = ori_y - _itemHeight / 2 - gap;
+                    // 获取出生位置
+                    float gen_x, gen_y;
+
+                    // 计算移动的目标位置
+                    if (j % 2 == 0)
+                    {
+                        //偶数列向下偏移itemHeight
+                        gen_y = ori_y - (_itemHeight + gap);
+                    }
+                    else
+                    {
+                        //奇数列向上偏移itemHeight
+                        gen_y = ori_y + _itemHeight + gap;
+                    }
+                    gen_x = ori_x; //横坐标不变        
+
+                    // 生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, env);
+                    y = y - go.Height - gap;
                 }
-                else
-                {
-                    //奇数列向上偏移itemHeight
-                    gen_y = ori_y + _itemHeight + gap + i * gap;
-                }
-                gen_x = ori_x; //横坐标不变
-
-                // 定义出生位置与目标位置
-                Vector2 ori_position = new Vector2(ori_x, ori_y);
-                Vector2 gen_position = new Vector2(gen_x, gen_y);
-
-                // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight);
-
-                // agent 一定时间内从透明至无透明
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime).From();
-
-                // 装载进 pagesAgents
-                int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
-                _page = Mathf.CeilToInt((i + 1) * 1.0f / rowUnit);
-                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
             }
+            //print(j + "---" + y);
+            _manager.columnAndBottoms.Add(j, y);
+            y = h;
         }
     }
 
     public override void Starting() {
-
         for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
         {
             FlockAgent agent = AgentManager.Instance.Agents[i];
@@ -200,25 +201,5 @@ public class UpDownAdjustCutEffect : CutEffect
         AgentManager.Instance.UpdateAgents();
     }
 
-
-	public void DOAnchorPosCompleteCallback(FlockAgent agent)
-    {
-        RectTransform rect = agent.GetComponent<RectTransform>();
-        Image image = agent.GetComponentInChildren<Image>();
-
-        rect.DOScale(1.5f, 0.2f);
-        image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
-
-    }
-
-    public void DOFadeCompleteCallback(FlockAgent agent)
-    {
-        agent.gameObject.SetActive(false);
-        RectTransform rect = agent.GetComponent<RectTransform>();
-        Image image = agent.GetComponentInChildren<Image>();
-        rect.DOScale(1f, Time.deltaTime);
-        image.DOFade(1, Time.deltaTime);
-
-    }
 
 }

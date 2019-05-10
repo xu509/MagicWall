@@ -57,7 +57,7 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, Enterprise env)
     {
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
@@ -85,7 +85,7 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
         rectTransform.sizeDelta = sizeDelta;
 
         // 初始化 数据
-        Enterprise env = _daoService.GetEnterprise();
+        //Enterprise env = _daoService.GetEnterprise();
 
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
@@ -171,6 +171,27 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
         return new Vector2(x, y);
     }
 
+    public Vector2 GoUpGetOriginPosition(int row, int column)
+    {
+        //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+        //float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
+
+        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemWidth = itemHeight;
+
+
+        float x = column * (itemWidth + _gap) + itemWidth / 2 + _gap;
+        float y = h - (row * (itemHeight + _gap) + itemHeight / 2 + _gap);
+
+        _itemWidth = itemWidth;
+        _itemHeight = itemHeight;
+
+        return new Vector2(x, y);
+    }
+
     public float GetItemWidth()
     {
         return _itemWidth;
@@ -195,4 +216,5 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
     {
         throw new System.NotImplementedException();
     }
+
 }
