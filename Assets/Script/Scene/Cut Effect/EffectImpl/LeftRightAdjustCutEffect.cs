@@ -47,7 +47,7 @@ public class LeftRightAdjustCutEffect : CutEffect
     //
     //  创建产品 | Logo 
     //
-    protected override void CreateProductOrLogo()
+    protected override void CreateLogo()
     {
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -148,8 +148,10 @@ public class LeftRightAdjustCutEffect : CutEffect
                 }
                 gen_y = ori_y; //纵坐标不变
 
+                Activity activity = _manager.daoService.GetActivity();
+
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, activity);
                 go.Delay = delay;
                 go.DelayTime = delay;
             }
@@ -210,5 +212,11 @@ public class LeftRightAdjustCutEffect : CutEffect
     public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
+
+    protected override void CreateProduct()
+    {
+        throw new System.NotImplementedException();
+    }
+
 
 }

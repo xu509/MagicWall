@@ -6,6 +6,9 @@ using UnityEngine;
 public class DaoService : Singleton<DaoService>
 {
     private List<Enterprise> _enterprises;
+    private List<Activity> _activities;
+    private List<Product> _products;
+
 
     void Awake()
     {
@@ -91,10 +94,35 @@ public class DaoService : Singleton<DaoService>
     //
     public List<Activity> GetActivities()
     {
-        // todo
+        if (_activities == null)
+        {
+            Activity activity = new Activity();
 
-        return null;
+            //  从数据库中获取数据
+            _activities = new List<Activity>();
+            for (int i = 0; i < 100; i++)
+            {
+                _activities.Add(activity.Generator());
+            }
+
+            return _activities;
+        }
+        else
+        {
+            return _activities;
+        }
     }
+
+    //
+    //  获取首页活动
+    //
+    public Activity GetActivity()
+    {
+        List<Activity> enterprises = GetActivities();
+        int index = Random.Range(0, _activities.Count - 1);
+        return enterprises[index];
+    }
+
 
     //
     //  获取首页活动的详细信息
@@ -110,8 +138,30 @@ public class DaoService : Singleton<DaoService>
     //
     public List<Product> GetProducts()
     {
-        // todo
-        return null;
+        if (_products == null)
+        {
+            Product product = new Product();
+
+            //  从数据库中获取数据
+            _products = new List<Product>();
+            for (int i = 0; i < 100; i++)
+            {
+                _products.Add(product.Generator());
+            }
+
+            return _products;
+        }
+        else
+        {
+            return _products;
+        }
+    }
+
+    public Product GetProduct()
+    {
+        List<Product> enterprises = GetProducts();
+        int index = Random.Range(0, _products.Count - 1);
+        return _products[index];
     }
 
     //

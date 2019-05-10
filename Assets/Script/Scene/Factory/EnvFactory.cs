@@ -56,8 +56,10 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, Enterprise env)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data)
     {
+        Enterprise env = data as Enterprise;
+
         if (gen_x == ori_x)
         {
             //print(row+"---"+column);

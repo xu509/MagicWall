@@ -48,7 +48,7 @@ public class MidDisperseCutEffect : CutEffect
     //
     //  创建产品 | Logo 
     //
-    protected override void CreateProductOrLogo()
+    protected override void CreateLogo()
     {
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -138,9 +138,10 @@ public class MidDisperseCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Enterprise env = _manager.daoService.GetEnterprise();
+                    Activity activity = _manager.daoService.GetActivity();
+
                     //宽固定
-                    _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                    _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                     ori_y = ori_y + _itemHeight / 2 + gap;
                     //print("ori_x:"+ori_x+ "ori_y:" + ori_y);
                     // 获取出生位置
@@ -157,7 +158,7 @@ public class MidDisperseCutEffect : CutEffect
                     gen_y = ori_y + _itemWidth;
                     //print(gen_y);
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, env);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, activity);
                     go.Delay = delay;
                     go.Duration = StartingDurTime + delay;
                     // 获取启动动画的延迟时间
@@ -232,5 +233,10 @@ public class MidDisperseCutEffect : CutEffect
 		}
 //		go.updatePosition ();
 	}
+
+    protected override void CreateProduct()
+    {
+        throw new System.NotImplementedException();
+    }
 
 }

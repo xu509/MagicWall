@@ -57,8 +57,10 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, Enterprise env)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data)
     {
+        Activity activity = data as Activity;
+
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
                                     _manager.agentPrefab,
@@ -82,7 +84,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         ////newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
         //newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
 
-        newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
+        newAgent.GetComponent<RawImage>().texture = activity.TextureImage;
         // 调整agent的长与宽
         Vector2 sizeDelta = new Vector2(width, height);
         rectTransform.sizeDelta = sizeDelta;
@@ -98,7 +100,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         boxCollider2D.size = new Vector2(width, height);
         //  初始化内容
         newAgent.Initialize(ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, env.Ent_id, env.Logo, env.IsCustom, 0);
+            width, height, activity.Ent_id, activity.Image, false, 0);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);

@@ -85,11 +85,11 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region Private Parameter - Data
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
 
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
 
     //从下往上 列与底
     public Dictionary<int, float> columnAndBottoms;

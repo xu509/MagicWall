@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Enterprise : Generator<Enterprise>
+public class Enterprise : BaseData,Generator<Enterprise>
 {
     #region Data Parameter
 
