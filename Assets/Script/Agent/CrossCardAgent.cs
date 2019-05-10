@@ -145,6 +145,10 @@ public class CrossCardAgent : CardAgent
         crossCardScrollBar.SelectCell(0);
         crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
 
+        // 处理businesscard
+        hasListBtn = enterpriseDetail.Enterprise.EnvCards.Count > 0;
+        InitComponents();
+
 
     }
 

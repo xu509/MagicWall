@@ -16,9 +16,17 @@ public class CardAgent : FlockAgent
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
 
+    protected bool hasListBtn;  //  有列表按钮
+    protected bool hasInitBusinessCard = false; // 是否已生成business card
+    protected BusinessCardAgent businessCardAgent;
 
+    [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
+    [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
     [SerializeField] Animator _list_animator;    // list animator
-
+    [SerializeField] Button _btn_search;
+    [SerializeField] Button _btn_list;
+    [SerializeField] Button _btn_move;
+    [SerializeField] Button _btn_close;
 
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
@@ -60,15 +68,15 @@ public class CardAgent : FlockAgent
         //    }
         //}
 
-        //// 第二次缩小
-        //if (_cardStatus == CardStatusEnum.DESTORING)
-        //{
-        //    if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
-        //    {
-        //        DoDestoriedForSecondStep();
-        //        _cardStatus = CardStatusEnum.DESTORYED;
-        //    }
-        //}
+        // 第二次缩小
+        if (_cardStatus == CardStatusEnum.DESTORING)
+        {
+            if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
+            {
+                DoDestoriedForSecondStep();
+                _cardStatus = CardStatusEnum.DESTORYED;
+            }
+        }
     }
 
     //
@@ -220,21 +228,66 @@ public class CardAgent : FlockAgent
     public void DoDetail()
     {
         // 生成企业卡片
-        Debug.Log("Do Detail");
         _showDetail = !_showDetail;
-
-        Debug.Log("Show Detail : " + _showDetail);
 
         if (_showDetail)
         {
             _list_animator.ResetTrigger("Normal");
             _list_animator.SetTrigger("Highlighted");
+            businessCardAgent.gameObject.SetActive(true);
+
+
+
         }
         else {
             _list_animator.ResetTrigger("Highlighted");
             _list_animator.SetTrigger("Normal");
+
+            businessCardAgent.gameObject.SetActive(false);
         }
 
+    }
+
+    // 生成企业卡片
+    private void InitEnvCard() {
+        if (!hasInitBusinessCard) {
+
+            Debug.Log(" 创建business card ");
+            //  创建 Agent
+            businessCardAgent = Instantiate(
+                                        _business_card_prefab,
+                                        _business_card_container
+                                        ) as BusinessCardAgent;
+
+            businessCardAgent.gameObject.SetActive(false);
+
+            hasInitBusinessCard = true;
+        }
+    }
+
+    //  初始化组件显示的状态
+    protected void InitComponents() {
+        if (hasListBtn)
+        {
+            // 显示四组按钮
+            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-127,0);
+            _btn_list.GetComponent<RectTransform>().anchoredPosition = new Vector2(-42, 0);
+            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(42, 0);
+            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(127, 0);
+
+            _btn_list.gameObject.SetActive(true);
+
+            InitEnvCard();
+        }
+        else {
+            // 显示三个按钮
+            _btn_list.gameObject.SetActive(false);
+
+            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-80, 0);
+            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(80, 0);
+
+        }
     }
 
 

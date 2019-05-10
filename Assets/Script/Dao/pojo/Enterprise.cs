@@ -100,7 +100,8 @@ public class Enterprise : Generator<Enterprise>
         env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + env._business_card);
 
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
-        int cardType = Random.Range(1, 3);
+        int cardType = Random.Range(0, 2);
+        //int cardType = 0;
         if (cardType == 0)
         {
             _env_cards = new List<Texture>();
@@ -117,6 +118,7 @@ public class Enterprise : Generator<Enterprise>
             _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-2.png"));
             _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-3.png"));
         }
+        env.EnvCards = _env_cards;
 
         return env;
     }
