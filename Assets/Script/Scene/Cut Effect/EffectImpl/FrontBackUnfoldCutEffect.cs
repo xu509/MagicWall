@@ -58,7 +58,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     //
     //  创建产品 | Logo 
     //
-    protected override void CreateProductOrLogo()
+    protected override void CreateLogo()
     {
 
         int _row = _manager.Row;
@@ -161,8 +161,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
                     //the_RectTransform.DOLocalMove(new Vector3((column + i - middleY) * (itemWidth + gap) + itemWidth / 2, -(column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
                 }
 
+                Activity activity = _manager.daoService.GetActivity();
+
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight, activity);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -244,6 +246,9 @@ public class FrontBackUnfoldCutEffect : CutEffect
         AgentManager.Instance.UpdateAgents();
     }
 
-
+    protected override void CreateProduct()
+    {
+        throw new System.NotImplementedException();
+    }
 
 }

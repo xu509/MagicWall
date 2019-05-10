@@ -5,7 +5,7 @@ using UnityEngine;
 //
 //  活动
 //
-public class Activity : Generator<Activity>
+public class Activity : BaseData,Generator<Activity>
 {
     // 企业 ID
     private int ent_id;

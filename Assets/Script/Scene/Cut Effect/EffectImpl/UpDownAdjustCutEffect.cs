@@ -47,7 +47,7 @@ public class UpDownAdjustCutEffect : CutEffect
     //
     //  创建产品 | Logo 
     //
-    protected override void CreateProductOrLogo()
+    protected override void CreateLogo()
     {
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -122,9 +122,9 @@ public class UpDownAdjustCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Enterprise env = _manager.daoService.GetEnterprise();
+                    Activity activity = _manager.daoService.GetActivity();
                     //宽固定
-                    _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                    _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                     ori_y = ori_y - _itemHeight / 2 - gap;
                     // 获取出生位置
                     float gen_x, gen_y;
@@ -143,7 +143,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     gen_x = ori_x; //横坐标不变        
 
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, env);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, activity);
                     y = y - go.Height - gap;
                 }
             }
@@ -199,6 +199,11 @@ public class UpDownAdjustCutEffect : CutEffect
 
     public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
+    }
+
+    protected override void CreateProduct()
+    {
+        throw new System.NotImplementedException();
     }
 
 

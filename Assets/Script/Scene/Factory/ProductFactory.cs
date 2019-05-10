@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 企业工厂
 /// </summary>
-public class ProductFactory : MonoBehaviour,ItemsFactory
+public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 {
     private float _gap = 58;
     private float _itemWidth;   // Item Width
@@ -57,8 +57,10 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, Enterprise env)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data)
     {
+        Product product = data as Product;
+
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
                                     _manager.agentPrefab,
@@ -89,7 +91,7 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
 
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
+        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = product.TextureImage;
 
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
@@ -97,7 +99,7 @@ public class ProductFactory : MonoBehaviour,ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(ori_position, postion, row + 1, column + 1,
-            width, height, env.Ent_id, env.Logo, env.IsCustom, 0);
+            width, height, product.Ent_id, product.Image, false, 0);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);

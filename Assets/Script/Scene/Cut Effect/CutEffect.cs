@@ -45,7 +45,10 @@ public abstract class CutEffect : MonoBehaviour
 
     protected abstract void CreateActivity();
 
-    protected abstract void CreateProductOrLogo();
+    protected abstract void CreateProduct();
+
+    protected abstract void CreateLogo();
+
 
     //
     //  Method
@@ -64,12 +67,12 @@ public abstract class CutEffect : MonoBehaviour
         else if (sceneContentType == SceneContentType.env)
         {
             _itemsFactory = EnvFactory.Instance;
-            CreateProductOrLogo();
+            CreateLogo();
         }
         else {
             // TODO 修改工厂实现
-            _itemsFactory = EnvFactory.Instance;
-            CreateProductOrLogo();
+            _itemsFactory = ProductFactory.Instance;
+            CreateProduct();
         }
 
         // 初始化完成后更新时间

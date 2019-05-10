@@ -5,7 +5,7 @@ using UnityEngine;
 //
 //  产品
 //
-public class Product : Generator<Product>
+public class Product : BaseData,Generator<Product>
 {
     //  产品 ID
     private int pro_id;
