@@ -56,8 +56,12 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, Enterprise env)
     {
+        if (gen_x == ori_x)
+        {
+            //print(row+"---"+column);
+        }
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
                                     _manager.agentPrefab,
@@ -84,11 +88,12 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         rectTransform.sizeDelta = sizeDelta;
 
         // 初始化 数据
-        Enterprise env = _daoService.GetEnterprise();
+        //Enterprise env = _daoService.GetEnterprise();
 
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
+        //newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
+        newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
 
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
@@ -163,6 +168,27 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         float x = column * (itemWidth + _gap) + itemWidth / 2 + _gap;
         float y = row * (itemHeight + _gap) + itemHeight / 2 + _gap;
+
+        _itemWidth = itemWidth;
+        _itemHeight = itemHeight;
+
+        return new Vector2(x, y);
+    }
+
+    public Vector2 GoUpGetOriginPosition(int row, int column)
+    {
+        //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+        //float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
+
+        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemWidth = itemHeight;
+
+
+        float x = column * (itemWidth + _gap) + itemWidth / 2 + _gap;
+        float y = h - (row * (itemHeight + _gap) + itemHeight / 2 + _gap);
 
         _itemWidth = itemWidth;
         _itemHeight = itemHeight;

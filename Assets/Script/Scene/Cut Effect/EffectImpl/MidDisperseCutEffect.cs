@@ -13,7 +13,7 @@ public class MidDisperseCutEffect : CutEffect
 
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
-    private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
+    private float _timeBetweenStartAndDisplay = 0f; //完成启动动画与表现动画之间的时间
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
@@ -24,7 +24,7 @@ public class MidDisperseCutEffect : CutEffect
     protected override void Init()
     {
         //  获取持续时间
-        StartingDurTime = 2f;
+        StartingDurTime = 0.5f;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
@@ -70,21 +70,31 @@ public class MidDisperseCutEffect : CutEffect
                 //float y = i * (_itemHeight + gap) + _itemHeight / 2;
 
 
-                int middleX = (_column - 1) / 2;
-                float delay = System.Math.Abs(middleX - i) * 0.05f;
-
+                int middleX = _column / 2;
+                float delay = System.Math.Abs(middleX - j) * 0.05f;
+                if (delay>_timeBetweenStartAndDisplay)
+                {
+                    _timeBetweenStartAndDisplay = delay;
+                }
                 // ori_x;ori_y
-                float ori_x, ori_y;
+                float gen_x, gen_y;
 
-                ori_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
-                ori_y = y + _itemWidth;
+                gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
+                gen_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
-                go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
-                go.Delay = delay;
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise());
 
-                go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime + delay).From();
+                //go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
+                go.Delay = delay;
+                go.Duration = StartingDurTime + delay;
+
+                //foreach (RawImage rawImage in go.GetComponentsInChildren<RawImage>())
+                //{
+                //    rawImage.DOFade(0, go.Duration).From();
+                //}
+                //go.GetComponent<RawImage>().DOFade(0, StartingDurTime + delay).From();
+                //go.GetComponent<RectTransform>().DOScale(new Vector3(0, 0, 0), StartingDurTime + delay);
 
                 // 获取启动动画的延迟时间
                 if (delay > _startDelayTime)
@@ -108,44 +118,60 @@ public class MidDisperseCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
+        _manager.columnAndTops = new Dictionary<int, float>();
+
+        // 获取栅格信息
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
+        float _itemWidth = 300;
+        float _itemHeight = 0;
         float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
 
-
-        //从下往上，从左往右
         for (int j = 0; j < _column; j++)
         {
-            for (int i = 0; i < _row; i++)
+            float y = 0;
+            for (int i = 0; i < _row + 1; i++)
             {
-                float x = j * (_itemWidth + gap) + _itemWidth / 2;
-                float y = i * (_itemHeight + gap) + _itemHeight / 2;
-                int middleX = (_column - 1) / 2;
-                float delay = System.Math.Abs(middleX - i) * 0.05f;
-
-                // ori_x;ori_y
-                float ori_x, ori_y;
-
-                ori_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
-                ori_y = y + _itemWidth;
-
-                //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight);
-                go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
-                go.Delay = delay;
-
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime + delay).From();
-
-                // 获取启动动画的延迟时间
-                if (delay > _startDelayTime)
+                if (y < h)
                 {
-                    _startDelayTime = delay;
+                    float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                    float ori_y = y;
+
+                    Enterprise env = _manager.daoService.GetEnterprise();
+                    //宽固定
+                    _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                    ori_y = ori_y + _itemHeight / 2 + gap;
+                    //print("ori_x:"+ori_x+ "ori_y:" + ori_y);
+                    // 获取出生位置
+                    int middleX = _column / 2;
+                    float delay = System.Math.Abs(middleX - j) * 0.05f;
+                    if (delay > _timeBetweenStartAndDisplay)
+                    {
+                        _timeBetweenStartAndDisplay = delay;
+                    }
+                    // ori_x;ori_y
+                    float gen_x, gen_y;
+
+                    gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
+                    gen_y = ori_y + _itemWidth;
+                    //print(gen_y);
+                    // 生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, env);
+                    go.Delay = delay;
+                    go.Duration = StartingDurTime + delay;
+                    // 获取启动动画的延迟时间
+                    if (delay > _startDelayTime)
+                    {
+                        _startDelayTime = delay;
+                    }
+                    y = y + go.Height + gap;
                 }
             }
+            //print(j + "---" + y);
+            _manager.columnAndTops.Add(j, y);
+            y = 0;
         }
-
         // 调整启动动画的时间
         StartingDurTime += _startDelayTime;
     }
@@ -157,8 +183,7 @@ public class MidDisperseCutEffect : CutEffect
             Vector2 ori_vector2 = agent.OriVector2;
 
             // 获取总运行时间
-            float run_time = StartingDurTime - _timeBetweenStartAndDisplay;
-
+            float run_time = (StartingDurTime+agent.Delay) - _timeBetweenStartAndDisplay;
             // 当前已运行的时间;
             float time = Time.time - StartTime;
             if (time > run_time)
@@ -166,8 +191,13 @@ public class MidDisperseCutEffect : CutEffect
                 continue;
                 //Debug.Log(agent.name);
             }
+            if (agent.Duration>0)
+            {
+                agent.GetComponent<RawImage>().DOFade(0, agent.Duration).From();
+                agent.Duration = 0;
+            }
 
-            float t = (Time.time - StartTime) / run_time;
+            float t = time / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
             agent.NextVector2 = to;
