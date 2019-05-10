@@ -10,7 +10,7 @@ public class CardAgent : FlockAgent
     #region Parameter
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
     private float _activeFirstStageDuringTime = 7f;   //  最大的时间
-    private float _activeSecondStageDuringTime = 4f;   //  第二段缩小的时间
+    private float _activeSecondStageDuringTime = 2f;   //  第二段缩小的时间
     private bool _showDetail = false;   // 显示企业卡片
 
     protected CardStatusEnum _cardStatus;   // 状态   
@@ -64,7 +64,6 @@ public class CardAgent : FlockAgent
         //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
         //    {
         //        DoDestoriedForFirstStep();
-        //        _cardStatus = CardStatusEnum.DESTORING;
         //    }
         //}
 
@@ -74,7 +73,6 @@ public class CardAgent : FlockAgent
             if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
             {
                 DoDestoriedForSecondStep();
-                _cardStatus = CardStatusEnum.DESTORYED;
             }
         }
     }
@@ -128,7 +126,7 @@ public class CardAgent : FlockAgent
         //  缩放至2倍大
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         DoScaleAgency(this, scaleVector3, 2f);
-
+        _cardStatus = CardStatusEnum.DESTORING;
     }
 
     //
@@ -179,6 +177,7 @@ public class CardAgent : FlockAgent
             // 将原
         }
 
+        _cardStatus = CardStatusEnum.DESTORYED;
     }
 
     //
