@@ -721,6 +721,8 @@ MonoBehaviour:
   _description: {fileID: 7536231062420814249}
   crossCardScrollViewController: {fileID: 6388220598021548340}
   crossCardScrollBar: {fileID: 7748574175968625818}
+  _noramlBox: {fileID: 1447688283106226908}
+  _scaleBox: {fileID: 7815403916149075529}
 --- !u!1 &2897205843266303825
 GameObject:
   m_ObjectHideFlags: 0
