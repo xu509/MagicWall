@@ -67,13 +67,13 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Enterprise env = _manager.daoService.GetEnterprise();
+                        Activity activity = _manager.daoService.GetActivity();
                         //宽固定
-                        _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                        _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                         ori_y = ori_y + _itemHeight / 2 + gap;
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, env);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, activity);
                         y = y + go.Height + gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }

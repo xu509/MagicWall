@@ -119,7 +119,8 @@ public class DaoService : Singleton<DaoService>
     public Activity GetActivity()
     {
         List<Activity> enterprises = GetActivities();
-        int index = Random.Range(0, _activities.Count - 1);
+        int index = Random.Range(0, _activities.Count);
+        print(index);
         return enterprises[index];
     }
 
@@ -223,12 +224,11 @@ public class DaoService : Singleton<DaoService>
 
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
-        SceneConfig sceneConfig1 = new SceneConfig();
-        sceneConfig1.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig1.SceneContentType = SceneContentType.env;
-        sceneConfig1.SceneContentType = SceneContentType.activity;
-   
-        sceneConfigs.Add(sceneConfig1);
+        //SceneConfig sceneConfig1 = new SceneConfig();
+        //sceneConfig1.CutEffect = new CurveStaggerCutEffect();
+        ////sceneConfig1.SceneContentType = SceneContentType.env;
+        //sceneConfig1.SceneContentType = SceneContentType.activity;
+        //sceneConfigs.Add(sceneConfig1);
 
         //SceneConfig sceneConfig4 = new SceneConfig();
         //sceneConfig4.CutEffect = new StarsCutEffect();
@@ -240,11 +240,11 @@ public class DaoService : Singleton<DaoService>
         //sceneConfig2.SceneContentType = SceneContentType.product;
         //sceneConfigs.Add(sceneConfig2);
 
-        //SceneConfig sceneConfig3 = new SceneConfig();
-        //sceneConfig3.CutEffect = new MidDisperseCutEffect();
-        //sceneConfig3.SceneContentType = SceneContentType.activity;
-        ////sceneConfig3.SceneContentType = SceneContentType.env;
-        //sceneConfigs.Add(sceneConfig3);
+        SceneConfig sceneConfig3 = new SceneConfig();
+        sceneConfig3.CutEffect = new MidDisperseCutEffect();
+        sceneConfig3.SceneContentType = SceneContentType.activity;
+        //sceneConfig3.SceneContentType = SceneContentType.env;
+        sceneConfigs.Add(sceneConfig3);
 
 
 
