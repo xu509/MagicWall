@@ -156,8 +156,8 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
-                Enterprise env = manager.daoService.GetEnterprise();
-                Vector2 vector2 = ResetTexture(new Vector2(env.TextureLogo.width, env.TextureLogo.height));
+                Activity activity = DaoService.Instance.GetActivity();
+                Vector2 vector2 = ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
 
                 int middleX = (column - 1) / 2;
 
@@ -170,7 +170,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, activity);
             
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
