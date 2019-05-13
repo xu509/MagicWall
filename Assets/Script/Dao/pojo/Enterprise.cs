@@ -47,6 +47,7 @@ public class Enterprise : BaseData,Generator<Enterprise>
     private Texture _texture_business_card;
     public Texture TextureBusinessCard { set { _texture_business_card = value; } get { return _texture_business_card; } }
 
+    //  Env 企业卡片组
     private List<Texture> _env_cards;
     public List<Texture> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
 
@@ -100,8 +101,8 @@ public class Enterprise : BaseData,Generator<Enterprise>
         env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + env._business_card);
 
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
-        int cardType = Random.Range(0, 2);
-        //int cardType = 0;
+        //int cardType = Random.Range(0, 2);
+        int cardType = 2;
         if (cardType == 0)
         {
             _env_cards = new List<Texture>();

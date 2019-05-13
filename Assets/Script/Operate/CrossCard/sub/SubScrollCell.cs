@@ -44,9 +44,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
         //crossCardScrollViewCellItem.UpdateData(datas);
 
-        Debug.Log("Cell Data Doing...");
-        Debug.Log(cellData.ToString());
-
         //  设置 Image
         _image.texture = cellData.ImageTexture;
 

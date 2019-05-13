@@ -402,6 +402,7 @@ MonoBehaviour:
   MoveFactor_Panel: 100
   row: 6
   _sceneIndex: 0
+  daoService: {fileID: 0}
 --- !u!114 &438711672
 MonoBehaviour:
   m_ObjectHideFlags: 0
