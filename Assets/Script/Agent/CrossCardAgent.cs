@@ -33,9 +33,7 @@ public class CrossCardAgent : CardAgent
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
-    [SerializeField] RectTransform _noramlBox;
-    [SerializeField] RectTransform _scaleBox;
-
+    [SerializeField] ScaleController scaleController;
 
     #endregion
 

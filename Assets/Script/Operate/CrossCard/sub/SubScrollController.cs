@@ -52,7 +52,8 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         baseCell.GetComponent<RectTransform>().SetAsLastSibling();
 
         //  _crossCardScrollViewCell
-        _crossCardScrollViewCell.UpdateBtnLikeStatus();
+        //_crossCardScrollViewCell.UpdateBtnLikeStatus();
+        //TODO UPDATE scale icon
 
     }
 

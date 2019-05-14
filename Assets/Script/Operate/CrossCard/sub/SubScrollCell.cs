@@ -13,6 +13,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     [SerializeField] Animator _animator;
     [SerializeField] float _position;
 
+    [SerializeField] RectTransform scale_tool; // 缩小icon
+
     //
     //  Component Paramater 
     //
