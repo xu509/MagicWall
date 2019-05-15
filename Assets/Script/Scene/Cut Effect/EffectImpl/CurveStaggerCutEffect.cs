@@ -61,7 +61,7 @@ public class CurveStaggerCutEffect : CutEffect
     protected override void CreateActivity() {
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 27;
+        int _column = 35;
         float itemWidth = 0;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
@@ -72,7 +72,7 @@ public class CurveStaggerCutEffect : CutEffect
         for (int i = 0; i < _row; i++)
         {
             float x = 0;
-            for (int j = 0; j < _column + 1; j++)
+            for (int j = 0; j < _column; j++)
             {
                 if (x < w)
                 {
@@ -99,13 +99,15 @@ public class CurveStaggerCutEffect : CutEffect
                     {
                         delayY = System.Math.Abs(middleY - i) * 0.3f;
                         gen_x = w + (middleY-i) * 500;
-                        gen_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                        //gen_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                        gen_y = w - ori_x;
                     }
                     else
                     {
                         delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                        gen_x = w + (i-middleY) * 500;
-                        gen_y = -(_column - (middleY-j)) * (itemHeight + gap) + itemHeight / 2;
+                        gen_x = w + (i - middleY + 1) * 500;
+                        //gen_y = -(_column - (middleY - j)) * (itemHeight + gap) + itemHeight / 2;
+                        gen_y = -(w - ori_x);
                     }
 
                     //生成 agent
@@ -190,7 +192,82 @@ public class CurveStaggerCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        throw new System.NotImplementedException();
+        _manager.rowAndRights = new Dictionary<int, float>();
+        int _row = _manager.Row;
+        int _column = 35;
+        float itemWidth = 0;
+        float itemHeight = 250;
+        float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
+        float w = _manager.mainPanel.rect.width;
+
+        //从左往右，从下往上
+        for (int i = 0; i < _row; i++)
+        {
+            float x = 0;
+            for (int j = 0; j < _column; j++)
+            {
+                if (x < w)
+                {
+                    float ori_x = x;
+                    float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+
+                    Product product = DaoService.Instance.GetProduct();
+                    itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
+
+                    //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
+                    ori_x = ori_x + itemWidth / 2 + gap;
+
+                    int middleY = _row / 2;
+
+                    float delayX = j * 0.06f;
+                    float delayY;
+
+                    // 定义出生位置
+                    float gen_x = ori_x, gen_y = ori_y;
+
+                    if (i < middleY)
+                    {
+                        delayY = System.Math.Abs(middleY - i) * 0.3f;
+                        gen_x = w + (middleY - i) * 500;
+                        //gen_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                        gen_y = w - ori_x;
+                    }
+                    else
+                    {
+                        delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
+                        gen_x = w + (i - middleY + 1) * 500;
+                        //gen_y = -(_column - (middleY - j)) * (itemHeight + gap) + itemHeight / 2;
+                        gen_y = -(w - ori_x);
+                    }
+
+                    //生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product);
+
+                    // 装载延迟参数
+                    go.DelayX = delayX;
+                    go.DelayY = delayY;
+
+
+                    // 生成透明度动画
+                    go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime - delayX + delayY).From();
+
+                    // 获取启动动画的延迟时间
+                    if ((delayY - delayX) > _startDelayTime)
+                    {
+                        _startDelayTime = delayY - delayX;
+                    }
+                    x = x + go.Width + gap;
+
+                }
+            }
+            _manager.rowAndRights.Add(i, x);
+            x = 0;
+        }
+
+        // 调整启动动画的时间
+        StartingDurTime += _startDelayTime;
     }
 
     protected override void CreateLogo()

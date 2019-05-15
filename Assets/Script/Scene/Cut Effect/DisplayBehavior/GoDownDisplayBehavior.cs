@@ -45,8 +45,12 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         if (_displayBehaviorConfig.SceneContentType == SceneContentType.activity){
             UpdateAgentsOfActivity();
         }
-        else {
-            UpdateAgentsOfEnvProduct();
+        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product) {
+            UpdateAgentsOfProduct();
+        }
+        else
+        {
+            UpdateAgentsOfEnv();
         }
     }
 
@@ -67,13 +71,13 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Enterprise env = _manager.daoService.GetEnterprise();
+                        Activity activity = _manager.daoService.GetActivity();
                         //宽固定
-                        _itemHeight = _itemWidth / env.TextureLogo.width * env.TextureLogo.height;
+                        _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                         ori_y = ori_y + _itemHeight / 2 + gap;
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, env);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, activity);
                         y = y + go.Height + gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }
@@ -84,7 +88,56 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
-    private void UpdateAgentsOfEnvProduct()
+    private void UpdateAgentsOfProduct()
+    {
+        float _itemWidth = 300;
+        float _itemHeight = 0;
+        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        if (Math.Abs(_manager.PanelOffsetY) > 0)
+        {
+            if (flag == false)
+            {
+                foreach (KeyValuePair<int, float> pair in _manager.columnAndTops)
+                {
+                    //Debug.Log(pair.Key + "+++" + pair.Value);
+                    float y = pair.Value;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                        float ori_y = y;
+
+                        Product product = _manager.daoService.GetProduct();
+                        //宽固定
+                        _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
+                        ori_y = ori_y + _itemHeight / 2 + gap;
+
+                        // 生成 agent
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, product);
+                        y = y + go.Height + gap;
+                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
+                    }
+                    y = pair.Value;
+                }
+                flag = true;
+            }
+        }
+    }
+
+    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
+    {
+        row = row - 1;
+        column = column - 1;
+
+        Vector2 vector2 = factory.GetOriginPosition(row, column);
+
+        float x = vector2.x;
+        float y = vector2.y;
+
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
+
+    }
+
+    void UpdateAgentsOfEnv()
     {
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
@@ -111,7 +164,8 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
             }
             _displayBehaviorConfig.Page += 1;
 
-            if ((_displayBehaviorConfig.Page - 5) > 0) {
+            if ((_displayBehaviorConfig.Page - 5) > 0)
+            {
                 AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最下侧
             }
         }
@@ -120,20 +174,4 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 
         }
     }
-
-    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
-    {
-        row = row - 1;
-        column = column - 1;
-
-        Vector2 vector2 = factory.GetOriginPosition(row, column);
-
-        float x = vector2.x;
-        float y = vector2.y;
-
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
-
-    }
-
-
 }

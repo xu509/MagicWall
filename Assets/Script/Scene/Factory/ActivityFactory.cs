@@ -73,8 +73,8 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
 
         ////  定出生位置
-        //Vector2 postion = new Vector2(gen_x, gen_y);
-        //rectTransform.anchoredPosition = postion;
+        Vector2 postion = new Vector2(gen_x, gen_y);
+        rectTransform.anchoredPosition = postion;
 
         // 初始化 数据
         //Enterprise env = _daoService.GetEnterprise();
