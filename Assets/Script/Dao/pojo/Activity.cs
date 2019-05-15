@@ -7,6 +7,9 @@ using UnityEngine;
 //
 public class Activity : BaseData,Generator<Activity>
 {
+    private int _id;
+    public int Id { set { _id = value; } get { return _id; } }
+
     // 企业 ID
     private int ent_id;
     public int Ent_id { set { ent_id = value; } get { return ent_id; } }

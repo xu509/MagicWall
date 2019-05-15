@@ -7,6 +7,9 @@ using UnityEngine;
 //
 public class Catalog : Generator<Catalog>
 {
+    private int _id;
+    public int Id { set { _id = value; } get { return _id; } }
+
     // 企业 ID
     private int _ent_id;
     public int Ent_id { set { _ent_id = value; } get { return _ent_id; } }

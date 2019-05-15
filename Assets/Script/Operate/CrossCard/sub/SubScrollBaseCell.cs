@@ -47,4 +47,9 @@ public abstract class SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewCo
 
     public abstract void InitData();
 
+    public abstract void UpdateComponentStatus();
+
+    public abstract void ClearComponentStatus();
+
+
 }

@@ -16,6 +16,7 @@ public class CardItemProductFactory : CardItemFactory
             Product e = DaoService.Instance.GetProductDetail();
             CrossCardCellData cd = new CrossCardCellData();
             cd.ImageTexture = e.TextureImage;
+            cd.IsImage = true;
             _cellDatas.Add(cd);
         }
 

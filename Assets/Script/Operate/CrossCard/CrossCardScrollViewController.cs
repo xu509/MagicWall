@@ -9,6 +9,9 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     IList<CrossCardCellData> _items;
     int _envId; // env id;
 
+    int _currentIndex;
+    public int CurrentIndex { set { _currentIndex = value; } get { return _currentIndex; } }
+
     [SerializeField] Scroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
 
@@ -33,16 +36,12 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         {
             return;
         }
-
+        _currentIndex = index;
         Context.SelectedIndex = index;
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-
-        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
-        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
-
-        baseCell.UpdateBtnLikeStatus();
+        UpdateComponents();
     }
 
     public void UpdateItemData(CrossCardAgent agent)
@@ -58,6 +57,8 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         _items = items;
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
+
+        UpdateComponents();
     }
 
     //
@@ -86,5 +87,22 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         onSelectionChanged = callback;
     }
 
+
+    protected override void UpdateComponents()
+    {
+        for (int i = 0; i < Pool.Count; i++)
+        {
+            int Index = Pool[i].Index;
+
+            if (Index == CurrentIndex)
+            {
+                Pool[i].UpdateComponentStatus();
+            }
+            else
+            {
+                Pool[i].ClearComponentStatus();
+            }
+        }
+    }
 
 }

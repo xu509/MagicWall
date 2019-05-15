@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardItemActivityFactory : CardItemFactory
 {
     //
-    //  生存公司卡片
+    //  生成活动
     //
     public IList<CrossCardCellData> Generator(int id)
     {
@@ -15,6 +15,8 @@ public class CardItemActivityFactory : CardItemFactory
             Activity e = DaoService.Instance.GetActivityDetail();
             CrossCardCellData cd = new CrossCardCellData();
             cd.ImageTexture = e.TextureImage;
+            cd.IsImage = true;
+            cd.Id = e.Ent_id;
             _cellDatas.Add(cd);
         }
 

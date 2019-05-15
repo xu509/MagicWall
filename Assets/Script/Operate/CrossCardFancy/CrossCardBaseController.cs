@@ -22,6 +22,14 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         return pool[index];
     }
 
+    public IList<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>> Pool
+    {
+        get {
+            return pool;
+        }
+    }
+
+
     float currentPosition;
 
     protected abstract GameObject CellPrefab { get; }
@@ -38,6 +46,9 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         ItemsSource = itemsSource;
         Refresh();
     }
+
+
+    protected abstract void UpdateComponents();
 
 
     /// <summary>

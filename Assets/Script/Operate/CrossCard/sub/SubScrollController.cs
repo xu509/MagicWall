@@ -9,7 +9,8 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     CrossCardScrollViewCell _crossCardScrollViewCell;
     public CrossCardScrollViewCell crossCardScrollViewCell { set { _crossCardScrollViewCell = value; } get { return _crossCardScrollViewCell; } }
 
-
+    int _currentIndex;
+    public int CurrentIndex { set { _currentIndex = value; } get { return _currentIndex; } }
 
     IList<CrossCardCellData> _items;
 
@@ -38,23 +39,28 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
             return;
         }
 
+        CurrentIndex = index;
         Context.SelectedIndex = index;
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-        //FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> viewCell = GetCell(index);
-        CrossCardCellData cellData = _items[index];
-        IList<CrossCardCellData> cellDatas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
 
         // 初始化celldatas
 
-        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(index);
-        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
+        //for (int i = 0; i < Pool.Count; i++) {
+        //    if (i == index)
+        //    {
+        //        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(i);
+        //        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
+        //        baseCell.UpdateComponentStatus();
+        //    }
+        //    else {
+        //        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(i);
+        //        baseCell.ClearComponentStatus();
+        //    }
+        //}
 
-        //  _crossCardScrollViewCell
-        //_crossCardScrollViewCell.UpdateBtnLikeStatus();
-        //TODO UPDATE scale icon
-
+        UpdateComponents();
     }
 
     public void UpdateData(IList<CrossCardCellData> items)
@@ -62,6 +68,10 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         _items = items;
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
+
+        // 此时第一次更新数据
+        UpdateComponents();
+
     }
 
     public void SelectCell(int index)
@@ -81,4 +91,33 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         onSelectionChanged = callback;
     }
 
+    protected override void UpdateComponents()
+    {
+        for (int i = 0; i < Pool.Count; i++) {
+            int Index = Pool[i].Index;
+
+            if (Index == CurrentIndex)
+            {
+                Pool[i].UpdateComponentStatus();
+            }
+            else {
+                Pool[i].ClearComponentStatus();
+            }
+        }
+    }
+
+    public override void UpdateAllComponents()
+    {
+        UpdateComponents();
+    }
+
+    public override void ClearAllComponents()
+    {
+        Debug.Log("Sub Scroll Controller Do Clear All");
+
+        for (int i = 0; i < Pool.Count; i++)
+        {
+            Pool[i].ClearComponentStatus();
+        }
+    }
 }

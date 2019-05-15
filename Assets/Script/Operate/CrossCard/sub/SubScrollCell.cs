@@ -8,12 +8,18 @@ using UnityEngine.UI;
 //
 public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>
 {
+    CrossCardCellData _cellData;
+
     string _title;  // 标题
-    [SerializeField] int _index; //  索引
+    int _index; //  索引
+    public int Index { set { _index = value; } get { return _index; } }
+
     [SerializeField] Animator _animator;
     [SerializeField] float _position;
-
     [SerializeField] RectTransform scale_tool; // 缩小icon
+
+    [SerializeField] Button btn_like;
+    [SerializeField] Button btn_like_withnumber;
 
     //
     //  Component Paramater 
@@ -37,10 +43,12 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
+        _cellData = cellData;
+
         _index = cellData.Index;
         _title = cellData.Title;
 
-        gameObject.name = "CrossCardScrollCell" + cellData.Index;
+        gameObject.name = "CrossSubScroll" + cellData.Index;
 
         // TODO 更新横向的选项卡
         //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
@@ -49,7 +57,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         //  设置 Image
         _image.texture = cellData.ImageTexture;
 
-
+        // 隐藏组件
+        scale_tool.gameObject.SetActive(false);
 
     }
 
@@ -68,7 +77,52 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public override void InitData()
     {
-        Debug.Log("Init Data");
+
+    }
+
+    public void DoScale() {
+
+        Debug.Log("Do Scale. ");
+    }
+
+    public override void UpdateComponentStatus()
+    {
+        // 调整 Scale 按钮
+
+        if (!_cellData.IsImage)
+        {
+            scale_tool.gameObject.SetActive(false);
+        }
+        else
+        {
+            scale_tool.gameObject.SetActive(true);
+        }
+
+        // 调整 Like 按钮
+
+        // 将 Card 放在最前端
+        GetComponent<RectTransform>().SetAsLastSibling();
+
+
+    }
+
+    public override void ClearComponentStatus()
+    {
+        // 清除 缩放 按钮
+        if (scale_tool.gameObject.activeSelf) {
+            scale_tool.gameObject.SetActive(false);
+        }
+
+
+        // 清除喜欢按钮
+        if (btn_like.gameObject.activeSelf) {
+            btn_like.gameObject.SetActive(false);
+        }
+        if (btn_like_withnumber.gameObject.activeSelf)
+        {
+            btn_like_withnumber.gameObject.SetActive(false);
+        }
+
 
     }
 }
