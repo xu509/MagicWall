@@ -18,6 +18,12 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         return pool[index];
     }
 
+    public IList<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>> Pool {
+        get {
+            return pool;
+        }
+    }
+
 
     float currentPosition;
 
@@ -35,6 +41,12 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         ItemsSource = itemsSource;
         Refresh();
     }
+
+    protected abstract void UpdateComponents();
+
+    public abstract void UpdateAllComponents();
+
+    public abstract void ClearAllComponents();
 
 
     /// <summary>
@@ -92,6 +104,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
             cell.SetupContext(Context);
             cell.SetVisible(false);
             cell.InitData();
+
             pool.Add(cell);
 
         }

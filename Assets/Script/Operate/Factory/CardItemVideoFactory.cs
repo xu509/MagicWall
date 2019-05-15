@@ -15,6 +15,7 @@ public class CardItemVideoFactory : CardItemFactory
         {
             Video e = DaoService.Instance.GetVideoDetail();
             CrossCardCellData cd = new CrossCardCellData();
+            cd.IsImage = false;
             _cellDatas.Add(cd);
         }
 
