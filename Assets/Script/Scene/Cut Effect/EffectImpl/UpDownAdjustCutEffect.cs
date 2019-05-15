@@ -203,7 +203,55 @@ public class UpDownAdjustCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        throw new System.NotImplementedException();
+        _manager.columnAndBottoms = new Dictionary<int, float>();
+
+        // 获取栅格信息
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = 300;
+        float _itemHeight = 0;
+        float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
+
+        for (int j = 0; j < _column; j++)
+        {
+            float y = h;
+            for (int i = 0; i < _row + 1; i++)
+            {
+                if (y > 0)
+                {
+                    float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                    float ori_y = y;
+
+                    Product product = DaoService.Instance.GetProduct();
+                    //宽固定
+                    _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
+                    ori_y = ori_y - _itemHeight / 2 - gap;
+                    // 获取出生位置
+                    float gen_x, gen_y;
+
+                    // 计算移动的目标位置
+                    if (j % 2 == 0)
+                    {
+                        //偶数列向下偏移itemHeight
+                        gen_y = ori_y - (_itemHeight + gap);
+                    }
+                    else
+                    {
+                        //奇数列向上偏移itemHeight
+                        gen_y = ori_y + _itemHeight + gap;
+                    }
+                    gen_x = ori_x; //横坐标不变        
+
+                    // 生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, product);
+                    y = y - go.Height - gap;
+                }
+            }
+            //print(j + "---" + y);
+            _manager.columnAndBottoms.Add(j, y);
+            y = h;
+        }
     }
 
 

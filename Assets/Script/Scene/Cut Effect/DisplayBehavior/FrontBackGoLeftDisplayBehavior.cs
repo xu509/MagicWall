@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 //
 //	向左移动
@@ -44,20 +45,18 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         {
             UpdateAgentsOfActivity();
         }
+        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product)
+        {
+            UpdateAgentsOfProduct();
+        }
         else
         {
-            UpdateAgentsOfEnvProduct();
+            UpdateAgentsOfEnv();
         }
     }
 
-    private void UpdateAgentsOfActivity()
+    private void UpdateAgentsOfEnv ()
     {
-
-    }
-
-    private void UpdateAgentsOfEnvProduct()
-    {
-
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -91,6 +90,17 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
+    private void UpdateAgentsOfActivity()
+    {
+
+    }
+
+    private void UpdateAgentsOfProduct()
+    {
+
+        
+    }
+
     private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
     {
         row = row - 1;
@@ -100,13 +110,20 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
+        float z = (row + column) % 2 == 0 ? 0 : 300;
+        float a = (z == 0) ? 1 : 0.2f;
+
         FlockAgent agent = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
-        float z = (row + column) % 2 == 1 ? 0 : 500;
-        
+        agent.GetComponent<RawImage>().DOFade(a, 0);
         // 将agent的z轴定义在后方
         RectTransform rect = agent.GetComponent<RectTransform>();
+        if (z != 0)
+        {
+            rect.SetAsFirstSibling();
+        }
         Vector3 position = rect.anchoredPosition3D;
         rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, z);
+
         return agent;
     }
 

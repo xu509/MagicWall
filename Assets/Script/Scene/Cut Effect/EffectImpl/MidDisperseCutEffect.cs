@@ -122,7 +122,7 @@ public class MidDisperseCutEffect : CutEffect
 
         // 获取栅格信息
         int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
+        int _column = 23;
         float _itemWidth = 300;
         float _itemHeight = 0;
         float gap = ItemsFactory.GetSceneGap();
@@ -236,7 +236,63 @@ public class MidDisperseCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        throw new System.NotImplementedException();
+        _manager.columnAndTops = new Dictionary<int, float>();
+
+        // 获取栅格信息
+        int _row = _manager.Row;
+        int _column = 23;
+        float _itemWidth = 300;
+        float _itemHeight = 0;
+        float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
+
+        for (int j = 0; j < _column; j++)
+        {
+            float y = 0;
+            for (int i = 0; i < _row + 1; i++)
+            {
+                if (y < h)
+                {
+                    float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                    float ori_y = y;
+
+                    Product product = DaoService.Instance.GetProduct();
+
+                    //宽固定
+                    _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
+                    ori_y = ori_y + _itemHeight / 2 + gap;
+                    //print("ori_x:"+ori_x+ "ori_y:" + ori_y);
+                    // 获取出生位置
+                    int middleX = _column / 2;
+                    float delay = System.Math.Abs(middleX - j) * 0.05f;
+                    if (delay > _timeBetweenStartAndDisplay)
+                    {
+                        _timeBetweenStartAndDisplay = delay;
+                    }
+                    // ori_x;ori_y
+                    float gen_x, gen_y;
+
+                    gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
+                    gen_y = ori_y + _itemWidth;
+                    //print(gen_y);
+                    // 生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, product);
+                    go.Delay = delay;
+                    go.Duration = StartingDurTime + delay;
+                    // 获取启动动画的延迟时间
+                    if (delay > _startDelayTime)
+                    {
+                        _startDelayTime = delay;
+                    }
+                    y = y + go.Height + gap;
+                }
+            }
+            //print(j + "---" + y);
+            _manager.columnAndTops.Add(j, y);
+            y = 0;
+        }
+        // 调整启动动画的时间
+        StartingDurTime += _startDelayTime;
     }
 
 }

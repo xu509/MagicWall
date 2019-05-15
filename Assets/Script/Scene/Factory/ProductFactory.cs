@@ -29,11 +29,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
 
     void Awake() {
-
-
-    }
-
-    public ProductFactory() {
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
         _manager = MagicWallManager.Instance;
         _agentManager = AgentManager.Instance;
@@ -47,6 +42,11 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
+
+    }
+
+    public ProductFactory() {
+
 
     }
 
@@ -91,8 +91,8 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = product.TextureImage;
-
+        //newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = product.TextureImage;
+        newAgent.GetComponent<RawImage>().texture = product.TextureImage ;
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
         boxCollider2D.size = new Vector2(width, height);

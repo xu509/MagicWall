@@ -56,11 +56,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
     }
 
     //
-    //  创建产品 | Logo 
+    //  创建 Logo 
     //
     protected override void CreateLogo()
     {
-
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
         float itemWidth = ItemsFactory.GetItemWidth();
@@ -88,6 +87,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
+                float z = (i + j) % 2 == 0 ? 0 : 300;
+                float a = (z == 0) ? 1 : 0.5f;
+                //float offsetX = (z == 0) ? 0 : -500;
+                //x = x + offsetX;
                 //生成 agent
                 FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise());
 
@@ -99,11 +102,15 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
                 the_RectTransform.sizeDelta = new Vector2(itemWidth, itemWidth);
 
-                float z = (i + j) % 2 == 1 ? 0 : 200;
+                go.GetComponent<RawImage>().DOFade(a, 0);
                 // 将agent的z轴定义在后方
-                RectTransform rect = go.GetComponent<RectTransform>();
-                Vector3 position = rect.anchoredPosition3D;
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, z);
+                Vector3 position = the_RectTransform.anchoredPosition3D;
+                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+
+                if (z != 0)
+                {
+                    the_RectTransform.SetAsFirstSibling();
+                }
 
                 // 装载进 pagesAgents
                 int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
@@ -122,11 +129,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
-
-        int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
+        int _row = 5;
+        int _column = 25;
+        float itemWidth = 400;
+        float itemHeight = 400;
         float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
@@ -134,54 +140,54 @@ public class FrontBackUnfoldCutEffect : CutEffect
         {
             for (int j = 0; j < _column; j++)
             {
-                float x = j * (_itemWidth + gap) + _itemWidth / 2;
-                float y = i * (_itemHeight + gap) + _itemHeight / 2;
+                float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+                float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                Activity activity = DaoService.Instance.GetActivity();
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
+                //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                //float x = vector2.x;
+                //float y = vector2.y;
+
 
                 int middleY = _row / 2;
                 int middleX = _column / 2;
 
-                float delayX = j * 0.06f;
-                float delayY;
-
                 // 定义源位置
                 float ori_x, ori_y;
+                ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
+                ori_y = y;
 
-                if (i < middleY)
-                {
-                    delayY = System.Math.Abs(middleY - i) * 0.3f;
-                    ori_x = (_column + middleY - i - 1) * (_itemWidth + gap) + _itemWidth / 2;
-                    ori_y = (_column - j - middleY) * (_itemHeight + gap) + _itemHeight / 2;
-                    //the_RectTransform.DOLocalMove(new Vector3((column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2, (column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
-                }
-                else
-                {
-                    delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    ori_x = (_column + i - middleY) * (_itemWidth + gap) + _itemWidth / 2;
-                    ori_y = -(_column - j - middleY) * (_itemHeight + gap) + _itemHeight / 2;
-                    //the_RectTransform.DOLocalMove(new Vector3((column + i - middleY) * (itemWidth + gap) + itemWidth / 2, -(column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
-                }
-
-                Activity activity = _manager.daoService.GetActivity();
-
+                float z = (i + j) % 2 == 0 ? 0 : 100;
+                float a = (z == 0) ? 1 : 0.2f;
+                //float offsetX = (z == 0) ? 0 : -500;
+                //x = x + offsetX;
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, _itemWidth, _itemHeight, activity);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity);
 
                 // 装载延迟参数
-                go.DelayX = delayX;
-                go.DelayY = delayY;
+                go.DelayX = 0;
+                go.DelayY = 0;
 
                 // 调整大小
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
-                the_RectTransform.sizeDelta = new Vector2(_itemWidth, _itemWidth);
+                the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
 
-                // 生成透明度动画
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
+                go.GetComponent<RawImage>().DOFade(a, 0);
+                // 将agent的z轴定义在后方
+                Vector3 position = the_RectTransform.anchoredPosition3D;
+                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
 
-                // 获取启动动画的延迟时间
-                if ((delayY - delayX) > _startDelayTime)
+                if (z != 0)
                 {
-                    _startDelayTime = delayY - delayX;
+                    the_RectTransform.SetAsFirstSibling();
                 }
+
+                // 装载进 pagesAgents
+                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
+                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
+
             }
         }
 
@@ -248,7 +254,70 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        throw new System.NotImplementedException();
+        int _row = 5;
+        int _column = 25;
+        float itemWidth = 400;
+        float itemHeight = 400;
+        float gap = ItemsFactory.GetSceneGap();
+
+        //从左往右，从下往上
+        for (int i = 0; i < _row; i++)
+        {
+            for (int j = 0; j < _column; j++)
+            {
+                float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+                float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                Product product = DaoService.Instance.GetProduct();
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height));
+                //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                //float x = vector2.x;
+                //float y = vector2.y;
+
+
+                int middleY = _row / 2;
+                int middleX = _column / 2;
+
+                // 定义源位置
+                float ori_x, ori_y;
+                ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
+                ori_y = y;
+
+                float z = (i + j) % 2 == 0 ? 0 : 100;
+                float a = (z == 0) ? 1 : 0.2f;
+                //float offsetX = (z == 0) ? 0 : -500;
+                //x = x + offsetX;
+                //生成 agent
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product);
+
+                // 装载延迟参数
+                go.DelayX = 0;
+                go.DelayY = 0;
+
+                // 调整大小
+                RectTransform the_RectTransform = go.GetComponent<RectTransform>();
+                the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
+
+                go.GetComponent<RawImage>().DOFade(a, 0);
+                // 将agent的z轴定义在后方
+                Vector3 position = the_RectTransform.anchoredPosition3D;
+                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+
+                if (z != 0)
+                {
+                    the_RectTransform.SetAsFirstSibling();
+                }
+
+                // 装载进 pagesAgents
+                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
+                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
+
+            }
+        }
+
+        // 调整启动动画的时间
+        StartingDurTime += _startDelayTime;
     }
 
 }
