@@ -9,10 +9,11 @@ public class CrossCardAgent : CardAgent
 
     #region Data Parameter
 
-    int _id;
-
     int _likes;
     public int Likes { set { _likes = value; } get { return _likes; } }
+
+    bool _isNormalModel = true;
+
 
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
@@ -32,6 +33,7 @@ public class CrossCardAgent : CardAgent
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
+    [SerializeField] ScaleController scaleController;
 
     #endregion
 
@@ -45,7 +47,7 @@ public class CrossCardAgent : CardAgent
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
         // 设置ID
-        _id = enterpriseDetail.Enterprise.Ent_id;
+        id = enterpriseDetail.Enterprise.Ent_id;
 
         //  设置标题
         _title.text = enterpriseDetail.Enterprise.Name;
@@ -68,7 +70,7 @@ public class CrossCardAgent : CardAgent
 
         CrossCardCellData item2 = new CrossCardCellData();
         item2.crossCardAgent = this;
-        item2.EnvId = _id;
+        item2.EnvId = id;
         item2.Likes = Likes;
         item2.Category = CrossCardCategoryEnum.INDEX;
         item2.Index = index;
@@ -81,7 +83,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.PRODUCT;
             item.crossCardAgent = this;
-            item.EnvId = _id;
+            item.EnvId = id;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "产品";
@@ -94,7 +96,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.ACTIVITY;
             item.crossCardAgent = this;
-            item.EnvId = _id;
+            item.EnvId = id;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "活动";
@@ -107,7 +109,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.VIDEO;
             item.crossCardAgent = this;
-            item.EnvId = _id;
+            item.EnvId = id;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "视频";
@@ -121,7 +123,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.CATALOG;
             item.crossCardAgent = this;
-            item.EnvId = _id;
+            item.EnvId = id;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "CATALOG";
@@ -146,9 +148,8 @@ public class CrossCardAgent : CardAgent
         crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
 
         // 处理businesscard
-        hasListBtn = enterpriseDetail.Enterprise.EnvCards.Count > 0;
-        InitComponents();
-
+        _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
+        InitComponents(_hasListBtn);
 
     }
 

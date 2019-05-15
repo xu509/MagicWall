@@ -13,6 +13,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     [SerializeField] Animator _animator;
     [SerializeField] float _position;
 
+    [SerializeField] RectTransform scale_tool; // 缩小icon
+
     //
     //  Component Paramater 
     //
@@ -43,9 +45,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         // TODO 更新横向的选项卡
         //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
         //crossCardScrollViewCellItem.UpdateData(datas);
-
-        Debug.Log("Cell Data Doing...");
-        Debug.Log(cellData.ToString());
 
         //  设置 Image
         _image.texture = cellData.ImageTexture;

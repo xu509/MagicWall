@@ -63,6 +63,14 @@ public class DaoService : Singleton<DaoService>
         return enterprises[index];
     }
 
+    public List<Texture> GetEnvCards(int id) {
+
+        // TODO 
+        return GetEnterprise().EnvCards;
+    }
+
+
+
     //
     //  获取 catalog
     //
