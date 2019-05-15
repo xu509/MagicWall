@@ -49,9 +49,13 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         {
             UpdateAgentsOfActivity();
         }
+        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product)
+        {
+            UpdateAgentsOfProduct();
+        }
         else
         {
-            UpdateAgentsOfEnvProduct();
+            UpdateAgentsOfEnv();
         }
     }
 
@@ -112,7 +116,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
-    private void UpdateAgentsOfEnvProduct()
+    private void UpdateAgentsOfEnv()
     {
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
@@ -167,6 +171,61 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
 
     }
 
+    void UpdateAgentsOfProduct()
+    {
 
+        int h = (int)_manager.mainPanel.rect.height;
+        float _itemWidth = 300;
+        float _itemHeight = 0;
+        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
+        int page = _displayBehaviorConfig.Page;
+        if (Math.Abs(_manager.PanelOffsetY) > 0)
+        {
+            if (flag == false)
+            {
+                foreach (KeyValuePair<int, float> pair in _manager.columnAndBottoms)
+                {
+                    //Debug.Log(pair.Key + "+++" + pair.Value);
+                    float y = pair.Value;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
+                        float ori_y = y;
+
+                        Product product = _manager.daoService.GetProduct();
+                        //宽固定
+                        _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
+                        ori_y = ori_y - _itemHeight / 2 - gap;
+                        // 获取出生位置
+                        float gen_x, gen_y;
+
+                        // 计算移动的目标位置
+                        if (pair.Key % 2 == 0)
+                        {
+                            //偶数列向下偏移itemHeight
+                            gen_y = ori_y - (_itemHeight + gap);
+                        }
+                        else
+                        {
+                            //奇数列向上偏移itemHeight
+                            gen_y = ori_y + _itemHeight + gap;
+                        }
+                        gen_x = ori_x; //横坐标不变        
+
+                        // 生成 agent
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, product);
+                        y = y - go.Height - gap;
+                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
+                    }
+                    y = pair.Value;
+                }
+                //_manager.columnAndBottoms = newRowAndHeights;
+                _displayBehaviorConfig.Page += 1;
+                flag = true;
+
+            }
+        }
+    }
 
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 //
 //	向左移动
@@ -10,6 +11,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
     private DisplayBehaviorConfig _displayBehaviorConfig;
+    private bool flag = false;
 
     //
     //  初始化 （参数：内容类型，row）
@@ -17,6 +19,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Init(DisplayBehaviorConfig displayBehaviorConfig)
     {
         _displayBehaviorConfig = displayBehaviorConfig;
+        flag = false;
+
     }
 
     public void Run()
@@ -44,20 +48,18 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         {
             UpdateAgentsOfActivity();
         }
+        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product)
+        {
+            UpdateAgentsOfProduct();
+        }
         else
         {
-            UpdateAgentsOfEnvProduct();
+            UpdateAgentsOfEnv();
         }
     }
 
-    private void UpdateAgentsOfActivity()
+    private void UpdateAgentsOfEnv()
     {
-
-    }
-
-    private void UpdateAgentsOfEnvProduct()
-    {
-
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -71,8 +73,10 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
             int y = page * cols_offsets + 1;
             int rows = _displayBehaviorConfig.Row;
 
-            for (int x = 1; x <= rows; x++) {
-                for (int z = y; z < (y + cols_offsets) ; z++) {
+            for (int x = 1; x <= rows; x++)
+            {
+                for (int z = y; z < (y + cols_offsets); z++)
+                {
 
                     FlockAgent agent = CreateItem(_displayBehaviorConfig.ItemsFactory, x, z); // 创建新的
                     _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
@@ -80,13 +84,84 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
             }
             _displayBehaviorConfig.Page += 1;
 
-            if((_displayBehaviorConfig.Page - 5) > 0)
+            if ((_displayBehaviorConfig.Page - 5) > 0)
                 AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
         }
         else
         {
 
         }
+    }
+
+    private void UpdateAgentsOfActivity()
+    {
+        float itemWidth = 0;
+        float itemHeight = 250;
+        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        if (Math.Abs(_manager.PanelOffsetX) > 0)
+        {
+            if (flag == false)
+            {
+                foreach (KeyValuePair<int, float> pair in _manager.rowAndRights)
+                {
+                    //Debug.Log(pair.Key + "+++" + pair.Value);
+                    float x = pair.Value;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float ori_x = x;
+                        float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                        Activity activity = _manager.daoService.GetActivity();
+                        //高固定
+                        itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
+                        ori_x = ori_x + itemWidth / 2 + gap;
+
+                        // 生成 agent
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, itemWidth, itemHeight, activity);
+                        x = x + go.Width + gap;
+                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
+                    }
+                    x = pair.Value;
+                }
+                flag = true;
+            }
+        }
+    }
+
+    private void UpdateAgentsOfProduct()
+    {
+        float itemWidth = 0;
+        float itemHeight = 250;
+        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        if (Math.Abs(_manager.PanelOffsetX) > 0)
+        {
+            if (flag == false)
+            {
+                foreach (KeyValuePair<int, float> pair in _manager.rowAndRights)
+                {
+                    //Debug.Log(pair.Key + "+++" + pair.Value);
+                    float x = pair.Value;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float ori_x = x;
+                        float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                        Product product = _manager.daoService.GetProduct();
+                        //高固定
+                        itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
+                        ori_x = ori_x + itemWidth / 2 + gap;
+
+                        // 生成 agent
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, itemWidth, itemHeight, product);
+                        x = x + go.Width + gap;
+                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
+                    }
+                    x = pair.Value;
+                }
+                flag = true;
+            }
+        }
+
     }
 
     private FlockAgent CreateItem(ItemsFactory factory, int row, int column) {

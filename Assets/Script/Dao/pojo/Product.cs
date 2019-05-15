@@ -46,7 +46,7 @@ public class Product : BaseData,Generator<Product>
         product.ent_id = 1;
 
         string[] names = {"IPHONE","MAC","椅子","桌子","包包" };
-        product.name = names[Random.Range(0,names.Length - 1)];
+        product.name = names[Random.Range(0,names.Length)];
 
         string[] images = { "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg",
             "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg",
@@ -55,7 +55,7 @@ public class Product : BaseData,Generator<Product>
             "24.jpg", "25.jpg", "26.jpg", "27.jpg", "28.jpg", "29.jpg",
             "30.jpg"
         };
-        product.image = images[Random.Range(0, images.Length - 1)];
+        product.image = images[Random.Range(0, images.Length)];
 
         product.likes = Random.Range(1, 100);
 

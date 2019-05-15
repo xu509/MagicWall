@@ -112,49 +112,66 @@ public class LeftRightAdjustCutEffect : CutEffect
     protected override void CreateActivity()
     {
         // 获取栅格信息
+        _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
+        int _column = 35;
+        float itemWidth = 0;
+        float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
+        float w = _manager.mainPanel.rect.width;
 
 
-        for (int j = 0; j < _column; j++)
+        //从左往右，从下往上
+        for (int i = 0; i < _row; i++)
         {
-            for (int i = 0; i < _row; i++)
+            float x = 0;
+            for (int j = 0; j < _column; j++)
             {
-                // 定义源位置
-                float ori_x = j * (_itemHeight + gap) + _itemHeight / 2;
-                float ori_y = i * (_itemWidth + gap) + _itemWidth / 2;
-
-                // 获取参照点
-                int middleY = _row / 2;
-                int middleX = _column / 2;
-
-                // 定义出生位置
-                float gen_x, gen_y;
-
-                // 计算出生位置与延时时间
-                float delay;
-                if (i < middleY)
+                if (x < w)
                 {
-                    delay = (System.Math.Abs(middleY - i)) * 0.3f;
-                    gen_x = (_column + j) * (_itemWidth + gap) + _itemWidth / 2;
-                }
-                else
-                {
-                    delay = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    gen_x = -(_column - j) * (_itemWidth + gap) + _itemWidth / 2;
-                }
-                gen_y = ori_y; //纵坐标不变
+                    float ori_x = x;
+                    float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                Activity activity = _manager.daoService.GetActivity();
+                    Activity activity = _manager.daoService.GetActivity();
+                    //高固定
+                    itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
 
-                // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, activity);
-                go.Delay = delay;
-                go.DelayTime = delay;
+                    //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
+                    ori_x = ori_x + itemWidth / 2 + gap;
+
+                    // 获取参照点
+                    int middleY = _row / 2;
+                    int middleX = _column / 2;
+
+                    // 定义出生位置
+                    float gen_x, gen_y;
+
+                    // 计算出生位置与延时时间
+                    float delay;
+                    if (i < middleY)
+                    {
+                        delay = (System.Math.Abs(middleY - i)) * 0.3f;
+                        gen_x = ori_x + w;
+                    }
+                    else
+                    {
+                        delay = (System.Math.Abs(middleY - i) + 1) * 0.3f;
+                        gen_x = ori_x - w - 500;
+                    }
+                    gen_y = ori_y; //纵坐标不变
+
+                    //生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity);
+                    //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
+                    //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
+                    go.Delay = delay;
+                    go.DelayTime = delay;
+                    x = x + go.Width + gap;
+                }
             }
+            _manager.rowAndRights.Add(i, x);
+            x = 0;
         }
     }
 
@@ -179,8 +196,9 @@ public class LeftRightAdjustCutEffect : CutEffect
             // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
             if (time > StartingDurTime || time < delay_time)
             {
-                continue;
                 //Debug.Log(agent.name);
+
+                continue;
             }
 
             float t = (time - delay_time) / run_time;
@@ -215,7 +233,68 @@ public class LeftRightAdjustCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        throw new System.NotImplementedException();
+        // 获取栅格信息
+        _manager.rowAndRights = new Dictionary<int, float>();
+        int _row = _manager.Row;
+        int _column = 35;
+        float itemWidth = 0;
+        float itemHeight = 250;
+        float gap = ItemsFactory.GetSceneGap();
+        float h = _manager.mainPanel.rect.height;
+        float w = _manager.mainPanel.rect.width;
+
+
+        //从左往右，从下往上
+        for (int i = 0; i < _row; i++)
+        {
+            float x = 0;
+            for (int j = 0; j < _column; j++)
+            {
+                if (x < w)
+                {
+                    float ori_x = x;
+                    float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                    Product product = DaoService.Instance.GetProduct();
+                    //高固定
+                    itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
+
+                    //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
+                    ori_x = ori_x + itemWidth / 2 + gap;
+
+                    // 获取参照点
+                    int middleY = _row / 2;
+                    int middleX = _column / 2;
+
+                    // 定义出生位置
+                    float gen_x, gen_y;
+
+                    // 计算出生位置与延时时间
+                    float delay;
+                    if (i < middleY)
+                    {
+                        delay = (System.Math.Abs(middleY - i)) * 0.3f;
+                        gen_x = ori_x + w;
+                    }
+                    else
+                    {
+                        delay = (System.Math.Abs(middleY - i) + 1) * 0.3f;
+                        gen_x = ori_x - w - 500;
+                    }
+                    gen_y = ori_y; //纵坐标不变
+
+                    //生成 agent
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product);
+                    //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
+                    //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
+                    go.Delay = delay;
+                    go.DelayTime = delay;
+                    x = x + go.Width + gap;
+                }
+            }
+            _manager.rowAndRights.Add(i, x);
+            x = 0;
+        }
     }
 
 
