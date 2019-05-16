@@ -7,14 +7,21 @@ public class CardItemIndexFactory : CardItemFactory
     //
     //  生存公司卡片
     //
-    public IList<CrossCardCellData> Generator(int id)
+    public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
         Enterprise e = DaoService.Instance.GetEnterprise();
         CrossCardCellData cd = new CrossCardCellData();
-        cd.ImageTexture = e.TextureBusinessCard;
+
+        string address = MagicWallManager.URL_ASSET + "env\\" + e.Business_card;
+        cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+
         cd.IsImage = true;
+        cd.Id = e.Ent_id;
+        cd.Category = CrossCardCategoryEnum.INDEX;
+        cd.crossCardAgent = cardAgent as CrossCardAgent;
+
 
         _cellDatas.Add(cd);
         return _cellDatas;

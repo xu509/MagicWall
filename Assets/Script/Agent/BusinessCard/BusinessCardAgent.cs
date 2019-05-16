@@ -50,10 +50,12 @@ public class BusinessCardAgent : MonoBehaviour
                 _doingNext = false;
             });
         }
+        _cardAgent.DoUpdate();
     }
 
     public void DoClickClose() {
         _cardAgent.CloseBusinessCard();
+        _cardAgent.DoUpdate();
     }
 
     public void DoClickReturn()
@@ -70,6 +72,7 @@ public class BusinessCardAgent : MonoBehaviour
                 _doingReturn = false;
             });
         }
+        _cardAgent.DoUpdate();
     }
 
 

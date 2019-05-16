@@ -40,5 +40,11 @@ public class ScaleController : MonoBehaviour
         scale_box.gameObject.SetActive(false);
     }
 
+    public void DoReturn() {
+        Debug.Log("Do Return");
+        CloseScaleBox();
+    }
+
+
 
 }

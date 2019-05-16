@@ -142,6 +142,7 @@ public class CrossCardAgent : CardAgent
         crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.SelectCell(0);
+        crossCardScrollViewController.SetUpCardAgent(this);
 
         crossCardScrollBar.UpdateData(_cellDatas);
         crossCardScrollBar.SelectCell(0);
@@ -158,6 +159,9 @@ public class CrossCardAgent : CardAgent
         obj.GetComponent<RectTransform>().SetAsLastSibling();
 
         crossCardScrollBar.SelectCell(index);
+
+        DoUpdate();
+
     }
 
     void OnBarSelectionChanged(int index)
@@ -190,6 +194,14 @@ public class CrossCardAgent : CardAgent
     void UpdateDescription(string description) {
         _description.text = description;
     }
+
+
+    public void SwitchScaleMode(Texture texture) {
+        scaleController.SetImage(texture);
+        scaleController.OpenScaleBox();
+
+    }
+
 
 }
 

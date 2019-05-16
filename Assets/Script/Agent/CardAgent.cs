@@ -62,9 +62,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     protected void UpdateAgency()
     {
-        Debug.Log("暂时屏蔽缩小");
 
-        //// 缩小一半
+        // 缩小一半
         //if (_cardStatus == CardStatusEnum.NORMAL)
         //{
         //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
@@ -244,6 +243,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void DoMove()
     {
+        DoUpdate();
         // 移动
         if (!_doMoving)
         {
@@ -311,6 +311,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
     public void CloseBusinessCard() {
+        DoUpdate();
         _list_animator.ResetTrigger("Highlighted");
         _list_animator.SetTrigger("Normal");
         businessCardAgent.gameObject.SetActive(false);
@@ -319,6 +320,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OpenBusinessCard()
     {
+        DoUpdate();
         _list_animator.ResetTrigger("Normal");
         _list_animator.SetTrigger("Highlighted");
         businessCardAgent.gameObject.SetActive(true);
@@ -327,21 +329,26 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        DoUpdate();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        DoUpdate();
+        DoMove();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        DoUpdate();
         if (_doMoving) {
 
-            Debug.Log("eventData.position : " + eventData.position);
             GetComponent<RectTransform>().anchoredPosition = eventData.position;
 
         }
     }
+
+
 }
 
 

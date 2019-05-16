@@ -397,6 +397,7 @@ MonoBehaviour:
   backgroundUubbleInterval: 0.4
   InfluenceFactor: 0.6
   InfluenceMoveFactor: 0
+  _bg_logo: {fileID: 2060558020}
   panelOffsetX: 0
   panelOffsetY: 0
   MoveFactor_Panel: 100
@@ -890,7 +891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.02745098}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

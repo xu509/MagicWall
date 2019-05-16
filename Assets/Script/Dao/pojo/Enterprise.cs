@@ -98,11 +98,9 @@ public class Enterprise : BaseData,Generator<Enterprise>
 
         env._business_card = businessCards[Random.Range(0, businessCards.Length)];
 
-        env.TextureBusinessCard = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + env._business_card);
-
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
 
-        int cardType = Random.Range(0, 3);
+        //int cardType = Random.Range(0, 3);
         int cardType = 2;
 
         if (cardType == 0)

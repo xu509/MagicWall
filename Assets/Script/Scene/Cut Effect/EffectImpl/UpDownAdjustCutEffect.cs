@@ -169,6 +169,7 @@ public class UpDownAdjustCutEffect : CutEffect
             // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
             if (time > run_time)
             {
+                agent.updatePosition();
                 continue;
                 //Debug.Log(agent.name);
             }
@@ -180,6 +181,10 @@ public class UpDownAdjustCutEffect : CutEffect
             agent.updatePosition();
         }
 
+
+    }
+
+    public override void OnStartingCompleted(){
         //  初始化表现形式
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -195,9 +200,7 @@ public class UpDownAdjustCutEffect : CutEffect
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
 
         DisplayBehavior.Init(_displayBehaviorConfig);
-    }
 
-    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 

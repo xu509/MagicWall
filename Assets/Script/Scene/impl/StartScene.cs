@@ -12,7 +12,30 @@ public class StartScene : IScene
 {
     Transform logo;
 
+    private bool _doLoadResourse = false;
     private bool _resourseIsChecked = false;
+
+    private bool _doShowLogo = false;
+    private bool _doShowLogoComplete = false;
+
+    private bool _doHideLogo = false;
+    private bool _doHideLogoComplete = false;
+
+
+    private bool _hasInit = false;
+
+    private bool _isCompleted = false;
+
+
+    private float _DuringTime = 3f;
+    private float _StartTime = 0f;
+
+    float RunTime {
+        get {
+            return Time.time - _StartTime;
+        }
+    }
+
 
     private DaoService _daoService;
     private MagicWallManager _manager;
@@ -26,6 +49,23 @@ public class StartScene : IScene
         _manager = MagicWallManager.Instance;
     }
 
+    private void Init() {
+        _StartTime = Time.time;
+        _hasInit = true;
+
+        _doLoadResourse = false;
+        _resourseIsChecked = false;
+
+        _doShowLogo = false;
+        _doShowLogoComplete = false;
+
+        _doHideLogo = false;
+        _doHideLogoComplete = false;
+
+        _isCompleted = false;
+}
+
+
 
     public SceneContentType GetContentType()
     {
@@ -34,24 +74,43 @@ public class StartScene : IScene
 
     public bool Run()
 	{
+        if (!_hasInit) {
+            Init();
+        }
+
+
         // 加载主要的图片资源
         Debug.Log("Load Start Scene now !");
-        List<Enterprise> enterprises = _daoService.GetEnterprises();
-        foreach (Enterprise env in enterprises) {
-            string logo = env.Logo;
-            // 加载图片资源
-            env.TextureLogo = AppUtils.LoadPNG(MagicWallManager.URL_ASSET_LOGO + logo);
+
+        // LOGO 淡入
+        if (!_doShowLogo) {
+            _doShowLogo = true;
+            _manager.BgLogo.GetComponent<RawImage>()
+                .DOFade(1, 2f)
+                .OnComplete(() => {
+                    _doShowLogoComplete = true;
+                });
         }
 
-        _resourseIsChecked = true;
+        if (_doShowLogoComplete) {
+            // 进行logo隐藏
+            if (_resourseIsChecked && (RunTime > _DuringTime)) {
+                _manager.BgLogo.GetComponent<RawImage>()
+                    .DOFade(0, 2f)
+                    .OnComplete(() => {
+                        _doHideLogoComplete = true;
+                    });
+            }
+        }
 
-        if (_resourseIsChecked)
-        {
+        if (_doHideLogoComplete) {
+            _hasInit = false;
             return false;
         }
-        else {
-            return true;
-        }
+
+        LoadResource();
+
+        return true;
     }
 
 	private void Awake()
@@ -70,6 +129,42 @@ public class StartScene : IScene
 		// 完成数据加载, 提供字典
 		Debug.Log("完成数据加载,提供字典");
 	}
+
+
+    private void LoadResource() {
+        if (_doLoadResourse) {
+            return;
+        }
+
+        _doLoadResourse = true;
+
+        List<Enterprise> enterprises = _daoService.GetEnterprises();
+        foreach (Enterprise env in enterprises)
+        {
+            string logo = env.Logo;
+            string address = MagicWallManager.URL_ASSET_LOGO + logo;
+            env.TextureLogo = TextureResource.Instance.GetTexture(address);
+        }
+
+        List<Activity> activities = _daoService.GetActivities();
+        foreach (Activity activity in activities)
+        {
+            string img = activity.Image;
+            string address = MagicWallManager.URL_ASSET + "activity\\" + img;
+            activity.TextureImage = TextureResource.Instance.GetTexture(address);
+        }
+
+        List<Product> products = _daoService.GetProducts();
+        foreach (Product product in products)
+        {
+            string img = product.Image;
+            string address = MagicWallManager.URL_ASSET + "product\\" + img;
+            product.TextureImage = TextureResource.Instance.GetTexture(address);
+        }
+
+        _resourseIsChecked = true;
+
+    }
 
 
 }

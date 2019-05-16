@@ -17,6 +17,8 @@ public class CurveStaggerCutEffect : CutEffect
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
 
+
+
     //
     //  Init
     //
@@ -59,6 +61,9 @@ public class CurveStaggerCutEffect : CutEffect
     //  创建活动
     //
     protected override void CreateActivity() {
+        float s = Time.time;
+
+
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
         int _column = 35;
@@ -121,6 +126,7 @@ public class CurveStaggerCutEffect : CutEffect
                     // 生成透明度动画
                     go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime - delayX + delayY).From();
 
+
                     // 获取启动动画的延迟时间
                     if ((delayY - delayX) > _startDelayTime)
                     {
@@ -136,6 +142,7 @@ public class CurveStaggerCutEffect : CutEffect
 
         // 调整启动动画的时间
         StartingDurTime += _startDelayTime;
+
     }
 
     public override void Starting() {
@@ -145,12 +152,13 @@ public class CurveStaggerCutEffect : CutEffect
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
-            float run_time = (_startingTimeWithOutDelay - agent.DelayX + agent.DelayY) - _timeBetweenStartAndDisplay; // 动画运行的总时间
+            float run_time = (_startingTimeWithOutDelay - agent.DelayX + agent.DelayY); // 动画运行的总时间
 
             //Ease.InOutQuad
             float time = Time.time - StartTime;  // 当前已运行的时间;
 
             if (time > run_time) {
+                agent.updatePosition();
                 continue;
             }
 
@@ -167,9 +175,15 @@ public class CurveStaggerCutEffect : CutEffect
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, time);
 
             agent.NextVector2 = to;
+
+
             agent.updatePosition();
         }
 
+
+    }
+
+    public override void OnStartingCompleted(){
         //  初始化表现形式
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -184,9 +198,7 @@ public class CurveStaggerCutEffect : CutEffect
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         DisplayBehavior.Init(_displayBehaviorConfig);
-    }
 
-    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 

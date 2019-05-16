@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface CardItemFactory 
 {
-    IList<CrossCardCellData> Generator(int id);
+    IList<CrossCardCellData> Generator(int id,CardAgent cardAgent);
 }

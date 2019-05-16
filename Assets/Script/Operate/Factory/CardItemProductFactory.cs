@@ -7,7 +7,7 @@ public class CardItemProductFactory : CardItemFactory
     //
     //  生存公司卡片
     //
-    public IList<CrossCardCellData> Generator(int id)
+    public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
@@ -15,8 +15,15 @@ public class CardItemProductFactory : CardItemFactory
         {
             Product e = DaoService.Instance.GetProductDetail();
             CrossCardCellData cd = new CrossCardCellData();
-            cd.ImageTexture = e.TextureImage;
+
+            string address = MagicWallManager.URL_ASSET + "product\\" + e.Image;
+            cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+
             cd.IsImage = true;
+            cd.Id = e.Pro_id;
+            cd.Category = CrossCardCategoryEnum.PRODUCT;
+            cd.crossCardAgent = cardAgent as CrossCardAgent;
+
             _cellDatas.Add(cd);
         }
 

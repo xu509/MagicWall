@@ -35,9 +35,14 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(0f, 10f)]
     public float InfluenceMoveFactor;   // 影响移动距离
 
+
+    [SerializeField] RectTransform _bg_logo; //背景图中的logo
+    public RectTransform BgLogo { get { return _bg_logo; } }
+
+
+
     // 面板的差值
-    [SerializeField]
-    float panelOffsetX = 0f;
+    [SerializeField] float panelOffsetX = 0f;
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
 	[SerializeField]
@@ -86,13 +91,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 
