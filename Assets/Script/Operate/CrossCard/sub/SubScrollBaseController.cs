@@ -9,6 +9,8 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
     [SerializeField] protected bool loop = false;
     [SerializeField] protected Transform cellContainer = default;
 
+    CrossCardScrollViewContext _context;
+
     readonly IList<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>> pool =
         new List<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
 
@@ -30,7 +32,23 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
     protected abstract GameObject CellPrefab { get; }
 
     protected IList<CrossCardCellData> ItemsSource { get; set; } = new List<CrossCardCellData>();
-    protected CrossCardScrollViewContext Context { get; } = new CrossCardScrollViewContext();
+
+    public CrossCardScrollViewContext Context {
+        set
+        {
+            _context = value;
+        }
+        get
+        {
+            if (_context == null) {
+                _context = new CrossCardScrollViewContext();
+            }
+
+            return _context;
+        }
+    }
+
+
 
     /// <summary>
     /// Updates the contents.

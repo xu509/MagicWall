@@ -22,6 +22,9 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     void Awake()
     {
         Context.OnCellClicked = SelectCell;
+        Context.OnScaleClicked = DoScale;
+
+
     }
 
     void Start()
@@ -42,6 +45,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         onSelectionChanged?.Invoke(index);
 
         UpdateComponents();
+
     }
 
     public void UpdateItemData(CrossCardAgent agent)
@@ -66,6 +70,13 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     //
     public void UpdateEnvId(int env_id) {
         this._envId = env_id;
+    }
+
+
+    public void DoScale(Texture texture)
+    {
+        Debug.Log("Do Scale !");
+        _cardAgent.SwitchScaleMode(texture);
     }
 
 

@@ -59,8 +59,6 @@ public class Product : BaseData,Generator<Product>
 
         product.likes = Random.Range(1, 100);
 
-        product.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "product\\" + product.image);
-
         // detail
         ProductDetail productDetail = new ProductDetail();
         List<ProductDetail> productDetailses = new List<ProductDetail>();

@@ -9,8 +9,8 @@ public class BackgroundManager : Singleton<BackgroundManager>
 
     public int test = 0;
 
-    private MagicWallManager manager;
-    private Transform bubblesBackground;
+    private MagicWallManager _manager;
+    private Transform _bubblesBackground;
     private float last_create_time = 0f;
 
     //
@@ -18,10 +18,10 @@ public class BackgroundManager : Singleton<BackgroundManager>
     //
     private void Awake()
     {
-        bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
+        _bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
         last_create_time = 0.0f;
 
-        manager = MagicWallManager.Instance;
+        _manager = MagicWallManager.Instance;
     }
 
     //
@@ -31,7 +31,7 @@ public class BackgroundManager : Singleton<BackgroundManager>
 
 
     public void run() {
-        if ((Time.time - last_create_time) > manager.backgroundUubbleInterval) {
+        if ((Time.time - last_create_time) > _manager.backgroundUubbleInterval) {
             CreateBubble();
             last_create_time = Time.time;
         }
@@ -42,25 +42,25 @@ public class BackgroundManager : Singleton<BackgroundManager>
     //创建气泡
     void CreateBubble()
     {
-        GameObject bubble = Instantiate(manager.backgroundPrefab) as GameObject;
+        GameObject bubble;
         float random = Random.Range(0.0f, 1.0f);
         if (random < 0.5)
         {
-            bubble.GetComponent<RawImage>().texture = Resources.Load("Textures/bubble1") as Texture;
+            bubble = Instantiate(_manager.backgroundPrefab) as GameObject; 
         }
         else
         {
-            bubble.GetComponent<RawImage>().texture = Resources.Load("Textures/bubble2") as Texture;
+            bubble = Instantiate(_manager.backgroundPrefab2) as GameObject;
         }
         RectTransform rectTransform = bubble.GetComponent<RectTransform>();
-        rectTransform.SetParent(bubblesBackground, false);
+        rectTransform.SetParent(_bubblesBackground, false);
         float x = Random.Range(-1500, 9000);
         float z = Random.Range(500, 10000);
         float alpha = 1 - (z - 500) / 9500f;
         //print(alpha);
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
         rectTransform.anchoredPosition3D = new Vector3(x, -2500, z);
-        rectTransform.DOLocalMoveY(2000, manager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
+        rectTransform.DOLocalMoveY(2000, _manager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
 
     }
 

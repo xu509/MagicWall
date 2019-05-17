@@ -116,8 +116,6 @@ public class CommonScene : IScene
 
 			DoCreating();  //初始化场景
 
-            Debug.Log("当前场景 ： " + GetContentType());
-
 			// 将状态标志设置为开始
 			Status = SceneStatus.STARTTING;
 		}
@@ -178,8 +176,6 @@ public class CommonScene : IScene
 			}
 			else
 			{
-                Debug.Log("DoDestorying 4");
-
                 DoDestorying();
 			}
 		}

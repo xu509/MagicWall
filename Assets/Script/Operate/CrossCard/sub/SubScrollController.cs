@@ -24,6 +24,7 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     void Awake()
     {
         Context.OnCellClicked = SelectCell;
+        Context.OnScaleClicked = ScaleCell;
     }
 
     void Start()
@@ -43,22 +44,6 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         Context.SelectedIndex = index;
         Refresh();
         onSelectionChanged?.Invoke(index);
-
-
-        // 初始化celldatas
-
-        //for (int i = 0; i < Pool.Count; i++) {
-        //    if (i == index)
-        //    {
-        //        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(i);
-        //        baseCell.GetComponent<RectTransform>().SetAsLastSibling();
-        //        baseCell.UpdateComponentStatus();
-        //    }
-        //    else {
-        //        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> baseCell = GetCell(i);
-        //        baseCell.ClearComponentStatus();
-        //    }
-        //}
 
         UpdateComponents();
     }
@@ -83,6 +68,12 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
 
         UpdateSelection(index);
         scroller.ScrollTo(index, 0.35f, Ease.OutCubic);
+    }
+
+    public void ScaleCell(Texture texture)
+    {
+        Debug.Log("ScaleCell");
+        //_crossCardScrollViewCell
 
     }
 
@@ -113,8 +104,6 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
 
     public override void ClearAllComponents()
     {
-        Debug.Log("Sub Scroll Controller Do Clear All");
-
         for (int i = 0; i < Pool.Count; i++)
         {
             Pool[i].ClearComponentStatus();

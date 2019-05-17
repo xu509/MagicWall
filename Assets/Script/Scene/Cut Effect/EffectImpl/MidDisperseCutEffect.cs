@@ -189,6 +189,7 @@ public class MidDisperseCutEffect : CutEffect
             float time = Time.time - StartTime;
             if (time > run_time)
             {
+                agent.updatePosition();
                 continue;
                 //Debug.Log(agent.name);
             }
@@ -205,6 +206,9 @@ public class MidDisperseCutEffect : CutEffect
             agent.updatePosition();
         }
 
+    }
+
+    public override void OnStartingCompleted(){
         //  初始化表现形式
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -220,9 +224,7 @@ public class MidDisperseCutEffect : CutEffect
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
 
         DisplayBehavior.Init(_displayBehaviorConfig);
-    }
 
-    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 

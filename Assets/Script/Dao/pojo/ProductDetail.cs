@@ -38,7 +38,7 @@ public class ProductDetail : Generator<ProductDetail>
         productDetail.image = productImgs[Random.Range(0, productImgs.Length - 1)];
         productDetail.pro_id = 1;
 
-        productDetail.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "product\\detail\\" + productDetail.image);
+        //productDetail.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "product\\detail\\" + productDetail.image);
 
 
         return productDetail;

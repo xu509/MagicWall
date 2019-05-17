@@ -38,7 +38,7 @@ public class ActivityDetail : Generator<ActivityDetail>
             "观看Apple 最新的主题演讲视频,了解我们所发布的有关产品、服务的各项特别活动。"," 在这样的结果之下,苹果手机的这些新机型销量也非常的“感人”。"};
         activityDetail._description = descriptions[Random.Range(0,descriptions.Length - 1)];
 
-        activityDetail.TextureImage = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "activity\\detail\\" + activityDetail._image);
+        //activityDetail.TextureImage = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "activity\\detail\\" + activityDetail._image);
 
         return activityDetail;
     }

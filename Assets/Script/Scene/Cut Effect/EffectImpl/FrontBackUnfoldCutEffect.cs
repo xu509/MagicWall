@@ -220,6 +220,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
             if (time > run_time)
             {
+                agent.updatePosition();
                 continue;
             }
 
@@ -239,6 +240,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
             agent.updatePosition();
         }
 
+    }
+
+    public override void OnStartingCompleted()
+    {
         //  初始化表现形式
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -253,11 +258,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         DisplayBehavior.Init(_displayBehaviorConfig);
-    }
 
-    public override void OnStartingCompleted()
-    {
-        Debug.Log("Starting is Completed");
         AgentManager.Instance.UpdateAgents();
     }
 

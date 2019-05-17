@@ -112,48 +112,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     }
     #endregion
 
-    #region 生成十字卡片
-    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
-    {
-        //  创建 Agent
-        CrossCardAgent crossCardAgent = Instantiate(
-                                    _manager.crossCardgent,
-                                    _operationPanel
-                                    ) as CrossCardAgent;
 
-        //  命名
-        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
-
-        //  获取rect引用
-        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
-
-        //  定出生位置
-        rectTransform.anchoredPosition3D = genPos;
-
-
-        //  定义缩放
-        Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
-        rectTransform.localScale = scaleVector3;
-
-        //  初始化内容
-        crossCardAgent.Width = rectTransform.rect.width;
-        crossCardAgent.Height = rectTransform.rect.height;
-
-        //  添加原组件
-        crossCardAgent.OriginAgent = flockAgent;
-
-        //  配置scene
-        crossCardAgent.SceneIndex = _manager.SceneIndex;
-
-        // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(crossCardAgent);
-
-        // 初始化 CrossAgent 数据
-        crossCardAgent.InitData();
-
-        return crossCardAgent;
-    }
-    #endregion
 
 
     public Vector2 GetOriginPosition(int row, int column)
@@ -218,48 +177,52 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         return _gap;
     }
 
+    #region 生成十字卡片
+    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
+    {
+        //  创建 Agent
+        CrossCardAgent crossCardAgent = Instantiate(
+                                    _manager.crossCardgent,
+                                    _operationPanel
+                                    ) as CrossCardAgent;
+
+        //  命名
+        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+
+        //  获取rect引用
+        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
+
+        //  定出生位置
+        rectTransform.anchoredPosition3D = genPos;
+
+
+        //  定义缩放
+        Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
+        rectTransform.localScale = scaleVector3;
+
+        //  初始化内容
+        crossCardAgent.Width = rectTransform.rect.width;
+        crossCardAgent.Height = rectTransform.rect.height;
+
+        //  添加原组件
+        crossCardAgent.OriginAgent = flockAgent;
+
+        //  配置scene
+        crossCardAgent.SceneIndex = _manager.SceneIndex;
+
+        // 添加到effect agent
+        AgentManager.Instance.AddEffectItem(crossCardAgent);
+
+        // 初始化 CrossAgent 数据
+        crossCardAgent.InitData();
+
+        return crossCardAgent;
+    }
+    #endregion
+
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
     {
-        ////  创建 Agent
-        //CrossCardAgent crossCardAgent = Instantiate(
-        //                            _manager.crossCardgent,
-        //                            _operationPanel
-        //                            ) as CrossCardAgent;
-
-        ////  命名
-        //crossCardAgent.name = "Choose(" + flockAgent.name + ")";
-
-        ////  获取rect引用
-        //RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
-
-        ////  定出生位置
-        //rectTransform.anchoredPosition3D = genPos;
-
-        ////  定义大小
-        ////Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        ////rectTransform.sizeDelta = sizeDelta;
-
-        ////  定义缩放
-        //Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
-        //rectTransform.localScale = scaleVector3;
-
-        ////  初始化内容
-        //crossCardAgent.Width = rectTransform.rect.width;
-        //crossCardAgent.Height = rectTransform.rect.height;
-
-        ////  添加原组件
-        //crossCardAgent.OriginAgent = flockAgent;
-
-        ////  配置scene
-        //crossCardAgent.SceneIndex = _manager.SceneIndex;
-
-        //// 添加到effect agent
-        //AgentManager.Instance.AddEffectItem(crossCardAgent);
-
-        //// 初始化 CrossAgent 数据
-        //crossCardAgent.InitData();
-
-        
+     
         CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
         // 设置显示状态
         cardAgent.gameObject.SetActive(isActive);

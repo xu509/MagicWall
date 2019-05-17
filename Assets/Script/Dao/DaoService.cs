@@ -50,7 +50,6 @@ public class DaoService : Singleton<DaoService>
         {
             return _enterprises;
         }
-
     }
 
     //
@@ -63,7 +62,7 @@ public class DaoService : Singleton<DaoService>
         return enterprises[index];
     }
 
-    public List<Texture> GetEnvCards(int id) {
+    public List<string> GetEnvCards(int id) {
 
         // TODO 
         return GetEnterprise().EnvCards;
@@ -222,6 +221,13 @@ public class DaoService : Singleton<DaoService>
         return appConfig;
     }
 
+
+    public int GetLikes(int id, CrossCardCategoryEnum category)
+    {
+        int likes = Random.Range(1, 50);
+        return likes;
+    }
+
     //
     //  获取显示配置
     //
@@ -305,6 +311,52 @@ public class DaoService : Singleton<DaoService>
         sceneConfig14.CutEffect = new FrontBackUnfoldCutEffect();
         sceneConfig14.SceneContentType = SceneContentType.activity;
         sceneConfigs.Add(sceneConfig14);
+
+        //sceneConfig0.SceneContentType = SceneContentType.activity;
+        //sceneConfigs.Add(sceneConfig0);
+
+        //SceneConfig sceneConfig1 = new SceneConfig();
+        //sceneConfig1.CutEffect = new CurveStaggerCutEffect();
+        //sceneConfig1.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig1);
+
+        //SceneConfig sceneConfig2 = new SceneConfig();
+        //sceneConfig2.CutEffect = new CurveStaggerCutEffect();
+        //sceneConfig2.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig2);
+
+
+        // Real 
+
+        SceneConfig sceneConfig = new SceneConfig();
+        sceneConfig.CutEffect = new CurveStaggerCutEffect();
+        sceneConfig.SceneContentType = SceneContentType.env;
+        sceneConfigs.Add(sceneConfig);
+
+        SceneConfig sceneConfig2 = new SceneConfig();
+        sceneConfig2.CutEffect = new MidDisperseCutEffect();
+        sceneConfig2.SceneContentType = SceneContentType.product;
+        sceneConfigs.Add(sceneConfig2);
+
+        SceneConfig sceneConfig3 = new SceneConfig();
+        sceneConfig3.CutEffect = new StarsCutEffect();
+        sceneConfig3.SceneContentType = SceneContentType.activity;
+        sceneConfigs.Add(sceneConfig3);
+
+        SceneConfig sceneConfig4 = new SceneConfig();
+        sceneConfig4.CutEffect = new MidDisperseCutEffect();
+        sceneConfig4.SceneContentType = SceneContentType.env;
+        sceneConfigs.Add(sceneConfig4);
+
+        SceneConfig sceneConfig5 = new SceneConfig();
+        sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
+        sceneConfig5.SceneContentType = SceneContentType.product;
+        sceneConfigs.Add(sceneConfig5);
+
+        SceneConfig sceneConfig6 = new SceneConfig();
+        sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
+        sceneConfig6.SceneContentType = SceneContentType.activity;
+        sceneConfigs.Add(sceneConfig6);
 
         return sceneConfigs;
     }
