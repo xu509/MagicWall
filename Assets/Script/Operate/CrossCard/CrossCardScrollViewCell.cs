@@ -23,8 +23,6 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
     [SerializeField] Animator _animator;
     [SerializeField] float _position;
 
-    bool _hasClickedLiked = false;   // 标识符，是否已点击喜欢
-
 
     //
     //  Component Paramater 
@@ -58,11 +56,15 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
         // TODO 更新横向的选项卡
-        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.EnvId, cellData.Category);
+        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
         subScrollController.UpdateData(datas);
 
         subScrollController.crossCardScrollViewCell = this;
 
+        // 传递context
+        subScrollController.Context.OnScaleClicked = Context.OnScaleClicked;
+
+        subScrollController.OnSelectionChanged(OnSelectionChanged);
 
         // 隐藏组件
         ClearComponentStatus();
@@ -90,88 +92,17 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
     public override void UpdateComponentStatus()
     {
         GetComponent<RectTransform>().SetAsLastSibling();
-
-        Debug.Log(gameObject.name + " DO LASET S");
-
-
         subScrollController.UpdateAllComponents();
-
-        //// Reset
-        //_hasLikeNumber = false;
-
-        //bool hasLikesNumber = false;
-        //int likes = _cellData.Likes;
-        //string likesStr;
-
-        //if (likes > 0)
-        //{
-        //    //_btnLikeAnimator.Play(AnimatorHash.CardButtonLikeNormalWithNumber);
-        //    hasLikesNumber = true;
-        //    _hasLikeNumber = true;
-        //}
-        //else {
-        //    _hasLikeNumber = false;
-        //}
-
-        //if (likes > 99)
-        //{
-        //    likesStr = "99+";
-        //}
-        //else
-        //{
-        //    likesStr = _cellData.Likes.ToString();
-        //}
-
-
-       
-
-
-
-        //if (hasLikesNumber)
-        //{
-        //    // 已存在喜欢数时，开启相关的按钮，并赋值
-        //    btn_like.gameObject.SetActive(false);
-        //    btn_like_withnumber.gameObject.SetActive(true);
-        //    btn_like_withnumber.GetComponentInChildren<Text>().text = likesStr;
-        //}
-        //else {
-        //    btn_like_withnumber.gameObject.SetActive(false);
-        //    btn_like.gameObject.SetActive(true);
-        //}
-
-
     }
 
 
-    public void DoLike() {
-        if (_hasClickedLiked) {
-            return;
-        }
-
-        _hasClickedLiked = true;
-
-        int likes = _cellData.Likes;
-
-        //  显示数增加
-        //if (!_hasLikeNumber)
-        //{
-        //    btn_like.GetComponentInChildren<Text>().text = (likes + 1).ToString();
-        //    // 需从不显示改为显示
-        //    btn_like.GetComponentInChildren<Text>().DOFade(1, Time.deltaTime);
-        //}
-        //else
-        //{
-        //    int newLikes = likes + 1;
-        //    string newLikeStr = newLikes > 99 ? "99+" : newLikes.ToString();
-
-        //    btn_like_withnumber.GetComponentInChildren<Text>().DOText(newLikeStr, Time.deltaTime);
-        //}
-
-
-        // TODO 数据逻辑上进行添加数值
-        _cellData.Likes = _cellData.Likes + 1;
-
+    public void OnSelectionChanged(int index) {
+        // 更新 card 状态
+        _cellData.crossCardAgent.DoUpdate();
     }
+
+
+
 
     public override void ClearComponentStatus()
     {

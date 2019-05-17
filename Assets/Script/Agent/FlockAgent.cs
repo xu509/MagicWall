@@ -169,28 +169,7 @@ public class FlockAgent : MonoBehaviour
             UpdatePositionEffect();
         }
         else {
-            //Debug.Log("Can Not Effected");
 
-            //MagicWallManager manager = MagicWallManager.Instance;
-
-            //Vector2 refVector2; // 参照的目标位置
-            //if (manager.Status == WallStatusEnum.Cutting)
-            //{
-            //    Debug.Log("WallStatusEnum.Cutting");
-
-            //    // 当前场景正在切换时，参考位置为目标的下个移动位置
-            //    refVector2 = NextVector2;
-            //}
-            //else
-            //{
-            //    Debug.Log("WallStatusEnum Not Cutting");
-
-            //    //当前场景为正常展示时，参考位置为固定位置
-            //    refVector2 = oriVector2;
-            //}
-
-            //Vector2 toy = new Vector2(refVector2.x, refVector2.y);
-            //GetComponent<RectTransform>().DOAnchorPos(toy, Time.deltaTime);
         }
 
     }
@@ -361,7 +340,6 @@ public class FlockAgent : MonoBehaviour
             Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
-
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this,false);
 
@@ -402,6 +380,8 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
+        _isChoosing = false;
+
         MagicWallManager _manager = MagicWallManager.Instance;
 
         // 如果组件已不在原场景，则不进行恢复

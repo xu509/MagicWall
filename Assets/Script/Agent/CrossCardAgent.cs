@@ -43,6 +43,9 @@ public class CrossCardAgent : CardAgent
     //
     public void InitData()
     {
+        Timer myTimer = new Timer("生成卡片");
+        myTimer.Record();
+
         DaoService daoService = DaoService.Instance; 
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
@@ -142,6 +145,7 @@ public class CrossCardAgent : CardAgent
         crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.SelectCell(0);
+        crossCardScrollViewController.SetUpCardAgent(this);
 
         crossCardScrollBar.UpdateData(_cellDatas);
         crossCardScrollBar.SelectCell(0);
@@ -151,6 +155,9 @@ public class CrossCardAgent : CardAgent
         _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
         InitComponents(_hasListBtn);
 
+        myTimer.Record();
+        myTimer.Display();
+
     }
 
     void OnSelectionChanged(int index) {
@@ -158,6 +165,9 @@ public class CrossCardAgent : CardAgent
         obj.GetComponent<RectTransform>().SetAsLastSibling();
 
         crossCardScrollBar.SelectCell(index);
+
+        DoUpdate();
+
     }
 
     void OnBarSelectionChanged(int index)
@@ -191,40 +201,13 @@ public class CrossCardAgent : CardAgent
         _description.text = description;
     }
 
-    // // 碰撞开始
-    // void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    print(gameObject.name + " On Collisiion Enter! " + collision.gameObject.name);
-    // }
 
-    // // 碰撞结束
-    // void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    print(333);
+    public void SwitchScaleMode(Texture texture) {
+        scaleController.SetImage(texture);
+        scaleController.OpenScaleBox();
 
-    //}
+    }
 
-    //// 碰撞持续中
-    //void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    print(222);
-
-    //}
-
-    //void OnTriggerEnter2D (Collider2D other)
-    //{
-    //    print("enter:"+other.gameObject.name);
-    //}
-
-    //void OnTriggerExit2D(Collider2D other)
-    //{
-    //    print("exit:" + other.gameObject.name);
-    //}
-
-    //void OnTriggerStay2D(Collider2D other)
-    //{
-    //    print("stay:" + other.gameObject.name);
-    //}
 
 }
 

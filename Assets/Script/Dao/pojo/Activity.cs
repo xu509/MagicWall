@@ -52,9 +52,6 @@ public class Activity : BaseData,Generator<Activity>
         string[] descriptions = { "由法国时装协会主办", "它们更喜欢本土的设计" };
         activity._description = descriptions[Random.Range(0, descriptions.Length)];
 
-        activity._texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "activity\\" + activity._image);
-
-
         _activityDetails = new List<ActivityDetail>();
         ActivityDetail activityDetail = new ActivityDetail();
         _activityDetails.Add(activityDetail.Generator());

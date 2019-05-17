@@ -7,6 +7,11 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
 
     protected CrossCardAgent _cardAgent;  // 关联的 card agent;
 
+    public void SetUpCardAgent(CrossCardAgent cardAgent) {
+        _cardAgent = cardAgent;
+    }
+
+
     private CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> currentCell;
 
     [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;

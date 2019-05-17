@@ -25,6 +25,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
+
+    public GameObject backgroundPrefab2;//气泡预制体
+
     [Range(10f,30f)]
     public float backgroundUpDuration = 20f;//气泡上升时间
     [Range(0.1f, 10f)]
@@ -36,9 +39,14 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(0f, 10f)]
     public float InfluenceMoveFactor;   // 影响移动距离
 
+
+    [SerializeField] RectTransform _bg_logo; //背景图中的logo
+    public RectTransform BgLogo { get { return _bg_logo; } }
+
+
+
     // 面板的差值
-    [SerializeField]
-    float panelOffsetX = 0f;
+    [SerializeField] float panelOffsetX = 0f;
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
 	[SerializeField]
@@ -87,13 +95,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 

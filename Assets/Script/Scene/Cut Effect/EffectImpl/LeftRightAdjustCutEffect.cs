@@ -197,6 +197,7 @@ public class LeftRightAdjustCutEffect : CutEffect
             if (time > StartingDurTime || time < delay_time)
             {
                 //Debug.Log(agent.name);
+                agent.updatePosition();
 
                 continue;
             }
@@ -207,8 +208,9 @@ public class LeftRightAdjustCutEffect : CutEffect
             agent.NextVector2 = to;
             agent.updatePosition();
         }
+    }
 
-
+    public override void OnStartingCompleted(){
         //  初始化表现形式
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
@@ -225,9 +227,6 @@ public class LeftRightAdjustCutEffect : CutEffect
 
         DisplayBehavior.Init(_displayBehaviorConfig);
 
-    }
-
-    public override void OnStartingCompleted(){
         AgentManager.Instance.UpdateAgents();
     }
 
