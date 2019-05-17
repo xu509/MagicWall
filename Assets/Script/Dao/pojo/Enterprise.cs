@@ -103,7 +103,7 @@ public class Enterprise : BaseData,Generator<Enterprise>
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
 
         int cardType = Random.Range(0, 3);
-        int cardType = 2;
+        cardType = 2;
 
         if (cardType == 0)
         {

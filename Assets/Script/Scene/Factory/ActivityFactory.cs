@@ -57,14 +57,14 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
         Activity activity = data as Activity;
 
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
                                     _manager.agentPrefab,
-                                    _manager.mainPanel
+                                    parent
                                     );
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";

@@ -84,7 +84,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.daoService.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.daoService.GetEnterprise(), _manager.mainPanel);
 
                 // agent 一定时间内从透明至无透明
                 go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
@@ -143,7 +143,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     gen_x = ori_x; //横坐标不变        
 
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, activity);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, activity, _manager.mainPanel);
                     y = y - go.Height - gap;
                 }
             }
@@ -244,7 +244,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     gen_x = ori_x; //横坐标不变        
 
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, product);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, j, i, _itemWidth, _itemHeight, product, _manager.mainPanel);
                     y = y - go.Height - gap;
                 }
             }

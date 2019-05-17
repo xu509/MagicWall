@@ -111,7 +111,7 @@ public class CurveStaggerCutEffect : CutEffect
                     }
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
 
                     // 装载延迟参数
                     go.DelayX = delayX;
@@ -243,7 +243,7 @@ public class CurveStaggerCutEffect : CutEffect
                     }
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
 
                     // 装载延迟参数
                     go.DelayX = delayX;
@@ -316,7 +316,7 @@ public class CurveStaggerCutEffect : CutEffect
                 }
 
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
 
                 // 装载延迟参数
                 go.DelayX = delayX;

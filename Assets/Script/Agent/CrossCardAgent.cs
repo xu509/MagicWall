@@ -191,6 +191,41 @@ public class CrossCardAgent : CardAgent
         _description.text = description;
     }
 
+    // // 碰撞开始
+    // void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    print(gameObject.name + " On Collisiion Enter! " + collision.gameObject.name);
+    // }
+
+    // // 碰撞结束
+    // void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    print(333);
+
+    //}
+
+    //// 碰撞持续中
+    //void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    print(222);
+
+    //}
+
+    //void OnTriggerEnter2D (Collider2D other)
+    //{
+    //    print("enter:"+other.gameObject.name);
+    //}
+
+    //void OnTriggerExit2D(Collider2D other)
+    //{
+    //    print("exit:" + other.gameObject.name);
+    //}
+
+    //void OnTriggerStay2D(Collider2D other)
+    //{
+    //    print("stay:" + other.gameObject.name);
+    //}
+
 }
 
 

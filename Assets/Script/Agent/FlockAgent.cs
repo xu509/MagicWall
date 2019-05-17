@@ -379,9 +379,16 @@ public class FlockAgent : MonoBehaviour
 
                 Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
                 DoScaleAgency(_cardAgent,scaleVector3, 0.5f);
-            }); 
+            });
 
-
+            List<CardAgent> cards = AgentManager.Instance.cardAgents;
+            cards.Add(_cardAgent);
+            if (cards.Count > 8)
+            {
+                cards[0].DoClose();
+                cards.Remove(cards[0]);
+            }
+            AgentManager.Instance.cardAgents = cards;
 
             // TODO: 当两个选择框体相近时，需要处理
 

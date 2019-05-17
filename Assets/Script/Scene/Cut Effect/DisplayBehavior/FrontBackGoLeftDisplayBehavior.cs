@@ -29,6 +29,10 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
         _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
+        float backX = _manager.backPanel.anchoredPosition.x + Time.deltaTime * _manager.MoveFactor_Panel / 2;
+        Vector2 backTo = new Vector2(backX, _manager.backPanel.anchoredPosition.y);
+        _manager.backPanel.DOAnchorPos(backTo, Time.deltaTime);
+
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();
 
@@ -110,21 +114,23 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        float z = (row + column) % 2 == 0 ? 0 : 300;
-        float a = (z == 0) ? 1 : 0.2f;
-
-        FlockAgent agent = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise());
-        agent.GetComponent<RawImage>().DOFade(a, 0);
-        // 将agent的z轴定义在后方
-        RectTransform rect = agent.GetComponent<RectTransform>();
-        if (z != 0)
+        bool front = (row + column) % 2 == 0 ? true : false;
+        //float offsetX = (z == 0) ? 0 : -500;
+        //x = x + offsetX;
+        //生成 agent
+        FlockAgent go;
+        if (front)
         {
-            rect.SetAsFirstSibling();
-        }
-        Vector3 position = rect.anchoredPosition3D;
-        rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, z);
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.mainPanel);
 
-        return agent;
+        }
+        else
+        {
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.backPanel);
+            go.GetComponent<RawImage>().DOFade(0.2f, 0);
+        }
+
+        return go;
     }
 
 }
