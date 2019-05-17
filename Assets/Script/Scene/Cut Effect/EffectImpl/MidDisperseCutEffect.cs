@@ -83,7 +83,7 @@ public class MidDisperseCutEffect : CutEffect
                 gen_y = y + _itemWidth;
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
 
                 //go.transform.SetSiblingIndex(Mathf.Abs(middleX - j));
                 go.Delay = delay;
@@ -158,7 +158,7 @@ public class MidDisperseCutEffect : CutEffect
                     gen_y = ori_y + _itemWidth;
                     //print(gen_y);
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, activity);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, activity, _manager.mainPanel);
                     go.Delay = delay;
                     go.Duration = StartingDurTime + delay;
                     // 获取启动动画的延迟时间
@@ -278,7 +278,7 @@ public class MidDisperseCutEffect : CutEffect
                     gen_y = ori_y + _itemWidth;
                     //print(gen_y);
                     // 生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, product);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, _itemWidth, _itemHeight, product, _manager.mainPanel);
                     go.Delay = delay;
                     go.Duration = StartingDurTime + delay;
                     // 获取启动动画的延迟时间

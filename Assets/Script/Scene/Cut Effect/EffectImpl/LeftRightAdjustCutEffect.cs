@@ -93,7 +93,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j , _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j , _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
                 go.Delay = delay;
                 go.DelayTime = delay;
 
@@ -162,7 +162,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                     gen_y = ori_y; //纵坐标不变
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
                     //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
                     //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
                     go.Delay = delay;
@@ -283,7 +283,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                     gen_y = ori_y; //纵坐标不变
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
                     //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
                     //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
                     go.Delay = delay;

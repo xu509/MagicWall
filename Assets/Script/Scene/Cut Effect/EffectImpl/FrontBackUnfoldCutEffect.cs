@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-// 过场效果 1 ，曲线麻花效果
+// 过场效果 前后层展开
 public class FrontBackUnfoldCutEffect : CutEffect
 {
     private MagicWallManager _manager;
@@ -87,12 +87,20 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
-                float z = (i + j) % 2 == 0 ? 0 : 300;
-                float a = (z == 0) ? 1 : 0.5f;
+                bool front = (i + j) % 2 == 0 ? true : false;
                 //float offsetX = (z == 0) ? 0 : -500;
                 //x = x + offsetX;
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise());
+                FlockAgent go;
+                if (front)
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+
+                }   else
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.backPanel);
+                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                }
 
                 // 装载延迟参数
                 go.DelayX = 0;
@@ -102,15 +110,14 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
                 the_RectTransform.sizeDelta = new Vector2(itemWidth, itemWidth);
 
-                go.GetComponent<RawImage>().DOFade(a, 0);
                 // 将agent的z轴定义在后方
-                Vector3 position = the_RectTransform.anchoredPosition3D;
-                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+                //Vector3 position = the_RectTransform.anchoredPosition3D;
+                //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
 
-                if (z != 0)
-                {
-                    the_RectTransform.SetAsFirstSibling();
-                }
+                //if (z != 0)
+                //{
+                //    the_RectTransform.SetAsFirstSibling();
+                //}
 
                 // 装载进 pagesAgents
                 int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
@@ -129,10 +136,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
-        int _row = 5;
-        int _column = 25;
-        float itemWidth = 400;
-        float itemHeight = 400;
+        int _row = 6;
+        int _column = 30;
+        float itemWidth = 250;
+        float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
@@ -158,12 +165,20 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
-                float z = (i + j) % 2 == 0 ? 0 : 100;
-                float a = (z == 0) ? 1 : 0.2f;
+                bool front = (i + j) % 2 == 0 ? true : false;
                 //float offsetX = (z == 0) ? 0 : -500;
                 //x = x + offsetX;
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity);
+                FlockAgent go;
+                if (front)
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
+
+                }   else
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.backPanel);
+                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                }
 
                 // 装载延迟参数
                 go.DelayX = 0;
@@ -173,15 +188,9 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
                 the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
 
-                go.GetComponent<RawImage>().DOFade(a, 0);
                 // 将agent的z轴定义在后方
-                Vector3 position = the_RectTransform.anchoredPosition3D;
-                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
-
-                if (z != 0)
-                {
-                    the_RectTransform.SetAsFirstSibling();
-                }
+                //Vector3 position = the_RectTransform.anchoredPosition3D;
+                //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
 
                 // 装载进 pagesAgents
                 int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
@@ -255,10 +264,10 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
     protected override void CreateProduct()
     {
-        int _row = 5;
-        int _column = 25;
-        float itemWidth = 400;
-        float itemHeight = 400;
+        int _row = 6;
+        int _column = 30;
+        float itemWidth = 250;
+        float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
@@ -284,12 +293,21 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
-                float z = (i + j) % 2 == 0 ? 0 : 100;
-                float a = (z == 0) ? 1 : 0.2f;
+                bool front = (i + j) % 2 == 0 ? true : false;
                 //float offsetX = (z == 0) ? 0 : -500;
                 //x = x + offsetX;
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product);
+                FlockAgent go;
+                if (front)
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
+
+                }
+                else
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.backPanel);
+                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                }
 
                 // 装载延迟参数
                 go.DelayX = 0;
@@ -299,15 +317,14 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 RectTransform the_RectTransform = go.GetComponent<RectTransform>();
                 the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
 
-                go.GetComponent<RawImage>().DOFade(a, 0);
                 // 将agent的z轴定义在后方
-                Vector3 position = the_RectTransform.anchoredPosition3D;
-                the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+                //Vector3 position = the_RectTransform.anchoredPosition3D;
+                //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
 
-                if (z != 0)
-                {
-                    the_RectTransform.SetAsFirstSibling();
-                }
+                //if (z != 0)
+                //{
+                //    the_RectTransform.SetAsFirstSibling();
+                //}
 
                 // 装载进 pagesAgents
                 int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);

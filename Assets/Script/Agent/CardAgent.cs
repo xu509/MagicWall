@@ -34,6 +34,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] Button _btn_move;
     [SerializeField] Button _btn_close;
 
+    [SerializeField] float radius;// Circle Collider2D radius
+
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
         get { return _cardStatus; }
@@ -62,6 +64,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     protected void UpdateAgency()
     {
+
+        //Debug.Log("暂时屏蔽缩小");
+
 
         // 缩小一半
         //if (_cardStatus == CardStatusEnum.NORMAL)
@@ -332,17 +337,35 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        //松手后碰撞
+        CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
+        foreach (CircleCollider2D circle in circles)
+        {
+            circle.radius = radius;
+        }
+
         DoUpdate();
         DoMove();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        DoUpdate();
+
+        //拖拽时不碰撞
+        transform.SetAsLastSibling();
+        CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
+        foreach (CircleCollider2D circle in circles)
+        {
+            circle.radius = 0;
+        }
+
         if (_doMoving) {
 
-            GetComponent<RectTransform>().anchoredPosition = eventData.position;
+            //Debug.Log("eventData.position : " + eventData.position);
 
+        DoUpdate();
+        if (_doMoving) {
+            GetComponent<RectTransform>().anchoredPosition = eventData.position;
         }
     }
 

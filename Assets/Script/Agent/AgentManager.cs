@@ -23,6 +23,9 @@ public class AgentManager : Singleton<AgentManager>
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
 
+    //点开的卡片 最多8个
+    public List<CardAgent> cardAgents;
+
     //
     //  Paramater UI
     //
@@ -37,6 +40,7 @@ public class AgentManager : Singleton<AgentManager>
         _manager = MagicWallManager.Instance;
         effectAgent = new List<FlockAgent>();
         _agents = new List<FlockAgent>();
+        cardAgents = new List<CardAgent>();
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
     }
 

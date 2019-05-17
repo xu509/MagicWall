@@ -21,6 +21,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public CardAgent crossCardgent;
     public CardAgent sliceCardgent;
 
+    public RectTransform backPanel;//前后层展开效果的后层
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
