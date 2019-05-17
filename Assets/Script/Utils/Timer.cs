@@ -17,7 +17,8 @@ public class Timer
         if (times == null) {
             times = new List<float>();
         }
-        times.Add(Time.time);
+        float time = Time.deltaTime;
+        times.Add(time);
     }
 
     public void Clear() {
@@ -29,7 +30,7 @@ public class Timer
         for (int i = 0; i < times.Count; i++) {
             str += " | " + i + " - " + times[i];
         }
-        Debug.Log(str);
+        //Debug.Log(str);
     }
 
 }

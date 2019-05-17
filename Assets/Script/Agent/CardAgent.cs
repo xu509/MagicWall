@@ -108,8 +108,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //  当卡片被操作
     //
     public void DoUpdate() {
-        Debug.Log("DO UPDATE");
-
         if (CardStatus == CardStatusEnum.NORMAL) {
             _recentActiveTime = Time.time;
         }

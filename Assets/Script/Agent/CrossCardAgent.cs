@@ -43,6 +43,9 @@ public class CrossCardAgent : CardAgent
     //
     public void InitData()
     {
+        Timer myTimer = new Timer("生成卡片");
+        myTimer.Record();
+
         DaoService daoService = DaoService.Instance; 
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
@@ -151,6 +154,9 @@ public class CrossCardAgent : CardAgent
         // 处理businesscard
         _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
         InitComponents(_hasListBtn);
+
+        myTimer.Record();
+        myTimer.Display();
 
     }
 

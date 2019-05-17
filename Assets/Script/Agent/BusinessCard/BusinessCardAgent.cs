@@ -82,10 +82,10 @@ public class BusinessCardAgent : MonoBehaviour
         }
 
         // 根据id获取 business card 内容
-        List<Texture> EnvCardsTexures = DaoService.Instance.GetEnvCards(_cardAgent.Id);
+        List<string> EnvCardsTexures = DaoService.Instance.GetEnvCards(_cardAgent.Id);
 
         for (int i = 0; i < EnvCardsTexures.Count; i++) {
-            Texture texture = EnvCardsTexures[i];
+            string image = EnvCardsTexures[i];
 
             //创建card
             BusinessCardCellAgent businessCardCellAgent = Instantiate(
@@ -95,7 +95,7 @@ public class BusinessCardAgent : MonoBehaviour
 
             BusinessCardData businessCardData = new BusinessCardData();
             businessCardData.Index = i;
-            businessCardData.Image = texture;
+            businessCardData.Image = TextureResource.Instance.GetTexture(image); 
             businessCardCellAgent.UpdateContent(businessCardData);
 
             pool.Add(businessCardCellAgent);

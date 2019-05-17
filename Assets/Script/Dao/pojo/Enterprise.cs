@@ -48,8 +48,8 @@ public class Enterprise : BaseData,Generator<Enterprise>
     public Texture TextureBusinessCard { set { _texture_business_card = value; } get { return _texture_business_card; } }
 
     //  Env 企业卡片组
-    private List<Texture> _env_cards;
-    public List<Texture> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
+    private List<string> _env_cards;
+    public List<string> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
 
 
     #endregion
@@ -105,20 +105,23 @@ public class Enterprise : BaseData,Generator<Enterprise>
 
         if (cardType == 0)
         {
-            _env_cards = new List<Texture>();
+            _env_cards = new List<string>();
         }
+
         else if (cardType == 1)
         {
-            _env_cards = new List<Texture>();
-            Texture t = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-1.png");
-            _env_cards.Add(t);
+            _env_cards = new List<string>();
+            string address = MagicWallManager.URL_ASSET + "env\\" + "env-card-1.png";
+            _env_cards.Add(address);
         }
-        else {
-            _env_cards = new List<Texture>();
-            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-1.png"));
-            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-2.png"));
-            _env_cards.Add(AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-3.png"));
+        else
+        {
+            _env_cards = new List<string>();
+            _env_cards.Add(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-1.png");
+            _env_cards.Add(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-2.png");
+            _env_cards.Add(MagicWallManager.URL_ASSET + "env\\" + "env-card-2-3.png");
         }
+
         env.EnvCards = _env_cards;
 
         return env;

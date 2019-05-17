@@ -62,7 +62,7 @@ public class DaoService : Singleton<DaoService>
         return enterprises[index];
     }
 
-    public List<Texture> GetEnvCards(int id) {
+    public List<string> GetEnvCards(int id) {
 
         // TODO 
         return GetEnterprise().EnvCards;

@@ -24,6 +24,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
+
+    public GameObject backgroundPrefab2;//气泡预制体
+
     [Range(10f,30f)]
     public float backgroundUpDuration = 20f;//气泡上升时间
     [Range(0.1f, 10f)]
