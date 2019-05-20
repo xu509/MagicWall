@@ -11,6 +11,7 @@ public class CrossCardCellData
     int _index;     //  索引
     int _likes; //喜欢数
     string _title;  //  标题
+    string _description; // 描述
     bool _isImage; // 是图片
     CrossCardCategoryEnum _category;    //  类别
     Texture _imageTexture;
@@ -27,6 +28,9 @@ public class CrossCardCellData
     public int EnvId { set { _envid = value; } get { return _envid; } }
 
     public string Title { set { _title = value; } get { return _title; } }
+
+    public string Description { set { _description = value; } get { return _description; } }
+
 
     public int Index { set { _index = value; } get { return _index; } }
 

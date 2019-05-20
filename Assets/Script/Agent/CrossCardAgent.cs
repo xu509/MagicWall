@@ -78,6 +78,7 @@ public class CrossCardAgent : CardAgent
         item2.Category = CrossCardCategoryEnum.INDEX;
         item2.Index = index;
         item2.Title = "公司名片";
+        item2.Description = enterpriseDetail.Enterprise.Description;
         index++; 
         _cellDatas.Add(item2);
         //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
@@ -166,6 +167,9 @@ public class CrossCardAgent : CardAgent
 
         crossCardScrollBar.SelectCell(index);
 
+        // 更新描述
+        UpdateDescription(crossCardScrollViewController.GetCurrentCardDescription());
+
         DoUpdate();
 
     }
@@ -192,12 +196,10 @@ public class CrossCardAgent : CardAgent
     //
     void Update() {
         UpdateAgency();
-
-
     }
 
 
-    void UpdateDescription(string description) {
+    public void UpdateDescription(string description) {
         _description.text = description;
     }
 
@@ -208,6 +210,36 @@ public class CrossCardAgent : CardAgent
 
     }
 
+    //
+    //  上一张
+    //
+    public void DoUp() {
+        int index = crossCardScrollViewController.CurrentIndex;
+
+        // 获取上一个 index
+        int up_index = index - 1;
+        if (index == 0) {
+            up_index = crossCardScrollViewController.Pool.Count - 1;
+        }
+
+        crossCardScrollViewController.SelectCell(up_index);
+    }
+
+    //
+    //  下一张
+    //
+    public void DoDown() {
+        int index = crossCardScrollViewController.CurrentIndex;
+
+        // 获取上一个 index
+        int down_index = index + 1;
+        if (down_index == crossCardScrollViewController.Pool.Count)
+        {
+            down_index = 0;
+        }
+
+        crossCardScrollViewController.SelectCell(down_index);
+    }
 
 }
 

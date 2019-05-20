@@ -124,9 +124,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
             cell.InitData();
 
             pool.Add(cell);
-
         }
-        
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)

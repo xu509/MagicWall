@@ -58,7 +58,7 @@ public class EnterpriseDetail : Generator<EnterpriseDetail>
         Video video = new Video();
         List<Video> _videos = new List<Video>();
         _videos.Add(video.Generator());
-        _videos.Add(video.Generator());
+        //_videos.Add(video.Generator());
         enterpriseDetail._videos = _videos;
 
         return enterpriseDetail;

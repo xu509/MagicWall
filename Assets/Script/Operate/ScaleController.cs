@@ -20,8 +20,6 @@ public class ScaleController : MonoBehaviour
 
 
     void Start() {
-
-        Debug.Log("Scale Controller");
         CloseScaleBox();
     }
 

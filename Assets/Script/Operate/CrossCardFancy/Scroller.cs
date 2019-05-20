@@ -135,21 +135,21 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
-        {
-            return;
-        }
+        //if (eventData.button != PointerEventData.InputButton.Left)
+        //{
+        //    return;
+        //}
 
-        pointerStartLocalPosition = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            viewport,
-            eventData.position,
-            eventData.pressEventCamera,
-            out pointerStartLocalPosition);
+        //pointerStartLocalPosition = Vector2.zero;
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        //    viewport,
+        //    eventData.position,
+        //    eventData.pressEventCamera,
+        //    out pointerStartLocalPosition);
 
-        dragStartScrollPosition = currentScrollPosition;
-        dragging = true;
-        autoScrollState.Reset();
+        //dragStartScrollPosition = currentScrollPosition;
+        //dragging = true;
+        //autoScrollState.Reset();
 
         Debug.Log("### ON BEGIN DRAG2 ! ###");
 
@@ -157,6 +157,8 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        return;
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -232,14 +234,14 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
-        {
-            return;
-        }
+        //if (eventData.button != PointerEventData.InputButton.Left)
+        //{
+        //    return;
+        //}
 
-        dragging = false;
-        recognizeDirection = ScrollDirection.Unknow;
-        Debug.Log("### ON END DRAGING2 ###");
+        //dragging = false;
+        //recognizeDirection = ScrollDirection.Unknow;
+        //Debug.Log("### ON END DRAGING2 ###");
 
     }
 
