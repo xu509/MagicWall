@@ -359,16 +359,18 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             circle.radius = 0;
         }
 
-        if (_doMoving) {
+        if (_doMoving)
+        {
 
             //Debug.Log("eventData.position : " + eventData.position);
 
-        DoUpdate();
-        if (_doMoving) {
-            GetComponent<RectTransform>().anchoredPosition = eventData.position;
+            DoUpdate();
+            if (_doMoving)
+            {
+                GetComponent<RectTransform>().anchoredPosition = eventData.position;
+            }
         }
     }
-
 
 }
 

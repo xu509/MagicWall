@@ -567,6 +567,8 @@ MonoBehaviour:
   backPanel: {fileID: 2012783910}
   backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
     type: 3}
+  backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
+    type: 3}
   backgroundUpDuration: 20
   backgroundUubbleInterval: 0.4
   InfluenceFactor: 0.6

@@ -328,35 +328,35 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
 
-        SceneConfig sceneConfig = new SceneConfig();
-        sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        sceneConfig.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig);
+        //SceneConfig sceneConfig = new SceneConfig();
+        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
+        //sceneConfig.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig);
 
-        SceneConfig sceneConfig2 = new SceneConfig();
-        sceneConfig2.CutEffect = new MidDisperseCutEffect();
-        sceneConfig2.SceneContentType = SceneContentType.product;
-        sceneConfigs.Add(sceneConfig2);
+        //SceneConfig sceneConfig2 = new SceneConfig();
+        //sceneConfig2.CutEffect = new MidDisperseCutEffect();
+        //sceneConfig2.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig2);
 
-        SceneConfig sceneConfig3 = new SceneConfig();
-        sceneConfig3.CutEffect = new StarsCutEffect();
-        sceneConfig3.SceneContentType = SceneContentType.activity;
-        sceneConfigs.Add(sceneConfig3);
+        //SceneConfig sceneConfig3 = new SceneConfig();
+        //sceneConfig3.CutEffect = new StarsCutEffect();
+        //sceneConfig3.SceneContentType = SceneContentType.activity;
+        //sceneConfigs.Add(sceneConfig3);
 
-        SceneConfig sceneConfig4 = new SceneConfig();
-        sceneConfig4.CutEffect = new MidDisperseCutEffect();
-        sceneConfig4.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig4);
+        //SceneConfig sceneConfig4 = new SceneConfig();
+        //sceneConfig4.CutEffect = new MidDisperseCutEffect();
+        //sceneConfig4.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig4);
 
-        SceneConfig sceneConfig5 = new SceneConfig();
-        sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
-        sceneConfig5.SceneContentType = SceneContentType.product;
-        sceneConfigs.Add(sceneConfig5);
+        //SceneConfig sceneConfig5 = new SceneConfig();
+        //sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
+        //sceneConfig5.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig5);
 
-        SceneConfig sceneConfig6 = new SceneConfig();
-        sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
-        sceneConfig6.SceneContentType = SceneContentType.activity;
-        sceneConfigs.Add(sceneConfig6);
+        //SceneConfig sceneConfig6 = new SceneConfig();
+        //sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
+        //sceneConfig6.SceneContentType = SceneContentType.activity;
+        //sceneConfigs.Add(sceneConfig6);
 
         return sceneConfigs;
     }

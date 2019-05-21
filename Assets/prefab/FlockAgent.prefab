@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 606758628556222531}
   - component: {fileID: 5197789167147715137}
   - component: {fileID: 2911198469899858103}
+  - component: {fileID: 4879919746585454523}
   m_Layer: 10
   m_Name: FlockAgent
   m_TagString: Untagged
@@ -564,3 +565,18 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &4879919746585454523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8666812798500712471}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.32941177}
+  m_EffectDistance: {x: 10, y: 10}
+  m_UseGraphicAlpha: 1
