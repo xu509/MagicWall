@@ -3,6 +3,9 @@
 
 public abstract class SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> : MonoBehaviour
 {
+    private bool _hasInit = false;
+    public bool HasInit { set { _hasInit = value; } get { return _hasInit; } }
+
     /// <summary>
     /// Gets or sets the index of the data.
     /// </summary>
@@ -14,6 +17,11 @@ public abstract class SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewCo
     /// </summary>
     /// <value><c>true</c> if is visible; otherwise, <c>false</c>.</value>
     public virtual bool IsVisible => gameObject.activeSelf;
+
+
+    public abstract CrossCardCellData GetData();
+
+    public abstract void DoUpdateDescription();
 
     /// <summary>
     /// Gets the context.

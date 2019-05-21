@@ -11,13 +11,14 @@ public class CardItemVideoFactory : CardItemFactory
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             Video e = DaoService.Instance.GetVideoDetail();
             CrossCardCellData cd = new CrossCardCellData();
             cd.IsImage = false;
+            cd.Description = e.Description;
             cd.Id = e.V_id;
-            cd.Category = CrossCardCategoryEnum.CATALOG;
+            cd.Category = CrossCardCategoryEnum.VIDEO;
             cd.crossCardAgent = cardAgent as CrossCardAgent;
 
             _cellDatas.Add(cd);

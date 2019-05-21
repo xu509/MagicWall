@@ -18,6 +18,7 @@ public class CardItemProductFactory : CardItemFactory
 
             string address = MagicWallManager.URL_ASSET + "product\\" + e.Image;
             cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+            cd.Description = e.Description;
 
             cd.IsImage = true;
             cd.Id = e.Pro_id;

@@ -80,7 +80,6 @@ public class StartScene : IScene
 
 
         // 加载主要的图片资源
-        Debug.Log("Load Start Scene now !");
 
         // LOGO 淡入
         if (!_doShowLogo) {
