@@ -30,7 +30,10 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     //
     //  Component Paramater 
     //
+
+    [SerializeField] TestScript videoPrefab;
     [SerializeField] RectTransform videoContainer;
+
     [SerializeField] VideoPlayer videoPlayer;
     [SerializeField] RawImage videoContent;
 
@@ -49,8 +52,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     // Start is called before the first frame update
     void Start()
     {
-        videoPlayer.errorReceived += VideoErrorDid;
-        videoPlayer.prepareCompleted += VideoPreparedDid;
+
 
         //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
 
@@ -72,13 +74,17 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         {
             Debug.Log("NOW:" + gameObject.activeSelf);
 
-            Debug.Log("UpdateContent");
             videoContainer.gameObject.SetActive(true);
             _image.gameObject.SetActive(false);
 
+            //videoPlayer.errorReceived += VideoErrorDid;
+            //videoPlayer.prepareCompleted += VideoPreparedDid;
 
-            // 播放视频
-            StartCoroutine(PlayVideo());
+            //videoPlayer.source = VideoSource.Url;
+            //videoPlayer.url = "file://E:/workspace/MagicWall/Assets/Files/env/video/1.mp4";
+
+            //// 播放视频
+            //StartCoroutine(PlayVideo());
 
         }
         else {
@@ -89,6 +95,14 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         }
 
     }
+
+    public void DoPlayVideo() {
+
+        string url = "E:/workspace/MagicWall/Assets/Files/env/video/1.mp4";
+        Context.OnPlayVideo?.Invoke(url);
+
+    }
+
 
     public override void UpdatePosition(float position)
     {
@@ -247,21 +261,22 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
         Debug.Log("videoPlayer.isPrepared !");
 
-
         if (videoPlayer.isPrepared) {
             videoContent.texture = videoPlayer.texture;
         }
 
-        videoPlayer.Play();
+        //videoPlayer.Play();
         //audioSource.Play();
     }
 
-    void VideoErrorDid(VideoPlayer source, string message) {
+    private void VideoErrorDid(VideoPlayer source, string message) {
+        Debug.Log("Video Error Did");
         Debug.Log("Video Error Did : " + message);
     }
 
     void VideoPreparedDid(VideoPlayer source)
     {
         Debug.Log("Video Prepared Did : ");
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class TestScript : MonoBehaviour {
+public class TestScript1 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

@@ -8,6 +8,8 @@ public class CrossCardScrollViewContext
     public Action<int> OnCellClicked;
     public Action<Texture> OnScaleClicked; //点击放大
     public Action<string> OnDescriptionChanged;
+    public Action<string> OnPlayVideo;
+
 
 
 }

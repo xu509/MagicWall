@@ -63,6 +63,8 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         // 传递context
         subScrollController.Context.OnScaleClicked = Context.OnScaleClicked;
+        subScrollController.Context.OnPlayVideo = Context.OnPlayVideo;
+
         subScrollController.Context.OnDescriptionChanged = Context.OnDescriptionChanged;
 
         subScrollController.OnSelectionChanged(OnSelectionChanged);
