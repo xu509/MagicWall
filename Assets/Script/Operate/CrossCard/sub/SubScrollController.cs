@@ -46,6 +46,9 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         onSelectionChanged?.Invoke(index);
 
         UpdateComponents();
+        // 获取资料，更新
+
+
     }
 
     public void UpdateData(IList<CrossCardCellData> items)
@@ -108,5 +111,10 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
         {
             Pool[i].ClearComponentStatus();
         }
+    }
+
+    public string GetCurrentDescription() {
+        CrossCardCellData data = Pool[_currentIndex].GetData();
+        return data.Description;
     }
 }

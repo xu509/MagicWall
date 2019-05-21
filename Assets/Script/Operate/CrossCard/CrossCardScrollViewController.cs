@@ -23,8 +23,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     {
         Context.OnCellClicked = SelectCell;
         Context.OnScaleClicked = DoScale;
-
-
+        Context.OnDescriptionChanged = UpdateDescription;
     }
 
     void Start()
@@ -75,7 +74,6 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     public void DoScale(Texture texture)
     {
-        Debug.Log("Do Scale !");
         _cardAgent.SwitchScaleMode(texture);
     }
 
@@ -115,5 +113,17 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
             }
         }
     }
+
+
+    // 获取当前显示卡片的描述
+    public string GetCurrentCardDescription() {
+        string str = Pool[_currentIndex].GetCurrentDescription();
+        return str;
+    }
+
+    public void UpdateDescription(string description) {
+        _cardAgent.UpdateDescription(description);
+    }
+
 
 }

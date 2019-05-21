@@ -18,6 +18,7 @@ public class CardItemCatalogFactory : CardItemFactory
 
             string address = MagicWallManager.URL_ASSET + "env\\" + e.Img;
             cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+            cd.Description = e.Description;
 
             cd.IsImage = true;
             cd.Category = CrossCardCategoryEnum.CATALOG;

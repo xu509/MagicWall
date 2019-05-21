@@ -63,6 +63,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         // 传递context
         subScrollController.Context.OnScaleClicked = Context.OnScaleClicked;
+        subScrollController.Context.OnDescriptionChanged = Context.OnDescriptionChanged;
 
         subScrollController.OnSelectionChanged(OnSelectionChanged);
 
@@ -70,7 +71,10 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         ClearComponentStatus();
     }
 
-
+    /// <summary>
+    /// 此段代码始终在运行
+    /// </summary>
+    /// <param name="position"></param>
     public override void UpdatePosition(float position)
     {
         currentPosition = position;
@@ -78,6 +82,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         _animator.speed = 0;
 
         _position = position;
+
     }
 
     float currentPosition = 0;
@@ -95,27 +100,35 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         subScrollController.UpdateAllComponents();
     }
 
-
+    // 次级滚动栏变化时内容
     public void OnSelectionChanged(int index) {
         // 更新 card 状态
         _cellData.crossCardAgent.DoUpdate();
+
+        SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell = subScrollController.GetCell(index);
+        CrossCardCellData data = cell.GetData();
+
+        if (_index == Context.SelectedIndex) {
+            cell.DoUpdateDescription();
+        }
+
+        //DoUpdateDescription(data.Description);
+        
     }
-
-
 
 
     public override void ClearComponentStatus()
     {
         subScrollController.ClearAllComponents();
 
-        // 隐藏组件
-        //btn_like.gameObject.SetActive(false);
-        //btn_like_withnumber.gameObject.SetActive(false);
-
-
-        //for (int i = 0; i < subScrollController.Pool.Count; i++) {
-        //    subScrollController.Pool[i].ClearComponentStatus();
-        //}
-    
     }
+
+
+    // 获取当前的描述
+    public override string GetCurrentDescription() {
+
+        string str = subScrollController.GetCurrentDescription();
+        return str ;
+    }
+
 }

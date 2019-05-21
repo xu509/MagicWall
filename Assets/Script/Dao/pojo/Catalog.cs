@@ -18,6 +18,9 @@ public class Catalog : Generator<Catalog>
     private string _img;
     public string Img { set { _img = value; } get { return _img; } }
 
+    private string _description;
+    public string Description { set { _description = value; } get { return _description; } }
+
 
     // Texture
     private Texture _texture_img;
@@ -29,7 +32,9 @@ public class Catalog : Generator<Catalog>
 
         string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
         catalog._img = imgs[Random.Range(0, imgs.Length - 1)];
-        catalog._texture_img = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "env\\" + catalog._img);
+
+        string[] descriptions = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+        catalog.Description = descriptions[Random.Range(0, descriptions.Length - 1)];
 
         return catalog;
     }

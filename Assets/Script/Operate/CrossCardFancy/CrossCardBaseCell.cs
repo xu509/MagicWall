@@ -49,6 +49,7 @@ public abstract class CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewCo
 
     public abstract void ClearComponentStatus();
 
+    public abstract string GetCurrentDescription();
 
 
     public abstract void InitData();

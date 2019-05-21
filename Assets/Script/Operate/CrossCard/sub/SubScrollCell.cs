@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using DG.Tweening;
 
 //
@@ -29,6 +30,10 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     //
     //  Component Paramater 
     //
+    [SerializeField] RectTransform videoContainer;
+    [SerializeField] VideoPlayer videoPlayer;
+    [SerializeField] RawImage videoContent;
+
     [SerializeField] RawImage _image;
 
     bool _hasLikeNumber = false;
@@ -44,7 +49,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     // Start is called before the first frame update
     void Start()
     {
-
+        videoPlayer.errorReceived += VideoErrorDid;
+        videoPlayer.prepareCompleted += VideoPreparedDid;
 
         //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
 
@@ -53,7 +59,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     public override void UpdateContent(CrossCardCellData cellData)
     {
         _cellData = cellData;
-
         _index = cellData.Index;
         _title = cellData.Title;
 
@@ -63,9 +68,25 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
         //crossCardScrollViewCellItem.UpdateData(datas);
 
-        //  设置 Image
-        _image.texture = cellData.ImageTexture;
+        if (cellData.Category == CrossCardCategoryEnum.VIDEO)
+        {
+            Debug.Log("NOW:" + gameObject.activeSelf);
 
+            Debug.Log("UpdateContent");
+            videoContainer.gameObject.SetActive(true);
+            _image.gameObject.SetActive(false);
+
+
+            // 播放视频
+            StartCoroutine(PlayVideo());
+
+        }
+        else {
+            //  设置 Image
+            _image.gameObject.SetActive(true);
+            videoContainer.gameObject.SetActive(false);
+            _image.texture = cellData.ImageTexture;
+        }
 
     }
 
@@ -90,6 +111,13 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     public void DoScale() {
         // 获取图片
         Context.OnScaleClicked?.Invoke(_image.texture);
+
+    }
+
+    public override void DoUpdateDescription()
+    {
+        // 获取图片
+        Context.OnDescriptionChanged?.Invoke(_cellData.Description);
 
     }
 
@@ -179,7 +207,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
         _hasClickedLiked = true;
 
-
         //  显示数增加
         if (!_hasLikeNumber)
         {
@@ -191,16 +218,50 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         {
             int newLikes = _likes + 1;
             string newLikeStr = newLikes > 99 ? "99+" : newLikes.ToString();
-
             btn_like_withnumber.GetComponentInChildren<Text>().DOText(newLikeStr, Time.deltaTime);
         }
 
-
         // TODO 数据逻辑上进行添加数值
         _likes = _likes + 1;
-
-
         _cellData.crossCardAgent.DoUpdate();
+    }
 
+    public override CrossCardCellData GetData()
+    {
+        return _cellData;
+    }
+
+    IEnumerator PlayVideo()
+    {
+        Debug.Log("Play Video !");
+
+        videoPlayer.Prepare();
+
+        WaitForSeconds waitForSeconds = new WaitForSeconds(1);
+        while (!videoPlayer.isPrepared)
+        {
+            Debug.Log("Wait prepared");
+            yield return waitForSeconds;
+            break;
+        }
+
+        Debug.Log("videoPlayer.isPrepared !");
+
+
+        if (videoPlayer.isPrepared) {
+            videoContent.texture = videoPlayer.texture;
+        }
+
+        videoPlayer.Play();
+        //audioSource.Play();
+    }
+
+    void VideoErrorDid(VideoPlayer source, string message) {
+        Debug.Log("Video Error Did : " + message);
+    }
+
+    void VideoPreparedDid(VideoPlayer source)
+    {
+        Debug.Log("Video Prepared Did : ");
     }
 }
