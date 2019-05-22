@@ -472,6 +472,41 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &1745218767132582100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865509593052167301}
+  m_Layer: 11
+  m_Name: video
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1865509593052167301
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745218767132582100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 511508763543045258}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: -140, y: 420}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2033486636596899574
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +689,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1447688283106226908}
+  - {fileID: 1865509593052167301}
   - {fileID: 7815403916149075529}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -734,6 +770,10 @@ MonoBehaviour:
   radius: 600
   _title: {fileID: 4231419099656867917}
   _description: {fileID: 7536231062420814249}
+  videoAgentPrefab: {fileID: 1076230158778565772, guid: e73674838b71df241b1532ceb5a4b677,
+    type: 3}
+  normalContainer: {fileID: 1447688283106226908}
+  videoContainer: {fileID: 1865509593052167301}
   crossCardScrollViewController: {fileID: 6388220598021548340}
   crossCardScrollBar: {fileID: 7748574175968625818}
   scaleController: {fileID: 4894971406579710849}
@@ -2430,7 +2470,7 @@ RectTransform:
   - {fileID: 1948448210073073557}
   - {fileID: 1444969919011243176}
   m_Father: {fileID: 511508763543045258}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2619,7 +2659,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 22
     m_MaxSize: 22
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 0

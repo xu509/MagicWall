@@ -24,6 +24,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         Context.OnCellClicked = SelectCell;
         Context.OnScaleClicked = DoScale;
         Context.OnDescriptionChanged = UpdateDescription;
+        Context.OnPlayVideo = OnPlayVideo;
     }
 
     void Start()
@@ -123,6 +124,12 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     public void UpdateDescription(string description) {
         _cardAgent.UpdateDescription(description);
+    }
+
+    public void OnPlayVideo(string address)
+    {
+        CrossCardAgent agent = _cardAgent as CrossCardAgent;
+        agent.DoVideo(address);
     }
 
 

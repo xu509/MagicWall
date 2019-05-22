@@ -29,7 +29,10 @@ public class CrossCardAgent : CardAgent
     [SerializeField, Header("十字卡片 - 标题")] Text _title;
     [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
+    [SerializeField] VideoAgent videoAgentPrefab;
 
+    [SerializeField] RectTransform normalContainer;
+    [SerializeField] RectTransform videoContainer;
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
@@ -239,6 +242,22 @@ public class CrossCardAgent : CardAgent
         }
 
         crossCardScrollViewController.SelectCell(down_index);
+    }
+
+    public void DoVideo(string address)
+    {
+        Debug.Log("Do Video In Cross Card Agent." + address);
+
+        //显示 video 的框框
+
+        videoContainer.gameObject.SetActive(true);
+        VideoAgent videoAgent = Instantiate(videoAgentPrefab, videoContainer);
+        videoAgent.SetAddress(address);
+        videoAgent.Init();
+
+        // 隐藏平时的框框
+        normalContainer.gameObject.SetActive(false);
+
     }
 
 }
