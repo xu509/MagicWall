@@ -14,7 +14,6 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
     private int _column;    // 列数
 
 
-
     // Generate Panel
     private RectTransform _operationPanel;
 
@@ -100,7 +99,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         boxCollider2D.size = new Vector2(width, height);
         //  初始化内容
         newAgent.Initialize(ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Ent_id, activity.Image, false, 0);
+            width, height, activity.Ent_id, activity.Image, false, 2);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);

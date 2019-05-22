@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrossCardCellData
+public class SliceCardCellData
 {
     CrossCardAgent _crossCardAgent;
 

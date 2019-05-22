@@ -4,9 +4,9 @@ using UnityEngine;
 using EasingCore;
 
 
-public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCellData, CrossCardScrollViewContext>
+public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCellData, SliceCardCellContext>
 {
-    IList<CrossCardCellData> _items;
+    IList<SliceCardCellData> _items;
     int _envId; // env id;
 
     int _currentIndex;
@@ -24,7 +24,6 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         Context.OnCellClicked = SelectCell;
         Context.OnScaleClicked = DoScale;
         Context.OnDescriptionChanged = UpdateDescription;
-        Context.OnPlayVideo = OnPlayVideo;
     }
 
     void Start()
@@ -48,14 +47,14 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     }
 
-    public void UpdateItemData(CrossCardAgent agent)
+    public void UpdateItemData(SliceCardAgent agent)
     {
         // 此时数据传递
         _cardAgent = agent;
 
     }
 
-    public void UpdateData(IList<CrossCardCellData> items)
+    public void UpdateData(IList<SliceCardCellData> items)
     {
         // 此时数据传递
         _items = items;
@@ -123,14 +122,9 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     }
 
     public void UpdateDescription(string description) {
-        _cardAgent.UpdateDescription(description);
+        //_cardAgent.UpdateDescription(description);
     }
 
-    public void OnPlayVideo(CrossCardCellData cellData)
-    {
-        CrossCardAgent agent = _cardAgent as CrossCardAgent;
-        agent.DoVideo(cellData.VideoUrl, cellData.Description);
-    }
 
 
 }

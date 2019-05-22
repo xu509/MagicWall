@@ -61,7 +61,12 @@ public class Product : BaseData,Generator<Product>
             "50.jpg", "51.jpg", "52.jpg", "53.jpg","54.jpg", "55.jpg", "56.jpg", "57.jpg", "58.jpg", "59.jpg",
             "60.jpg"
         };
-        product.image = images[Random.Range(0, images.Length - 1)];
+
+        //string[] images = {
+        //    "48.jpg", "48.jpg"
+        //};
+
+        product.image = images[Random.Range(0, images.Length)];
 
         product.likes = Random.Range(1, 100);
 

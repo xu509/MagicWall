@@ -441,6 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d7b8de0ddb76a478624efff13de701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data_img: 
   _width: 0
   _height: 0
   oriVector2: {x: 0, y: 0}
@@ -564,3 +565,4 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []

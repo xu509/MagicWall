@@ -99,7 +99,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(ori_position, postion, row + 1, column + 1,
-            width, height, product.Ent_id, product.Image, false, 0);
+            width, height, product.Ent_id, product.Image, false, 1);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -108,9 +108,12 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
     }
     #endregion
 
+
+
     #region 生成滑动卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
     {
+
         //  创建 Agent
         SliceCardAgent sliceCardAgent = Instantiate(
                                     _manager.sliceCardgent,
@@ -118,13 +121,15 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
                                     ) as SliceCardAgent;
 
         //  命名
-        sliceCardAgent.name = "Choose(" + flockAgent.name + ")";
+        sliceCardAgent.name = "Product(" + flockAgent.name + ")";
 
         //  获取rect引用
         RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
 
         //  定出生位置
         rectTransform.anchoredPosition3D = genPos;
+
+        Debug.Log("Gen Pos :" + genPos);
 
         //  定义大小
         Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
@@ -216,7 +221,11 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
     {
-        throw new System.NotImplementedException();
+        CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
+        // 设置显示状态
+        cardAgent.gameObject.SetActive(isActive);
+
+        return cardAgent;
     }
 
 }

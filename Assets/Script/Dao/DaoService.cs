@@ -180,6 +180,15 @@ public class DaoService : Singleton<DaoService>
         return new Product().Generator();
     }
 
+    public List<Video> GetVideos()
+    {
+
+        List<Video> videos = new List<Video>();
+        videos.Add(GetVideoDetail());
+        videos.Add(GetVideoDetail());
+        return videos;
+    }
+
     public Video GetVideoDetail()
     {
         // todo
@@ -240,10 +249,10 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
 
-        SceneConfig sceneConfig = new SceneConfig();
-        sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        sceneConfig.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig);
+        //SceneConfig sceneConfig = new SceneConfig();
+        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
+        //sceneConfig.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig);
 
         SceneConfig sceneConfig2 = new SceneConfig();
         sceneConfig2.CutEffect = new MidDisperseCutEffect();

@@ -9,7 +9,10 @@ using DG.Tweening;
 //
 public class SliceCardAgent : CardAgent
 {
-       
+
+    [SerializeField] ScaleController scaleController;
+
+
     void Awake() {
         AwakeAgency();
     }
@@ -20,7 +23,14 @@ public class SliceCardAgent : CardAgent
     void Update() {
         UpdateAgency();
     }
-   
+
+
+    public void SwitchScaleMode(Texture texture)
+    {
+        scaleController.SetImage(texture);
+        scaleController.OpenScaleBox();
+    }
+
 }
 
 

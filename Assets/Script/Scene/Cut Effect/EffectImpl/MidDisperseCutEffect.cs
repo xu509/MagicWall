@@ -260,10 +260,12 @@ public class MidDisperseCutEffect : CutEffect
 
                     Product product = DaoService.Instance.GetProduct();
 
+                    Texture t = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "product\\" + product.Image);
+
                     //宽固定
-                    _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
+                    _itemHeight = _itemWidth / t.width * t.height;
                     ori_y = ori_y + _itemHeight / 2 + gap;
-                    //print("ori_x:"+ori_x+ "ori_y:" + ori_y);
+
                     // 获取出生位置
                     int middleX = _column / 2;
                     float delay = System.Math.Abs(middleX - j) * 0.05f;
@@ -271,7 +273,7 @@ public class MidDisperseCutEffect : CutEffect
                     {
                         _timeBetweenStartAndDisplay = delay;
                     }
-                    // ori_x;ori_y
+
                     float gen_x, gen_y;
 
                     gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);

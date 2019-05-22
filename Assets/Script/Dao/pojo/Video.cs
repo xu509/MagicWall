@@ -17,15 +17,26 @@ public class Video : Generator<Video>
     private string _address;
     public string Address { set { _address = value; } get { return _address; } }
 
+    private string _cover;
+    public string Cover { set { _cover = value; } get { return _cover; } }
+
     public Video Generator()
     {
+        string[] descriptions = { "视频1", "视频2" };
+        string[] addresses = { "1.mp4", "2.mp4" };
+        string[] covers = { "1.png", "2.png" };
+
         Video video = new Video();
-        video.Description = "视频1";
+        video._description = descriptions[0];
+        video._address = addresses[0];
+        video._cover = covers[0];
 
+        Video video2 = new Video();
+        video2._description = descriptions[1];
+        video2._address = addresses[1];
+        video2._cover = covers[1];
 
-
-
-
-        return video;
+        Video[] videos = { video, video2 };
+        return videos[Random.Range(0,2)];
     }
 }
