@@ -22,6 +22,7 @@ public class CrossCardAgent : CardAgent
     bool _hasVideo; //  视频
 
     List<CrossCardCellData> _cellDatas;
+    VideoAgent _videoAgent;
 
     #endregion
 
@@ -210,7 +211,6 @@ public class CrossCardAgent : CardAgent
     public void SwitchScaleMode(Texture texture) {
         scaleController.SetImage(texture);
         scaleController.OpenScaleBox();
-
     }
 
     //
@@ -244,21 +244,52 @@ public class CrossCardAgent : CardAgent
         crossCardScrollViewController.SelectCell(down_index);
     }
 
-    public void DoVideo(string address)
+    public void DoVideo(string address,string description)
     {
-        Debug.Log("Do Video In Cross Card Agent." + address);
-
         //显示 video 的框框
-
-        videoContainer.gameObject.SetActive(true);
-        VideoAgent videoAgent = Instantiate(videoAgentPrefab, videoContainer);
-        videoAgent.SetAddress(address);
-        videoAgent.Init();
+        OpenVideoContainer(address,description);
 
         // 隐藏平时的框框
-        normalContainer.gameObject.SetActive(false);
+        HideNormalContainer();
 
     }
+
+    public void DoCloseVideoContainer() {
+        OpenNormalContainer();
+
+        CloseVideoContainer();
+    }
+
+
+    //
+    //  关闭视频
+    //
+    private void CloseVideoContainer() {
+        videoContainer.gameObject.SetActive(false);
+        _videoAgent?.DoDestory();
+        Destroy(_videoAgent?.gameObject);
+
+    }
+
+    // 显示普通的窗口
+    private void OpenNormalContainer()
+    {
+        normalContainer.gameObject.SetActive(true);
+    }
+
+    // 隐藏普通的窗口
+    private void HideNormalContainer() {
+        normalContainer.gameObject.SetActive(false);
+    }
+
+    // 显示 Video 的窗口
+    private void OpenVideoContainer(string address,string description) {
+        videoContainer.gameObject.SetActive(true);
+        _videoAgent = Instantiate(videoAgentPrefab, videoContainer);
+        _videoAgent.SetData(address,description, this);
+        _videoAgent.Init();
+    }
+
 
 }
 

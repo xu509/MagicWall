@@ -12,13 +12,19 @@ public class VideoAgent : MonoBehaviour
     [SerializeField] Text _time;
     [SerializeField] RectTransform _progress;
 
+    [SerializeField] Text _text_description;
     [SerializeField] RectTransform _btn_play;
     [SerializeField] RectTransform _btn_pause;
+    [SerializeField] RectTransform _btn_music_enable;
+    [SerializeField] RectTransform _btn_muisc_disable;
 
 
-    private CrossCardAgent crossCardAgent;
+    private CrossCardAgent _crossCardAgent;
     private string _address;
+    private string _description;
     private bool _isPlaying = false;
+    private bool _isMusicing = true;
+
 
     private Vector2 _progress_init = new Vector2(-487, 0);
     private Vector2 _progress_finish = new Vector2(-15, 0);
@@ -27,17 +33,47 @@ public class VideoAgent : MonoBehaviour
         _address = address;
     }
 
+    public void SetDescription(string description)
+    {
+        _description = description;
+    }
+
+    public void SetCrossCardAgent(CrossCardAgent crossCardAgent)
+    {
+        _crossCardAgent = crossCardAgent;
+    }
+
+    public void SetData(string address,string description,CrossCardAgent crossCardAgent) {
+        SetAddress(address);
+        SetCrossCardAgent(crossCardAgent);
+        SetDescription(description);
+    }
+
+
+
     public void Init() {
         _videoPlayer.source = VideoSource.Url;
-        _videoPlayer.url = "file://E:/workspace/MagicWall/Assets/Files/env/video/2.mp4";
+        _videoPlayer.url = MagicWallManager.URL_ASSET + "env\\video\\" + _address;
 
         // 设置进度条
         _progress.anchoredPosition = _progress_init;
+
+        //  设置播放错误回调
+        _videoPlayer.errorReceived += ErrorReceivedCallBack;
+
+        //  设置播放完成回调
+        _videoPlayer.loopPointReached += LoopPointReachedCallBack;
+
+        //  设置描述
+        _text_description.text = _description;
+
+        //  播放视频
         StartCoroutine(PlayVideo());
     }
 
     void Update() {
-        //Debug.Log("Video time : " + _videoPlayer.time);
+
+        // 播放控制按钮监控
         if (!_isPlaying)
         {
             if (!_btn_play.gameObject.activeSelf)
@@ -57,6 +93,24 @@ public class VideoAgent : MonoBehaviour
             UpdateTime();
             Progress(CalculateRate());
         }
+
+        // 音乐控制按钮监控
+        if (_isMusicing)
+        {
+            if (!_btn_muisc_disable.gameObject.activeSelf)
+            {
+                _btn_muisc_disable.gameObject.SetActive(true);
+            }
+            _btn_music_enable.gameObject.SetActive(false);
+        }
+        else {
+            if (!_btn_music_enable.gameObject.activeSelf)
+            {
+                _btn_music_enable.gameObject.SetActive(true);
+            }
+            _btn_muisc_disable.gameObject.SetActive(false);
+        }
+
     }
 
 
@@ -65,16 +119,15 @@ public class VideoAgent : MonoBehaviour
         Debug.Log("Play Video !");
 
         _videoPlayer.Prepare();
+        DoDisableMusic();
+
 
         WaitForSeconds waitForSeconds = new WaitForSeconds(1);
         while (!_videoPlayer.isPrepared)
         {
-            Debug.Log("Wait prepared");
             yield return waitForSeconds;
             break;
         }
-
-        Debug.Log("videoPlayer.isPrepared !");
 
         if (_videoPlayer.isPrepared)
         {
@@ -92,16 +145,11 @@ public class VideoAgent : MonoBehaviour
 
             // 得出总时长 - 秒
             SetTotalTime();
-            //Debug.Log("Video timeReference : " + _videoPlayer.frameCoun);
-            //Debug.Log("Video timeSource : " + _videoPlayer.timeSource);
-
-            //_screen.texture.width
 
         }
 
-        _videoPlayer.Play();
-        _isPlaying = true;
-        //audioSource.Play();
+        DoPlay();
+    
     }
 
     private void UpdateTime()
@@ -154,10 +202,21 @@ public class VideoAgent : MonoBehaviour
 
     private float CalculateRate() {
         // 获取百分百
+        if (_videoPlayer.frameRate == 0) {
+            return 0;
+        }
+
         float total = _videoPlayer.frameCount / _videoPlayer.frameRate; // 此时是秒
         float now = (float)_videoPlayer.time;
+        float r;
 
-        float r = now / total;
+        if (total == 0)
+        {
+            r = 0;
+        }
+        else {
+            r = now / total;
+        }
 
         return r;
     }
@@ -178,10 +237,39 @@ public class VideoAgent : MonoBehaviour
         _isPlaying = false;
     }
 
+    public void DoEnableMusic() {
+        //_videoPlayer.SetDirectAudioVolume();
+        _videoPlayer.SetDirectAudioMute(0, false);
+        _isMusicing = true;
+    }
+
+    public void DoDisableMusic()
+    {
+        _videoPlayer.SetDirectAudioMute(0, true);
+        _isMusicing = false;
+    }
+
     public void DoClose()
     {
+        _crossCardAgent.DoCloseVideoContainer();
+    }
 
-  
+
+
+    public void DoDestory()
+    {
+        // 销毁
+
+    }
+
+
+    private void ErrorReceivedCallBack(VideoPlayer source, string message) {
+
+    }
+
+    private void LoopPointReachedCallBack(VideoPlayer source) {
+        _isPlaying = false;
+        _progress.DOAnchorPos(_progress_init, Time.deltaTime);
     }
 
 }

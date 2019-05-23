@@ -148,7 +148,6 @@ public class StartScene : IScene
             for (int i = 0; i < env.EnvCards.Count; i++) {
                 TextureResource.Instance.GetTexture(env.EnvCards[i]);
             }
-
         }
 
         List<Activity> activities = _daoService.GetActivities();
@@ -165,6 +164,17 @@ public class StartScene : IScene
             string img = product.Image;
             string address = MagicWallManager.URL_ASSET + "product\\" + img;
             product.TextureImage = TextureResource.Instance.GetTexture(address);
+        }
+
+        // 加载VIDEO
+        List<Video> videos = _daoService.GetVideos();
+        foreach (Video video in videos)
+        {
+            string cover = video.Cover;
+            string address = MagicWallManager.URL_ASSET + "env\\video\\" + cover;
+            TextureResource.Instance.GetTexture(address);
+
+            // TODO 处理视频的加载
         }
 
         _resourseIsChecked = true;

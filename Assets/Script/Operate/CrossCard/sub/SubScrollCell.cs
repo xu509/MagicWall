@@ -31,13 +31,10 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     //  Component Paramater 
     //
 
-    [SerializeField] TestScript videoPrefab;
     [SerializeField] RectTransform videoContainer;
+    [SerializeField] RawImage _cover;
+    [SerializeField] RawImage _video_cover;
 
-    [SerializeField] VideoPlayer videoPlayer;
-    [SerializeField] RawImage videoContent;
-
-    [SerializeField] RawImage _image;
 
     bool _hasLikeNumber = false;
 
@@ -52,10 +49,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     // Start is called before the first frame update
     void Start()
     {
-
-
         //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
-
     }
 
     public override void UpdateContent(CrossCardCellData cellData)
@@ -66,41 +60,32 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
         gameObject.name = "CrossSubScroll" + cellData.Index;
             
-        // TODO 更新横向的选项卡
-        //IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.Id, cellData.Category);
-        //crossCardScrollViewCellItem.UpdateData(datas);
-
         if (cellData.Category == CrossCardCategoryEnum.VIDEO)
         {
-            Debug.Log("NOW:" + gameObject.activeSelf);
-
             videoContainer.gameObject.SetActive(true);
-            _image.gameObject.SetActive(false);
-
-            //videoPlayer.errorReceived += VideoErrorDid;
-            //videoPlayer.prepareCompleted += VideoPreparedDid;
-
-            //videoPlayer.source = VideoSource.Url;
-            //videoPlayer.url = "file://E:/workspace/MagicWall/Assets/Files/env/video/1.mp4";
-
-            //// 播放视频
-            //StartCoroutine(PlayVideo());
+            _cover.gameObject.SetActive(false);
+            _video_cover.texture = cellData.ImageTexture;
+            CanvasExtensions.SizeToParent(_video_cover);
 
         }
         else {
             //  设置 Image
-            _image.gameObject.SetActive(true);
+            _cover.gameObject.SetActive(true);
+            _cover.texture = cellData.ImageTexture;
+            CanvasExtensions.SizeToParent(_cover);
+
+            // 关闭视频框
             videoContainer.gameObject.SetActive(false);
-            _image.texture = cellData.ImageTexture;
+
+            //RectTransform r = _image.GetComponent<RectTransform>();
+            //r.sizeDelta = new Vector2(cellData.ImageTexture.width, cellData.ImageTexture.height);
         }
 
     }
 
     public void DoPlayVideo() {
-
-        string url = "E:/workspace/MagicWall/Assets/Files/env/video/1.mp4";
-        Context.OnPlayVideo?.Invoke(url);
-
+        //string url = _cellData.VideoUrl;
+        Context.OnPlayVideo?.Invoke(_cellData);
     }
 
 
@@ -124,7 +109,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public void DoScale() {
         // 获取图片
-        Context.OnScaleClicked?.Invoke(_image.texture);
+        Context.OnScaleClicked?.Invoke(_cover.texture);
 
     }
 
@@ -245,38 +230,5 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         return _cellData;
     }
 
-    IEnumerator PlayVideo()
-    {
-        Debug.Log("Play Video !");
 
-        videoPlayer.Prepare();
-
-        WaitForSeconds waitForSeconds = new WaitForSeconds(1);
-        while (!videoPlayer.isPrepared)
-        {
-            Debug.Log("Wait prepared");
-            yield return waitForSeconds;
-            break;
-        }
-
-        Debug.Log("videoPlayer.isPrepared !");
-
-        if (videoPlayer.isPrepared) {
-            videoContent.texture = videoPlayer.texture;
-        }
-
-        //videoPlayer.Play();
-        //audioSource.Play();
-    }
-
-    private void VideoErrorDid(VideoPlayer source, string message) {
-        Debug.Log("Video Error Did");
-        Debug.Log("Video Error Did : " + message);
-    }
-
-    void VideoPreparedDid(VideoPlayer source)
-    {
-        Debug.Log("Video Prepared Did : ");
-
-    }
 }

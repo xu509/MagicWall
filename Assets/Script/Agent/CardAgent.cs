@@ -337,38 +337,41 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        //松手后碰撞
-        CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-        foreach (CircleCollider2D circle in circles)
-        {
-            circle.radius = radius;
-        }
+        if (_doMoving) {
+            //松手后碰撞
+            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
+            foreach (CircleCollider2D circle in circles)
+            {
+                circle.radius = radius;
+            }
 
-        DoUpdate();
-        DoMove();
+            DoMove();
+
+            DoUpdate();
+
+        }
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
-        //拖拽时不碰撞
-        transform.SetAsLastSibling();
-        CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-        foreach (CircleCollider2D circle in circles)
-        {
-            circle.radius = 0;
-        }
-
         if (_doMoving)
         {
-
             //Debug.Log("eventData.position : " + eventData.position);
 
             DoUpdate();
-            if (_doMoving)
+
+            GetComponent<RectTransform>().anchoredPosition = eventData.position;
+
+            //拖拽时不碰撞
+            transform.SetAsLastSibling();
+            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
+            foreach (CircleCollider2D circle in circles)
             {
-                GetComponent<RectTransform>().anchoredPosition = eventData.position;
+                circle.radius = 0;
             }
+
         }
     }
 

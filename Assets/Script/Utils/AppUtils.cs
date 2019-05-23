@@ -25,8 +25,7 @@ public class AppUtils : MonoBehaviour
         {
             fileData = File.ReadAllBytes(filePath);
             tex = new Texture2D(100, 100);
-            tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
-
+            bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         else {
             Debug.Log("File is not found : " + filePath);

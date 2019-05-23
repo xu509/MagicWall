@@ -11,7 +11,7 @@ public class CardItemVideoFactory : CardItemFactory
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 2; i++)
         {
             Video e = DaoService.Instance.GetVideoDetail();
             CrossCardCellData cd = new CrossCardCellData();
@@ -20,6 +20,11 @@ public class CardItemVideoFactory : CardItemFactory
             cd.Id = e.V_id;
             cd.Category = CrossCardCategoryEnum.VIDEO;
             cd.crossCardAgent = cardAgent as CrossCardAgent;
+            cd.VideoUrl = e.Address;
+
+
+            // 设置video的封面
+            cd.ImageTexture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "env\\video\\" + e.Cover);
 
             _cellDatas.Add(cd);
         }

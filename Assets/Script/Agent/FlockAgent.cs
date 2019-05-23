@@ -49,17 +49,14 @@ public class FlockAgent : MonoBehaviour
     public float Duration { set { duration = value; } get { return duration; } }
 
     // 宽度
-    [SerializeField]
     private float _width;
     public float Width { set { _width = value; } get { return _width; } }
 
     // 高度
-    [SerializeField]
     private float _height;
     public float Height { set { _height = value; } get { return _height; } }
 
     // 原位
-    [SerializeField]
     private Vector2 oriVector2;
     public Vector2 OriVector2 { set { oriVector2 = value; } get { return oriVector2; } }
 
@@ -68,7 +65,6 @@ public class FlockAgent : MonoBehaviour
     public Vector2 GenVector2 { set { genVector2 = value; } get { return genVector2; } }
 
     // 下个移动的位置
-    [SerializeField]
     private Vector2 nextVector2;
     public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
 
@@ -95,20 +91,6 @@ public class FlockAgent : MonoBehaviour
     //  工厂 & 管理器
     ItemsFactory _itemsFactory;
 
-
-
-    public Text signTextComponent;
-    public Text nameTextComponent;
-    public Text signTextComponent2;
-
-    [SerializeField]
-    Vector2 showTargetVector2;
-    [SerializeField]
-    Vector2 showRefVector2;
-    [SerializeField]
-    Vector2 showRefVector2WithOffset;
-    [SerializeField]
-    float showMoveOffset;
 
     #endregion
 
@@ -139,7 +121,6 @@ public class FlockAgent : MonoBehaviour
         _data_type = dataType;
 
         // 定义 agent 的名字
-        nameTextComponent.text = row + " - " + column;
 
         _sceneIndex = MagicWallManager.Instance.SceneIndex;
 
@@ -150,10 +131,11 @@ public class FlockAgent : MonoBehaviour
         }
         else if (dataType == 1)
         {
-            _itemsFactory = EnvFactory.Instance;
+
+            _itemsFactory = ProductFactory.Instance;
         }
         else {
-            _itemsFactory = EnvFactory.Instance;
+            _itemsFactory = ActivityFactory.Instance;
         }
 
 
@@ -188,8 +170,7 @@ public class FlockAgent : MonoBehaviour
 			refVector2 = oriVector2;
 		}
         Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffsetX, manager.PanelOffsetY); //获取带偏移量的参考位置
-        showRefVector2 = refVector2;
-        showRefVector2WithOffset = refVector2WithOffset;
+
 
         // 如果是被选中的，则不要移动
         if (IsChoosing){
@@ -220,7 +201,6 @@ public class FlockAgent : MonoBehaviour
         float w,h;
         if (targetAgent != null)
         {
-            showTargetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
             Vector3 scaleVector3 = targetAgent.GetComponent<RectTransform>().localScale;
             w = targetAgent.Width * scaleVector3.x;
             h = targetAgent.Height * scaleVector3.y;
@@ -236,7 +216,7 @@ public class FlockAgent : MonoBehaviour
         float effectDistance = (w / 2) + (w / 2) * MagicWallManager.Instance.InfluenceFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
-        signTextComponent.text = "OFFSET : " + offset.ToString();
+        //signTextComponent.text = "OFFSET : " + offset.ToString();
         //signTextComponent2.text = "ed : " + effectDistance.ToString();
 
         // 进入影响范围
@@ -250,13 +230,10 @@ public class FlockAgent : MonoBehaviour
             //  上下移动
             //
             float move_offset = offset * ((h / 2) / effectDistance);
-            showMoveOffset = move_offset;
             move_offset += h/10 * manager.InfluenceMoveFactor;
 
             float move_offset_x = offset * ((w / 2) / effectDistance);
             move_offset_x += w / 10 * manager.InfluenceMoveFactor;
-
-            signTextComponent2.text = "mo: " + move_offset.ToString() + " / " + move_offset_x.ToString();
 
             float to_y,to_x;
             if (refVector2.y > targetVector2.y)

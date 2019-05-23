@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CrossCardScrollViewContext 
+public class SliceCardCellContext
 {
     public int SelectedIndex = -1;
     public Action<int> OnCellClicked;
     public Action<Texture> OnScaleClicked; //点击放大
     public Action<string> OnDescriptionChanged;
-    public Action<CrossCardCellData> OnPlayVideo;
+    public Action<SliceCardCellData> OnPlayVideo;
 
 
 
