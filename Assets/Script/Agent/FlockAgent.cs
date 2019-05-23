@@ -20,7 +20,6 @@ public class FlockAgent : MonoBehaviour
 
     #endregion
 
-
     #region Component Parameter
 
     private int _sceneIndex;    //  场景的索引
@@ -49,11 +48,11 @@ public class FlockAgent : MonoBehaviour
     public float Duration { set { duration = value; } get { return duration; } }
 
     // 宽度
-    private float _width;
+    [SerializeField] private float _width;
     public float Width { set { _width = value; } get { return _width; } }
 
     // 高度
-    private float _height;
+    [SerializeField] private float _height;
     public float Height { set { _height = value; } get { return _height; } }
 
     // 原位
@@ -189,6 +188,8 @@ public class FlockAgent : MonoBehaviour
 
 		foreach (FlockAgent item in transforms)
 		{
+            //TODO  在关闭的时候出现问题
+
             Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
 
             float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
@@ -320,6 +321,7 @@ public class FlockAgent : MonoBehaviour
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this,false);
 
+
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
                 // 使原组件消失
@@ -334,6 +336,8 @@ public class FlockAgent : MonoBehaviour
 
                 Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
                 DoScaleAgency(_cardAgent,scaleVector3, 0.5f);
+
+
             });
 
             List<CardAgent> cards = AgentManager.Instance.cardAgents;
@@ -412,6 +416,16 @@ public class FlockAgent : MonoBehaviour
 
         // 进行销毁
         if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
+            AgentManager.Instance.RemoveItemFromEffectItems(agent as CardAgent);
+
+            CardAgent ca = agent as CardAgent;
+
+            Destroy(ca.gameObject);
+            Destroy(ca.OriginAgent.gameObject);
+
+        }
+        else if (typeof(SliceCardAgent).IsAssignableFrom(agent.GetType()))
+        {
             AgentManager.Instance.RemoveItemFromEffectItems(agent as CardAgent);
 
             CardAgent ca = agent as CardAgent;

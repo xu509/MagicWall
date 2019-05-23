@@ -12,7 +12,7 @@ public class CardItemActivityFactory : CardItemFactory
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
         for (int i = 0; i < 5; i++) {
-            Activity e = DaoService.Instance.GetActivityDetail();
+            Activity e = DaoService.Instance.GetActivityDetail(id);
             CrossCardCellData cd = new CrossCardCellData();
 
             string address = MagicWallManager.URL_ASSET + "activity\\" + e.Image;

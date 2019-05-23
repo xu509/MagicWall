@@ -22,8 +22,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     [SerializeField] Animator _animator;
     [SerializeField] float _position;
-    [SerializeField] RectTransform scale_tool; // 缩小icon
 
+    [SerializeField] RectTransform scale_tool; // 缩小icon
     [SerializeField] Button btn_like;
     [SerializeField] Button btn_like_withnumber;
 
@@ -54,6 +54,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
+
         _cellData = cellData;
         _index = cellData.Index;
         _title = cellData.Title;
