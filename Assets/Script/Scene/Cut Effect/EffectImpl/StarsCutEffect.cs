@@ -34,6 +34,7 @@ public class StarsCutEffect : CutEffect
 
         //  设置销毁
         DestoryBehavior = new FadeOutDestoryBehavior();
+        DestoryBehavior.Init(DestoryDurTime);
 
         //  设置运行时间点
         HasDisplaying = false;
@@ -190,16 +191,16 @@ public class StarsCutEffect : CutEffect
     public void DOAnchorPosCompleteCallback(FlockAgent agent)
     {
         RectTransform rect = agent.GetComponent<RectTransform>();
-        //RawImage image = agent.GetComponentInChildren<RawImage>();
+        RawImage image = agent.GetComponent<RawImage>();
         if (!agent.IsChoosing)
         {
             //rect.DOScale(1.5f, 0.2f);
-            //image.DOFade(0, 0.2F).OnComplete(() => DOFadeCompleteCallback(agent));
-            foreach(RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
-            {
-                rawImage.DOFade(0, 1).OnComplete(() => DOFadeCompleteCallback(agent));
+            image.DOFade(0, 0.5F).OnComplete(() => DOFadeCompleteCallback(agent));
+            //foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
+            //{
+            //    rawImage.DOFade(0, 1).OnComplete(() => DOFadeCompleteCallback(agent));
              
-            }
+            //}
 
         }
     }
@@ -208,16 +209,16 @@ public class StarsCutEffect : CutEffect
     {
         agent.gameObject.SetActive(false);
         RectTransform rect = agent.GetComponent<RectTransform>();
-        //Image image = agent.GetComponentInChildren<Image>();
+        RawImage image = agent.GetComponent<RawImage>();
         //rect.DOScale(1f, Time.deltaTime);
-        //image.DOFade(1, Time.deltaTime);
+        image.DOFade(1, 0);
         rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 1000);
 
-        foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
-        {
-            rawImage.DOFade(1, 0);
+        //foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
+        //{
+        //    rawImage.DOFade(1, 0);
 
-        }
+        //}
     }
 
     protected override void CreateProduct()

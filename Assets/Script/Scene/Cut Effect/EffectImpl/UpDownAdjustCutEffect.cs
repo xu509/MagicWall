@@ -36,6 +36,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
+        DestoryBehavior.Init(DestoryDurTime);
 
         //  初始化 manager
         _manager = MagicWallManager.Instance;
@@ -87,7 +88,7 @@ public class UpDownAdjustCutEffect : CutEffect
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.daoService.GetEnterprise(), _manager.mainPanel);
 
                 // agent 一定时间内从透明至无透明
-                go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
+                //go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
 
                 // 装载进 pagesAgents
                 int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
@@ -176,7 +177,8 @@ public class UpDownAdjustCutEffect : CutEffect
 
             float t = (Time.time - StartTime) / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-
+            float a = Mathf.Lerp(0f, 1f, t);
+            agent.GetComponent<RawImage>().color = new Color(1, 1, 1, a);
             agent.NextVector2 = to;
             agent.updatePosition();
         }

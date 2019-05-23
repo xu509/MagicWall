@@ -37,6 +37,7 @@ public class MidDisperseCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
+        DestoryBehavior.Init(DestoryDurTime);
 
         //  初始化 manager
         _manager = MagicWallManager.Instance;
@@ -89,11 +90,6 @@ public class MidDisperseCutEffect : CutEffect
                 go.Delay = delay;
                 go.Duration = StartingDurTime + delay;
 
-                //foreach (RawImage rawImage in go.GetComponentsInChildren<RawImage>())
-                //{
-                //    rawImage.DOFade(0, go.Duration).From();
-                //}
-                //go.GetComponent<RawImage>().DOFade(0, StartingDurTime + delay).From();
                 //go.GetComponent<RectTransform>().DOScale(new Vector3(0, 0, 0), StartingDurTime + delay);
 
                 // 获取启动动画的延迟时间
@@ -193,15 +189,11 @@ public class MidDisperseCutEffect : CutEffect
                 continue;
                 //Debug.Log(agent.name);
             }
-            if (agent.Duration>0)
-            {
-                agent.GetComponent<RawImage>().DOFade(0, agent.Duration).From();
-                agent.Duration = 0;
-            }
 
             float t = time / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-
+            float a = Mathf.Lerp(0f, 1f, t);
+            agent.GetComponent<RawImage>().color = new Color(1, 1, 1, a);
             agent.NextVector2 = to;
             agent.updatePosition();
         }
