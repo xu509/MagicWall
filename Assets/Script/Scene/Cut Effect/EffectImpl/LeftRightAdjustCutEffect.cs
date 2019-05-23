@@ -36,6 +36,7 @@ public class LeftRightAdjustCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
+        DestoryBehavior.Init(DestoryDurTime);
 
         //  初始化 manager
         _manager = MagicWallManager.Instance;
