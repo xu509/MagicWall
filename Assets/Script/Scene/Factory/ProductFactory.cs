@@ -130,6 +130,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         rectTransform.anchoredPosition3D = genPos;
 
         Debug.Log("Gen Pos :" + genPos);
+        Debug.Log("Gen Pos 333:" + rectTransform.anchoredPosition3D);
 
         //  定义大小
         Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
