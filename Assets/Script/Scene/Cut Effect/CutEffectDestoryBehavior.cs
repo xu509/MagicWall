@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 interface CutEffectDestoryBehavior
 {
+    void Init(float destoryDurTime);
+
 	void Run();
 }
 

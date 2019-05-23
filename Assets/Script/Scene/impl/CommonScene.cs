@@ -64,6 +64,9 @@ public class CommonScene : IScene
 
         if (!isDoDestoryCompleting)
         {
+            MagicWallManager.Instance.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
+            MagicWallManager.Instance.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
+
             isDoDestoryCompleting = true;
             // 清理面板
             return MagicWallManager.Instance.Clear();
