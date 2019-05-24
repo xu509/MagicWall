@@ -15,7 +15,6 @@ public class SliceCardAgent : CardAgent
     [SerializeField, Header("卡片 - 标题")] Text _title;
     [SerializeField, Header("卡片 - 描述")] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
-    [SerializeField] ScaleController scaleController;
 
 
     void Awake() {
@@ -91,8 +90,8 @@ public class SliceCardAgent : CardAgent
 
     public void SwitchScaleMode(Texture texture)
     {
-        scaleController.SetImage(texture);
-        scaleController.OpenScaleBox();
+        //scaleController.SetImage(texture);
+        //scaleController.OpenScaleBox();
     }
 
 

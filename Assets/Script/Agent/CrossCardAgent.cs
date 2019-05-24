@@ -37,8 +37,6 @@ public class CrossCardAgent : CardAgent
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
 
-    [SerializeField] ScaleController scaleController;
-
     #endregion
 
 
@@ -205,12 +203,6 @@ public class CrossCardAgent : CardAgent
 
     public void UpdateDescription(string description) {
         _description.text = description;
-    }
-
-
-    public void SwitchScaleMode(Texture texture) {
-        scaleController.SetImage(texture);
-        scaleController.OpenScaleBox();
     }
 
     //
