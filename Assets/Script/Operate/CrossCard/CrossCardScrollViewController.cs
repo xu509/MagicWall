@@ -75,7 +75,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     public void DoScale(Texture texture)
     {
-        _cardAgent.SwitchScaleMode(texture);
+        _cardAgent.InitScaleAgent(texture);
     }
 
 

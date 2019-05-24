@@ -74,7 +74,9 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     public void DoScale(Texture texture)
     {
-        _cardAgent.SwitchScaleMode(texture);
+
+        _cardAgent.InitScaleAgent(texture);       
+
     }
 
 

@@ -13,6 +13,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _activeSecondStageDuringTime = 2f;   //  第二段缩小的时间
     private bool _showDetail = false;   // 显示企业卡片
     private bool _doMoving = false;   // 移动
+    private ScaleAgent _scaleAgent;     // 缩放代理
 
     protected int id;
     public int Id { set { id = value; } get { return id; } }
@@ -24,6 +25,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool hasInitBusinessCard = false; // 是否已生成business card
     protected BusinessCardAgent businessCardAgent;
 
+    [SerializeField] RectTransform _main_container;    //  主框体
+    [SerializeField] RectTransform _scale_container;    //  缩放容器
+    [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
     [SerializeField] RectTransform _move_mask; // 移动蒙板
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
     [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
@@ -265,6 +269,25 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
+    // 生成缩放卡片
+    public void InitScaleAgent(Texture texture) {
+        _scaleAgent = Instantiate(_scale_prefab,
+                                      _scale_container
+                                        ) as ScaleAgent;
+        _scaleAgent.SetImage(texture);
+        _scaleAgent.SetOnCloseClicked(OnScaleClose);
+        _scaleAgent.SetOnReturnClicked(OnScaleReturn);
+
+        // 显示缩放框体，隐藏普通框体
+        if (_main_container.gameObject.activeSelf) {
+            _main_container.gameObject.SetActive(false);
+        }
+
+        if (!_scaleAgent.gameObject.activeSelf) {
+            _scaleAgent.gameObject.SetActive(true);
+        }
+
+    }
 
 
     // 生成企业卡片
@@ -375,6 +398,27 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
+    // 当点击缩放收回
+    private void OnScaleReturn() {
+        // 显示主框体，隐藏缩放框体
+        if (!_main_container.gameObject.activeSelf)
+        {
+            _main_container.gameObject.SetActive(true);
+        }
+
+        if (_scaleAgent.gameObject.activeSelf)
+        {
+            _scaleAgent.gameObject.SetActive(false);
+        }
+    }
+
+    // 当点击缩放关闭
+    private void OnScaleClose()
+    {
+        //关闭卡片
+        DoDestoriedForFirstStep();
+
+    }
 }
 
 
