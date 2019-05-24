@@ -242,6 +242,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
             //  初始化背景库
             BackgroundManager.Instance.Reset();
 
+            //  初始化 SOCKET 接收器
+            UdpServer.Instance.Reset();
+
             Init();
 
             cg.DOFade(1, 1);
