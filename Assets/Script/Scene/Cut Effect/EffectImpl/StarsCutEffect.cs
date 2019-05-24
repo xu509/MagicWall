@@ -74,7 +74,7 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
-                Enterprise env = manager.daoService.GetEnterprise();
+                Enterprise env = manager.DaoService.GetEnterprise();
                 Vector2 vector2 = AppUtils.ResetTexture(new Vector2(env.TextureLogo.width, env.TextureLogo.height));
 
                 int middleX = (column - 1) / 2;
