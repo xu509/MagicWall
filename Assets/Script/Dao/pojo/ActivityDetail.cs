@@ -7,6 +7,10 @@ using UnityEngine;
 //
 public class ActivityDetail : Generator<ActivityDetail>
 {
+    private int _id;
+    public int Id { set { _id = value; } get { return _id; } }
+
+
     // 企业 ID
     private int ent_id;
     public int Ent_id { set { ent_id = value; } get { return ent_id; } }
@@ -28,7 +32,9 @@ public class ActivityDetail : Generator<ActivityDetail>
     {
         ActivityDetail activityDetail = new ActivityDetail();
 
-        activityDetail.ent_id = 1;
+        activityDetail.Id = Random.Range(0, 10);
+
+        activityDetail.ent_id = Random.Range(0, 2);
 
         string[] images = { "1-1.png","1-2.png","1-3.png","1-4.png",
                          "2-1.png","2-2.png","2-3.png","2-4.png"};

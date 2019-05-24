@@ -90,8 +90,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //Enterprise env = _daoService.GetEnterprise();
 
         // 初始化显示图片
-        //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        //newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = product.TextureImage;
         newAgent.GetComponent<RawImage>().texture = product.TextureImage ;
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
@@ -99,7 +97,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(ori_position, postion, row + 1, column + 1,
-            width, height, product.Ent_id, product.Image, false, 1);
+            width, height, product.Pro_id, product.Image, false, 1);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -129,13 +127,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //  定出生位置
         rectTransform.anchoredPosition3D = genPos;
 
-        Debug.Log("Gen Pos :" + genPos);
-        Debug.Log("Gen Pos 333:" + rectTransform.anchoredPosition3D);
-
-        //  定义大小
-        Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        rectTransform.sizeDelta = sizeDelta;
-
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
         rectTransform.localScale = scaleVector3;
@@ -150,8 +141,11 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //  配置scene
         sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
+        //  初始化数据
+        sliceCardAgent.InitData(flockAgent.DataId,0);
+
         // 添加到effect agent
-        _agentManager.Agents.Add(sliceCardAgent);
+        AgentManager.Instance.AddEffectItem(sliceCardAgent);
 
         return sliceCardAgent;
     }

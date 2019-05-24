@@ -4,58 +4,70 @@ using UnityEngine;
 
 public class SliceCardCellData
 {
-    CrossCardAgent _crossCardAgent;
+    SliceCardAgent _sliceCardAgent;
 
-    int _envid; // envid
+    int _index;
+
+    int _type; // 类型，0：产品；1活动；
+
     int _id; // id
-    int _index;     //  索引
     int _likes; //喜欢数
-    string _title;  //  标题
+    string _image;  //  图片地址
     string _description; // 描述
     bool _isImage; // 是图片
-    string _videoUrl; // Video Url
-    CrossCardCategoryEnum _category;    //  类别
-    Texture _imageTexture;
-    List<CrossCardCellData> _datas;//二级内容
 
-    public CrossCardAgent crossCardAgent { set { _crossCardAgent = value; } get { return _crossCardAgent; } }
+    public SliceCardAgent sliceCardAgent { set { _sliceCardAgent = value; } get { return _sliceCardAgent; } }
 
     public int Id { set { _id = value; } get { return _id; } }
+
+    public int Type { set { _type = value; } get { return _type; } }
+
+
+    public int Index { set { _index = value; } get { return _index; } }
+
 
     public int Likes { set { _likes = value; } get { return _likes; } }
 
     public bool IsImage { set { _isImage = value; } get { return _isImage; } }
 
-    public int EnvId { set { _envid = value; } get { return _envid; } }
-
-    public string Title { set { _title = value; } get { return _title; } }
-
-    public string VideoUrl { set { _videoUrl = value; } get { return _videoUrl; } }
-
-
     public string Description { set { _description = value; } get { return _description; } }
 
+    public string Image { set { _image = value; } get { return _image; } }
 
-    public int Index { set { _index = value; } get { return _index; } }
+    public bool IsProduct (){
+        return _type == 0;
+    }
 
-    public CrossCardCategoryEnum Category { set { _category = value; } get { return _category; } }
+    public bool IsActivity()
+    {
+        return _type == 1;
+    }
 
-    public Texture ImageTexture { set { _imageTexture = value; } get { return _imageTexture; } }
 
-    public List<CrossCardCellData> Datas { set { _datas = value; } get { return _datas; } }
+    public void LoadProductDetail(ProductDetail productDetail) {
+        _id = productDetail.Id;
+        _isImage = true;
+        _description = productDetail.Description;
+        _likes = DaoService.Instance.GetLikesByProductDetail(_id);
+        _image = productDetail.Image;
+        _type = 0;
+    }
+
+    public void LoadActivityDetail(ActivityDetail activityDetail)
+    {
+        _id = activityDetail.Id;
+        _isImage = true;
+        _description = activityDetail.Description;
+        _likes = DaoService.Instance.GetLikesByActivityDetail(_id);
+        _image = activityDetail.Image;
+        _type = 1;
+    }
+
 
     public override string ToString() {
         string str = "";
 
-        str += "Id : " + _id;
-        str += "Env Id : " + _envid;
-        str += "Index : " + _index;
-        str += "title : " + _title;
-        str += "category : " + _category;
-        str += "Image Texture is Null : " + _imageTexture == null;
-
-
-
+               
         return str;
     }
 

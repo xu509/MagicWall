@@ -7,6 +7,11 @@ using UnityEngine;
 //
 public class ProductDetail : Generator<ProductDetail>
 {
+
+    private int id;
+    public int Id { set { id = value; } get { return id; } }
+
+
     // 产品 ID
     private int pro_id;
     public int Pro_id { set { pro_id = value; } get { return pro_id; } }
@@ -34,8 +39,8 @@ public class ProductDetail : Generator<ProductDetail>
             "2015年3月9日，苹果春季发布会在美国旧金山芳草地艺术中心召开。发布会上苹果重点发布了全新的Macbook 12英寸新机型，采用全新设计，分为灰、银、金三色，12英寸Retina显分辨率为2304 x 1440，处理器为英特尔酷睿M低功耗处理器。",
             "2018年6月22日，苹果官网宣布推出了适用于MacBook的键盘服务计划，将免费为符合条件的MacBook键盘提供服务。" };
 
-        productDetail.description = descriptions[Random.Range(0,descriptions.Length - 1)];
-        productDetail.image = productImgs[Random.Range(0, productImgs.Length - 1)];
+        productDetail.description = descriptions[Random.Range(0,descriptions.Length)];
+        productDetail.image = productImgs[Random.Range(0, productImgs.Length)];
         productDetail.pro_id = 1;
 
         //productDetail.texture_image = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "product\\detail\\" + productDetail.image);
