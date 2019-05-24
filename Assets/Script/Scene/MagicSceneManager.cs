@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 //
 //  场景管理器
@@ -9,11 +10,14 @@ using UnityEngine;
 //  2. 背景问题
 //  3. 过场动画问题
 //
-public class SceneManager : Singleton<SceneManager>
+public class MagicSceneManager : Singleton<MagicSceneManager>
 {
     //
     //  paramater
     //
+    bool _hasInit = false;
+
+
     List<IScene> _scenes; // 场景列表
     int _index; // 当前的索引
     private MagicWallManager _manager; // 主管理器
@@ -25,6 +29,11 @@ public class SceneManager : Singleton<SceneManager>
     {
         _manager = MagicWallManager.Instance;
 
+        Init();
+    }
+
+    private void Init() {
+
         //  初始化场景列表
         _scenes = new List<IScene>();
 
@@ -33,11 +42,12 @@ public class SceneManager : Singleton<SceneManager>
 
         //  加载场景
         // - 加载开始场景
-        _scenes.Add(new StartScene());  
-        
+        _scenes.Add(new StartScene());
+
         // - 加载普通场景
         List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
-        for (int i = 0; i < sceneConfigs.Count; i++) {
+        for (int i = 0; i < sceneConfigs.Count; i++)
+        {
             CommonScene commonScene = new CommonScene();
             commonScene.DoConfig(sceneConfigs[i]);
             _scenes.Add(commonScene);
@@ -45,18 +55,26 @@ public class SceneManager : Singleton<SceneManager>
 
         // 初始化管理器标志
         _manager.CurrentScene = _scenes[0];
+
+        _hasInit = true;
     }
+
+
 
     //
     //  Constructor
     //
-    protected SceneManager() { }
+    protected MagicSceneManager() { }
 
 
     //
     // 开始场景调整
     //
     public void Run() {
+
+        if (!_hasInit) {
+            return;
+        }
 
         // 背景始终运行
         BackgroundManager.Instance.run();
@@ -78,6 +96,19 @@ public class SceneManager : Singleton<SceneManager>
         }
    
     }
+
+    /// <summary>
+    ///  重启场景
+    /// </summary>
+    public void Reset() {
+        _hasInit = false;
+
+        Init();
+    }
+
+
+
+
 
 
 }

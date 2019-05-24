@@ -134,7 +134,7 @@ public class MidDisperseCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Activity activity = _manager.daoService.GetActivity();
+                    Activity activity = _manager.DaoService.GetActivity();
 
                     //宽固定
                     _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;

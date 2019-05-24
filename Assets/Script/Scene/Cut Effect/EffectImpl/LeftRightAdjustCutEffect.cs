@@ -134,7 +134,7 @@ public class LeftRightAdjustCutEffect : CutEffect
                     float ori_x = x;
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                    Activity activity = _manager.daoService.GetActivity();
+                    Activity activity = _manager.DaoService.GetActivity();
                     //高固定
                     itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
 

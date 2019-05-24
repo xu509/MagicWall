@@ -85,7 +85,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.daoService.GetEnterprise(), _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.DaoService.GetEnterprise(), _manager.mainPanel);
 
                 // agent 一定时间内从透明至无透明
                 //go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
@@ -123,7 +123,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Activity activity = _manager.daoService.GetActivity();
+                    Activity activity = _manager.DaoService.GetActivity();
                     //宽固定
                     _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                     ori_y = ori_y - _itemHeight / 2 - gap;

@@ -13,16 +13,26 @@ public class BackgroundManager : Singleton<BackgroundManager>
     private Transform _bubblesBackground;
     private float last_create_time = 0f;
 
+    private List<GameObject> bubbles;
+    private bool hasInit = false;
+
     //
     // Awake instead of Constructor
     //
     private void Awake()
     {
         _bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
-        last_create_time = 0.0f;
-
         _manager = MagicWallManager.Instance;
+        Init();
     }
+
+    private void Init() {
+        last_create_time = 0.0f;
+        bubbles = new List<GameObject>();
+        hasInit = true;
+    }
+
+
 
     //
     //  Constructor
@@ -31,6 +41,9 @@ public class BackgroundManager : Singleton<BackgroundManager>
 
 
     public void run() {
+        if (!hasInit)
+            return;
+
         if ((Time.time - last_create_time) > _manager.backgroundUubbleInterval) {
             CreateBubble();
             last_create_time = Time.time;
@@ -62,16 +75,25 @@ public class BackgroundManager : Singleton<BackgroundManager>
         rectTransform.anchoredPosition3D = new Vector3(x, -2500, z);
         rectTransform.DOLocalMoveY(2000, _manager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
 
+        bubbles.Add(bubble);
+
     }
 
     //气泡上升结束后销毁
     void BubbleMoveComplete(GameObject game)
     {
         Destroy(game);
+        bubbles.Remove(game);
     }
 
 
-
+    public void Reset() {
+        hasInit = false;
+        for (int i = 0; i < bubbles.Count; i++) {
+            Destroy(bubbles[i]);
+        }
+        Init();
+    }
 
 
 }
