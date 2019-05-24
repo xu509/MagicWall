@@ -111,6 +111,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
     #region 生成滑动卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
     {
+
         //  创建 Agent
         SliceCardAgent sliceCardAgent = Instantiate(
                                     _manager.sliceCardgent,
@@ -118,17 +119,13 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
                                     ) as SliceCardAgent;
 
         //  命名
-        sliceCardAgent.name = "Choose(" + flockAgent.name + ")";
+        sliceCardAgent.name = "Activity (" + flockAgent.name + ")";
 
         //  获取rect引用
         RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
 
         //  定出生位置
         rectTransform.anchoredPosition3D = genPos;
-
-        //  定义大小
-        Vector2 sizeDelta = new Vector2(flockAgent.Width, flockAgent.Height);
-        rectTransform.sizeDelta = sizeDelta;
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
@@ -144,8 +141,11 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         //  配置scene
         sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
+        //  初始化数据
+        sliceCardAgent.InitData(flockAgent.DataId, 1);
+
         // 添加到effect agent
-        _agentManager.Agents.Add(sliceCardAgent);
+        AgentManager.Instance.AddEffectItem(sliceCardAgent);
 
         return sliceCardAgent;
     }
@@ -216,7 +216,11 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
 
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
     {
-        throw new System.NotImplementedException();
+        CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
+        // 设置显示状态
+        cardAgent.gameObject.SetActive(isActive);
+
+        return cardAgent;
     }
 
 }

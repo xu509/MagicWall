@@ -12,7 +12,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
     int _currentIndex;
     public int CurrentIndex { set { _currentIndex = value; } get { return _currentIndex; } }
 
-    [SerializeField] Scroller scroller = default;
+    [SerializeField] SliceScroller scroller = default;
     [SerializeField] GameObject cellPrefab = default;
 
     Action<int> onSelectionChanged;
@@ -112,6 +112,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
                 Pool[i].ClearComponentStatus();
             }
         }
+
     }
 
 
@@ -123,6 +124,9 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     public void UpdateDescription(string description) {
         //_cardAgent.UpdateDescription(description);
+
+        Debug.Log("Update Description : " + description);
+
     }
 
 

@@ -46,8 +46,9 @@ public class Product : BaseData,Generator<Product>
     {
         Product product = new Product();
 
-        product.pro_id = 1;
-        product.ent_id = 1;
+        product.pro_id = Random.Range(0, 10);
+
+        product.ent_id = Random.Range(0,2);
 
         string[] names = {"IPHONE","MAC","椅子","桌子","包包" };
         product.name = names[Random.Range(0,names.Length - 1)];
@@ -73,16 +74,6 @@ public class Product : BaseData,Generator<Product>
 
         string[] descriptions = { "IPHONE", "MAC", "椅子", "桌子", "包包" };
         product.description = descriptions[Random.Range(0, descriptions.Length)];
-
-        // detail
-        ProductDetail productDetail = new ProductDetail();
-        List<ProductDetail> productDetailses = new List<ProductDetail>();
-        productDetailses.Add(productDetail.Generator());
-        productDetailses.Add(productDetail.Generator());
-        productDetailses.Add(productDetail.Generator());
-        productDetailses.Add(productDetail.Generator());
-        product.productDetails = productDetailses;
-
 
         return product;
     }

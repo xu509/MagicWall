@@ -21,11 +21,16 @@ public abstract class SliceCardBaseCell<SliceCardCellData, SliceCardCellContext>
     /// <value>The context.</value>
     protected SliceCardCellContext Context { get; private set; }
 
+    public SliceCardCellData CellData { get; private set; }
+
     /// <summary>
     /// Setup the context.
     /// </summary>
     /// <param name="context">Context.</param>
     public virtual void SetupContext(SliceCardCellContext context) => Context = context;
+
+    public virtual void SetupData(SliceCardCellData data) => CellData = data;
+
 
     /// <summary>
     /// Sets the visible.
