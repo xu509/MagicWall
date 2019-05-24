@@ -36,7 +36,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         _manager.updateOffsetOfCanvas();
 
         // 调整所有agent
-        _manager.UpdateAgents();
+        AgentManager.Instance.UpdateAgents();
 
         UpdateAgents();
     }
@@ -71,7 +71,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Activity activity = _manager.daoService.GetActivity();
+                        Activity activity = _manager.DaoService.GetActivity();
                         //宽固定
                         _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                         ori_y = ori_y + _itemHeight / 2 + gap;
@@ -106,7 +106,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Product product = _manager.daoService.GetProduct();
+                        Product product = _manager.DaoService.GetProduct();
                         //宽固定
                         _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
                         ori_y = ori_y + _itemHeight / 2 + gap;

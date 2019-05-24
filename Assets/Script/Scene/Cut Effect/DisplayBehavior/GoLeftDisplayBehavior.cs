@@ -36,7 +36,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         _manager.updateOffsetOfCanvas();
 
         // 调整所有agent
-        _manager.UpdateAgents();
+        AgentManager.Instance.UpdateAgents();
 
         UpdateAgents();
 
@@ -111,7 +111,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                        Activity activity = _manager.daoService.GetActivity();
+                        Activity activity = _manager.DaoService.GetActivity();
                         //高固定
                         itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
                         ori_x = ori_x + itemWidth / 2 + gap;
@@ -146,7 +146,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                        Product product = _manager.daoService.GetProduct();
+                        Product product = _manager.DaoService.GetProduct();
                         //高固定
                         itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
                         ori_x = ori_x + itemWidth / 2 + gap;

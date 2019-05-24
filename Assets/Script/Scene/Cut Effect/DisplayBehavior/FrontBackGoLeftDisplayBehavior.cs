@@ -37,7 +37,7 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         _manager.updateOffsetOfCanvas();
 
         // 调整所有agent
-        _manager.UpdateAgents();
+        AgentManager.Instance.UpdateAgents();
 
         UpdateAgents();
 

@@ -86,7 +86,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     private RectTransform _operationPanel;
 
-
+    [SerializeField] private RectTransform _IndexPanel;
+    public RectTransform IndexPanel { get { return _IndexPanel; } }
 
 
 
@@ -114,13 +115,35 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #endregion
 
-    public DaoService daoService;
+    DaoService daoService;
+    public DaoService DaoService { get { return daoService; } }
+
+    UdpServer udpServer;
+
+    private bool _hasInit = false;
+
+    private void Init() {
+        mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+        PanelOffsetX = 0f;   // 清理两个panel偏移量
+        PanelOffsetY = 0f;   // 清理两个panel偏移量
+
+
+        while (mainPanel.anchoredPosition != Vector2.zero)
+        {
+            StartCoroutine(AfterFixedUpdate());
+        }
+
+
+        _hasInit = true;
+    }
+
+
 
     // Awake - init manager of Singleton
     private void Awake()
     {
         // 初始化场景管理器
-        SceneManager sceneManager = SceneManager.Instance;
+        MagicSceneManager sceneManager = MagicSceneManager.Instance;
 
         // 初始化背景管理器
         BackgroundManager backgroundManager = BackgroundManager.Instance;
@@ -128,16 +151,12 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 初始化实体管理器
         AgentManager agentManager = AgentManager.Instance;
 
-        // 初始化效果工厂
-        CutEffectFactory cutEffectFactory = CutEffectFactory.Instance;
-
         //  装载内容
         TheDataSource theDataSource = TheDataSource.Instance;
 
-        //  初始化操作监听
-        OperateManager _operateManager = OperateManager.Instance;
-
         daoService = DaoService.Instance;
+
+        udpServer = UdpServer.Instance;
     }
 
 
@@ -147,21 +166,22 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 初始化 UI 索引
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
 
-  //      // Raycaster - event
-  //      m_Raycaster = GetComponent<GraphicRaycaster>();
-		//m_EventSystem = GetComponent<EventSystem> ();
+        Init();
+
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
+        if (!_hasInit)
+            return;
+
         // 开启场景效果
-        SceneManager.Instance.Run();
+        MagicSceneManager.Instance.Run();
 
         //  启动监听
-        //OperateManager.Instance.DoListening();
+        udpServer.Listening();
 
-       
     }
 
     #region 清理面板
@@ -175,16 +195,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
             StartCoroutine(AfterFixedUpdate());
         }
         return true;
-    }
-    #endregion
-
-    #region 拖拽动作
-    public void DoDragItem(FlockAgent agent) {
-        if (agent.IsChoosing) {
-            agent.GetComponent<RectTransform>().DOAnchorPos((Vector2)Input.mousePosition, Time.deltaTime);
-            UpdateAgents();
-
-        }
     }
     #endregion
 
@@ -210,16 +220,32 @@ public class MagicWallManager : Singleton<MagicWallManager>
 	}
     #endregion
 
-    #region 更新 Agents 
-    public void UpdateAgents() {
-        AgentManager.Instance.UpdateAgents();
-    }
-    #endregion
-
 
     IEnumerator AfterFixedUpdate()
     {
         yield return new WaitForFixedUpdate();
+    }
+
+
+    public void Reset() {
+        _hasInit = false;
+
+        // 当前场景退出动画（淡出）
+        CanvasGroup cg = IndexPanel.GetComponent<CanvasGroup>();
+        cg.DOFade(0, 1).OnComplete(() => {
+            //  初始化组件库
+            AgentManager.Instance.Reset();
+
+            //  初始化场景库
+            MagicSceneManager.Instance.Reset();
+
+            //  初始化背景库
+            BackgroundManager.Instance.Reset();
+
+            Init();
+
+            cg.DOFade(1, 1);
+        });
     }
 
 }

@@ -125,6 +125,28 @@ public class AgentManager : Singleton<AgentManager>
     }
 
 
+    // 初始化
+    public void Reset() {
+        //  清理 Agents
+        for (int i = 0; i < Agents.Count; i++) {
+            FlockAgent agent = Agents[i];
+            Destroy(agent.gameObject);
+        }
+        _agents = new List<FlockAgent>();
+
+        //  清理 Effect Agents
+        for (int i = 0; i < EffectAgent.Count; i++) {
+            FlockAgent agent = EffectAgent[i];
+            Destroy(agent.gameObject);
+        }
+        effectAgent = new List<FlockAgent>();
+
+        // 清理 Card Agent
+        cardAgents = new List<CardAgent>();
+
+    }
+
+
    
     #endregion
 
