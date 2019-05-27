@@ -281,7 +281,7 @@ MonoBehaviour:
   _height: 0
   _main_container: {fileID: 5680126866508557221}
   _scale_container: {fileID: 8673307307323485550}
-  _scale_prefab: {fileID: 3173658494951443018, guid: b8c3ca9fcb08737488e1bb246165abfd,
+  _scale_prefab: {fileID: 6213000439451327046, guid: b8c3ca9fcb08737488e1bb246165abfd,
     type: 3}
   _move_mask: {fileID: 2013788470229985067}
   _move_reminder_container: {fileID: 3454208424787836441}
@@ -746,7 +746,7 @@ MonoBehaviour:
   directionOfRecognize: 1
   movementType: 1
   elasticity: 0.1
-  scrollSensitivity: 5
+  scrollSensitivity: 4
   inertia: 1
   decelerationRate: 0.03
   snap:

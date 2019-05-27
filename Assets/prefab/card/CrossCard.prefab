@@ -749,7 +749,7 @@ MonoBehaviour:
   _height: 0
   _main_container: {fileID: 1447688283106226908}
   _scale_container: {fileID: 7815403916149075529}
-  _scale_prefab: {fileID: 3173658494951443018, guid: b8c3ca9fcb08737488e1bb246165abfd,
+  _scale_prefab: {fileID: 6213000439451327046, guid: b8c3ca9fcb08737488e1bb246165abfd,
     type: 3}
   _move_mask: {fileID: 1512656875974767015}
   _move_reminder_container: {fileID: 1522878203291084882}
