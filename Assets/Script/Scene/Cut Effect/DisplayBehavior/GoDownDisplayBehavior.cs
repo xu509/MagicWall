@@ -145,7 +145,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
         int page = _displayBehaviorConfig.Page;
 
-        if (h + _manager.PanelOffsetY - (offsetUnit * page) > 0)
+        if (h + _manager.PanelOffsetY - (offsetUnit * page) + 100 > 0)
         {
             float i = h + _manager.PanelOffsetY - (offsetUnit * page);
 
