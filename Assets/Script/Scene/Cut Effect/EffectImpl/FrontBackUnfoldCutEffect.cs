@@ -138,7 +138,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     protected override void CreateActivity()
     {
         int _row = 6;
-        int _column = 30;
+        int _column = 35;
         float itemWidth = 250;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
@@ -266,7 +266,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     protected override void CreateProduct()
     {
         int _row = 6;
-        int _column = 30;
+        int _column = 35;
         float itemWidth = 250;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
