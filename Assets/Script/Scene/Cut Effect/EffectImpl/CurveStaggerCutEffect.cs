@@ -159,7 +159,8 @@ public class CurveStaggerCutEffect : CutEffect
             float time = Time.time - StartTime;  // 当前已运行的时间;
 
             if (time > run_time) {
-                agent.updatePosition();
+
+                //agent.updatePosition();
                 continue;
             }
 

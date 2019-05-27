@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+using EasingUtil;
+using System;
+
+
+
+
 
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
@@ -145,14 +151,25 @@ public class FlockAgent : MonoBehaviour
     #region 更新位置
     public void updatePosition()
     {
-        if (CanEffected)
+        // 如果是被选中，并打开的
+        if (IsChoosing) {
+            return;
+        }
+
+        if (!CanEffected)
         {
-            UpdatePositionEffect();
+            return;
         }
         else {
+            // 当需要判断位置时
 
+            if (NeedAdjustPostion()) {
+                UpdatePositionEffect();
+            }
+            
         }
 
+        
     }
 
 
@@ -170,12 +187,6 @@ public class FlockAgent : MonoBehaviour
 		}
         Vector2 refVector2WithOffset = refVector2 - new Vector2(manager.PanelOffsetX, manager.PanelOffsetY); //获取带偏移量的参考位置
 
-
-        // 如果是被选中的，则不要移动
-        if (IsChoosing){
-			return;
-		}
-
         // 此时的坐标位置可能已处于偏移状态
 		RectTransform m_transform = GetComponent<RectTransform>();
 
@@ -188,8 +199,6 @@ public class FlockAgent : MonoBehaviour
 
 		foreach (FlockAgent item in transforms)
 		{
-            //TODO  在关闭的时候出现问题
-
             Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
 
             float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
@@ -217,8 +226,6 @@ public class FlockAgent : MonoBehaviour
         float effectDistance = (w / 2) + (w / 2) * MagicWallManager.Instance.InfluenceFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
-        //signTextComponent.text = "OFFSET : " + offset.ToString();
-        //signTextComponent2.text = "ed : " + effectDistance.ToString();
 
         // 进入影响范围
         if (offset >= 0)
@@ -237,11 +244,11 @@ public class FlockAgent : MonoBehaviour
             move_offset_x += w / 10 * manager.InfluenceMoveFactor;
 
             float to_y,to_x;
-            if (refVector2.y > targetVector2.y)
+            if (refVector2WithOffset.y > targetVector2.y)
             {
                 to_y = refVector2.y + move_offset;
             }
-            else if (refVector2.y < targetVector2.y)
+            else if (refVector2WithOffset.y < targetVector2.y)
             {
                 to_y = refVector2.y - move_offset;
             }
@@ -265,37 +272,36 @@ public class FlockAgent : MonoBehaviour
 
             Vector2 to = new Vector2(to_x, to_y); //目标位置
 
-            //float k = offset / effectDistance;
-            float overshootOrAmplitude = 3f;
-            float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
 
-            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), 0.5f);
-            m_transform.DOScale(Mathf.Lerp(1f, 0.3f, k), Time.deltaTime);
+            // offset：影响距离  /  effectDistance： 最大影响距离
+
+            //float overshootOrAmplitude = 3f;
+            //float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
+
+            // 获取缓动方法
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(manager.EaseEnum);
+
+            float k = defaultEasingFunction(offset / effectDistance);
+
+
+            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+            m_transform.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
             
-            //
-            // 尝试向外扩散
-            //
-            //Vector2 toV = refVector2WithOffset + (refVector2WithOffset - targetVector2).normalized * offset * manager.InfluenceMoveFactor;
-            //float k = offset / effectDistance;
-            //Vector2 to = Vector2.Lerp(refVector2WithOffset, toV, k);
-            //m_transform.DOAnchorPos(to, Time.deltaTime);
 
 			IsChanging = true;
 		}
 		else
 			// 未进入影响范围
 		{
-//			if (IsChanging)
-//			{
-				Vector2 toy = new Vector2(refVector2.x, refVector2.y);
-				m_transform.DOAnchorPos(toy, Time.deltaTime);
-				m_transform.DOScale(1, Time.deltaTime);
-				//m_transform.gameObject.GetComponentInChildren<Image> ().color = Color.green;
 
-				IsChanging = false;
-//				return toy;
-//			}
-		}
+            Vector2 toy = new Vector2(refVector2.x, refVector2.y);
+			m_transform.DOAnchorPos(toy, Time.deltaTime);
+
+            if (m_transform.localScale != Vector3.one) {
+                m_transform.DOScale(1, Time.deltaTime);
+            }
+
+        }
 	}
     #endregion
 
@@ -353,7 +359,6 @@ public class FlockAgent : MonoBehaviour
 
         }
     }
-
 
     #endregion
 
@@ -469,6 +474,23 @@ public class FlockAgent : MonoBehaviour
         
         return null;
     }
+
+
+    //  判断是否需要调整位置
+    private bool NeedAdjustPostion() {
+        // 当前位置与目标位置一致
+        bool NoEffectAgent = AgentManager.Instance.EffectAgent.Count == 0;
+        bool InOriginPosition = GetComponent<RectTransform>().anchoredPosition == NextVector2;
+
+        // 如果没有影响的agent，并且位置没有改变，则不需要调整位置
+        if (NoEffectAgent && InOriginPosition)
+            return false;
+
+
+        return true;
+    }
+
+
 
 }
 

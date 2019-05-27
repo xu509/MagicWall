@@ -40,9 +40,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     bool _hasLikeNumber = false;
 
 
-
-
-
     static class AnimatorHash
     {
         public static readonly int Scroll = Animator.StringToHash("scroll");

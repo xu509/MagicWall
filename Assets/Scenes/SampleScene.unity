@@ -527,6 +527,7 @@ MonoBehaviour:
   backgroundUubbleInterval: 0.4
   InfluenceFactor: 0.6
   InfluenceMoveFactor: 0
+  easeEnum: 14
   _bg_logo: {fileID: 2060558020}
   panelOffsetX: 0
   panelOffsetY: 0
