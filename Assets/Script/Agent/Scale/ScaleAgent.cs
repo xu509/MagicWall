@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     Texture _imageTexture;
 
@@ -16,7 +16,6 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public float maxScale = 2.0f;//最大倍数
     public int plusCount = 5;//放大次数
 
-    //public ClusteredTransformGesture scaleGesture;//缩放
 
     float MAX_WIDTH = 660;
     float MAX_HEIGHT = 950;
@@ -41,13 +40,12 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
     private void OnEnable()
     {
-        //scaleGesture.Transformed += ScaleGestureHandle;
-    
+
     }
 
     private void OnDisable()
     {
-        //scaleGesture.Transformed -= ScaleGestureHandle;
+
     }
 
     // Update is called once per frame
@@ -120,6 +118,7 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private void ResetImage()
     {
         imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
+        
     }
 
     private void SizeToScale()
@@ -155,10 +154,12 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         //parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
         //parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
 
-        imgRtf.sizeDelta = originalSize;
-        parent.sizeDelta = originalSize;
-        parent.parent.GetComponent<RectTransform>().sizeDelta = originalSize;
+        //imgRtf.sizeDelta = originalSize;
+        //parent.sizeDelta = originalSize;
+        //parent.parent.GetComponent<RectTransform>().sizeDelta = originalSize;
 
+        imgRtf.sizeDelta = originalSize;
+        GetComponent<RectTransform>().sizeDelta = originalSize;
 
 
     }
@@ -176,7 +177,7 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         x += second.x - first.x;
         y += second.y - first.y;
         Vector2 currentSize = imgRtf.sizeDelta;
-        if (Mathf.Abs(x) <= (currentSize.x - originalSize.x)/2 && Mathf.Abs(y) <= (currentSize.y - originalSize.y)/2)
+        if (Mathf.Abs(x) <= (currentSize.x - originalSize.x) / 2 && Mathf.Abs(y) <= (currentSize.y - originalSize.y) / 2)
         {
             imgRtf.anchoredPosition = new Vector2(x, y);
         }
@@ -185,16 +186,6 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public void OnEndDrag(PointerEventData eventData)
     {
 
-    }
-
-    private void MoveGestureHandle(object sender, System.EventArgs e)
-    {
-        print(111);
-    }
-
-    private void ScaleGestureHandle(object sender, System.EventArgs e)
-    {
-        print(222);
     }
 
 }
