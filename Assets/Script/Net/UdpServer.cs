@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -9,18 +10,31 @@ using System.Threading;
 
 public class UdpServer : Singleton<UdpServer>
 {
+    private float lastReceiveTime = 0f;
+    private bool _hasInit = false;
 
 
     //以下默认都是私有的成员
     Socket socket; //目标socket
-    EndPoint serverEnd; //服务端
-    IPEndPoint ipEnd; //服务端端口
+    EndPoint clientEnd; //客户端
+    IPEndPoint ipEnd; //侦听端口
     string recvStr; //接收的字符串
     string sendStr; //发送的字符串
     byte[] recvData = new byte[1024]; //接收的数据，必须为字节
     byte[] sendData = new byte[1024]; //发送的数据，必须为字节
     int recvLen; //接收的数据长度
+
+
+    //委托队列
+    private Queue<Action> asyncQueue = new Queue<Action>();
+    private Queue<Action> mainQueue = new Queue<Action>();
+
+
     Thread connectThread; //连接线程
+
+    //主线程每次Update执行Function数量
+    private static int doUpdate = 5;
+
 
 
     public void Listening() {
@@ -33,27 +47,37 @@ public class UdpServer : Singleton<UdpServer>
 
         }
 
+        if (_hasInit) {
+            //SocketReceive();
+            //if (CanReceive())
+            //{
+            //    SocketReceive();
+            //}
+            DoFunction();
+        }
+
+
     }
 
 
     //初始化
     void InitSocket()
     {
-        //定义连接的服务器ip和端口，可以是本机ip，局域网，互联网
-        ipEnd = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8001);
+        //定义侦听端口,侦听任何IP
+        ipEnd = new IPEndPoint(IPAddress.Any, 9999);
         //定义套接字类型,在主线程中定义
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        //定义服务端
+        //服务端需要绑定ip
+        socket.Bind(ipEnd);
+        //定义客户端
         IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-        serverEnd = (EndPoint)sender;
-        print("waiting for sending UDP dgram");
+        clientEnd = (EndPoint)sender;
+        print("waiting for UDP dgram");
 
-        //建立初始连接，这句非常重要，第一次连接初始化了serverEnd后面才能收到消息
-        SocketSend("hello");
-
-        //开启一个线程连接，必须的，否则主线程卡死
+        ////开启一个线程连接，必须的，否则主线程卡死
         connectThread = new Thread(new ThreadStart(SocketReceive));
         connectThread.Start();
+        _hasInit = true;
     }
 
 
@@ -69,21 +93,32 @@ public class UdpServer : Singleton<UdpServer>
 
 
 
-    //服务器接收
+    //服务器接收, 每一秒接受一次
     void SocketReceive()
     {
-        //进入接收循环
         while (true)
         {
             //对data清零
             recvData = new byte[1024];
-            //获取客户端，获取服务端端数据，用引用给服务端赋值，实际上服务端已经定义好并不需要赋值
-            recvLen = socket.ReceiveFrom(recvData, ref serverEnd);
-            print("message from: " + serverEnd.ToString()); //打印服务端信息
-            //输出接收到的数据
+            //获取客户端，获取客户端数据，用引用给客户端赋值
+            recvLen = socket.ReceiveFrom(recvData, ref clientEnd);
+            //print("message from: " + clientEnd.ToString()); //打印客户端信息
+                                                            //输出接收到的数据
             recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
             print(recvStr);
+
+            // TODO 当受到制定信息，则进行处理
+            if (true)
+            {
+                AfterRun();
+            }
         }
+        
+
+            ////将接收到的数据经过处理再发送出去
+            //sendStr = "From Server: " + recvStr;
+            //SocketSend(sendStr);
+        
     }
 
 
@@ -104,18 +139,76 @@ public class UdpServer : Singleton<UdpServer>
     // Use this for initialization
     void Awake()
     {
-        //InitSocket(); //在这里初始化
+        InitSocket(); //在这里初始化
 
     }
 
 
     void OnApplicationQuit()
     {
-        //SocketQuit();
+        SocketQuit();
+    }
+
+    // 重置
+    public void Reset() {
+        _hasInit = false;
+
+        // 停止socket 
+        SocketQuit();
+
+        // 参数归零
+        lastReceiveTime = 0f;
+
+        // 重置
+        InitSocket();
+
+    }
+
+
+    // 判断是否可接受
+    private bool CanReceive() {
+        if (Time.time - lastReceiveTime > 1f)
+        {
+            lastReceiveTime = Time.time;
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+    }
+
+    private void AfterRun() {
+        MagicWallManager.Instance.SetReset();
     }
 
 
 
-
+    //执行Action(根据线程判断对应的方法)
+    private void DoFunction()
+    {
+        if (Thread.CurrentThread == connectThread)
+        {
+            if (asyncQueue.Count > 0)
+            {
+                var func = asyncQueue.Dequeue();
+                func();
+            }
+        }
+        else
+        {
+            if (mainQueue.Count > 0)
+            {
+                int number = doUpdate;
+                do
+                {
+                    var func = mainQueue.Dequeue();
+                    func();
+                    number--;
+                } while (number > 0 && mainQueue.Count > 0);
+            }
+        }
+    }
 
 }

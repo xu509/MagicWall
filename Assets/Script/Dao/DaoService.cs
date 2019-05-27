@@ -390,11 +390,23 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
+        CutEffect[] effects = new CutEffect[] { new CurveStaggerCutEffect(), new MidDisperseCutEffect(),
+            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        for (int i = 0; i < effects.Length; i++) {
+            for (int j = 0; j < contentTypes.Length; j++) {
+                SceneConfig sceneConfig = new SceneConfig();
+                sceneConfig.CutEffect = effects[i];
+                sceneConfig.SceneContentType = contentTypes[j];
+                sceneConfigs.Add(sceneConfig);
+            }
+        }
+            
 
-        SceneConfig sceneConfig = new SceneConfig();
-        sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        sceneConfig.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig);
+        //SceneConfig sceneConfig = new SceneConfig();
+        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
+        //sceneConfig.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig);
 
         //SceneConfig sceneConfig2 = new SceneConfig();
         //sceneConfig2.CutEffect = new MidDisperseCutEffect();
@@ -406,10 +418,10 @@ public class DaoService : Singleton<DaoService>
         //sceneConfig3.SceneContentType = SceneContentType.activity;
         //sceneConfigs.Add(sceneConfig3);
 
-        SceneConfig sceneConfig4 = new SceneConfig();
-        sceneConfig4.CutEffect = new MidDisperseCutEffect();
-        sceneConfig4.SceneContentType = SceneContentType.env;
-        sceneConfigs.Add(sceneConfig4);
+        //SceneConfig sceneConfig4 = new SceneConfig();
+        //sceneConfig4.CutEffect = new MidDisperseCutEffect();
+        //sceneConfig4.SceneContentType = SceneContentType.env;
+        //sceneConfigs.Add(sceneConfig4);
 
         //SceneConfig sceneConfig5 = new SceneConfig();
         //sceneConfig5.CutEffect = new UpDownAdjustCutEffect();

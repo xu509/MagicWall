@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 2977937769575400024}
   - component: {fileID: 4947921809057605964}
   - component: {fileID: 4231419099656867917}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Title-name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +669,7 @@ GameObject:
   - component: {fileID: 8137593796822784393}
   - component: {fileID: 8460821126293772283}
   - component: {fileID: 8364726150741439219}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: CrossCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -720,7 +720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.78254396, b: 0.4292453, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -770,7 +770,6 @@ MonoBehaviour:
   videoContainer: {fileID: 1865509593052167301}
   crossCardScrollViewController: {fileID: 6388220598021548340}
   crossCardScrollBar: {fileID: 7748574175968625818}
-  scaleController: {fileID: 0}
 --- !u!58 &8460821126293772283
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1498,7 +1497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1447688283106226908}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1724,7 +1723,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7815403916149075529}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1761,7 +1760,7 @@ GameObject:
   - component: {fileID: 8265581864151668292}
   - component: {fileID: 5408455257021224258}
   - component: {fileID: 4127766433959943317}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: btn-question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1914,7 +1913,7 @@ GameObject:
   - component: {fileID: 2265326324568248832}
   - component: {fileID: 2663093351357507333}
   - component: {fileID: 6701302989766066254}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: btn-up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2167,7 +2166,7 @@ GameObject:
   - component: {fileID: 5346417431485219085}
   - component: {fileID: 630405116362867774}
   - component: {fileID: 6222100005381931898}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: btn-down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2430,7 +2429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 268840061284494326}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}

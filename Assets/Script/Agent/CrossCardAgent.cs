@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+using System;
+
 
 public class CrossCardAgent : CardAgent
 {
@@ -164,8 +166,9 @@ public class CrossCardAgent : CardAgent
     }
 
     void OnSelectionChanged(int index) {
-        GameObject obj = GameObject.Find("CrossCardScrollCell" + index);
-        obj.GetComponent<RectTransform>().SetAsLastSibling();
+
+        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell =  crossCardScrollViewController.GetCell(index);
+        cell.GetComponent<RectTransform>().SetAsLastSibling();
 
         crossCardScrollBar.SelectCell(index);
 
@@ -199,6 +202,10 @@ public class CrossCardAgent : CardAgent
     void Update() {
         UpdateAgency();
     }
+
+    void OnEnable() {
+
+}
 
 
     public void UpdateDescription(string description) {

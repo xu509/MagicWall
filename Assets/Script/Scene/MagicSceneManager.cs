@@ -72,7 +72,7 @@ public class MagicSceneManager : Singleton<MagicSceneManager>
     //
     public void Run() {
 
-        if (!_hasInit) {
+        if (!_hasInit && _scenes != null) {
             return;
         }
 
