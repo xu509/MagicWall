@@ -154,7 +154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405724340742870137}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -657,7 +657,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3173658494951443018}
+      - m_Target: {fileID: 6213000439451327046}
         m_MethodName: DoReturn
         m_Mode: 1
         m_Arguments:
@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3173658494951443018}
+      - m_Target: {fileID: 6213000439451327046}
         m_MethodName: DoClose
         m_Mode: 1
         m_Arguments:
@@ -1398,6 +1398,7 @@ GameObject:
   - component: {fileID: 7981750386855026970}
   - component: {fileID: 4336016757014899282}
   - component: {fileID: 3173658494951443018}
+  - component: {fileID: 6213000439451327046}
   m_Layer: 11
   m_Name: ScaleAgent
   m_TagString: Untagged
@@ -1462,3 +1463,19 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &6213000439451327046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6111024956058068906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24a1e103f588a149ac5315a718926aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 3479717665998681612}
+  tool_box: {fileID: 7809574130423099844}
+  maxScale: 2
+  plusCount: 5
