@@ -408,7 +408,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         if (_scaleAgent.gameObject.activeSelf)
         {
-            _scaleAgent.gameObject.SetActive(false);
+            // 可考虑直接销毁
+            Destroy(_scaleAgent.gameObject);
+
+            //_scaleAgent.gameObject.SetActive(false);
         }
     }
 

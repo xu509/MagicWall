@@ -4,8 +4,6 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TouchScript.Gestures.TransformGestures;
-using TouchScript.Gestures.TransformGestures.Clustered;
 
 
 public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -18,7 +16,6 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public float maxScale = 2.0f;//最大倍数
     public int plusCount = 5;//放大次数
 
-    public TransformGesture moveGesture;//拖动
     //public ClusteredTransformGesture scaleGesture;//缩放
 
     float MAX_WIDTH = 660;
@@ -44,14 +41,12 @@ public class ScaleAgent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
     private void OnEnable()
     {
-        moveGesture.Transformed += MoveGestureHandle;
         //scaleGesture.Transformed += ScaleGestureHandle;
     
     }
 
     private void OnDisable()
     {
-        moveGesture.Transformed -= MoveGestureHandle;
         //scaleGesture.Transformed -= ScaleGestureHandle;
     }
 

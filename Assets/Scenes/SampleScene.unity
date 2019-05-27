@@ -406,8 +406,6 @@ GameObject:
   - component: {fileID: 438711667}
   - component: {fileID: 438711666}
   - component: {fileID: 438711671}
-  - component: {fileID: 438711670}
-  - component: {fileID: 438711672}
   - component: {fileID: 438711673}
   m_Layer: 5
   m_Name: MagicWall
@@ -501,21 +499,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &438711670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438711665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 5
 --- !u!114 &438711671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,27 +532,10 @@ MonoBehaviour:
   panelOffsetY: 0
   MoveFactor_Panel: 100
   row: 6
+  graphicRaycaster: {fileID: 438711666}
+  m_EventSystem: {fileID: 637457714}
   _sceneIndex: 0
   _IndexPanel: {fileID: 438711669}
---- !u!114 &438711672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438711665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0

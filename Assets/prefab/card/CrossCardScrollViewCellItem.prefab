@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 8449135340725259369}
   - component: {fileID: 5381503359767070884}
   - component: {fileID: 7718209043145837749}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: btn-scale-bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 5463534574190590278}
   - component: {fileID: 2356641710744020391}
   - component: {fileID: 3232653906405163820}
-  m_Layer: 12
+  m_Layer: 5
   m_Name: CrossCardScrollViewCellItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 3276848004497279037}
   - component: {fileID: 3766183916107889037}
   - component: {fileID: 8997644022622254619}
-  m_Layer: 12
+  m_Layer: 5
   m_Name: VideoCover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -831,7 +831,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4418668520965033660}
   - component: {fileID: 462802005381355496}
-  m_Layer: 5
+  - component: {fileID: 5895494299369606613}
+  m_Layer: 12
   m_Name: tool-scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -912,6 +913,14 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!222 &5895494299369606613
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5887341076867790903}
+  m_CullTransparentMesh: 0
 --- !u!1 &5982259364952255944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,7 +1135,7 @@ GameObject:
   - component: {fileID: 7660787093410292841}
   - component: {fileID: 396943201431732140}
   - component: {fileID: 8454168163813034124}
-  m_Layer: 12
+  m_Layer: 5
   m_Name: Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,9 +1192,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4379128245164149240}
   - component: {fileID: 6719040144925422695}
-  - component: {fileID: 4571526655541046432}
   - component: {fileID: 4365977581071077396}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: CoverContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1209,7 +1217,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 5181.7095}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6719040144925422695
 CanvasRenderer:
@@ -1219,20 +1227,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6312356315387813863}
   m_CullTransparentMesh: 0
---- !u!114 &4571526655541046432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6312356315387813863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 1.17
 --- !u!114 &4365977581071077396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1387,7 +1381,7 @@ GameObject:
   - component: {fileID: 2204207914889352168}
   - component: {fileID: 1103339295090665269}
   - component: {fileID: 1693245974740977130}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: btn-scale-icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1536,7 +1530,7 @@ GameObject:
   - component: {fileID: 4068688049381868702}
   - component: {fileID: 455928998175628500}
   - component: {fileID: 1470023570264656064}
-  m_Layer: 12
+  m_Layer: 5
   m_Name: VideoCoverContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1598,7 +1592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

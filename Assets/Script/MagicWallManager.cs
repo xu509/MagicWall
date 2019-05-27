@@ -39,7 +39,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(0f, 10f)]
     public float InfluenceMoveFactor;   // 影响移动距离
 
-
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
     public RectTransform BgLogo { get { return _bg_logo; } }
 
@@ -69,6 +68,12 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     int gap = 58;
     public int Gap { get { return gap; } }
+
+    public GraphicRaycaster graphicRaycaster;
+    PointerEventData m_PointerEventData;
+    public EventSystem m_EventSystem;
+
+
     #endregion
 
     #region PRIVATE PARAMETER
@@ -96,13 +101,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 
@@ -185,9 +190,34 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
         //  启动监听
         udpServer.Listening();
-
         if (_reset) {
             Reset();
+        }
+
+        // 查看射线情况
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            //Set up the new Pointer Event
+            m_PointerEventData = new PointerEventData(m_EventSystem);
+            //Set the Pointer Event Position to that of the mouse position
+            m_PointerEventData.position = Input.mousePosition;
+
+            //Create a list of Raycast Results
+            List<RaycastResult> results = new List<RaycastResult>();
+
+            //Raycast using the Graphics Raycaster and mouse click position
+            graphicRaycaster.Raycast(m_PointerEventData, results);
+
+            //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
+            foreach (RaycastResult result in results)
+            {
+                Debug.Log("Hit " + result.gameObject.name + " / " + result.gameObject.layer);
+
+                //if (result.gameObject.layer == 12) {
+                //    result.gameObject.GetComponent<Button>().onClick.Invoke();
+                //}
+
+            }
         }
 
     }

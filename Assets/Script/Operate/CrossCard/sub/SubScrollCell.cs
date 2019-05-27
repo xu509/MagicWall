@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using DG.Tweening;
+using System;
 
 //
 //  分类选项卡
@@ -40,6 +41,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
 
 
+
+
     static class AnimatorHash
     {
         public static readonly int Scroll = Animator.StringToHash("scroll");
@@ -50,6 +53,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     void Start()
     {
         //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
+
+
     }
 
     public override void UpdateContent(CrossCardCellData cellData)
@@ -109,9 +114,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     }
 
     public void DoScale() {
-        // 获取图片
         Context.OnScaleClicked?.Invoke(_cover.texture);
-
     }
 
     public override void DoUpdateDescription()
@@ -230,6 +233,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     {
         return _cellData;
     }
+
+
 
 
 }
