@@ -102,7 +102,7 @@ public class UdpServer : Singleton<UdpServer>
             recvData = new byte[1024];
             //获取客户端，获取客户端数据，用引用给客户端赋值
             recvLen = socket.ReceiveFrom(recvData, ref clientEnd);
-            print("message from: " + clientEnd.ToString()); //打印客户端信息
+            //print("message from: " + clientEnd.ToString()); //打印客户端信息
                                                             //输出接收到的数据
             recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
             print(recvStr);
@@ -180,7 +180,7 @@ public class UdpServer : Singleton<UdpServer>
     }
 
     private void AfterRun() {
-        MagicWallManager.Instance.Reset();
+        MagicWallManager.Instance.SetReset();
     }
 
 

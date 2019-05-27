@@ -113,6 +113,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
     //行与右
     public Dictionary<int, float> rowAndRights;
 
+    private bool _reset = false;
+    public void SetReset() { _reset = true; }
+
+
     #endregion
 
     DaoService daoService;
@@ -182,6 +186,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
         //  启动监听
         udpServer.Listening();
 
+        if (_reset) {
+            Reset();
+        }
+
     }
 
     #region 清理面板
@@ -229,6 +237,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     public void Reset() {
         _hasInit = false;
+        _reset = false;
 
         // 当前场景退出动画（淡出）
         CanvasGroup cg = IndexPanel.GetComponent<CanvasGroup>();
