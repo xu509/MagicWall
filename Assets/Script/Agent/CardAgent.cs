@@ -9,6 +9,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 {
     #region Parameter
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
+    private float _destoryFirstStageCompleteTime = 0f;   //  第一阶段关闭的时间点
     private float _activeFirstStageDuringTime = 7f;   //  最大的时间
     private float _activeSecondStageDuringTime = 2f;   //  第二段缩小的时间
     private bool _showDetail = false;   // 显示企业卡片
@@ -84,7 +85,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         // 第二次缩小
         if (_cardStatus == CardStatusEnum.DESTORING)
         {
-            if ((Time.time - _recentActiveTime) > (_activeFirstStageDuringTime + _activeSecondStageDuringTime))
+            if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
             {
                 DoDestoriedForSecondStep();
             }
@@ -135,10 +136,27 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     private void DoDestoriedForFirstStep() {
 
+        Debug.Log("DoDestoriedForFirstStep : " + gameObject?.name);
+
+
         //  缩放至2倍大
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
-        DoScaleAgency(this, scaleVector3, 2f);
         _cardStatus = CardStatusEnum.DESTORING;
+
+        GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
+            .OnUpdate(() =>
+             {
+                    Width = GetComponent<RectTransform>().sizeDelta.x;
+                    Height = GetComponent<RectTransform>().sizeDelta.y;
+               }).OnComplete(() => {
+                   IsRecovering = false;
+                   IsChoosing = true;
+
+                   // 设置第一次缩小的点
+                   _destoryFirstStageCompleteTime = Time.time;
+
+               });
+
     }
 
     //
@@ -175,6 +193,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         //  直接消失
         else
         {
+
+            Debug.Log("慢慢缩小直到消失");
+
             // 慢慢缩小直到消失
             Vector3 vector3 = Vector3.zero;
 
@@ -182,7 +203,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 .OnUpdate(() => {
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
-                    AgentManager.Instance.UpdateAgents();
+                    //AgentManager.Instance.UpdateAgents();
                 })
                 .OnComplete(() => DoDestoryOnCompleteCallBack(this));
 
@@ -199,11 +220,18 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     {
 
         Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
-        DoScaleAgency(this, scaleVector3, 0.5f);
 
-        Debug.Log("恢复");
-        CardStatus = CardStatusEnum.NORMAL;
-        _recentActiveTime = Time.time;
+        GetComponent<RectTransform>().DOScale(scaleVector3, 0.5f)
+           .OnUpdate(() =>
+           {
+               Width = GetComponent<RectTransform>().sizeDelta.x;
+               Height = GetComponent<RectTransform>().sizeDelta.y;
+               DoUpdate();
+           }).OnComplete(() => {
+               CardStatus = CardStatusEnum.NORMAL;
+               IsChoosing = false;
+           });
+
 
     }
 
@@ -229,9 +257,15 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     public void DoClose()
     {
         DoDestoriedForFirstStep();
-
-        Debug.Log("Do Closing");
     }
+
+    // 直接进行关闭
+    public void DoCloseDirect()
+    {
+        DoDestoriedForSecondStep();
+    }
+
+
 
     //
     //  点击详细按钮

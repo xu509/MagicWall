@@ -217,7 +217,6 @@ public class MidDisperseCutEffect : CutEffect
 
         DisplayBehavior.Init(_displayBehaviorConfig);
 
-        AgentManager.Instance.UpdateAgents();
     }
 
 	//

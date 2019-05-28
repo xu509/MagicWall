@@ -260,7 +260,6 @@ public class FrontBackUnfoldCutEffect : CutEffect
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         DisplayBehavior.Init(_displayBehaviorConfig);
 
-        AgentManager.Instance.UpdateAgents();
     }
 
     protected override void CreateProduct()

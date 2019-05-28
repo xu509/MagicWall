@@ -61,6 +61,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
+
         if (!startScale)
         {
             scrollRect.OnDrag(eventData);

@@ -23,8 +23,8 @@ public class AgentManager : Singleton<AgentManager>
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
 
-    //点开的卡片 最多8个
-    public List<CardAgent> cardAgents;
+
+
 
     //
     //  Paramater UI
@@ -40,7 +40,7 @@ public class AgentManager : Singleton<AgentManager>
         _manager = MagicWallManager.Instance;
         effectAgent = new List<FlockAgent>();
         _agents = new List<FlockAgent>();
-        cardAgents = new List<CardAgent>();
+        //cardAgents = new List<CardAgent>();
         _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
     }
 
@@ -89,18 +89,6 @@ public class AgentManager : Singleton<AgentManager>
     }
 
     //
-    // 更新所有的 agent
-    //
-    public void UpdateAgents()
-    {
-        foreach (FlockAgent ag in _agents)
-        {
-            ag.updatePosition();
-        }
-    }
-
-
-    //
     //  移除效果列表中的项
     //
     public bool RemoveItemFromEffectItems(CardAgent agent) {
@@ -142,7 +130,32 @@ public class AgentManager : Singleton<AgentManager>
         effectAgent = new List<FlockAgent>();
 
         // 清理 Card Agent
-        cardAgents = new List<CardAgent>();
+        //cardAgents = new List<CardAgent>();
+
+    }
+
+
+
+    // 持续更新
+    public void Run() {
+        if (Agents.Count > 0) {
+            foreach (FlockAgent agent in Agents) {
+                agent.updatePosition(); //检测位置并计算
+            }
+        }
+
+        // 检测打开的个数大于8个时，关闭早的
+        if (EffectAgent.Count > 8) {
+
+            // 此时得到的是CardAgent
+            CardAgent effectAgent = EffectAgent[0] as CardAgent;
+            effectAgent.DoCloseDirect();
+
+            //EffectAgent[0].GetCardAgent.DoCloseDirect();
+        }
+
+
+
 
     }
 
