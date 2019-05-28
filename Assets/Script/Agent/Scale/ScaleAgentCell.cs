@@ -76,6 +76,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         second = vector2;
         float newDistance = Vector2.Distance(first, second);
         float s = newDistance / originalDistance;
+        print(s);
         scaleAgent.currentScale = s;
         scaleAgent.ResetImage();
     }

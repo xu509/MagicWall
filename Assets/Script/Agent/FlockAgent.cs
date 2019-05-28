@@ -513,7 +513,8 @@ public class FlockAgent : MonoBehaviour
     private bool NeedAdjustPostion() {
         // 当前位置与目标位置一致
         bool NoEffectAgent = AgentManager.Instance.EffectAgent.Count == 0;
-        bool InOriginPosition = GetComponent<RectTransform>().anchoredPosition == NextVector2;
+        //bool InOriginPosition = GetComponent<RectTransform>().anchoredPosition == NextVector2;
+        bool InOriginPosition = false;
 
         // 如果没有影响的agent，并且位置没有改变，则不需要调整位置
         if (NoEffectAgent && InOriginPosition)

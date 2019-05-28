@@ -105,13 +105,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 
@@ -194,9 +194,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 开启场景效果
         MagicSceneManager.Instance.Run();
 
-        // 开启检测agent
         AgentManager.Instance.Run();
-
 
         //  启动监听
         udpServer.Listening();
@@ -235,6 +233,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public bool Clear() {
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+        
         PanelOffsetX = 0f;   // 清理两个panel偏移量
 		PanelOffsetY = 0f;   // 清理两个panel偏移量
 
