@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 3765581809811723095}
   - component: {fileID: 2429258555300052348}
   - component: {fileID: 4448697247416911871}
+  - component: {fileID: 8097033347311897639}
   m_Layer: 10
   m_Name: SliceCard
   m_TagString: Untagged
@@ -287,6 +288,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 600
+--- !u!50 &8097033347311897639
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2247757197020260754}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2530911173382979701
 GameObject:
   m_ObjectHideFlags: 0
