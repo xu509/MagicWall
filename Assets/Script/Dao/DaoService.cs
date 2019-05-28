@@ -390,19 +390,20 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
-        //CutEffect[] effects = new CutEffect[] { new CurveStaggerCutEffect(), new LeftRightAdjustCutEffect(),
-        //    new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        CutEffect[] effects = new CutEffect[] { new FrontBackUnfoldCutEffect(),new CurveStaggerCutEffect(), new LeftRightAdjustCutEffect(),
+            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
 
-        // for (int i = 0; i < effects.Length; i++) {
-        //    for (int j = 0; j < contentTypes.Length; j++)
-        //    {
-        //        SceneConfig sceneConfig = new SceneConfig();
-        //        sceneConfig.CutEffect = effects[i];
-        //        sceneConfig.SceneContentType = contentTypes[j];
-        //        sceneConfigs.Add(sceneConfig);
-        //    }
-        //  }
+        for (int i = 0; i < effects.Length; i++)
+        {
+            for (int j = 0; j < contentTypes.Length; j++)
+            {
+                SceneConfig sceneConfig = new SceneConfig();
+                sceneConfig.CutEffect = effects[i];
+                sceneConfig.SceneContentType = contentTypes[j];
+                sceneConfigs.Add(sceneConfig);
+            }
+        }
 
 
         //SceneConfig sceneConfig = new SceneConfig();
@@ -430,10 +431,10 @@ public class DaoService : Singleton<DaoService>
         //sceneConfig5.SceneContentType = SceneContentType.product;
         //sceneConfigs.Add(sceneConfig5);
 
-        SceneConfig sceneConfig6 = new SceneConfig();
-        sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
-        sceneConfig6.SceneContentType = SceneContentType.product;
-        sceneConfigs.Add(sceneConfig6);
+        //SceneConfig sceneConfig6 = new SceneConfig();
+        //sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
+        //sceneConfig6.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig6);
 
         return sceneConfigs;
     }
