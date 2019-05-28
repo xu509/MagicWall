@@ -185,7 +185,7 @@ public class MidDisperseCutEffect : CutEffect
             float time = Time.time - StartTime;
             if (time > run_time)
             {
-                agent.updatePosition();
+                //agent.updatePosition();
                 continue;
                 //Debug.Log(agent.name);
             }
