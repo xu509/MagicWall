@@ -61,8 +61,6 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(11);
-
         if (!startScale)
         {
             scrollRect.OnDrag(eventData);
@@ -77,6 +75,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         second = vector2;
         float newDistance = Vector2.Distance(first, second);
         float s = newDistance / originalDistance;
+        print(s);
         scaleAgent.currentScale = s;
         scaleAgent.ResetImage();
     }
