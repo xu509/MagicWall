@@ -15,6 +15,9 @@ using UnityEngine;
 
         float currentPosition;
 
+        protected IList<FancyScrollViewCell<TItemData, TContext>> Pool { get { return pool; } }
+
+
         protected abstract GameObject CellPrefab { get; }
         protected IList<TItemData> ItemsSource { get; set; } = new List<TItemData>();
         protected TContext Context { get; } = new TContext();

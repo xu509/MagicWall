@@ -97,6 +97,12 @@ public class FlockAgent : MonoBehaviour
     ItemsFactory _itemsFactory;
 
 
+
+    float show_move_offset_x;
+    float show_move_offset_y;
+
+
+
     #endregion
 
     // Start is called before the first frame update
@@ -227,30 +233,42 @@ public class FlockAgent : MonoBehaviour
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
 
+
         // 进入影响范围
         if (offset >= 0)
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
-            //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.blue;
+
+
+            // 获取offset_x;offset_y
+            float offset_x = Mathf.Abs(refVector2WithOffset.x - targetVector2.x);
+            float offset_y = Mathf.Abs(refVector2WithOffset.y - targetVector2.y);
+
+
+
             float m_scale = -(1f / effectDistance) * offset + 1f;
 
             //
-            //  上下移动
+            //  上下移动的偏差值
             //
-            float move_offset = offset * ((h / 2) / effectDistance);
-            move_offset += h/10 * manager.InfluenceMoveFactor;
+            float move_offset_y = offset_y * ((h / 2) / effectDistance);
+            move_offset_y += h / 10 * manager.InfluenceMoveFactor;
 
-            float move_offset_x = offset * ((w / 2) / effectDistance);
+            float move_offset_x = offset_x * ((w / 2) / effectDistance);
             move_offset_x += w / 10 * manager.InfluenceMoveFactor;
+
+            show_move_offset_x = move_offset_x;
+            show_move_offset_y = move_offset_y;
+
 
             float to_y,to_x;
             if (refVector2WithOffset.y > targetVector2.y)
             {
-                to_y = refVector2.y + move_offset;
+                to_y = refVector2.y + move_offset_y;
             }
             else if (refVector2WithOffset.y < targetVector2.y)
             {
-                to_y = refVector2.y - move_offset;
+                to_y = refVector2.y - move_offset_y;
             }
             else {
                 to_y = refVector2.y;
@@ -494,5 +512,6 @@ public class FlockAgent : MonoBehaviour
 
 
 }
+
 
 
