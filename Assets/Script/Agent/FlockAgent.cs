@@ -215,6 +215,12 @@ public class FlockAgent : MonoBehaviour
 
 		foreach (FlockAgent item in transforms)
 		{
+            // 判断大小，如果item还过小则不认为是影响的
+            if (!IsEffectiveTarget(item)) {
+                continue;
+            }
+
+
             Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
 
             float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
@@ -340,8 +346,9 @@ public class FlockAgent : MonoBehaviour
 
         if (!_isChoosing)
         {
+
             _isChoosing = true;
-            float offset = _manager.PanelOffsetX;
+
 
             //  先缩小（向后退）
             RectTransform rect = GetComponent<RectTransform>();
@@ -361,6 +368,8 @@ public class FlockAgent : MonoBehaviour
                 // 使原组件消失
                 gameObject.SetActive(false);
 
+
+
                 //// 此处需要区分
                 //_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
                 _cardAgent.gameObject.SetActive(true);
@@ -374,8 +383,8 @@ public class FlockAgent : MonoBehaviour
                     .DOScale(scaleVector3, 0.5f)
                     .OnUpdate(() =>
                         {
-                            Width = GetComponent<RectTransform>().sizeDelta.x;
-                            Height = GetComponent<RectTransform>().sizeDelta.y;
+                            _cardAgent.Width = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
+                            _cardAgent.Height = _cardAgent.GetComponent<RectTransform>().sizeDelta.y;
                         }).OnComplete(() => {
                    });
 
@@ -524,6 +533,32 @@ public class FlockAgent : MonoBehaviour
         return true;
     }
 
+
+    //  判断目标是否是有效的
+    private bool IsEffectiveTarget(FlockAgent flockAgent) {
+        if (!flockAgent.gameObject.activeSelf) {
+            return false;
+        }
+
+
+        float effect_width = 300f;
+        float effect_height = 300f;
+
+        Vector3 scaleVector3 = flockAgent.GetComponent<RectTransform>().localScale;
+        float width = flockAgent.Width * scaleVector3.x;
+        float height = flockAgent.Height * scaleVector3.y;
+
+        if (width > effect_width && height > effect_height)
+        {
+
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+    }
 
 
 }
