@@ -6,7 +6,11 @@ using UnityEngine.UI;
 
 public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
 {
+    private CrossCardCellData _cellData;
     string _title;  // 标题
+
+    RectTransform _signRect;
+
     [SerializeField] int _index; //  索引
     [SerializeField] Animator _animator;
 
@@ -31,6 +35,8 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
+        _cellData = cellData;
+
         _index = cellData.Index;
         _title = cellData.Title;
 
@@ -53,6 +59,30 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
     float currentPosition = 0;
 
     void OnEnable() => UpdatePosition(currentPosition);
+
+    public void UpdateAsCurrent() {
+        string content = text.text;
+        text.text = " | " + content + " | ";
+
+        float v2 = GetComponent<RectTransform>().rect.xMin;
+        Debug.Log("V2: " + v2);
+
+
+    }
+
+
+    public void UpdateComponent(RectTransform rect) {
+        _signRect = rect;
+
+        if (_index == Context.SelectedIndex)
+        {
+            UpdateAsCurrent();
+        }
+        else {
+            text.text = _cellData.Title.ToString();
+        }
+    }
+
 
 
 }

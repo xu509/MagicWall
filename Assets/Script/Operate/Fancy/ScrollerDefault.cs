@@ -239,6 +239,9 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
         var deltaTime = Time.unscaledDeltaTime;
         var offset = CalculateOffset(currentScrollPosition);
 
+        bool velocityIsZero = Mathf.Approximately(velocity, 0f);
+
+
         if (autoScrollState.Enable)
         {
             var position = 0f;
@@ -270,7 +273,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
             UpdatePosition(position);
         }
-        else if (!dragging && (!Mathf.Approximately(offset, 0f) || !Mathf.Approximately(velocity, 0f)))
+        else if (!dragging && (!velocityIsZero))
         {
             var position = currentScrollPosition;
 
