@@ -390,7 +390,7 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
-        CutEffect[] effects = new CutEffect[] { new FrontBackUnfoldCutEffect(),new CurveStaggerCutEffect(), new LeftRightAdjustCutEffect(),
+        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(),  new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
         SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
 

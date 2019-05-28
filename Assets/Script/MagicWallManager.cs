@@ -233,7 +233,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public bool Clear() {
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
         mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-        
+        backPanel.anchoredPosition = Vector2.zero;
+
         PanelOffsetX = 0f;   // 清理两个panel偏移量
 		PanelOffsetY = 0f;   // 清理两个panel偏移量
 
