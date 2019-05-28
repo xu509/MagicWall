@@ -154,11 +154,12 @@ public class CrossCardAgent : CardAgent
 
         crossCardScrollBar.UpdateData(_cellDatas);
         crossCardScrollBar.SelectCell(0);
+        crossCardScrollBar.UpdateComponents();
         crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
 
         // 处理businesscard
         _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
-        InitComponents(_hasListBtn);
+        InitComponents(false);
 
         myTimer.Record();
         myTimer.Display();
@@ -171,6 +172,9 @@ public class CrossCardAgent : CardAgent
         cell.GetComponent<RectTransform>().SetAsLastSibling();
 
         crossCardScrollBar.SelectCell(index);
+        
+
+
 
         // 更新描述
         UpdateDescription(crossCardScrollViewController.GetCurrentCardDescription());
@@ -183,6 +187,12 @@ public class CrossCardAgent : CardAgent
     {
         crossCardScrollViewController.SelectCell(index);
 
+        CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
+
+        crossCardScrollBar.UpdateComponents();
+
+        
+        
         // TODO 左侧标记移动
 
         // TODO 左右增加符号 | 

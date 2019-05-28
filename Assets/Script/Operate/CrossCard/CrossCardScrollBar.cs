@@ -9,6 +9,7 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
 
     [SerializeField] ScrollerDefault scroller = default;
     [SerializeField] GameObject cellPrefab = default;
+    [SerializeField] RectTransform signRect;
 
     Action<int> onSelectionChanged;
 
@@ -60,5 +61,45 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
     {
         onSelectionChanged = callback;
     }
+
+    public FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index) {
+
+        float newindex  = CircularPosition(index, Pool.Count);
+
+        return Pool[(int)newindex];
+    }
+
+
+    public void UpdateComponents() {
+        for (int i = 0; i < Pool.Count; i++) {
+            CrossCardScrollBarCell cell = GetCell(i) as CrossCardScrollBarCell;
+            cell.UpdateComponent(signRect);
+        }
+
+    }
+
+
+
+
+    private float CircularPosition(float p, int size)
+    {
+        if (size < 1)
+        {
+            return 0;
+        }
+        else
+        {
+            if (p < 0)
+            {
+                return size - 1 + (p + 1) % size;
+            }
+            else
+            {
+                return p % size;
+            }
+
+        }
+    }
+
 
 }
