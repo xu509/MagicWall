@@ -211,7 +211,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
             //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
             foreach (RaycastResult result in results)
             {
-                Debug.Log("Hit " + result.gameObject.name + " / " + result.gameObject.layer);
+                //Debug.Log("Hit " + result.gameObject.name + " / " + result.gameObject.layer);
 
                 //if (result.gameObject.layer == 12) {
                 //    result.gameObject.GetComponent<Button>().onClick.Invoke();

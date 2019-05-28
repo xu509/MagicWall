@@ -939,7 +939,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3173658494951443018}
+      - m_Target: {fileID: 6213000439451327046}
         m_MethodName: DoMinus
         m_Mode: 1
         m_Arguments:
@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3173658494951443018}
+      - m_Target: {fileID: 6213000439451327046}
         m_MethodName: DoPlus
         m_Mode: 1
         m_Arguments:
