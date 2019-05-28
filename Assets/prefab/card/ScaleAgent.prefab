@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 4956212966160984421}
   - component: {fileID: 3420415331930701852}
   - component: {fileID: 3479717665998681612}
+  - component: {fileID: 2537602228808511284}
   m_Layer: 11
   m_Name: Content
   m_TagString: Untagged
@@ -110,6 +111,20 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &2537602228808511284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158638111053175568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2c1c7b787e0da45a5f5ff407aa8ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollRect: {fileID: 5020189544963142687}
+  scaleAgent: {fileID: 6213000439451327046}
 --- !u!1 &405724340742870137
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,3 +1506,4 @@ MonoBehaviour:
   tool_box: {fileID: 7809574130423099844}
   maxScale: 2
   plusCount: 5
+  currentScale: 0

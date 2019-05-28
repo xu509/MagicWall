@@ -125,6 +125,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
     private bool _reset = false;
     public void SetReset() { _reset = true; }
 
+    public Camera MainCamera { get{ return _mainCamera; } }
+    [SerializeField]private Camera _mainCamera;
 
     #endregion
 

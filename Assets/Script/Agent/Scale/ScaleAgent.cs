@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ScaleAgent : MonoBehaviour
 {
     Texture _imageTexture;
 
@@ -24,20 +24,16 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     Action _onReturnClicked;
 
     private RectTransform imgRtf;
-    private float currentScale;//当前缩放倍数
+    public float currentScale;//当前缩放倍数
     private float perScale;//每次放大倍数
     private Vector2 originalSize;
 
-    //缩放
-    private Vector2 first = Vector2.zero;//第一次鼠标按键位置
-    private Vector2 second = Vector2.zero;//第二次
-    private bool startScale;//检测缩放
-    public Camera mainCamera;
+
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     private void OnEnable()
@@ -54,21 +50,7 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     void Update()
     {
         //print(imgRtf.localPosition);
-        if (Input.GetKeyDown(KeyCode.LeftAlt) && startScale==false)
-        {
-            Vector2 pos;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRtf, Input.mousePosition, mainCamera, out pos))
-            {
-                startScale = true;
-                first = pos;
-                print("first:" + first);
-            }
 
-        }
-        else
-        {
-            startScale = false;
-        }
     }
 
     public void SetImage(Texture texture)
@@ -132,7 +114,7 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
         }
     }
 
-    private void ResetImage()
+    public void ResetImage()
     {
         imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
         
@@ -181,48 +163,11 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (startScale == false)
-        {
-            return;
-        }
 
-        //Vector2 pointerStartLocalPosition = Vector2.zero;
-        //RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        //    viewport,
-        //    eventData.position,
-        //    eventData.pressEventCamera,
-        //    out pointerStartLocalPosition);
-
-        //dragStartScrollPosition = currentScrollPosition;
-        //dragging = true;
-        //autoScrollState.Reset();
-        
+    
 
 
+ 
 
-        second = eventData.position;
-        print("second:" + second);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        //second = eventData.position;
-        //float x = imgRtf.anchoredPosition.x;
-        //float y = imgRtf.anchoredPosition.y;
-        //x += second.x - first.x;
-        //y += second.y - first.y;
-        //Vector2 currentSize = imgRtf.sizeDelta;
-        //if (Mathf.Abs(x) <= (currentSize.x - originalSize.x) / 2 && Mathf.Abs(y) <= (currentSize.y - originalSize.y) / 2)
-        //{
-        //    imgRtf.anchoredPosition = new Vector2(x, y);
-        //}
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-
-    }
 
 }
