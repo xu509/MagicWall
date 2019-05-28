@@ -81,6 +81,12 @@ public class FlockAgent : MonoBehaviour
     private bool isChanging = false;
     public bool IsChanging { set { isChanging = value; } get { return isChanging; } }
 
+    // 是否正在恢复
+    private bool isRecovering = false;
+    public bool IsRecovering { set { isRecovering = value; } get { return isRecovering; } }
+
+
+
     // 卡片代理
     CardAgent _cardAgent;
     public CardAgent GetCardAgent{ get {return _cardAgent; }}
@@ -159,6 +165,10 @@ public class FlockAgent : MonoBehaviour
     {
         // 如果是被选中，并打开的
         if (IsChoosing) {
+            return;
+        }
+
+        if (isRecovering) {
             return;
         }
 
@@ -257,8 +267,8 @@ public class FlockAgent : MonoBehaviour
             float move_offset_x = offset_x * ((w / 2) / effectDistance);
             move_offset_x += w / 10 * manager.InfluenceMoveFactor;
 
-            show_move_offset_x = move_offset_x;
-            show_move_offset_y = move_offset_y;
+            //show_move_offset_x = move_offset_x;
+            //show_move_offset_y = move_offset_y;
 
 
             float to_y,to_x;
@@ -359,19 +369,27 @@ public class FlockAgent : MonoBehaviour
                 _cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
 
                 Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
-                DoScaleAgency(_cardAgent,scaleVector3, 0.5f);
 
+                _cardAgent.GetComponent<RectTransform>()
+                    .DOScale(scaleVector3, 0.5f)
+                    .OnUpdate(() =>
+                        {
+                            Width = GetComponent<RectTransform>().sizeDelta.x;
+                            Height = GetComponent<RectTransform>().sizeDelta.y;
+                        }).OnComplete(() => {
+                   });
 
             });
 
-            List<CardAgent> cards = AgentManager.Instance.cardAgents;
-            cards.Add(_cardAgent);
-            if (cards.Count > 8)
-            {
-                cards[0].DoClose();
-                cards.Remove(cards[0]);
-            }
-            AgentManager.Instance.cardAgents = cards;
+            //List<CardAgent> cards = AgentManager.Instance.cardAgents;
+            //cards.Add(_cardAgent);
+            //if (cards.Count > 8)
+            //{
+            //    // 会报错
+            //    cards[0].DoClose();
+            //    cards.Remove(cards[0]);
+            //}
+            //AgentManager.Instance.cardAgents = cards;
 
             // TODO: 当两个选择框体相近时，需要处理
 
@@ -384,8 +402,9 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
-        _isChoosing = false;
+        IsRecovering = true;
 
+        Debug.Log("进行恢复");
         MagicWallManager _manager = MagicWallManager.Instance;
 
         // 如果组件已不在原场景，则不进行恢复
@@ -412,25 +431,21 @@ public class FlockAgent : MonoBehaviour
 
         // 放大至原大小
         Vector3 scaleVector3 = Vector3.one;
-        DoScaleAgency(this,scaleVector3, 1f);
+
+        GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
+           .OnUpdate(() =>
+           {
+               Width = GetComponent<RectTransform>().sizeDelta.x;
+               Height = GetComponent<RectTransform>().sizeDelta.y;
+           }).OnComplete(() => {
+               IsRecovering = false;
+               IsChoosing = false;
+           });
 
     }
 
 
     #endregion
-
-    //
-    //  缩放代理
-    //
-    public void DoScaleAgency(FlockAgent agent ,Vector3 scaleVector, float second)
-    {
-        agent.GetComponent<RectTransform>().DOScale(scaleVector, second)
-            .OnUpdate(() => {
-                Width = GetComponent<RectTransform>().sizeDelta.x;
-                Height = GetComponent<RectTransform>().sizeDelta.y;
-                AgentManager.Instance.UpdateAgents();
-            });
-    }
 
 
 

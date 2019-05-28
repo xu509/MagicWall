@@ -203,7 +203,6 @@ public class UpDownAdjustCutEffect : CutEffect
 
         DisplayBehavior.Init(_displayBehaviorConfig);
 
-        AgentManager.Instance.UpdateAgents();
     }
 
     protected override void CreateProduct()

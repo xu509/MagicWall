@@ -183,7 +183,6 @@ public class StarsCutEffect : CutEffect
     }
 
     public override void OnStartingCompleted(){
-        AgentManager.Instance.UpdateAgents();
     }
 
 

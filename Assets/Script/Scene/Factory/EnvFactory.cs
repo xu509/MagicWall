@@ -216,6 +216,9 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         // 初始化 CrossAgent 数据
         crossCardAgent.InitData();
 
+
+        
+
         return crossCardAgent;
     }
     #endregion

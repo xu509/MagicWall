@@ -235,6 +235,9 @@ public class CrossCardAgent : CardAgent
         }
 
         crossCardScrollViewController.SelectCell(up_index);
+
+        DoUpdate();
+
     }
 
     //
@@ -251,6 +254,8 @@ public class CrossCardAgent : CardAgent
         }
 
         crossCardScrollViewController.SelectCell(down_index);
+
+        DoUpdate();
     }
 
     public void DoVideo(string address,string description)
@@ -260,6 +265,8 @@ public class CrossCardAgent : CardAgent
 
         // 隐藏平时的框框
         HideNormalContainer();
+
+        DoUpdate();
 
     }
 
