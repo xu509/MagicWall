@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
-
+using EasingUtil;
 //
 //  入口类
 //
@@ -38,6 +38,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     [Range(0f, 10f)]
     public float InfluenceMoveFactor;   // 影响移动距离
+
+    [SerializeField] EaseEnum easeEnum;
+    public EaseEnum EaseEnum { get { return easeEnum; } }
+
 
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
     public RectTransform BgLogo { get { return _bg_logo; } }
@@ -211,7 +215,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
             //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
             foreach (RaycastResult result in results)
             {
-                //Debug.Log("Hit " + result.gameObject.name + " / " + result.gameObject.layer);
 
                 //if (result.gameObject.layer == 12) {
                 //    result.gameObject.GetComponent<Button>().onClick.Invoke();
