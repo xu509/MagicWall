@@ -136,9 +136,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     private void DoDestoriedForFirstStep() {
 
-        Debug.Log("DoDestoriedForFirstStep : " + gameObject?.name);
-
-
         //  缩放至2倍大
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         _cardStatus = CardStatusEnum.DESTORING;
