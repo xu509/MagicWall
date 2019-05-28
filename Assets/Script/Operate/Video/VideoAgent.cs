@@ -116,8 +116,6 @@ public class VideoAgent : MonoBehaviour
 
     IEnumerator PlayVideo()
     {
-        Debug.Log("Play Video !");
-
         _videoPlayer.Prepare();
         DoDisableMusic();
 

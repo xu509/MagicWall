@@ -35,9 +35,6 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();
 
-        // 调整所有agent
-        AgentManager.Instance.UpdateAgents();
-
         UpdateAgents();
 
     }

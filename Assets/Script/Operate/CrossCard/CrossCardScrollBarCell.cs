@@ -65,7 +65,6 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         text.text = " | " + content + " | ";
 
         float v2 = GetComponent<RectTransform>().rect.xMin;
-        Debug.Log("V2: " + v2);
 
 
     }
