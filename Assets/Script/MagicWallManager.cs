@@ -105,13 +105,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 
@@ -125,6 +125,8 @@ public class MagicWallManager : Singleton<MagicWallManager>
     private bool _reset = false;
     public void SetReset() { _reset = true; }
 
+    public Camera MainCamera { get{ return _mainCamera; } }
+    [SerializeField]private Camera _mainCamera;
 
     #endregion
 
@@ -215,6 +217,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
             //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
             foreach (RaycastResult result in results)
             {
+
                 //if (result.gameObject.layer == 12) {
                 //    result.gameObject.GetComponent<Button>().onClick.Invoke();
                 //}

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ScaleAgent : MonoBehaviour
 {
     Texture _imageTexture;
 
@@ -24,18 +24,16 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     Action _onReturnClicked;
 
     private RectTransform imgRtf;
-    private float currentScale;//当前缩放倍数
+    public float currentScale;//当前缩放倍数
     private float perScale;//每次放大倍数
     private Vector2 originalSize;
 
-    //拖动
-    private Vector2 first = Vector2.zero;
-    private Vector2 second = Vector2.zero;
+
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     private void OnEnable()
@@ -52,6 +50,7 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     void Update()
     {
         //print(imgRtf.localPosition);
+
     }
 
     public void SetImage(Texture texture)
@@ -115,7 +114,7 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
         }
     }
 
-    private void ResetImage()
+    public void ResetImage()
     {
         imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
         
@@ -164,28 +163,11 @@ public class ScaleAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        first = eventData.position;
-    }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        second = eventData.position;
-        float x = imgRtf.anchoredPosition.x;
-        float y = imgRtf.anchoredPosition.y;
-        x += second.x - first.x;
-        y += second.y - first.y;
-        Vector2 currentSize = imgRtf.sizeDelta;
-        if (Mathf.Abs(x) <= (currentSize.x - originalSize.x) / 2 && Mathf.Abs(y) <= (currentSize.y - originalSize.y) / 2)
-        {
-            imgRtf.anchoredPosition = new Vector2(x, y);
-        }
-    }
+    
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
 
-    }
+ 
+
 
 }
