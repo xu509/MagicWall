@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
@@ -60,13 +61,29 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
 
     void OnEnable() => UpdatePosition(currentPosition);
 
+
+
+
     public void UpdateAsCurrent() {
-        string content = text.text;
-        text.text = " | " + content + " | ";
 
-        float v2 = GetComponent<RectTransform>().rect.xMin;
+        int length = _cellData.Title.Length;
+        if (length == 2)
+        {
+            _signRect.DOAnchorPosX(30, 0.5f);
+        }
+        else if (length == 4)
+        {
+            _signRect.DOAnchorPosX(15, 0.5f);
+        }
+        else if (length == 7)
+        {
+            _signRect.DOAnchorPosX(-5, 0.5f);
 
+        }
 
+        text.DOText(" | " + _cellData.Title + " | ", Time.deltaTime);
+
+        //TODO 有时候text 改变无效
     }
 
 

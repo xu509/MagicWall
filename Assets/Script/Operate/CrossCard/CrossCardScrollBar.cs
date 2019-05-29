@@ -71,10 +71,14 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
 
 
     public void UpdateComponents() {
+
+        // 更新单个的状态
         for (int i = 0; i < Pool.Count; i++) {
             CrossCardScrollBarCell cell = GetCell(i) as CrossCardScrollBarCell;
             cell.UpdateComponent(signRect);
         }
+
+        // 调整标记的位置
 
     }
 

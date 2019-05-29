@@ -191,7 +191,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         else
         {
 
-            Debug.Log("慢慢缩小直到消失");
 
             // 慢慢缩小直到消失
             Vector3 vector3 = Vector3.zero;

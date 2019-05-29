@@ -409,7 +409,7 @@ public class FlockAgent : MonoBehaviour
 
         // 如果组件已不在原场景，则不进行恢复
         if (_sceneIndex != _manager.SceneIndex) {
-            gameObject.SetActive(true);
+            gameObject.SetActive(false);
             Destroy(gameObject);
             return;
         }
@@ -432,6 +432,9 @@ public class FlockAgent : MonoBehaviour
         // 放大至原大小
         Vector3 scaleVector3 = Vector3.one;
 
+        // 在放大动画开始前，标记该组件为不被选择的
+        IsChoosing = false;
+
         GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
            .OnUpdate(() =>
            {
@@ -439,7 +442,6 @@ public class FlockAgent : MonoBehaviour
                Height = GetComponent<RectTransform>().sizeDelta.y;
            }).OnComplete(() => {
                IsRecovering = false;
-               IsChoosing = false;
            });
 
     }
