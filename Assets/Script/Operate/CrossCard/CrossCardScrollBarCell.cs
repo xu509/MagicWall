@@ -53,8 +53,6 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         currentPosition = position;
         _animator.Play(AnimatorHash.Scroll, -1, position);
         _animator.speed = 0;
-
-
     }
 
     float currentPosition = 0;
