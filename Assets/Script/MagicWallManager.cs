@@ -16,8 +16,12 @@ public class MagicWallManager : Singleton<MagicWallManager>
     protected MagicWallManager() { }
 
     #region PUBLIC PARAMETER
+    // 面板
+    [SerializeField] RectTransform _magicWallPanel;
+    public RectTransform MagincWallPanel { get { return _magicWallPanel; } }
+
     public RectTransform mainPanel;
-	public FlockAgent agentPrefab;
+    public FlockAgent agentPrefab;
     public CardAgent crossCardgent;
     public CardAgent sliceCardgent;
 
@@ -28,7 +32,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     public GameObject backgroundPrefab2;//气泡预制体
 
-    [Range(10f,30f)]
+    [Range(10f, 30f)]
     public float backgroundUpDuration = 20f;//气泡上升时间
     [Range(0.1f, 10f)]
     public float backgroundUubbleInterval = 0.4f;//生成气泡时间间隔
@@ -52,19 +56,19 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [SerializeField] float panelOffsetX = 0f;
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
-	[SerializeField]
-	float panelOffsetY = 0f;
-	public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
+    [SerializeField]
+    float panelOffsetY = 0f;
+    public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
 
-	[SerializeField,Range(1f, 600f)]
-	public float MoveFactor_Panel;
+    [SerializeField, Range(1f, 600f)]
+    public float MoveFactor_Panel;
 
     private AgentType theItemType;
     public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
 
     //顶部logo
- //   Transform wallLogo;
-	//public Transform WallLogo { get { return wallLogo; } }
+    //   Transform wallLogo;
+    //public Transform WallLogo { get { return wallLogo; } }
 
     //layout
     public int row = 6;
@@ -91,9 +95,10 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
 
     private WallStatusEnum status;
-	public WallStatusEnum Status{get { return status;} set { status = value;}}
+    public WallStatusEnum Status { get { return status; } set { status = value; } }
 
     private RectTransform _operationPanel;
+    public RectTransform OperationPanel{get { return _operationPanel; } }
 
     [SerializeField] private RectTransform _IndexPanel;
     public RectTransform IndexPanel { get { return _IndexPanel; } }
