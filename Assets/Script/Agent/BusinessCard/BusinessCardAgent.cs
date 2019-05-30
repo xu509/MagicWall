@@ -133,6 +133,7 @@ public class BusinessCardAgent : MonoBehaviour
                 }
             }
             else {
+                _btnNext.gameObject.SetActive(true);
                 if (!_btnReturn.gameObject.activeSelf)
                 {
                     _btnReturn.gameObject.SetActive(true);
