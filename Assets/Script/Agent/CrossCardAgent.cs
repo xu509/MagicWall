@@ -146,7 +146,7 @@ public class CrossCardAgent : CardAgent
         //    cardScrollCell.UpdatePosition(CalculatePostion(cardScrollCell.Index));
         //}
 
-        // TODO Updatedata
+        // Updatedata
         crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.SelectCell(0);
@@ -190,14 +190,7 @@ public class CrossCardAgent : CardAgent
         CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
 
         crossCardScrollBar.UpdateComponents();
-
         
-        
-        // TODO 左侧标记移动
-
-        // TODO 左右增加符号 | 
-
-
     }
 
 

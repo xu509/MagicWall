@@ -91,7 +91,6 @@ public class ScaleAgent : MonoBehaviour
     // 点击放大按钮
     public void DoPlus()
     {
-        // TODO 放大图片操作
         //Debug.Log("放大图片操作");
         if (currentScale < maxScale)
         {
@@ -104,7 +103,6 @@ public class ScaleAgent : MonoBehaviour
     // 点击减少按钮
     public void DoMinus()
     {
-        // TODO 缩小 图片操作
         //Debug.Log("缩小图片操作");
         if (currentScale > 1.0f)
         {

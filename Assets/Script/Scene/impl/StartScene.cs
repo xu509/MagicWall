@@ -142,7 +142,6 @@ public class StartScene : IScene
         {
             string logo = env.Logo;
             string address = MagicWallManager.URL_ASSET_LOGO + logo;
-            env.TextureLogo = TextureResource.Instance.GetTexture(address);
 
             // 预加载企业卡片
             for (int i = 0; i < env.EnvCards.Count; i++) {

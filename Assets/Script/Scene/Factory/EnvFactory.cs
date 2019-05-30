@@ -95,7 +95,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         // 初始化显示图片
         //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
         //newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
-        newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
+        newAgent.GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo);
 
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();

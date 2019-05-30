@@ -75,7 +75,11 @@ public class StarsCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
                 Enterprise env = manager.DaoService.GetEnterprise();
-                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(env.TextureLogo.width, env.TextureLogo.height));
+                
+
+                Vector2 vector2 = AppUtils
+                    .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo).width
+                    , TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo).height));
 
                 int middleX = (column - 1) / 2;
 
@@ -165,7 +169,6 @@ public class StarsCutEffect : CutEffect
             {
                 int index = Random.Range(0, count - 1);
                 FlockAgent agent = AgentManager.Instance.Agents[index];
-                // TODO 这里挑错，显示索引的内容已经没了
                 agent.gameObject.SetActive(true);
                 //agent.transform.SetAsLastSibling();
 

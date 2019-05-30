@@ -391,7 +391,6 @@ public class FlockAgent : MonoBehaviour
             //}
             //AgentManager.Instance.cardAgents = cards;
 
-            // TODO: 当两个选择框体相近时，需要处理
 
         }
     }
