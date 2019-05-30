@@ -16,6 +16,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private bool startScale;//检测缩放
     public ScaleAgent scaleAgent;
+    private float startScalePer;//开始缩放时比例
 
     void Start()
     {
@@ -56,7 +57,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             out vector2);
         second = vector2;
         originalDistance = Vector2.Distance(first, second);
-        print("second:" + second);
+        startScalePer = scaleAgent.currentScale;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -74,9 +75,10 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             eventData.pressEventCamera,
             out vector2);
         second = vector2;
+        print("old:"+scaleAgent.currentScale);
         float newDistance = Vector2.Distance(first, second);
-        float s = newDistance / originalDistance;
-        print(s);
+        float s = startScalePer + (newDistance-originalDistance) / originalDistance;
+        print("new:" + s);
         scaleAgent.currentScale = s;
         scaleAgent.ResetImage();
     }

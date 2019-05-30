@@ -96,6 +96,10 @@ public class ScaleAgent : MonoBehaviour
         if (currentScale < maxScale)
         {
             currentScale += perScale;
+            if (currentScale > maxScale)
+            {
+                currentScale = maxScale;
+            }
             ResetImage();
         }
         
@@ -109,6 +113,10 @@ public class ScaleAgent : MonoBehaviour
         if (currentScale > 1.0f)
         {
             currentScale -= perScale;
+            if (currentScale < 1)
+            {
+                currentScale = 1;
+            }
             ResetImage();
             imgRtf.anchoredPosition = Vector2.zero;
         }
