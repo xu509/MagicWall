@@ -35,7 +35,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [Range(10f, 30f)]
     public float backgroundUpDuration = 20f;//气泡上升时间
     [Range(0.1f, 10f)]
-    public float backgroundUubbleInterval = 0.4f;//生成气泡时间间隔
+    public float backgroundUubbleInterval = 0.2f;//生成气泡时间间隔
 
     [Range(0f, 2f), Header("影响距离（当为1时，表示半径）")]
     public float InfluenceFactor;   // 影响距离

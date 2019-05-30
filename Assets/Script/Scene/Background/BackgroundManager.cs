@@ -30,6 +30,7 @@ public class BackgroundManager : Singleton<BackgroundManager>
         last_create_time = 0.0f;
         bubbles = new List<GameObject>();
         hasInit = true;
+
     }
 
 
@@ -57,23 +58,35 @@ public class BackgroundManager : Singleton<BackgroundManager>
     {
         GameObject bubble;
         float random = Random.Range(0.0f, 1.0f);
+        int w = 0;
+        float alpha = 1;
+        float duration = _manager.backgroundUpDuration;
         if (random < 0.5)
         {
-            bubble = Instantiate(_manager.backgroundPrefab) as GameObject; 
+            //实球
+            bubble = Instantiate(_manager.backgroundPrefab) as GameObject;
+            w = Random.Range(400, 80);
+            alpha = w / (400f+100f);
+            print(w);
+            duration -= alpha * 5;
         }
         else
         {
+            //虚球
             bubble = Instantiate(_manager.backgroundPrefab2) as GameObject;
+            int r = Random.Range(0, 2);
+            w = (r == 0) ? 200 : 80;
+            duration += 10f;
+            alpha = r == 0 ? 0.8f : 0.4f;
         }
         RectTransform rectTransform = bubble.GetComponent<RectTransform>();
         rectTransform.SetParent(_bubblesBackground, false);
-        float x = Random.Range(-1500, 9000);
-        float z = Random.Range(500, 10000);
-        float alpha = 1 - (z - 500) / 9500f;
-        //print(alpha);
+        rectTransform.sizeDelta = new Vector2(w, w);
+        float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
+
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
-        rectTransform.anchoredPosition3D = new Vector3(x, -2500, z);
-        rectTransform.DOLocalMoveY(2000, _manager.backgroundUpDuration).OnComplete(() => BubbleMoveComplete(bubble));
+        rectTransform.anchoredPosition3D = new Vector3(x, -w, 0);
+        rectTransform.DOLocalMoveY(2000, duration).OnComplete(() => BubbleMoveComplete(bubble));
 
         bubbles.Add(bubble);
 
