@@ -153,8 +153,6 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         dragging = true;
         autoScrollState.Reset();
 
-        Debug.Log("### ON BEGIN DRAG ! ###");
-
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
@@ -241,7 +239,6 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
         dragging = false;
         recognizeDirection = ScrollDirection.Unknow;
-        Debug.Log("### ON END DRAGING ###");
 
     }
 
@@ -300,6 +297,8 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
 
         bool velocityIsZero = Mathf.Approximately(velocity, 0f);
+        bool offsetNearZero = Mathf.Approximately(offset, 0f);
+
 
         if (autoScrollState.Enable)
         {
@@ -332,7 +331,7 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
             UpdatePosition(position);
         }
-        else if ((!dragging) || (!velocityIsZero))
+        else if ((!dragging) || (!velocityIsZero || !offsetNearZero))
         {
 
             var position = currentScrollPosition;

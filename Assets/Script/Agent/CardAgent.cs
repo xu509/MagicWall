@@ -16,6 +16,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private bool _doMoving = false;   // 移动
     private ScaleAgent _scaleAgent;     // 缩放代理
 
+    private float _panel_top;
+    private float _panel_bottom;
+    private float _panel_left;
+    private float _panel_right;
+    private float _safe_distance_width;
+    private float _safe_distance_height;
+
     protected int id;
     public int Id { set { id = value; } get { return id; } }
 
@@ -62,6 +69,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected void AwakeAgency() {
         _recentActiveTime = Time.time;
         _cardStatus = CardStatusEnum.NORMAL;
+
+        _panel_top = -(MagicWallManager.Instance.OperationPanel.rect.yMin) + MagicWallManager.Instance.OperationPanel.rect.yMax;
+        _panel_bottom = 0;
+        _panel_left = 0;
+        _panel_right = -(MagicWallManager.Instance.OperationPanel.rect.xMin) + MagicWallManager.Instance.OperationPanel.rect.xMax;
+
+        _safe_distance_width = GetComponent<RectTransform>().rect.width / 3;
+        _safe_distance_height = GetComponent<RectTransform>().rect.height / 3;
     }
 
     //
@@ -415,7 +430,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
             DoUpdate();
 
-            GetComponent<RectTransform>().anchoredPosition = eventData.position;
+
+            Move(eventData);
 
             //拖拽时不碰撞
             transform.SetAsLastSibling();
@@ -452,6 +468,40 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         DoDestoriedForFirstStep();
 
     }
+
+
+    // 移动
+    private void Move(PointerEventData eventData) {
+        Vector2 nowPostion = GetComponent<RectTransform>().anchoredPosition;
+
+        Vector2 to;
+        Vector2 position = eventData.position;
+
+
+        bool overleft = position.x < (_panel_left + _safe_distance_width);
+        bool overright = position.x > (_panel_right - _safe_distance_width);
+        bool overtop = position.y > (_panel_top - _safe_distance_height);
+        bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
+
+        if (overleft || overright) {
+            to.x = nowPostion.x;
+        } else {
+            to.x = position.x;
+        }
+
+        if (overtop || overbottom)
+        {
+            to.y = nowPostion.y;
+        }
+        else {
+            to.y = position.y;
+        }
+
+        GetComponent<RectTransform>().anchoredPosition = to;
+
+    }
+
+
 }
 
 

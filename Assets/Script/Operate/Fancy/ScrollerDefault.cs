@@ -145,10 +145,12 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
         dragStartScrollPosition = currentScrollPosition;
         dragging = true;
         autoScrollState.Reset();
+
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -170,6 +172,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
 
         var pointerDelta = localCursor - pointerStartLocalPosition;
+
         var position = (directionOfRecognize == ScrollDirection.Horizontal ? -pointerDelta.x : pointerDelta.y)
                         / ViewportSize
                         * scrollSensitivity
@@ -240,6 +243,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
         var offset = CalculateOffset(currentScrollPosition);
 
         bool velocityIsZero = Mathf.Approximately(velocity, 0f);
+        bool offsetNearZero = Mathf.Approximately(offset, 0f);
 
 
         if (autoScrollState.Enable)
@@ -273,7 +277,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
             UpdatePosition(position);
         }
-        else if (!dragging && (!velocityIsZero))
+        else if (!dragging && (!velocityIsZero || !offsetNearZero))
         {
             var position = currentScrollPosition;
 
@@ -298,6 +302,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
                 if (snap.Enable && Mathf.Abs(velocity) < snap.VelocityThreshold)
                 {
+
                     ScrollTo(Mathf.RoundToInt(currentScrollPosition), snap.Duration, snap.Easing);
                 }
             }
@@ -308,6 +313,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
             if (!Mathf.Approximately(velocity, 0f))
             {
+
                 if (movementType == MovementType.Clamped)
                 {
                     offset = CalculateOffset(position);
