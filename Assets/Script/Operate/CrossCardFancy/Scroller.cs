@@ -32,6 +32,7 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 
     Action<float> onValueChanged;
     Action<int> onSelectionChanged;
+    Action onOperatedUpdate;
 
     Vector2 pointerStartLocalPosition;
     float dragStartScrollPosition;
@@ -493,6 +494,10 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
         return recognizeDirection == ScrollDirection.Horizontal;
     }
 
+    public void SetOnOperatedUpdate(Action action)
+    {
+        onOperatedUpdate = action;
+    }
 
 }
 

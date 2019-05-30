@@ -84,6 +84,7 @@ public class SliceCardAgent : CardAgent
         _scrollController.SetUpCardAgent(this);
         _scrollController.UpdateData(cellDatas);
         _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
+        _scrollController.SetOnScrollerOperated(OnOperationAction);
 
     }
 
@@ -105,6 +106,9 @@ public class SliceCardAgent : CardAgent
         _description.text = description;
     }
 
+    private void OnOperationAction() {
+        DoUpdate();
+    }
 
 
 }

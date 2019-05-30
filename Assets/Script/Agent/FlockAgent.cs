@@ -377,7 +377,8 @@ public class FlockAgent : MonoBehaviour
                             Width = GetComponent<RectTransform>().sizeDelta.x;
                             Height = GetComponent<RectTransform>().sizeDelta.y;
                         }).OnComplete(() => {
-                   });
+                   })
+                   .SetEase(Ease.OutBack);
 
             });
 

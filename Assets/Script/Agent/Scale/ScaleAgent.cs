@@ -22,6 +22,7 @@ public class ScaleAgent : MonoBehaviour
 
     Action OnCloseClicked;
     Action _onReturnClicked;
+    Action OnUpdate;
 
     private RectTransform imgRtf;
     public float currentScale;//当前缩放倍数
@@ -33,7 +34,14 @@ public class ScaleAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
+    }
+
+    void FixedUpdate() {
+
+        // 当缩放窗口打开时，保证卡片不被关闭
+        OnUpdate.Invoke();
+
     }
 
     private void OnEnable()
@@ -76,6 +84,11 @@ public class ScaleAgent : MonoBehaviour
     public void SetOnReturnClicked(Action action)
     {
         _onReturnClicked = action;
+    }
+
+    public void SetOnUpdated(Action action)
+    {
+        OnUpdate = action;
     }
 
 

@@ -151,11 +151,13 @@ public class CrossCardAgent : CardAgent
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.SelectCell(0);
         crossCardScrollViewController.SetUpCardAgent(this);
+        //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
 
         crossCardScrollBar.UpdateData(_cellDatas);
         crossCardScrollBar.SelectCell(0);
         crossCardScrollBar.UpdateComponents();
         crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
+        crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
 
         // 处理businesscard
         _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
@@ -259,14 +261,18 @@ public class CrossCardAgent : CardAgent
         // 隐藏平时的框框
         HideNormalContainer();
 
-        DoUpdate();
 
+        // 当打开视频框体时不自动关闭
+        KeepOpen = true;
+        
     }
 
     public void DoCloseVideoContainer() {
         OpenNormalContainer();
 
         CloseVideoContainer();
+
+        TurnOffKeepOpen();
     }
 
 
@@ -299,7 +305,9 @@ public class CrossCardAgent : CardAgent
         _videoAgent.Init();
     }
 
-
+    private void OnScrollOperated() {
+        DoUpdate();
+    }
 }
 
 

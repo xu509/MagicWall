@@ -157,6 +157,7 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -167,13 +168,20 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             return;
         }
 
-        if (!RecognizeDirection(eventData))
-        {
-            return;
-        }
+
+         RecognizeDirection(eventData);
+
+        //if (!RecognizeDirection(eventData))
+        //{
+
+        //    Debug.Log("RecognizeDirection");
+
+        //    return;
+        //}
 
         if (recognizeDirection == ScrollDirection.Horizontal)
         {
+
             Vector2 localCursor;
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 viewport,
@@ -220,6 +228,7 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
             }
 
             UpdatePosition(position);
+
         }
         else
         {

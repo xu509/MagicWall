@@ -53,10 +53,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
 
     // 面板的差值
-    [SerializeField] float panelOffsetX = 0f;
+    float panelOffsetX = 0f;
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
-    [SerializeField]
     float panelOffsetY = 0f;
     public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
 

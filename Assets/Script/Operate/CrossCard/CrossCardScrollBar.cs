@@ -12,6 +12,8 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
     [SerializeField] RectTransform signRect;
 
     Action<int> onSelectionChanged;
+    Action onScrollOperated;
+
 
     protected override GameObject CellPrefab => cellPrefab;
 
@@ -24,6 +26,7 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
     {
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
+        scroller.SetOnOperatedUpdate(onScrollOperated);
     }
 
     void UpdateSelection(int index)
@@ -103,6 +106,11 @@ public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardSc
             }
 
         }
+    }
+
+    public void SetScrollOperatedAction(Action action)
+    {
+        onScrollOperated = action;
     }
 
 
