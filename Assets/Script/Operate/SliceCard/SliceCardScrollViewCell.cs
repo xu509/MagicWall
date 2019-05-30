@@ -47,9 +47,6 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
     public override void UpdateContent(SliceCardCellData cellData)
     {
-
-        // 图片会出现比例失常的现象
-
         SetupData(cellData);
 
         _cellData = cellData;
@@ -94,8 +91,12 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
     }
 
+    // 当卡片被选中时，会走这个方法
     public override void UpdateComponentStatus()
     {
+        //Debug.Log("Index : " + Index + " | Current Index : " + Context.SelectedIndex);
+
+
         if (!_cellData.IsImage)
         {
             scale_tool.gameObject.SetActive(false);
@@ -152,6 +153,9 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
 
         GetComponent<RectTransform>().SetAsLastSibling();
+
+        // 调用改变描述
+        Context.OnDescriptionChanged.Invoke(cellData.Description);
     }
 
 

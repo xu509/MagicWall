@@ -108,6 +108,7 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
                     $"FancyScrollViewCell<{typeof(SliceCardCellData).FullName}, {typeof(SliceCardCellContext).FullName}> " +
                     $"component not found in {CellPrefab.name}.");
             }
+            cell.Index = i;
             cell.SetupContext(Context);
             cell.SetVisible(false);
             cell.InitData();

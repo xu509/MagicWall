@@ -235,7 +235,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private void DoRecover()
     {
 
-        Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
+        Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
         GetComponent<RectTransform>().DOScale(scaleVector3, 0.5f)
            .OnUpdate(() =>

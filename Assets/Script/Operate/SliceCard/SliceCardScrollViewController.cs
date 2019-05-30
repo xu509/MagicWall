@@ -40,6 +40,8 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     void UpdateSelection(int index)
     {
+        Debug.Log("Update Selection : " + index);
+
         if (Context.SelectedIndex == index)
         {
             return;
@@ -132,8 +134,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     public void UpdateDescription(string description) {
         //_cardAgent.UpdateDescription(description);
-
-        Debug.Log("Update Description : " + description);
+        _cardAgent.UpdateDescription(description);
 
     }
 
