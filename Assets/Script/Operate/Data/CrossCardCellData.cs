@@ -12,6 +12,7 @@ public class CrossCardCellData
     int _likes; //喜欢数
     string _title;  //  标题
     string _description; // 描述
+    string _image; //图片地址
     bool _isImage; // 是图片
     string _videoUrl; // Video Url
     CrossCardCategoryEnum _category;    //  类别
@@ -31,6 +32,8 @@ public class CrossCardCellData
     public string Title { set { _title = value; } get { return _title; } }
 
     public string VideoUrl { set { _videoUrl = value; } get { return _videoUrl; } }
+
+    public string Image { set { _image = value; } get { return _image; } }
 
 
     public string Description { set { _description = value; } get { return _description; } }

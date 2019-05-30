@@ -67,14 +67,14 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         {
             videoContainer.gameObject.SetActive(true);
             _cover.gameObject.SetActive(false);
-            _video_cover.texture = cellData.ImageTexture;
+            _video_cover.texture = TextureResource.Instance.GetTexture(cellData.Image);
             CanvasExtensions.SizeToParent(_video_cover);
 
         }
         else {
             //  设置 Image
             _cover.gameObject.SetActive(true);
-            _cover.texture = cellData.ImageTexture;
+            _cover.texture = TextureResource.Instance.GetTexture(cellData.Image);
             CanvasExtensions.SizeToParent(_cover);
 
             // 关闭视频框

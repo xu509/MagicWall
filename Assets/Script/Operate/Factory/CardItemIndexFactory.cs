@@ -15,7 +15,7 @@ public class CardItemIndexFactory : CardItemFactory
         CrossCardCellData cd = new CrossCardCellData();
 
         string address = MagicWallManager.URL_ASSET + "env\\" + e.Business_card;
-        cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+        cd.Image = address;
         cd.Description = e.Description;
 
         cd.IsImage = true;

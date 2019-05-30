@@ -147,6 +147,14 @@ public class StartScene : IScene
             for (int i = 0; i < env.EnvCards.Count; i++) {
                 TextureResource.Instance.GetTexture(env.EnvCards[i]);
             }
+
+            // 预加载 CATALOGS
+            List<Catalog> catalogs =  _daoService.GetCatalogs(env.Ent_id);
+            for (int i = 0; i < catalogs.Count; i++)
+            {
+                string category_address = MagicWallManager.URL_ASSET + "env\\" + catalogs[i].Img;
+                TextureResource.Instance.GetTexture(category_address);
+            }
         }
 
         List<Activity> activities = _daoService.GetActivities();

@@ -302,6 +302,7 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
         if (autoScrollState.Enable)
         {
+
             var position = 0f;
 
             if (autoScrollState.Elastic)
@@ -331,9 +332,8 @@ public class SubScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
             UpdatePosition(position);
         }
-        else if ((!dragging) || (!velocityIsZero || !offsetNearZero))
+        else if ((!dragging) && (!velocityIsZero || !offsetNearZero))
         {
-
             var position = currentScrollPosition;
 
             if (movementType == MovementType.Elastic && !Mathf.Approximately(offset, 0f))

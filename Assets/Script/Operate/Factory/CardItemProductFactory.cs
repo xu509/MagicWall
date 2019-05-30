@@ -17,7 +17,7 @@ public class CardItemProductFactory : CardItemFactory
             CrossCardCellData cd = new CrossCardCellData();
 
             string address = MagicWallManager.URL_ASSET + "product\\" + e.Image;
-            cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+            cd.Image = address;
             cd.Description = e.Description;
 
             cd.IsImage = true;
