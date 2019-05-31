@@ -756,7 +756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewport: {fileID: 4621180878887643528}
   directionOfRecognize: 1
-  movementType: 2
+  movementType: 1
   elasticity: 0.1
   scrollSensitivity: 5
   inertia: 1
