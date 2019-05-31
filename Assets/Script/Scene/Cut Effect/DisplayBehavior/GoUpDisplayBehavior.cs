@@ -123,7 +123,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         if (h - _manager.PanelOffsetY - (offsetUnit * page) + 100 > 0)
         {
             //float i = h + _manager.PanelOffsetY - (offsetUnit * page);
-            Debug.Log(111);
+            //Debug.Log(111);
             // 需要获得当前的 row
             int rows_offsets = Mathf.CeilToInt(_displayBehaviorConfig.Row * 1.0f / 3);//2
             int x = page * rows_offsets + 1;
