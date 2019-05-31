@@ -53,7 +53,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
     }
 
 
-    protected abstract void UpdateComponents();
+    public abstract void UpdateComponents();
 
 
     /// <summary>

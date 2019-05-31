@@ -272,6 +272,7 @@ MonoBehaviour:
   _title: {fileID: 771340144239110582}
   _description: {fileID: 2004544130081051543}
   _scrollController: {fileID: 2706152829991389513}
+  _buttomTool: {fileID: 7719139451170563042}
 --- !u!58 &4448697247416911871
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -683,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -703,7 +704,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 
 --- !u!1 &4058126329884986404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,6 +1990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7719139451170563042}
+  - component: {fileID: 5519621521898488406}
   m_Layer: 5
   m_Name: tool-buttom
   m_TagString: Untagged
@@ -2019,3 +2021,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 865, y: 106.4}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &5519621521898488406
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9186418049174863784}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

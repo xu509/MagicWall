@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -50,6 +51,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] Button _btn_close;
 
     [SerializeField] float radius;// Circle Collider2D radius
+
+
+    Action OnCreatedCompletedAction; 
+
 
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
@@ -517,6 +522,16 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         DoUpdate();
         _keepOpen = false;
     }
+
+
+    public void DoOnCreatedCompleted() {
+        OnCreatedCompletedAction?.Invoke();
+    }
+
+    protected void SetOnCreatedCompleted(Action action) {
+        OnCreatedCompletedAction = action;
+    }
+
 
 }
 

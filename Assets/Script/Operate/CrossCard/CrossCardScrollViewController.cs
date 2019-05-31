@@ -46,7 +46,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-        UpdateComponents();
+        
 
     }
 
@@ -100,7 +100,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     }
 
 
-    protected override void UpdateComponents()
+    public override void UpdateComponents()
     {
         for (int i = 0; i < Pool.Count; i++)
         {

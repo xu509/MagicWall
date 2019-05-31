@@ -385,6 +385,9 @@ public class FlockAgent : MonoBehaviour
                             _cardAgent.Height = _cardAgent.GetComponent<RectTransform>().sizeDelta.y;
 
                         }).OnComplete(() => {
+                            // 执行完成后动画
+                            _cardAgent.DoOnCreatedCompleted();
+
 
                         }).SetEase(Ease.OutBack);
 

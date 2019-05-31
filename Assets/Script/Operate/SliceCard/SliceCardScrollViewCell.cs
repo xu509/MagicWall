@@ -154,8 +154,8 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
         GetComponent<RectTransform>().SetAsLastSibling();
 
-        // 调用改变描述
-        Context.OnDescriptionChanged.Invoke(cellData.Description);
+        //// 调用改变描述
+        //Context.OnDescriptionChanged.Invoke(cellData.Description);
     }
 
 
@@ -184,7 +184,7 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     // 获取当前的描述
     public override string GetCurrentDescription() {
 
-        return null;
+        return cellData.Description;
     }
 
     public void DoScale()

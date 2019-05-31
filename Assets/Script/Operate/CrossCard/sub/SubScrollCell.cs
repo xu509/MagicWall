@@ -51,6 +51,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     {
         //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
 
+        
 
     }
 
@@ -124,7 +125,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     public override void UpdateComponentStatus()
     {
         // 调整 Scale 按钮
-
         if (!_cellData.IsImage)
         {
             scale_tool.gameObject.SetActive(false);

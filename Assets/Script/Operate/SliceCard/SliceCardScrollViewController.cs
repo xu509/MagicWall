@@ -40,8 +40,6 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     void UpdateSelection(int index)
     {
-        Debug.Log("Update Selection : " + index);
-
         if (Context.SelectedIndex == index)
         {
             return;
@@ -69,7 +67,9 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
 
+        // 此时不初始化描述与工具条
         UpdateComponents();
+
     }
 
     //
@@ -142,7 +142,6 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
         OnScrollerOperationed = action;
 
     }
-
 
 
 }

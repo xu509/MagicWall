@@ -38,6 +38,13 @@ public class CrossCardAgent : CardAgent
     [SerializeField] RectTransform videoContainer;
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
+    [SerializeField] RectTransform _buttomTool;
+
+
+    private Vector2 Description_Origin_Position = Vector2.zero + new Vector2(0, 20);
+    private Vector2 Description_Go_Position = Vector2.zero;
+    private Vector2 ButtomTool_Origin_Position = new Vector2(0, 100);
+    private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
 
     #endregion
 
@@ -59,8 +66,8 @@ public class CrossCardAgent : CardAgent
         //  设置标题
         _title.text = enterpriseDetail.Enterprise.Name;
 
-        //  设置描述
-        UpdateDescription(enterpriseDetail.Enterprise.Description);
+        ////  设置描述
+        //UpdateDescription(enterpriseDetail.Enterprise.Description);
 
         // 设置喜欢数
         Likes = enterpriseDetail.Enterprise.likes;
@@ -147,14 +154,15 @@ public class CrossCardAgent : CardAgent
         //}
 
         // Updatedata
-        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
-        crossCardScrollViewController.UpdateData(_cellDatas);
-        crossCardScrollViewController.SelectCell(0);
+        //crossCardScrollViewController.SelectCell(0);
         crossCardScrollViewController.SetUpCardAgent(this);
+        crossCardScrollViewController.UpdateData(_cellDatas);
+        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
+
         //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
 
         crossCardScrollBar.UpdateData(_cellDatas);
-        crossCardScrollBar.SelectCell(0);
+        //crossCardScrollBar.SelectCell(0);
         crossCardScrollBar.UpdateComponents();
         crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
         crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
@@ -166,18 +174,16 @@ public class CrossCardAgent : CardAgent
         myTimer.Record();
         myTimer.Display();
 
+        // 设置完成回调
+        SetOnCreatedCompleted(OnCreatedCompleted);
     }
 
-    void OnSelectionChanged(int index) {
-
-        CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell =  crossCardScrollViewController.GetCell(index);
-        cell.GetComponent<RectTransform>().SetAsLastSibling();
+    void OnSelectionChanged(int index)
+    {
+        crossCardScrollViewController.UpdateComponents();
 
         crossCardScrollBar.SelectCell(index);
         
-
-
-
         // 更新描述
         UpdateDescription(crossCardScrollViewController.GetCurrentCardDescription());
 
@@ -187,12 +193,13 @@ public class CrossCardAgent : CardAgent
 
     void OnBarSelectionChanged(int index)
     {
-        crossCardScrollViewController.SelectCell(index);
+        if (index != crossCardScrollViewController.CurrentIndex) {
+            crossCardScrollViewController.SelectCell(index);
 
-        CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
-
-        crossCardScrollBar.UpdateComponents();
-        
+            CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
+            crossCardScrollBar.UpdateComponents();
+        }
+       
     }
 
 
@@ -214,7 +221,19 @@ public class CrossCardAgent : CardAgent
 
 
     public void UpdateDescription(string description) {
+        Debug.Log("Do Update Description");
+
+        // 从透明到不透明，向下移动
         _description.text = description;
+
+        _description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
+        _description.DOFade(0, 0f);
+
+        _description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
+        _description.DOFade(1, 0.5f);
+
+        UpdateToolComponent();
+
     }
 
     //
@@ -307,6 +326,31 @@ public class CrossCardAgent : CardAgent
 
     private void OnScrollOperated() {
         DoUpdate();
+    }
+
+
+    private void UpdateToolComponent()
+    {
+        _buttomTool.GetComponent<RectTransform>().anchoredPosition = ButtomTool_Origin_Position;
+        _buttomTool.GetComponent<CanvasGroup>().DOFade(0, Time.deltaTime);
+
+        _buttomTool.GetComponent<RectTransform>().DOAnchorPos(ButtomTool_Go_Position, 0.5f);
+        _buttomTool.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+    }
+
+
+
+
+    private void OnCreatedCompleted()
+    {
+        //string description = crossCardScrollViewController.GetCurrentCardDescription();
+
+        ////  更新描述
+        //UpdateDescription(description);
+
+        ////  更新操作栏
+        //UpdateToolComponent();
+
     }
 }
 
