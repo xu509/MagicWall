@@ -16,6 +16,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     [SerializeField] GameObject cellPrefab = default;
 
     Action<int> onSelectionChanged;
+    Action onScrollOperated;
 
     protected override GameObject CellPrefab => cellPrefab;
 
@@ -31,6 +32,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     {
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
+        scroller.SetOnOperatedUpdate(onScrollOperated);
     }
 
     void UpdateSelection(int index)
@@ -132,5 +134,9 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         agent.DoVideo(cellData.VideoUrl, cellData.Description);
     }
 
+
+    public void SetScrollOperatedAction(Action action) {
+        onScrollOperated = action;
+    }
 
 }

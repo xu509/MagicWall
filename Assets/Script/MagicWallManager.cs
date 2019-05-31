@@ -53,10 +53,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
 
     // 面板的差值
-    [SerializeField] float panelOffsetX = 0f;
+    float panelOffsetX = 0f;
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
 
-    [SerializeField]
     float panelOffsetY = 0f;
     public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
 
@@ -110,13 +109,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 

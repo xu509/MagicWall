@@ -22,10 +22,10 @@ public class CardItemVideoFactory : CardItemFactory
             cd.crossCardAgent = cardAgent as CrossCardAgent;
             cd.VideoUrl = e.Address;
 
-
             // 设置video的封面
-            cd.ImageTexture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "env\\video\\" + e.Cover);
-
+            string address = MagicWallManager.URL_ASSET + "env\\video\\" + e.Cover;
+            cd.Image = address;
+            
             _cellDatas.Add(cd);
         }
 

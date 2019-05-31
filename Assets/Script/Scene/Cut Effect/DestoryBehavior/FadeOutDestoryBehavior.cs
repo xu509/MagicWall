@@ -19,7 +19,6 @@ public class FadeOutDestoryBehavior : CutEffectDestoryBehavior
             startTime = Time.time;
             hasInit = true;    
         }
-        // TODO 淡出
         float time = Time.time - startTime;  // 当前已运行的时间;
         float a = Mathf.Lerp(1, 0, time / totalTime);
         MagicWallManager.Instance.mainPanel.GetComponent<CanvasGroup>().alpha = a;

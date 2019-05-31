@@ -29,6 +29,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     Action<float> onValueChanged;
     Action<int> onSelectionChanged;
+    Action onOperatedUpdate;
 
     Vector2 pointerStartLocalPosition;
     float dragStartScrollPosition;
@@ -130,6 +131,8 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
+        onOperatedUpdate.Invoke();
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -150,6 +153,7 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        onOperatedUpdate.Invoke();
 
         if (eventData.button != PointerEventData.InputButton.Left)
         {
@@ -357,6 +361,12 @@ public class ScrollerDefault : UIBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
     float CircularPosition(float p, int size) => size < 1 ? 0 : p < 0 ? size - 1 + (p + 1) % size : p % size;
+
+
+    public void SetOnOperatedUpdate(Action action) {
+        onOperatedUpdate = action;
+    }
+
 }
 
 

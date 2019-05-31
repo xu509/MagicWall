@@ -38,15 +38,6 @@ public class Enterprise : BaseData,Generator<Enterprise>
     private int _likes;
     public int likes { set { _likes = value; } get { return _likes; } }
 
-    #endregion
-
-    #region Component Parameter
-    private Texture _texture_logo;
-    public Texture TextureLogo { set { _texture_logo = value; } get { return _texture_logo; } }
-
-    private Texture _texture_business_card;
-    public Texture TextureBusinessCard { set { _texture_business_card = value; } get { return _texture_business_card; } }
-
     //  Env 企业卡片组
     private List<string> _env_cards;
     public List<string> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
@@ -54,7 +45,7 @@ public class Enterprise : BaseData,Generator<Enterprise>
 
     #endregion
 
-
+    
     public Enterprise Generator()
     {
         string[] names = new string[] { "百度","可口可乐","谷歌","阿里巴巴","豆瓣","哔哩哔哩","微软","搜狗","印象笔记","迅雷"};

@@ -73,9 +73,26 @@ public class DaoService : Singleton<DaoService>
     //
     //  获取 catalog
     //
-    public Catalog GetCatalog()
+    public Catalog GetCatalog(int id)
     {
         return new Catalog().Generator();
+    }
+
+    //
+    //  获取 catalogs
+    //
+    public List<Catalog> GetCatalogs(int id)
+    {
+        List<Catalog> catalogs = new List<Catalog>();
+        string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+        string[] descriptions = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+        for (int i = 0; i < imgs.Length; i++) {
+            Catalog catalog = new Catalog();
+            catalog.Img = imgs[i];
+            catalog.Description = descriptions[i];
+            catalogs.Add(catalog);
+        }
+        return catalogs;
     }
 
 
@@ -392,7 +409,7 @@ public class DaoService : Singleton<DaoService>
         // Real 
         CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(),  new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        SceneContentType[] contentTypes = new SceneContentType[] {  SceneContentType.product, SceneContentType.env, SceneContentType.activity };
 
         for (int i = 0; i < effects.Length; i++)
         {
