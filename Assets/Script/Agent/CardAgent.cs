@@ -5,15 +5,18 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
 
-public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler
 {
     #region Parameter
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
     private float _destoryFirstStageCompleteTime = 0f;   //  第一阶段关闭的时间点
     private float _activeFirstStageDuringTime = 7f;   //  最大的时间
     private float _activeSecondStageDuringTime = 2f;   //  第二段缩小的时间
-    private bool _showDetail = false;   // 显示企业卡片
-    private bool _doMoving = false;   // 移动
+    private bool _showDetail = false;   //  显示企业卡片
+    private bool _doMoving = false;     //  移动
+    private bool _keepOpen = false;     //  保持开启
+    protected bool KeepOpen { set { _keepOpen = value; } get { return _keepOpen; } }
+
     private ScaleAgent _scaleAgent;     // 缩放代理
 
     private float _panel_top;
@@ -85,26 +88,28 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected void UpdateAgency()
     {
 
-        //Debug.Log("暂时屏蔽缩小");
-
-
-        // 缩小一半
-        //if (_cardStatus == CardStatusEnum.NORMAL)
-        //{
-        //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-        //    {
-        //        DoDestoriedForFirstStep();
-        //    }
-        //}
-
-        // 第二次缩小
-        if (_cardStatus == CardStatusEnum.DESTORING)
+        if (!_keepOpen)
         {
-            if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
+            // 缩小一半
+            if (_cardStatus == CardStatusEnum.NORMAL)
             {
-                DoDestoriedForSecondStep();
+                if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+                {
+                    DoDestoriedForFirstStep();
+                }
+
+            }
+
+            // 第二次缩小
+            if (_cardStatus == CardStatusEnum.DESTORING)
+            {
+                if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
+                {
+                    DoDestoriedForSecondStep();
+                }
             }
         }
+
     }
 
     //
@@ -230,7 +235,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private void DoRecover()
     {
 
-        Vector3 scaleVector3 = new Vector3(3.68f, 3.68f, 3.68f);
+        Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
         GetComponent<RectTransform>().DOScale(scaleVector3, 0.5f)
            .OnUpdate(() =>
@@ -294,22 +299,21 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
     public void DoMove()
-    {
-        DoUpdate();
+    {        
         // 移动
         if (!_doMoving)
         {
-            _move_reminder_container.gameObject.SetActive(true);
+            _keepOpen = true;
             _doMoving = true;
-            //  可拖动 Card
-
+            _move_reminder_container.gameObject.SetActive(true);
             _move_mask.gameObject.SetActive(true);
         }
         else
         {
-            _move_reminder_container.gameObject.SetActive(false);
+            DoUpdate();
+            _keepOpen = false;
             _doMoving = false;
-
+            _move_reminder_container.gameObject.SetActive(false);
             _move_mask.gameObject.SetActive(false);
         }
     }
@@ -322,6 +326,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _scaleAgent.SetImage(texture);
         _scaleAgent.SetOnCloseClicked(OnScaleClose);
         _scaleAgent.SetOnReturnClicked(OnScaleReturn);
+        _scaleAgent.SetOnUpdated(OnScaleUpdate);
 
         // 显示缩放框体，隐藏普通框体
         if (_main_container.gameObject.activeSelf) {
@@ -382,7 +387,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
     public void CloseBusinessCard() {
-        DoUpdate();
+        TurnOffKeepOpen();
         _list_animator.ResetTrigger("Highlighted");
         _list_animator.SetTrigger("Normal");
         businessCardAgent.gameObject.SetActive(false);
@@ -391,7 +396,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OpenBusinessCard()
     {
-        DoUpdate();
+        KeepOpen = true;
         _list_animator.ResetTrigger("Normal");
         _list_animator.SetTrigger("Highlighted");
         businessCardAgent.gameObject.SetActive(true);
@@ -426,10 +431,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         if (_doMoving)
         {
-            //Debug.Log("eventData.position : " + eventData.position);
-
-            DoUpdate();
-
 
             Move(eventData);
 
@@ -469,6 +470,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     }
 
+    private void OnScaleUpdate()
+    {
+        DoUpdate();
+    }
+
 
     // 移动
     private void Move(PointerEventData eventData) {
@@ -501,6 +507,16 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        DoUpdate();
+    }
+
+
+    public void TurnOffKeepOpen() {
+        DoUpdate();
+        _keepOpen = false;
+    }
 
 }
 

@@ -67,7 +67,7 @@ public class BackgroundManager : Singleton<BackgroundManager>
             bubble = Instantiate(_manager.backgroundPrefab) as GameObject;
             w = Random.Range(400, 80);
             alpha = w / (400f+100f);
-            print(w);
+            //print(w);
             duration -= alpha * 5;
         }
         else

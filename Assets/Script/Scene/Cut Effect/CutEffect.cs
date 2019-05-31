@@ -60,7 +60,6 @@ public abstract class CutEffect : MonoBehaviour
 
         if (sceneContentType == SceneContentType.activity)
         {
-            // TODO 修改工厂实现
             _itemsFactory = ActivityFactory.Instance;
             CreateActivity();
         }
@@ -70,7 +69,6 @@ public abstract class CutEffect : MonoBehaviour
             CreateLogo();
         }
         else {
-            // TODO 修改工厂实现
             _itemsFactory = ProductFactory.Instance;
             CreateProduct();
         }

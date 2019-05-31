@@ -55,7 +55,6 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
-        // TODO 更新横向的选项卡
         IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
         subScrollController.UpdateData(datas);
 

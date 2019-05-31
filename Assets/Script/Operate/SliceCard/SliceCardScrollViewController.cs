@@ -17,6 +17,8 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     Action<int> onSelectionChanged;
 
+    Action OnScrollerOperationed;
+
     protected override GameObject CellPrefab => cellPrefab;
 
     void Awake()
@@ -30,10 +32,16 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
     {
         scroller.OnValueChanged(UpdatePosition);
         scroller.OnSelectionChanged(UpdateSelection);
+        scroller.SetOperationAction(OnScrollerOperationed);
     }
+
+
+
 
     void UpdateSelection(int index)
     {
+        Debug.Log("Update Selection : " + index);
+
         if (Context.SelectedIndex == index)
         {
             return;
@@ -126,8 +134,12 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     public void UpdateDescription(string description) {
         //_cardAgent.UpdateDescription(description);
+        _cardAgent.UpdateDescription(description);
 
-        Debug.Log("Update Description : " + description);
+    }
+
+    public void SetOnScrollerOperated(Action action) {
+        OnScrollerOperationed = action;
 
     }
 

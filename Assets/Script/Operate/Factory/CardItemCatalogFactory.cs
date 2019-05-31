@@ -10,14 +10,13 @@ public class CardItemCatalogFactory : CardItemFactory
     public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
+        List<Catalog> catelogs = DaoService.Instance.GetCatalogs(id);
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < catelogs.Count; i++)
         {
-            Catalog e = DaoService.Instance.GetCatalog();
+            Catalog e = catelogs[i];
             CrossCardCellData cd = new CrossCardCellData();
-
-            string address = MagicWallManager.URL_ASSET + "env\\" + e.Img;
-            cd.ImageTexture = TextureResource.Instance.GetTexture(address);
+            cd.Image = MagicWallManager.URL_ASSET + "env\\" + e.Img;
             cd.Description = e.Description;
 
             cd.IsImage = true;

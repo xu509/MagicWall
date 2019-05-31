@@ -17,6 +17,11 @@ public class SliceCardAgent : CardAgent
     [SerializeField] SliceCardScrollViewController _scrollController;
 
 
+    private Vector2 Description_Origin_Position = Vector2.zero + new Vector2(0,20);
+    private Vector2 Description_Go_Position = Vector2.zero;
+
+
+
     void Awake() {
         AwakeAgency();
     }
@@ -84,6 +89,7 @@ public class SliceCardAgent : CardAgent
         _scrollController.SetUpCardAgent(this);
         _scrollController.UpdateData(cellDatas);
         _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
+        _scrollController.SetOnScrollerOperated(OnOperationAction);
 
     }
 
@@ -98,13 +104,21 @@ public class SliceCardAgent : CardAgent
     private void OnScrollControllerSelectionChanged(int index) {
         SliceCardBaseCell<SliceCardCellData,SliceCardCellContext> cell = _scrollController.GetCell(index);
         cell.GetComponent<RectTransform>().SetAsLastSibling();
-        UpdateDescription(cell.CellData.Description);
+        //UpdateDescription(cell.CellData.Description);
     }
 
-    private void UpdateDescription(string description) {
+    public void UpdateDescription(string description) {
+        // 从透明到不透明，向下移动
         _description.text = description;
+
+        _description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
+        _description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
+
     }
 
+    private void OnOperationAction() {
+        DoUpdate();
+    }
 
 
 }

@@ -32,6 +32,8 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     Action<float> onValueChanged;
     Action<int> onSelectionChanged;
+    Action onOperation;
+
 
     Vector2 pointerStartLocalPosition;
     float dragStartScrollPosition;
@@ -122,6 +124,9 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void JumpTo(int index)
     {
+        // 保持窗口状态开启
+        onOperation.Invoke();
+
         autoScrollState.Reset();
 
         velocity = 0f;
@@ -135,6 +140,9 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
+        // 保持窗口状态开启
+        onOperation.Invoke();
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -157,6 +165,9 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
+        // 保持窗口状态开启
+        onOperation.Invoke();
+
 
         if (eventData.button != PointerEventData.InputButton.Left)
         {
@@ -168,10 +179,12 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
             return;
         }
 
-        if (!RecognizeDirection(eventData))
-        {
-            return;
-        }
+        RecognizeDirection(eventData);
+
+        //if (!RecognizeDirection(eventData))
+        //{
+        //    return;
+        //}
 
         if (recognizeDirection == ScrollDirection.Horizontal)
         {
@@ -233,6 +246,9 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
+        // 保持窗口状态开启
+        onOperation.Invoke();
+
         if (eventData.button != PointerEventData.InputButton.Left)
         {
             return;
@@ -296,7 +312,7 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
         var deltaTime = Time.unscaledDeltaTime;
         var offset = CalculateOffset(currentScrollPosition);
 
-
+        bool offsetNearZero = Mathf.Approximately(offset, 0f);
         bool velocityIsZero = Mathf.Approximately(velocity, 0f);
         
         if (autoScrollState.Enable)
@@ -330,7 +346,7 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
             UpdatePosition(position);
         }
-        else if ((!dragging) || (!velocityIsZero))
+        else if ((!dragging) && (!velocityIsZero || !offsetNearZero))
         {
 
             var position = currentScrollPosition;
@@ -490,6 +506,11 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public bool DirectionIsHorizontal() {
         return recognizeDirection == ScrollDirection.Horizontal;
+    }
+
+
+    public void SetOperationAction(Action action) {
+        onOperation = action;
     }
 
 
