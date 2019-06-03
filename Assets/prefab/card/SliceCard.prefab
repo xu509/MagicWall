@@ -278,9 +278,10 @@ MonoBehaviour:
   _description: {fileID: 2004544130081051543}
   _scrollController: {fileID: 2706152829991389513}
   _buttomTool: {fileID: 7719139451170563042}
-  videoAgentPrefab: {fileID: 0}
-  normalContainer: {fileID: 0}
-  videoContainer: {fileID: 0}
+  videoAgentPrefab: {fileID: 1076230158778565772, guid: e73674838b71df241b1532ceb5a4b677,
+    type: 3}
+  normalContainer: {fileID: 5680126866508557221}
+  videoContainer: {fileID: 7944950381405223464}
 --- !u!58 &4448697247416911871
 CircleCollider2D:
   m_ObjectHideFlags: 0

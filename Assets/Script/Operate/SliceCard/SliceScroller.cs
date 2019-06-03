@@ -159,8 +159,6 @@ public class SliceScroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, ID
         dragging = true;
         autoScrollState.Reset();
 
-        Debug.Log("### ON BEGIN DRAG2 ! ###");
-
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
