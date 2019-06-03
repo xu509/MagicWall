@@ -1608,7 +1608,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6319005695361031497}
   - component: {fileID: 4068688049381868702}
-  - component: {fileID: 455928998175628500}
   - component: {fileID: 1470023570264656064}
   m_Layer: 5
   m_Name: VideoCoverContent
@@ -1644,20 +1643,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9030015335290089987}
   m_CullTransparentMesh: 0
---- !u!114 &455928998175628500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9030015335290089987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 1.17
 --- !u!114 &1470023570264656064
 MonoBehaviour:
   m_ObjectHideFlags: 0

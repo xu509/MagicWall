@@ -11,6 +11,9 @@ public class ProductDetail : Generator<ProductDetail>
     private int id;
     public int Id { set { id = value; } get { return id; } }
 
+    private int type; // 0: 图片 / 1： 视频
+
+    public int Type { set { type = value; } get { return type; } }
 
     // 产品 ID
     private int pro_id;
@@ -24,11 +27,29 @@ public class ProductDetail : Generator<ProductDetail>
     private string image;
     public string Image { set { image = value; } get { return image; } }
 
+    // 视频地址
+    private string videoUrl;
 
-    // Texture
-    private Texture texture_image;
-    public Texture TextureImage { set { texture_image = value; } get { return texture_image; } }
+    public string VideoUrl { set { videoUrl = value; } get { return videoUrl; } }
 
+
+    public bool IsImage() {
+        return type == 0;
+    }
+
+    public bool IsVideo()
+    {
+        return type == 1;
+    }
+
+    public void SetImageType() {
+        type = 0;
+    }
+
+    public void SetVideoType()
+    {
+        type = 1;
+    }
 
     public ProductDetail Generator()
     {

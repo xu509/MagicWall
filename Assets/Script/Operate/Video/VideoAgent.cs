@@ -19,7 +19,8 @@ public class VideoAgent : MonoBehaviour
     [SerializeField] RectTransform _btn_muisc_disable;
 
 
-    private CrossCardAgent _crossCardAgent;
+    private CardAgent _cardAgent;
+
     private string _address;
     private string _description;
     private bool _isPlaying = false;
@@ -38,22 +39,25 @@ public class VideoAgent : MonoBehaviour
         _description = description;
     }
 
-    public void SetCrossCardAgent(CrossCardAgent crossCardAgent)
+    public void SetCardAgent(CardAgent cardAgent)
     {
-        _crossCardAgent = crossCardAgent;
+        _cardAgent = cardAgent;
     }
 
-    public void SetData(string address,string description,CrossCardAgent crossCardAgent) {
+
+    public void SetData(string address,string description,CardAgent cardAgent) {
         SetAddress(address);
-        SetCrossCardAgent(crossCardAgent);
+        SetCardAgent(cardAgent);
         SetDescription(description);
     }
 
 
 
+
+
     public void Init() {
         _videoPlayer.source = VideoSource.Url;
-        _videoPlayer.url = MagicWallManager.URL_ASSET + "env\\video\\" + _address;
+        _videoPlayer.url = MagicWallManager.URL_ASSET + "video\\" + _address;
 
         // 设置进度条
         _progress.anchoredPosition = _progress_init;
@@ -249,7 +253,7 @@ public class VideoAgent : MonoBehaviour
 
     public void DoClose()
     {
-        _crossCardAgent.DoCloseVideoContainer();
+        _cardAgent?.DoCloseVideoContainer();
     }
 
 

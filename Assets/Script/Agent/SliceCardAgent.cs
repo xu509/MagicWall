@@ -10,12 +10,17 @@ using DG.Tweening;
 public class SliceCardAgent : CardAgent
 {
     private int _type; // 类型，0：产品；1：活动
+    VideoAgent _videoAgent;
 
 
     [SerializeField, Header("卡片 - 标题")] Text _title;
     [SerializeField, Header("卡片 - 描述")] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
     [SerializeField] RectTransform _buttomTool;
+
+    [SerializeField] VideoAgent videoAgentPrefab;
+    [SerializeField] RectTransform normalContainer;
+    [SerializeField] RectTransform videoContainer;
 
 
     private Vector2 Description_Origin_Position = Vector2.zero + new Vector2(0,20);
@@ -88,10 +93,12 @@ public class SliceCardAgent : CardAgent
             }
         }
 
+        
         _scrollController.SetUpCardAgent(this);
         _scrollController.UpdateData(cellDatas);
         _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
         _scrollController.SetOnScrollerOperated(OnOperationAction);
+
 
         SetOnCreatedCompleted(OnCreatedCompleted);
 
@@ -154,8 +161,8 @@ public class SliceCardAgent : CardAgent
         //  更新操作栏
         UpdateToolComponent();
 
-
     }
+
 
 }
 

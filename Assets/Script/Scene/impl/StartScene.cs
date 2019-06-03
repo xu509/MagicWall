@@ -178,7 +178,7 @@ public class StartScene : IScene
         foreach (Video video in videos)
         {
             string cover = video.Cover;
-            string address = MagicWallManager.URL_ASSET + "env\\video\\" + cover;
+            string address = MagicWallManager.URL_ASSET + "video\\" + cover;
             TextureResource.Instance.GetTexture(address);
 
             // TODO 处理视频的加载

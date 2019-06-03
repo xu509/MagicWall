@@ -30,6 +30,9 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     [SerializeField] Button btn_like_withnumber;
 
 
+    [SerializeField] RectTransform videoContainer;
+    [SerializeField] RawImage _video_cover;
+
 
     static class AnimatorHash
     {
@@ -52,19 +55,41 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         _cellData = cellData;
         _index = cellData.Index;
 
-        // 配置图片
-        string address;
-        if (cellData.IsProduct()) {
-            address = MagicWallManager.URL_ASSET + "product\\detail\\" + cellData.Image;
-        } else {
-            address = MagicWallManager.URL_ASSET + "activity\\detail\\" + cellData.Image;
+        gameObject.name = "SliceCardScrollCell" + cellData.Index;
+        // 需要判断是否为视频还是图片
+
+        if (cellData.IsImage)
+        {
+            _cover.gameObject.SetActive(true);
+
+            // 配置图片
+            string address;
+            if (cellData.IsProduct())
+            {
+                address = MagicWallManager.URL_ASSET + "product\\detail\\" + cellData.Image;
+            }
+            else
+            {
+                address = MagicWallManager.URL_ASSET + "activity\\detail\\" + cellData.Image;
+            }
+
+            _cover.texture = TextureResource.Instance.GetTexture(address);
+            CanvasExtensions.SizeToParent(_cover);
+            videoContainer.gameObject.SetActive(false);
+
+        }
+        else {
+            videoContainer.gameObject.SetActive(true);
+            string address = MagicWallManager.URL_ASSET + "video\\" + cellData.Image;
+
+            _video_cover.texture = TextureResource.Instance.GetTexture(address);
+            CanvasExtensions.SizeToParent(_video_cover);
+
+            _cover.gameObject.SetActive(false);
+
         }
 
-        _cover.texture = TextureResource.Instance.GetTexture(address);
 
-        CanvasExtensions.SizeToParent(_cover);
-
-        gameObject.name = "SliceCardScrollCell" + cellData.Index;
 
     }
 
@@ -183,7 +208,6 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
     // 获取当前的描述
     public override string GetCurrentDescription() {
-
         return cellData.Description;
     }
 
@@ -191,8 +215,14 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     {
         // 获取图片
         Context.OnScaleClicked?.Invoke(_cover.texture);
-
     }
+
+    public void DoPlayVideo()
+    {
+        //string url = _cellData.VideoUrl;
+        Context.OnPlayVideo?.Invoke(_cellData);
+    }
+
 
 
     public void DoLike()

@@ -24,6 +24,11 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
 
 
     public SliceCardBaseCell<SliceCardCellData, SliceCardCellContext> GetCell(int index) {
+
+        if (index == pool.Count) {
+            return pool[0];
+        }
+
         return pool[index];
     }
 
@@ -97,8 +102,9 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
         {
             throw new MissingComponentException(nameof(cellContainer));
         }
-            
+
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+
         for (var i = 0; i < addCount; i++)
         {
             var cell = Instantiate(CellPrefab, cellContainer).GetComponent<SliceCardBaseCell<SliceCardCellData, SliceCardCellContext>>();
@@ -114,7 +120,7 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
             cell.InitData();
             pool.Add(cell);
         }
-        
+       
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)

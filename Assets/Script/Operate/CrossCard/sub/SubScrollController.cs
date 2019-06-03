@@ -88,14 +88,14 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     protected override void UpdateComponents()
     {
         for (int i = 0; i < Pool.Count; i++) {
-            int Index = Pool[i].Index;
+            int Index = GetCell(i).Index;
 
             if (Index == CurrentIndex)
             {
-                Pool[i].UpdateComponentStatus();
+                GetCell(i).UpdateComponentStatus();
             }
             else {
-                Pool[i].ClearComponentStatus();
+                GetCell(i).ClearComponentStatus();
             }
         }
     }
@@ -109,12 +109,12 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     {
         for (int i = 0; i < Pool.Count; i++)
         {
-            Pool[i].ClearComponentStatus();
+            GetCell(i).ClearComponentStatus();
         }
     }
 
     public string GetCurrentDescription() {
-        CrossCardCellData data = Pool[_currentIndex].GetData();
+        CrossCardCellData data = GetCell(_currentIndex).GetData();
         return data.Description;
     }
 }

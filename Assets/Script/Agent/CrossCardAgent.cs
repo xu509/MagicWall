@@ -32,10 +32,7 @@ public class CrossCardAgent : CardAgent
     [SerializeField, Header("十字卡片 - 标题")] Text _title;
     [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
-    [SerializeField] VideoAgent videoAgentPrefab;
 
-    [SerializeField] RectTransform normalContainer;
-    [SerializeField] RectTransform videoContainer;
     [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
     [SerializeField] CrossCardScrollBar crossCardScrollBar;
     [SerializeField] RectTransform _buttomTool;
@@ -221,7 +218,6 @@ public class CrossCardAgent : CardAgent
 
 
     public void UpdateDescription(string description) {
-        Debug.Log("Do Update Description");
 
         // 从透明到不透明，向下移动
         _description.text = description;
@@ -272,57 +268,6 @@ public class CrossCardAgent : CardAgent
         DoUpdate();
     }
 
-    public void DoVideo(string address,string description)
-    {
-        //显示 video 的框框
-        OpenVideoContainer(address,description);
-
-        // 隐藏平时的框框
-        HideNormalContainer();
-
-
-        // 当打开视频框体时不自动关闭
-        KeepOpen = true;
-        
-    }
-
-    public void DoCloseVideoContainer() {
-        OpenNormalContainer();
-
-        CloseVideoContainer();
-
-        TurnOffKeepOpen();
-    }
-
-
-    //
-    //  关闭视频
-    //
-    private void CloseVideoContainer() {
-        videoContainer.gameObject.SetActive(false);
-        _videoAgent?.DoDestory();
-        Destroy(_videoAgent?.gameObject);
-
-    }
-
-    // 显示普通的窗口
-    private void OpenNormalContainer()
-    {
-        normalContainer.gameObject.SetActive(true);
-    }
-
-    // 隐藏普通的窗口
-    private void HideNormalContainer() {
-        normalContainer.gameObject.SetActive(false);
-    }
-
-    // 显示 Video 的窗口
-    private void OpenVideoContainer(string address,string description) {
-        videoContainer.gameObject.SetActive(true);
-        _videoAgent = Instantiate(videoAgentPrefab, videoContainer);
-        _videoAgent.SetData(address,description, this);
-        _videoAgent.Init();
-    }
 
     private void OnScrollOperated() {
         DoUpdate();
