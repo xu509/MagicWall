@@ -64,7 +64,6 @@ public class CurveStaggerCutEffect : CutEffect
     protected override void CreateActivity() {
         float s = Time.time;
 
-
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
         int _column = 35;

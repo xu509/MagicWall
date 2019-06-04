@@ -59,6 +59,9 @@ public class AgentManager : Singleton<AgentManager>
     {
         if (!agent.IsChoosing)
         {
+            // 清除 agent 挂载的 tween
+
+
             Destroy(agent.gameObject);
             _agents.Remove(agent);
         }

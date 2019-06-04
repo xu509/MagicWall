@@ -101,14 +101,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (!_keepOpen)
         {
             // 缩小一半
-            //if (_cardStatus == CardStatusEnum.NORMAL)
-            //{
-            //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-            //    {
-            //        DoDestoriedForFirstStep();
-            //    }
+            if (_cardStatus == CardStatusEnum.NORMAL)
+            {
+                if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+                {
+                    DoDestoriedForFirstStep();
+                }
 
-            //}
+            }
 
             // 第二次缩小
             if (_cardStatus == CardStatusEnum.DESTORING)

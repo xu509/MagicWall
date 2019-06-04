@@ -464,8 +464,8 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(),  new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
-            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
+        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect() , new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
+            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
         SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product,SceneContentType.activity, SceneContentType.env };
 
         for (int i = 0; i < effects.Length; i++)

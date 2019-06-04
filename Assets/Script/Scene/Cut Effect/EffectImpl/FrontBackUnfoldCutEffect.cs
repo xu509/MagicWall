@@ -100,7 +100,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 }   else
                 {
                     go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.backPanel);
-                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
                 }
 
                 // 装载延迟参数
@@ -178,7 +178,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 }   else
                 {
                     go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.backPanel);
-                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
                 }
 
                 // 装载延迟参数
@@ -306,7 +306,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 else
                 {
                     go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.backPanel);
-                    go.GetComponent<RawImage>().DOFade(0.2f, 0);
+                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
                 }
 
                 // 装载延迟参数
