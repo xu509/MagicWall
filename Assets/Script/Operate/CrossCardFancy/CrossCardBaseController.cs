@@ -24,6 +24,12 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
 
 
     public CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index) {
+
+        if (index == pool.Count)
+        {
+            return pool[0];
+        }
+
         return pool[index];
     }
 
@@ -53,7 +59,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
     }
 
 
-    protected abstract void UpdateComponents();
+    public abstract void UpdateComponents();
 
 
     /// <summary>

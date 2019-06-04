@@ -10,6 +10,9 @@ public class ActivityDetail : Generator<ActivityDetail>
     private int _id;
     public int Id { set { _id = value; } get { return _id; } }
 
+    private int type; // 0: 图片 / 1： 视频
+
+    public int Type { set { type = value; } get { return type; } }
 
     // 企业 ID
     private int ent_id;
@@ -23,9 +26,25 @@ public class ActivityDetail : Generator<ActivityDetail>
     private string _description;
     public string Description { set { _description = value; } get { return _description; } }
 
-    
-    private Texture _texture_image;
-    public Texture TextureImage { set { _texture_image = value; } get { return _texture_image; } }
+    // 视频地址
+    private string videoUrl;
+
+    public string VideoUrl { set { videoUrl = value; } get { return videoUrl; } }
+
+
+    public void SetImageType()
+    {
+        type = 0;
+    }
+
+    public void SetVideoType()
+    {
+        type = 1;
+    }
+
+    public bool IsImage() { return type == 0; }
+
+    public bool IsVideo() { return type == 1; }
 
 
     public ActivityDetail Generator()

@@ -46,7 +46,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         Refresh();
         onSelectionChanged?.Invoke(index);
 
-        UpdateComponents();
+        
 
     }
 
@@ -100,19 +100,19 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     }
 
 
-    protected override void UpdateComponents()
+    public override void UpdateComponents()
     {
         for (int i = 0; i < Pool.Count; i++)
         {
-            int Index = Pool[i].Index;
+            int Index = GetCell(i).Index;
 
             if (Index == CurrentIndex)
             {
-                Pool[i].UpdateComponentStatus();
+                GetCell(i).UpdateComponentStatus();
             }
             else
             {
-                Pool[i].ClearComponentStatus();
+                GetCell(i).ClearComponentStatus();
             }
         }
     }
@@ -120,7 +120,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
     // 获取当前显示卡片的描述
     public string GetCurrentCardDescription() {
-        string str = Pool[_currentIndex].GetCurrentDescription();
+        string str = GetCell(_currentIndex).GetCurrentDescription();
         return str;
     }
 
