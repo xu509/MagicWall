@@ -199,6 +199,7 @@ public class CurveStaggerCutEffect : CutEffect
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         DisplayBehavior.Init(_displayBehaviorConfig);
 
     }

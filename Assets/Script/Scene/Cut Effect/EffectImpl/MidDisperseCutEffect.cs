@@ -117,12 +117,13 @@ public class MidDisperseCutEffect : CutEffect
         _manager.columnAndTops = new Dictionary<int, float>();
 
         // 获取栅格信息
-        int _row = _manager.Row;
-        int _column = 23;
+        float gap = ItemsFactory.GetSceneGap();
         float _itemWidth = 300;
         float _itemHeight = 0;
-        float gap = ItemsFactory.GetSceneGap();
+        float w = _manager.mainPanel.rect.width;
         float h = _manager.mainPanel.rect.height;
+        int _row = _manager.Row;
+        int _column = Mathf.CeilToInt(w / (_itemWidth + gap));
 
         for (int j = 0; j < _column; j++)
         {
@@ -214,6 +215,7 @@ public class MidDisperseCutEffect : CutEffect
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
 
         DisplayBehavior.Init(_displayBehaviorConfig);
 
@@ -232,12 +234,13 @@ public class MidDisperseCutEffect : CutEffect
         _manager.columnAndTops = new Dictionary<int, float>();
 
         // 获取栅格信息
-        int _row = _manager.Row;
-        int _column = 23;
+        float gap = ItemsFactory.GetSceneGap();
         float _itemWidth = 300;
         float _itemHeight = 0;
-        float gap = ItemsFactory.GetSceneGap();
+        float w = _manager.mainPanel.rect.width;
         float h = _manager.mainPanel.rect.height;
+        int _row = _manager.Row;
+        int _column = Mathf.CeilToInt(w / (_itemWidth + gap));
 
         for (int j = 0; j < _column; j++)
         {

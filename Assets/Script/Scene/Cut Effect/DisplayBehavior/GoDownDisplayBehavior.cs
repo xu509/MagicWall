@@ -55,6 +55,8 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         float _itemWidth = 300;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
             if (flag == false)
@@ -90,6 +92,8 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         float _itemWidth = 300;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
             if (flag == false)
@@ -136,6 +140,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 
     void UpdateAgentsOfEnv()
     {
+        /*
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -170,5 +175,30 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         {
 
         }
+        */
+        int startRow = _manager.Row;
+        int _column = _displayBehaviorConfig.ItemsFactory.GetSceneColumn();
+        float _itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
+        float _itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
+
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        if (Math.Abs(_manager.PanelOffsetY) > 0)
+        {
+            if (flag == false)
+            {
+                for (int i = startRow; i < startRow + extra; i++)
+                {
+                    for (int j = 0; j < _column; j++)
+                    {
+                        Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GetOriginPosition(i, j);
+                        float x = vector2.x;
+                        float y = vector2.y;
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+
+                    }
+                }
+                flag = true;
+            }
+        }                    
     }
 }

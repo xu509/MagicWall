@@ -65,6 +65,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
         int page = _displayBehaviorConfig.Page;
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
             if (flag == false)
@@ -73,7 +75,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float y = pair.Value;
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
@@ -115,6 +117,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnv()
     {
+        /*
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -149,6 +152,32 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         {
 
         }
+        */
+
+        int startRow = _manager.Row;
+        int _column = _displayBehaviorConfig.ItemsFactory.GetSceneColumn();
+        float _itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
+        float _itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
+
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        if (Math.Abs(_manager.PanelOffsetY) > 0)
+        {
+            if (flag == false)
+            {
+                for (int i = startRow; i < startRow + extra; i++)
+                {
+                    for (int j = 0; j < _column; j++)
+                    {
+                        Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GoUpGetOriginPosition(i, j);
+                        float x = vector2.x;
+                        float y = vector2.y;
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+
+                    }
+                }
+                flag = true;
+            }
+        }
     }
 
 
@@ -177,6 +206,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
         int page = _displayBehaviorConfig.Page;
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
             if (flag == false)
@@ -185,7 +216,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float y = pair.Value;
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;

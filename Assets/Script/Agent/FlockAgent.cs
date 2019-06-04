@@ -85,6 +85,9 @@ public class FlockAgent : MonoBehaviour
     private bool isRecovering = false;
     public bool IsRecovering { set { isRecovering = value; } get { return isRecovering; } }
 
+    //
+    private bool _StarsCutEffectIsPlaying = false;
+    public bool StarsCutEffectIsPlaying { set { _StarsCutEffectIsPlaying = value; } get { return _StarsCutEffectIsPlaying; } }
 
 
     // 卡片代理
