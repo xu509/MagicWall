@@ -62,7 +62,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     protected override void CreateLogo()
     {
         int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
+        int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
         float itemWidth = ItemsFactory.GetItemWidth();
         float itemHeight = ItemsFactory.GetItemHeight();
         float gap = ItemsFactory.GetSceneGap();
@@ -138,7 +138,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     protected override void CreateActivity()
     {
         int _row = 6;
-        int _column = 35;
+        int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
         float itemWidth = 250;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
@@ -258,6 +258,8 @@ public class FrontBackUnfoldCutEffect : CutEffect
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
+
         DisplayBehavior.Init(_displayBehaviorConfig);
 
     }
@@ -265,7 +267,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     protected override void CreateProduct()
     {
         int _row = 6;
-        int _column = 35;
+        int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
         float itemWidth = 250;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();

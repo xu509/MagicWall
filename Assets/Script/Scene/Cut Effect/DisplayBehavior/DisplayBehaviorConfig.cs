@@ -18,6 +18,7 @@ public class DisplayBehaviorConfig
     private Dictionary<int, List<FlockAgent>> _agentsOfPages = new Dictionary<int, List<FlockAgent>>();
     private int _page = 0;
     private ItemsFactory _itemsFactory;
+    private float _displayTime;
 
     public ItemsFactory ItemsFactory
     {
@@ -77,6 +78,13 @@ public class DisplayBehaviorConfig
         set { _agentsOfPages = value; }
         get { return _agentsOfPages; }
     }
+
+    public float DisplayTime
+    {
+        set { _displayTime = value; }
+        get { return _displayTime; }
+    }
+
 
     //
     //  _agentsOfPages

@@ -58,6 +58,7 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnv ()
     {
+        /*
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -89,6 +90,7 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         {
 
         }
+        */
     }
 
     private void UpdateAgentsOfActivity()
