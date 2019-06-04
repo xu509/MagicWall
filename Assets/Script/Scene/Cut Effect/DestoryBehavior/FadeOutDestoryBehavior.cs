@@ -23,5 +23,6 @@ public class FadeOutDestoryBehavior : CutEffectDestoryBehavior
         float a = Mathf.Lerp(1, 0, time / totalTime);
         MagicWallManager.Instance.mainPanel.GetComponent<CanvasGroup>().alpha = a;
         MagicWallManager.Instance.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
+
     }
 }

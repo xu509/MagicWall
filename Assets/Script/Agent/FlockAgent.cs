@@ -7,9 +7,6 @@ using EasingUtil;
 using System;
 
 
-
-
-
 [RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
@@ -105,6 +102,9 @@ public class FlockAgent : MonoBehaviour
     //  工厂 & 管理器
     ItemsFactory _itemsFactory;
 
+
+    // Tweener
+    Tweener rectTransformTweener;
 
 
     float show_move_offset_x;
@@ -209,6 +209,12 @@ public class FlockAgent : MonoBehaviour
         // 此时的坐标位置可能已处于偏移状态
 		RectTransform m_transform = GetComponent<RectTransform>();
 
+        if (m_transform == null) {
+            return;
+        }
+
+
+
         // 获取施加影响的目标物
         //  判断是否有多个影响体，如有多个，取距离最近的那个
         List<FlockAgent> transforms = AgentManager.Instance.EffectAgent;
@@ -311,7 +317,6 @@ public class FlockAgent : MonoBehaviour
 
             Vector2 to = new Vector2(to_x, to_y); //目标位置
 
-
             // offset：影响距离  /  effectDistance： 最大影响距离
 
             //float overshootOrAmplitude = 3f;
@@ -319,28 +324,25 @@ public class FlockAgent : MonoBehaviour
 
             // 获取缓动方法
             Func<float, float> defaultEasingFunction = EasingFunction.Get(manager.EaseEnum);
-
             float k = defaultEasingFunction(offset / effectDistance);
 
-
-            m_transform.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
-            m_transform.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+            m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+            m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
             
-
 			IsChanging = true;
 		}
 		else
 			// 未进入影响范围
 		{
-
             Vector2 toy = new Vector2(refVector2.x, refVector2.y);
-			m_transform.DOAnchorPos(toy, Time.deltaTime);
+			m_transform?.DOAnchorPos(toy, Time.deltaTime);
 
             if (m_transform.localScale != Vector3.one) {
-                m_transform.DOScale(1, Time.deltaTime);
+                m_transform?.DOScale(1, Time.deltaTime);
             }
-
         }
+
+
 	}
     #endregion
 
@@ -585,7 +587,6 @@ public class FlockAgent : MonoBehaviour
         {  
             return false;
         }
-
 
     }
 

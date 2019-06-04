@@ -126,7 +126,7 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         else
         {
             go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.backPanel);
-            go.GetComponent<RawImage>().DOFade(0.2f, 0);
+            go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
         }
 
         return go;

@@ -511,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08396c27294ff3c4d92355e5186eb8e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _managerConfig: {fileID: 11400000, guid: 2be48131d5f024944a52909c5203c6f4, type: 2}
   _magicWallPanel: {fileID: 438711669}
   mainPanel: {fileID: 577667532}
   agentPrefab: {fileID: 3679100315635514291, guid: dca75ace6c0d1e54eaa146ecda9b9789,

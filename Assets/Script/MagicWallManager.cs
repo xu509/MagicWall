@@ -17,6 +17,11 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region PUBLIC PARAMETER
     // 面板
+    [SerializeField] ManagerConfig _managerConfig;
+    public ManagerConfig managerConfig { get { return _managerConfig; } }
+
+
+
     [SerializeField] RectTransform _magicWallPanel;
     public RectTransform MagincWallPanel { get { return _magicWallPanel; } }
 
@@ -29,7 +34,6 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     // 背景管理器相关设置
     public GameObject backgroundPrefab;//气泡预制体
-
     public GameObject backgroundPrefab2;//气泡预制体
 
     [Range(10f, 30f)]
@@ -109,13 +113,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 

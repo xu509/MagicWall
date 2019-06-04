@@ -12,9 +12,11 @@ public class StarsCutEffect : CutEffect
     private int row;
     private int column;
 
+    private float _distance;
+
     private float generate_agent_interval = 0.5f; // 生成的间隔
     private float last_generate_time = 0f; // 最后生成的时间
-    private float animation_duration = 4f;//动画持续时间
+    private float animation_duration;//动画持续时间
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
@@ -44,6 +46,9 @@ public class StarsCutEffect : CutEffect
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
+
+        _distance = manager.managerConfig.StarEffectDistance;
+        animation_duration = manager.managerConfig.StarEffectDistanceTime;
     }
 
     //
@@ -98,7 +103,7 @@ public class StarsCutEffect : CutEffect
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 1000);
+                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, _distance);
 
                 go.gameObject.SetActive(false);
             }
@@ -152,7 +157,7 @@ public class StarsCutEffect : CutEffect
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 5000);
+                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, _distance);
 
                 go.gameObject.SetActive(false);
             }
@@ -218,7 +223,7 @@ public class StarsCutEffect : CutEffect
         RawImage image = agent.GetComponent<RawImage>();
         //rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, 0);
-        rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 5000);
+        rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);
         agent.StarsCutEffectIsPlaying = false;
         agent.GetComponent<RawImage>().DOFade(1, 0);
 
@@ -275,7 +280,7 @@ public class StarsCutEffect : CutEffect
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 1000);
+                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, _distance);
 
                 go.gameObject.SetActive(false);
             }
