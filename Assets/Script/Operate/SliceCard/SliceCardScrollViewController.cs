@@ -26,6 +26,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
         Context.OnCellClicked = SelectCell;
         Context.OnScaleClicked = DoScale;
         Context.OnDescriptionChanged = UpdateDescription;
+        Context.OnPlayVideo = OnPlayVideo;
     }
 
     void Start()
@@ -40,8 +41,6 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     void UpdateSelection(int index)
     {
-        Debug.Log("Update Selection : " + index);
-
         if (Context.SelectedIndex == index)
         {
             return;
@@ -69,7 +68,9 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
         UpdateContents(items);
         scroller.SetTotalCount(items.Count);
 
+        // 此时不初始化描述与工具条
         UpdateComponents();
+
     }
 
     //
@@ -128,7 +129,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     // 获取当前显示卡片的描述
     public string GetCurrentCardDescription() {
-        string str = Pool[_currentIndex].GetCurrentDescription();
+        string str = GetCell(_currentIndex).GetCurrentDescription();
         return str;
     }
 
@@ -143,6 +144,16 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
 
     }
 
+    public void OnPlayVideo(SliceCardCellData cellData)
+    {
+        SliceCardAgent agent = _cardAgent as SliceCardAgent;
+        Debug.Log("Do play video : " + cellData.VideoUrl);
+
+        Debug.Log("Do play video : " + cellData.Description);
+
+
+        agent.DoVideo(cellData.VideoUrl, cellData.Description);
+    }
 
 
 }

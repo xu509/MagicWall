@@ -405,6 +405,9 @@ public class FlockAgent : MonoBehaviour
                             _cardAgent.Height = h;
 
                         }).OnComplete(() => {
+                            // 执行完成后动画
+                            _cardAgent.DoOnCreatedCompleted();
+
 
                         }).SetEase(Ease.OutBack);
 

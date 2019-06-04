@@ -10,15 +10,25 @@ using DG.Tweening;
 public class SliceCardAgent : CardAgent
 {
     private int _type; // 类型，0：产品；1：活动
+    VideoAgent _videoAgent;
 
 
     [SerializeField, Header("卡片 - 标题")] Text _title;
     [SerializeField, Header("卡片 - 描述")] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
+    [SerializeField] RectTransform _buttomTool;
+
+    [SerializeField] VideoAgent videoAgentPrefab;
+    [SerializeField] RectTransform normalContainer;
+    [SerializeField] RectTransform videoContainer;
 
 
     private Vector2 Description_Origin_Position = Vector2.zero + new Vector2(0,20);
     private Vector2 Description_Go_Position = Vector2.zero;
+
+    private Vector2 ButtomTool_Origin_Position = new Vector2(0, 100);
+    private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
+
 
 
 
@@ -83,13 +93,14 @@ public class SliceCardAgent : CardAgent
             }
         }
 
-
-
-
+        
         _scrollController.SetUpCardAgent(this);
         _scrollController.UpdateData(cellDatas);
         _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
         _scrollController.SetOnScrollerOperated(OnOperationAction);
+
+
+        SetOnCreatedCompleted(OnCreatedCompleted);
 
     }
 
@@ -104,7 +115,14 @@ public class SliceCardAgent : CardAgent
     private void OnScrollControllerSelectionChanged(int index) {
         SliceCardBaseCell<SliceCardCellData,SliceCardCellContext> cell = _scrollController.GetCell(index);
         cell.GetComponent<RectTransform>().SetAsLastSibling();
-        //UpdateDescription(cell.CellData.Description);
+
+        string description = _scrollController.GetCurrentCardDescription();
+
+        //  更新描述
+        UpdateDescription(description);
+
+        // 更新下方操作栏
+        UpdateToolComponent();
     }
 
     public void UpdateDescription(string description) {
@@ -112,12 +130,37 @@ public class SliceCardAgent : CardAgent
         _description.text = description;
 
         _description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
+        _description.DOFade(0, 0f);
+
         _description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
+        _description.DOFade(1, 0.5f);
 
     }
 
+    private void UpdateToolComponent() {
+        _buttomTool.GetComponent<RectTransform>().anchoredPosition = ButtomTool_Origin_Position;
+        _buttomTool.GetComponent<CanvasGroup>().DOFade(0, Time.deltaTime);
+
+        _buttomTool.GetComponent<RectTransform>().DOAnchorPos(ButtomTool_Go_Position, 0.5f);
+        _buttomTool.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+    }
+
+
     private void OnOperationAction() {
         DoUpdate();
+    }
+
+
+    private void OnCreatedCompleted() {
+
+        string description = _scrollController.GetCurrentCardDescription();
+
+        //  更新描述
+        UpdateDescription(description);
+
+        //  更新操作栏
+        UpdateToolComponent();
+
     }
 
 

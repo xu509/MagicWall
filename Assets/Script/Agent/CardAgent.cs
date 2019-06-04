@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -18,6 +19,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool KeepOpen { set { _keepOpen = value; } get { return _keepOpen; } }
 
     private ScaleAgent _scaleAgent;     // 缩放代理
+    private VideoAgent _videoAgent;
 
     private float _panel_top;
     private float _panel_bottom;
@@ -49,7 +51,15 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] Button _btn_move;
     [SerializeField] Button _btn_close;
 
+    [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
+    [SerializeField] RectTransform normalContainer; // 正常显示的框体
+    [SerializeField] RectTransform videoContainer;  // video的安放框体
+
     [SerializeField] float radius;// Circle Collider2D radius
+
+
+    Action OnCreatedCompletedAction; 
+
 
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
@@ -91,14 +101,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (!_keepOpen)
         {
             // 缩小一半
-            if (_cardStatus == CardStatusEnum.NORMAL)
-            {
-                if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-                {
-                    DoDestoriedForFirstStep();
-                }
+            //if (_cardStatus == CardStatusEnum.NORMAL)
+            //{
+            //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+            //    {
+            //        DoDestoriedForFirstStep();
+            //    }
 
-            }
+            //}
 
             // 第二次缩小
             if (_cardStatus == CardStatusEnum.DESTORING)
@@ -517,6 +527,75 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         DoUpdate();
         _keepOpen = false;
     }
+
+
+    public void DoOnCreatedCompleted() {
+        OnCreatedCompletedAction?.Invoke();
+    }
+
+    protected void SetOnCreatedCompleted(Action action) {
+        OnCreatedCompletedAction = action;
+    }
+
+
+    #region 视频播放功能
+
+    public void DoVideo(string address, string description)
+    {
+        //显示 video 的框框
+        OpenVideoContainer(address, description);
+
+        // 隐藏平时的框框
+        HideNormalContainer();
+
+
+        // 当打开视频框体时不自动关闭
+        KeepOpen = true;
+
+    }
+
+    public void DoCloseVideoContainer()
+    {
+        OpenNormalContainer();
+
+        CloseVideoContainer();
+
+        TurnOffKeepOpen();
+    }
+
+
+    //
+    //  关闭视频
+    //
+    private void CloseVideoContainer()
+    {
+        videoContainer.gameObject.SetActive(false);
+        _videoAgent?.DoDestory();
+        Destroy(_videoAgent?.gameObject);
+    }
+
+    // 显示普通的窗口
+    private void OpenNormalContainer()
+    {
+        normalContainer.gameObject.SetActive(true);
+    }
+
+    // 隐藏普通的窗口
+    private void HideNormalContainer()
+    {
+        normalContainer.gameObject.SetActive(false);
+    }
+
+    // 显示 Video 的窗口
+    private void OpenVideoContainer(string address, string description)
+    {
+        videoContainer.gameObject.SetActive(true);
+        _videoAgent = Instantiate(videoAgentPrefab, videoContainer);
+        _videoAgent.SetData(address, description, this);
+        _videoAgent.Init();
+    }
+    #endregion
+
 
 }
 
