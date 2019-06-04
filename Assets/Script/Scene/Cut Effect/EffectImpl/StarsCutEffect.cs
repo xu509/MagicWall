@@ -152,7 +152,7 @@ public class StarsCutEffect : CutEffect
 
                 // 将agent的z轴定义在后方
                 RectTransform rect = go.GetComponent<RectTransform>();
-                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 1000);
+                rect.anchoredPosition3D = rect.anchoredPosition3D + new Vector3(0, 0, 5000);
 
                 go.gameObject.SetActive(false);
             }
@@ -165,16 +165,21 @@ public class StarsCutEffect : CutEffect
 
             // 随机选择
             int count = AgentManager.Instance.Agents.Count;
-            for (int i=0; i<20; i++)
+            for (int i=0; i<15; i++)
             {
-                int index = Random.Range(0, count - 1);
+                int index = Random.Range(0, count);
                 FlockAgent agent = AgentManager.Instance.Agents[index];
-                agent.gameObject.SetActive(true);
-                //agent.transform.SetAsLastSibling();
+                if (!agent.StarsCutEffectIsPlaying) {
+                    agent.StarsCutEffectIsPlaying = true;
+                    agent.gameObject.SetActive(true);
+                    agent.GetComponent<RectTransform>().SetAsFirstSibling();
+                    //agent.transform.SetAsLastSibling();
 
-                Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
-                agent.GetComponent<RectTransform>().DOAnchorPos3D(to, animation_duration)
-                    .OnComplete(() => DOAnchorPosCompleteCallback(agent));
+                    Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
+                    agent.GetComponent<RectTransform>().DOAnchorPos3DZ(0, animation_duration)
+                        .OnComplete(() => DOAnchorPosCompleteCallback(agent));
+                    agent.GetComponent<RawImage>().DOFade(0.2f, animation_duration).From();
+                }
                 //agent.GetComponent<RectTransform>().DOScale(new Vector3(0.5f, 0.5f, 0.5f), animation_duration).From();
             }
 
@@ -209,12 +214,15 @@ public class StarsCutEffect : CutEffect
 
     public void DOFadeCompleteCallback(FlockAgent agent)
     {
-        agent.gameObject.SetActive(false);
         RectTransform rect = agent.GetComponent<RectTransform>();
         RawImage image = agent.GetComponent<RawImage>();
         //rect.DOScale(1f, Time.deltaTime);
         image.DOFade(1, 0);
-        rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 1000);
+        rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 5000);
+        agent.StarsCutEffectIsPlaying = false;
+        agent.GetComponent<RawImage>().DOFade(1, 0);
+
+        agent.gameObject.SetActive(false);
 
         //foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
         //{

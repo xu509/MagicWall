@@ -85,6 +85,9 @@ public class FlockAgent : MonoBehaviour
     private bool isRecovering = false;
     public bool IsRecovering { set { isRecovering = value; } get { return isRecovering; } }
 
+    //
+    private bool _StarsCutEffectIsPlaying = false;
+    public bool StarsCutEffectIsPlaying { set { _StarsCutEffectIsPlaying = value; } get { return _StarsCutEffectIsPlaying; } }
 
 
     // 卡片代理
@@ -362,6 +365,26 @@ public class FlockAgent : MonoBehaviour
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this,false);
 
+            //靠近四周边界需要偏移
+            float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
+            float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y; 
+
+            if (cardGenPosition.x < w/2)
+            {
+                cardGenPosition.x = w / 2;
+            }
+            if (cardGenPosition.x > _manager.mainPanel.rect.width - w/2)
+            {
+                cardGenPosition.x = _manager.mainPanel.rect.width - w / 2;
+            }
+            if (cardGenPosition.y < h / 2)
+            {
+                cardGenPosition.y = h / 2;
+            }
+            if (cardGenPosition.y > _manager.mainPanel.rect.height - h / 2)
+            {
+                cardGenPosition.y = _manager.mainPanel.rect.height - h / 2;
+            }
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
@@ -381,8 +404,8 @@ public class FlockAgent : MonoBehaviour
                     .DOScale(scaleVector3, 0.5f)
                     .OnUpdate(() =>
                         {
-                            _cardAgent.Width = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
-                            _cardAgent.Height = _cardAgent.GetComponent<RectTransform>().sizeDelta.y;
+                            _cardAgent.Width = w;
+                            _cardAgent.Height = h;
 
                         }).OnComplete(() => {
                             // 执行完成后动画

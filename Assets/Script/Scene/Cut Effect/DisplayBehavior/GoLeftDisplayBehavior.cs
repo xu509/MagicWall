@@ -57,6 +57,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnv()
     {
+        /*
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
@@ -88,6 +89,35 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         {
 
         }
+        */
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
+        float itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
+        float itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
+        float row = _manager.row;
+        int startColumn = _displayBehaviorConfig.ItemsFactory.GetSceneColumn();
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
+        if (Math.Abs(_manager.PanelOffsetX) > 0)
+        {
+            if (flag == false)
+            {
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = startColumn; j < startColumn + extra; j++)
+                    {
+                        Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GetOriginPosition(i, j);
+                        float x = vector2.x;
+                        float y = vector2.y;
+                        //生成 agent
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+
+                    }
+                }
+                flag = true;
+            }
+        }
+
     }
 
     private void UpdateAgentsOfActivity()
@@ -95,6 +125,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float itemWidth = 0;
         float itemHeight = 250;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (Math.Abs(_manager.PanelOffsetX) > 0)
         {
             if (flag == false)
@@ -103,7 +135,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float x = pair.Value;
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
@@ -131,6 +163,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float itemHeight = 250;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         float offset = Math.Abs(_manager.PanelOffsetX);
+        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (offset > 0)
         {
             if (flag == false)
@@ -139,7 +173,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float x = pair.Value;
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
