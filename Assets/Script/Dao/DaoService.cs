@@ -533,22 +533,61 @@ public class DaoService : Singleton<DaoService>
         return sceneConfigs;
     }
 
+    public bool IsCustom() {
+        //TODO
+        int number = Random.Range(0, 5);
+        return number > 2;
 
-    enum CustomImageType{
+        return true;
+
+    }
+
+
+
+   public enum CustomImageType{
         LEFT1,LEFT2,RIGHT
     }
 
     //
     //  TODO 获取定制屏所配置的图片
     //
-    //public List<string> GetCustomImage(CustomImageType type) {
-        
+    public List<string> GetCustomImage(CustomImageType type) {
+        string[] leftImages = { "l1.jpg", "l2.jpg", "l3.jpg" };
+        string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg" };
+        string[] rightImages = { "r1.jpg", "r2.jpg", "r3.jpg" };
 
-
-
-
-
-    //}
+        if (type == CustomImageType.LEFT1) {
+            List<string> images = new List<string>();
+            int size = Random.Range(1, 4);
+            size = 3;
+            for (int i = 0; i < size; i++) {
+                images.Add(leftImages[i]);
+            }
+            return images;
+        }
+        else if (type == CustomImageType.LEFT2)
+        {
+            List<string> images = new List<string>();
+            int size = Random.Range(1, 4);
+            size = 3;
+            for (int i = 0; i < size; i++)
+            {
+                images.Add(middleImages[i]);
+            }
+            return images;
+        }
+        else
+        {
+            List<string> images = new List<string>();
+            int size = Random.Range(1, 4);
+            size = 3;
+            for (int i = 0; i < size; i++)
+            {
+                images.Add(rightImages[i]);
+            }
+            return images;
+        }
+    }
 
 
 }

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using EasingUtil;
 //
 //  入口类
@@ -265,21 +266,24 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 当前场景退出动画（淡出）
         CanvasGroup cg = IndexPanel.GetComponent<CanvasGroup>();
         cg.DOFade(0, 1).OnComplete(() => {
-            //  初始化组件库
-            AgentManager.Instance.Reset();
+            ////  初始化组件库
+            //AgentManager.Instance.Reset();
 
-            //  初始化场景库
-            MagicSceneManager.Instance.Reset();
+            ////  初始化场景库
+            //MagicSceneManager.Instance.Reset();
 
-            //  初始化背景库
-            BackgroundManager.Instance.Reset();
+            ////  初始化背景库
+            //BackgroundManager.Instance.Reset();
 
-            //  初始化 SOCKET 接收器
-            UdpServer.Instance.Reset();
+            ////  初始化 SOCKET 接收器
+            //UdpServer.Instance.Reset();
 
-            Init();
+            //Init();
 
-            cg.DOFade(1, 1);
+            //cg.DOFade(1, 1);
+
+            SceneManager.LoadScene("Main");
+
         });
     }
 
