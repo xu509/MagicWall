@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 //
 //   启动的场景 
@@ -14,6 +15,9 @@ public class StartScene : IScene
 
     private bool _doLoadResourse = false;
     private bool _resourseIsChecked = false;
+
+    private bool _doLoadConfig = false;
+    private bool _configIsLoaded = false;
 
     private bool _doShowLogo = false;
     private bool _doShowLogoComplete = false;
@@ -78,8 +82,9 @@ public class StartScene : IScene
             Init();
         }
 
+        // 读取配置表
+        LoadConfig();
 
-        // 加载主要的图片资源
 
         // LOGO 淡入
         if (!_doShowLogo) {
@@ -107,6 +112,7 @@ public class StartScene : IScene
             return false;
         }
 
+        // 加载资源
         LoadResource();
 
         return true;
@@ -184,9 +190,46 @@ public class StartScene : IScene
             // TODO 处理视频的加载
         }
 
+        // 加载定制的资源
+        if (_manager.managerConfig.IsCustom) {
+            // TODO 
+            Debug.Log("加载定制资源");
+
+            DaoService.CustomImageType[] types = { DaoService.CustomImageType.LEFT1, DaoService.CustomImageType.LEFT2, DaoService.CustomImageType.RIGHT };
+
+            foreach (DaoService.CustomImageType customImageType in types) {
+                List<string> images = _daoService.GetCustomImage(customImageType);
+
+                foreach (string image in images)
+                {
+                    string address = MagicWallManager.URL_ASSET + "custom\\" + image;
+                    TextureResource.Instance.GetTexture(address);
+
+                }
+            }
+        }
+
         _resourseIsChecked = true;
 
     }
+
+    private void LoadConfig() {
+        if (_doLoadConfig)
+        {
+            return;
+        }
+
+        _doLoadConfig = true;
+
+        //if (DaoService.Instance.IsCustom() && (!_manager.managerConfig.IsCustom)) {
+        //    SceneManager.LoadScene("CustomScene");
+        //}
+
+
+
+        _configIsLoaded = true;
+    }
+
 
 
 }

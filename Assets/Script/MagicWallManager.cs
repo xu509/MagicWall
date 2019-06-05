@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using EasingUtil;
 //
 //  入口类
@@ -20,7 +21,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
     [SerializeField] ManagerConfig _managerConfig;
     public ManagerConfig managerConfig { get { return _managerConfig; } }
 
-
+    [SerializeField] InfoPanelAgent infoPanelAgent;
 
     [SerializeField] RectTransform _magicWallPanel;
     public RectTransform MagincWallPanel { get { return _magicWallPanel; } }
@@ -113,13 +114,13 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region Private Parameter - Data
 
 
-    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
     //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
-    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
     //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
 
@@ -146,18 +147,17 @@ public class MagicWallManager : Singleton<MagicWallManager>
     private bool _hasInit = false;
 
     private void Init() {
-        mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+        Debug.Log("mainPanel.anchoredPosition :" + mainPanel.anchoredPosition);
+
+        //mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+
+
+        ResetMainPanel(); //主面板归位
+        _hasInit = true;
+
         PanelOffsetX = 0f;   // 清理两个panel偏移量
         PanelOffsetY = 0f;   // 清理两个panel偏移量
 
-
-        while (mainPanel.anchoredPosition != Vector2.zero)
-        {
-            StartCoroutine(AfterFixedUpdate());
-        }
-
-
-        _hasInit = true;
     }
 
 
@@ -210,29 +210,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
             Reset();
         }
 
-        // 查看射线情况
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            //Set up the new Pointer Event
-            m_PointerEventData = new PointerEventData(m_EventSystem);
-            //Set the Pointer Event Position to that of the mouse position
-            m_PointerEventData.position = Input.mousePosition;
-
-            //Create a list of Raycast Results
-            List<RaycastResult> results = new List<RaycastResult>();
-
-            //Raycast using the Graphics Raycaster and mouse click position
-            graphicRaycaster.Raycast(m_PointerEventData, results);
-
-            //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-            foreach (RaycastResult result in results)
-            {
-
-                //if (result.gameObject.layer == 12) {
-                //    result.gameObject.GetComponent<Button>().onClick.Invoke();
-                //}
-
-            }
+        // 自定义屏幕状态更新
+        if (managerConfig.IsCustom) {
+            infoPanelAgent.Run();
         }
 
     }
@@ -240,15 +220,12 @@ public class MagicWallManager : Singleton<MagicWallManager>
     #region 清理面板
     public bool Clear() {
         AgentManager.Instance.ClearAgents(); //清理 agent 袋
-        mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+        ResetMainPanel(); //主面板归位
         backPanel.anchoredPosition = Vector2.zero;
 
         PanelOffsetX = 0f;   // 清理两个panel偏移量
 		PanelOffsetY = 0f;   // 清理两个panel偏移量
 
-		while (mainPanel.anchoredPosition != Vector2.zero) {
-            StartCoroutine(AfterFixedUpdate());
-        }
         return true;
     }
     #endregion
@@ -289,22 +266,44 @@ public class MagicWallManager : Singleton<MagicWallManager>
         // 当前场景退出动画（淡出）
         CanvasGroup cg = IndexPanel.GetComponent<CanvasGroup>();
         cg.DOFade(0, 1).OnComplete(() => {
-            //  初始化组件库
-            AgentManager.Instance.Reset();
+            ////  初始化组件库
+            //AgentManager.Instance.Reset();
 
-            //  初始化场景库
-            MagicSceneManager.Instance.Reset();
+            ////  初始化场景库
+            //MagicSceneManager.Instance.Reset();
 
-            //  初始化背景库
-            BackgroundManager.Instance.Reset();
+            ////  初始化背景库
+            //BackgroundManager.Instance.Reset();
 
-            //  初始化 SOCKET 接收器
-            UdpServer.Instance.Reset();
+            ////  初始化 SOCKET 接收器
+            //UdpServer.Instance.Reset();
 
-            Init();
+            //Init();
 
-            cg.DOFade(1, 1);
+            //cg.DOFade(1, 1);
+
+            SceneManager.LoadScene("Main");
+
         });
+    }
+
+    private void ResetMainPanel() {
+        if (managerConfig.IsCustom)
+        {
+            mainPanel.anchoredPosition = new Vector2(540, 0);
+            while (mainPanel.anchoredPosition != new Vector2(540, 0))
+            {
+                StartCoroutine(AfterFixedUpdate());
+            }
+        }
+        else
+        {
+            mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+            while (mainPanel.anchoredPosition != Vector2.zero)
+            {
+                StartCoroutine(AfterFixedUpdate());
+            }
+        }
     }
 
 }

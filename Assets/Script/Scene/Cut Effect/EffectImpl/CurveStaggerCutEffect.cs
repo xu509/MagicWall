@@ -66,7 +66,7 @@ public class CurveStaggerCutEffect : CutEffect
 
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 35;
+        int _column = 35;//宽度自适应，列数变多确保可以铺满整行
         float itemWidth = 0;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
@@ -104,15 +104,13 @@ public class CurveStaggerCutEffect : CutEffect
                     {
                         delayY = System.Math.Abs(middleY - i) * 0.3f;
                         gen_x = w + (middleY-i) * 500;
-                        //gen_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
-                        gen_y = w - ori_x;
+                        gen_y = w - ori_x + (_row - 1) * itemHeight;
                     }
                     else
                     {
                         delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
                         gen_x = w + (i - middleY + 1) * 500;
-                        //gen_y = -(_column - (middleY - j)) * (itemHeight + gap) + itemHeight / 2;
-                        gen_y = -(w - ori_x);
+                        gen_y = -(w - ori_x) + 2 * itemHeight;
                     }
 
                     //生成 agent
@@ -244,15 +242,13 @@ public class CurveStaggerCutEffect : CutEffect
                     {
                         delayY = System.Math.Abs(middleY - i) * 0.3f;
                         gen_x = w + (middleY - i) * 500;
-                        //gen_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
-                        gen_y = w - ori_x;
+                        gen_y = w - ori_x + (_row - 1) * itemHeight;
                     }
                     else
                     {
                         delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
                         gen_x = w + (i - middleY + 1) * 500;
-                        //gen_y = -(_column - (middleY - j)) * (itemHeight + gap) + itemHeight / 2;
-                        gen_y = -(w - ori_x);
+                        gen_y = -(w - ori_x) + 2 * itemHeight;
                     }
 
                     //生成 agent
@@ -317,7 +313,7 @@ public class CurveStaggerCutEffect : CutEffect
                 {
                     delayY = System.Math.Abs(middleY - i) * 0.3f;
                     ori_x = (_column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2;
-                    ori_y = (_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
+                    ori_y = (_column - j - middleY + _row - 1) * (itemHeight + gap) + itemHeight / 2;
                     //the_RectTransform.DOLocalMove(new Vector3((column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2, (column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
                 }
                 else

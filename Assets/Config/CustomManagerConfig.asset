@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e62b06450fb1fc94982e8790f91c1054, type: 3}
-  m_Name: ManagerConfigFor8Scenes
+  m_Name: CustomManagerConfig
   m_EditorClassIdentifier: 
-  StarEffectDistance: 5092
+  IsCustom: 1
+  StarEffectDistance: 5000
   StarEffectDistanceTime: 4
-  SelectedItemMaxCount: 8
+  SelectedItemMaxCount: 5
