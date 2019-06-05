@@ -148,7 +148,7 @@ public class AgentManager : Singleton<AgentManager>
         }
 
         // 检测打开的个数大于8个时，关闭早的
-        if (EffectAgent.Count > 8) {
+        if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount) {
 
             // 此时得到的是CardAgent
             CardAgent effectAgent = EffectAgent[0] as CardAgent;

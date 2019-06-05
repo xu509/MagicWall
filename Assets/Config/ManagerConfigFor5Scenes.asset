@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StarEffectDistance: 5000
   StarEffectDistanceTime: 4
+  SelectedItemMaxCount: 8

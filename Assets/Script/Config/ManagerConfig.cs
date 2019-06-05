@@ -10,6 +10,7 @@ public class ManagerConfig : ScriptableObject
     [Range(2f, 10f), Header("星空效果，动画时间")]
     public float StarEffectDistanceTime;
 
-
+    [Range(3, 8), Header("点开的最大数量")]
+    public int SelectedItemMaxCount;
 
 }
