@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ManagerConfig : ScriptableObject
 {
+    [Header("是否是定制屏")]
+    public bool IsCustom = false;
+
     [Range(100f, 10000f), Header("星空效果，最远距离")]
     public float StarEffectDistance;
 

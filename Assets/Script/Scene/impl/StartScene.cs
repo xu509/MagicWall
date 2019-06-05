@@ -184,6 +184,12 @@ public class StartScene : IScene
             // TODO 处理视频的加载
         }
 
+        // 加载定制的资源
+        if (_manager.managerConfig.IsCustom) {
+            // TODO 
+            Debug.Log("加载定制资源");
+        }
+
         _resourseIsChecked = true;
 
     }

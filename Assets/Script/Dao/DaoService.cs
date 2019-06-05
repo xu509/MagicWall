@@ -464,7 +464,7 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect() , new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
+        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
         SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity, SceneContentType.env };
 
@@ -502,7 +502,7 @@ public class DaoService : Singleton<DaoService>
 
         //SceneConfig sceneConfig = new SceneConfig();
         //sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig.SceneContentType = SceneContentType.env;
+        //sceneConfig.SceneContentType = SceneContentType.product;
         //sceneConfigs.Add(sceneConfig);
 
         //SceneConfig sceneConfig2 = new SceneConfig();
@@ -532,5 +532,23 @@ public class DaoService : Singleton<DaoService>
 
         return sceneConfigs;
     }
+
+
+    enum CustomImageType{
+        LEFT1,LEFT2,RIGHT
+    }
+
+    //
+    //  TODO 获取定制屏所配置的图片
+    //
+    //public List<string> GetCustomImage(CustomImageType type) {
+        
+
+
+
+
+
+    //}
+
 
 }
