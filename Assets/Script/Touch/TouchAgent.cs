@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+//
+//  TODO 实现点击动画功能
+//
 public class TouchAgent : MonoBehaviour
 {
     //  存在时间
