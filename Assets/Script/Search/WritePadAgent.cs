@@ -43,9 +43,20 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log("WritePadAgent :On Drag ");
         _endPosition = eventData.position;
 
+        Rect destRect = new Rect(_endPosition.x, _endPosition.y, brushTypeTexture.width, brushTypeTexture.height);
+        float rawWidth = _renderImage.GetComponent<RectTransform>().rect.width;
+        float rawHeight = _renderImage.GetComponent<RectTransform>().rect.height;
+
+
+        //增加鼠标位置根据raw图片位置换算。
+        float left = (destRect.xMin - eventData.position.x) * Screen.width / rawWidth - destRect.width;
+        float right = (destRect.xMin - eventData.position.x) * Screen.width / rawWidth + destRect.width;
+        float top = (destRect.yMin - eventData.position.y) * Screen.height / rawHeight - destRect.height;
+        float bottom = (destRect.yMin - eventData.position.y) * Screen.height / rawHeight + destRect.height;
+
+
         // 画线
         Graphics.SetRenderTarget(_texRender);
-
 
         // GL库 渲染入栈
         GL.PushMatrix();
@@ -62,13 +73,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //GL.Vertex3(_endPosition.x / Screen.width, _endPosition.y / Screen.height, 0);
 
         GL.Begin(GL.QUADS);
-        GL.Vertex3(0, 1, 0);
-        GL.Vertex3(1, 0, 0);
 
-        //GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(eventData.position.x, eventData.position.y, 0);
-        //GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(eventData.position.x, eventData.position.y, 0);
-        //GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(eventData.position.x, eventData.position.y, 0);
-        //GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(eventData.position.x, eventData.position.y, 0);
+        GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(left / Screen.width, top / Screen.height, 0);
+        GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(right / Screen.width, top / Screen.height, 0);
+        GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(right / Screen.width, bottom / Screen.height, 0);
+        GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(left / Screen.width, bottom / Screen.height, 0);
 
 
         GL.End();
@@ -196,7 +205,24 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //    }
     //}
 
-
+    //设置画笔宽度
+    float SetScale(float distance)
+    {
+        float Scale = 0;
+        if (distance < 100)
+        {
+            Scale = 0.8f - 0.005f * distance;
+        }
+        else
+        {
+            Scale = 0.425f - 0.00125f * distance;
+        }
+        if (Scale <= 0.05f)
+        {
+            Scale = 0.05f;
+        }
+        return Scale;
+    }
 
 
 

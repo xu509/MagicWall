@@ -147,10 +147,6 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
     public void OnPlayVideo(SliceCardCellData cellData)
     {
         SliceCardAgent agent = _cardAgent as SliceCardAgent;
-        Debug.Log("Do play video : " + cellData.VideoUrl);
-
-        Debug.Log("Do play video : " + cellData.Description);
-
 
         agent.DoVideo(cellData.VideoUrl, cellData.Description);
     }
