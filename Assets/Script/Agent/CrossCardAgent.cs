@@ -24,7 +24,6 @@ public class CrossCardAgent : CardAgent
     bool _hasVideo; //  视频
 
     List<CrossCardCellData> _cellDatas;
-    VideoAgent _videoAgent;
 
     #endregion
 
