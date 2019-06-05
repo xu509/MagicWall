@@ -409,23 +409,23 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else
         {
@@ -464,9 +464,9 @@ public class DaoService : Singleton<DaoService>
 
 
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect() , new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
+        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect() ,new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity, SceneContentType.env };
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
 
         for (int i = 0; i < effects.Length; i++)
         {
