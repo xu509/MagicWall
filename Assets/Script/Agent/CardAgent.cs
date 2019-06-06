@@ -77,16 +77,16 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     #region Protected Method
 
     //
-    //  Awake 代理
+    //  Init 代理
     //
-    protected void AwakeAgency() {
+    protected void InitAgency() {
         _recentActiveTime = Time.time;
         _cardStatus = CardStatusEnum.NORMAL;
 
-        _panel_top = -(MagicWallManager.Instance.OperationPanel.rect.yMin) + MagicWallManager.Instance.OperationPanel.rect.yMax;
+        _panel_top = -(_manager.OperationPanel.rect.yMin) + _manager.OperationPanel.rect.yMax;
         _panel_bottom = 0;
         _panel_left = 0;
-        _panel_right = -(MagicWallManager.Instance.OperationPanel.rect.xMin) + MagicWallManager.Instance.OperationPanel.rect.xMax;
+        _panel_right = -(_manager.OperationPanel.rect.xMin) + _manager.OperationPanel.rect.xMax;
 
         _safe_distance_width = GetComponent<RectTransform>().rect.width / 3;
         _safe_distance_height = GetComponent<RectTransform>().rect.height / 3;
@@ -191,7 +191,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     private void DoDestoriedForSecondStep()
     {
-        MagicWallManager _manager = MagicWallManager.Instance;
 
         //  如果场景没有变，则回到原位置
         if (SceneIndex == _manager.SceneIndex)
@@ -209,7 +208,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
             rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
                 //  使卡片消失
-                AgentManager.Instance.RemoveItemFromEffectItems(this);
+                _agentManager.RemoveItemFromEffectItems(this);
 
                 gameObject.SetActive(false);
                 Destroy(gameObject);
@@ -229,7 +228,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 .OnUpdate(() => {
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
-                    //AgentManager.Instance.UpdateAgents();
+                    //_agentManager.UpdateAgents();
                 })
                 .OnComplete(() => DoDestoryOnCompleteCallBack(this));
 

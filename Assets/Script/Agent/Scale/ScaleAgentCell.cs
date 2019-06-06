@@ -29,7 +29,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if (Input.GetKeyDown(KeyCode.LeftAlt) && startScale==false)
         {
             Vector2 pos;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRtf, Input.mousePosition, MagicWallManager.Instance.MainCamera, out pos))
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRtf, Input.mousePosition, Camera.main, out pos))
             {
                 startScale = true;
                 first = pos;

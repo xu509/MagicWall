@@ -27,10 +27,14 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
     void Awake() {
 
-        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
-        _manager = MagicWallManager.Instance;
-        _agentManager = AgentManager.Instance;
-        _daoService = DaoService.Instance;
+    }
+
+    public void Init(MagicWallManager manager)
+    {
+        _manager = manager;
+        _operationPanel = _manager.OperationPanel;
+        _agentManager = _manager.agentManager;
+        _daoService = _manager.daoService;
 
         int _row = _manager.Row;
 
@@ -40,6 +44,9 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
+
+        Debug.Log("1111111:" + _column + "H :" + h + " /W :" + w );
+
     }
 
 
@@ -66,7 +73,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         }
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
-                                    _manager.agentPrefab,
+                                    _manager.flockAgent,
                                     parent
                                     );
         //  命名
@@ -102,7 +109,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         boxCollider2D.size = new Vector2(width, height);
 
         //  初始化内容
-        newAgent.Initialize(ori_position, postion, row + 1, column + 1,
+        newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
             width, height, env.Ent_id, env.Logo, env.IsCustom, 0);
 
         //  添加到组件袋
@@ -123,7 +130,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
@@ -144,7 +151,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
@@ -180,6 +187,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     #region 生成十字卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
     {
+
         //  创建 Agent
         CrossCardAgent crossCardAgent = Instantiate(
                                     _manager.crossCardgent,
@@ -211,13 +219,17 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         crossCardAgent.SceneIndex = _manager.SceneIndex;
 
         // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(crossCardAgent);
+        _agentManager.AddEffectItem(crossCardAgent);
+
+        // 添加管理器索引
+        crossCardAgent.manager = _manager;
+
 
         // 初始化 CrossAgent 数据
         crossCardAgent.InitData();
 
 
-        
+
 
         return crossCardAgent;
     }

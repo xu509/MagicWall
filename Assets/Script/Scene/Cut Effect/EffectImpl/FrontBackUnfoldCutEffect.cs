@@ -7,7 +7,6 @@ using DG.Tweening;
 // 过场效果 前后层展开
 public class FrontBackUnfoldCutEffect : CutEffect
 {
-    private MagicWallManager _manager;
 
 
     private int _page;  // 页码
@@ -20,15 +19,20 @@ public class FrontBackUnfoldCutEffect : CutEffect
     //
     //  Init
     //
-    protected override void Init()
+    public override void Init(MagicWallManager manager)
     {
+        //  初始化 manager
+        _manager = manager;
+        _agentManager = manager.agentManager;
+        _daoService = DaoService.Instance;
+
         //  获取持续时间
         StartingDurTime = 1.5f;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
-        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
+        string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
         DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         // 获取Display的动画
@@ -36,10 +40,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
-        DestoryBehavior.Init(DestoryDurTime);
-
-        //  初始化 manager
-        _manager = MagicWallManager.Instance;
+        DestoryBehavior.Init(_manager,DestoryDurTime);
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -85,7 +86,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
                 // 定义源位置
                 float ori_x, ori_y;
-                ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
+                ori_x = _manager.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
                 bool front = (i + j) % 2 == 0 ? true : false;
@@ -95,11 +96,11 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 FlockAgent go;
                 if (front)
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
 
                 }   else
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.backPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.backPanel);
                     go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
                 }
 
@@ -151,7 +152,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                Activity activity = DaoService.Instance.GetActivity();
+                Activity activity = _daoService.GetActivity();
                 Vector2 v2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
                 //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
                 //float x = vector2.x;
@@ -163,7 +164,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
                 // 定义源位置
                 float ori_x, ori_y;
-                ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
+                ori_x = _manager.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
                 bool front = (i + j) % 2 == 0 ? true : false;
@@ -207,9 +208,9 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
     public override void Starting()
     {
-        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
+        for (int i = 0; i < _agentManager.Agents.Count; i++)
         {
-            FlockAgent agent = AgentManager.Instance.Agents[i];
+            FlockAgent agent = _agentManager.Agents[i];
             //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
@@ -259,7 +260,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-
+        _displayBehaviorConfig.Manager = _manager;
         DisplayBehavior.Init(_displayBehaviorConfig);
 
     }
@@ -280,7 +281,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                Product product = DaoService.Instance.GetProduct();
+                Product product = _daoService.GetProduct();
                 Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height));
                 //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
                 //float x = vector2.x;
@@ -292,7 +293,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
                 // 定义源位置
                 float ori_x, ori_y;
-                ori_x = MagicWallManager.Instance.mainPanel.rect.width + itemWidth + gap;
+                ori_x = _manager.mainPanel.rect.width + itemWidth + gap;
                 ori_y = y;
 
                 bool front = (i + j) % 2 == 0 ? true : false;

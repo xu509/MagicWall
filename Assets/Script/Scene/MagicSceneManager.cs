@@ -10,8 +10,10 @@ using DG.Tweening;
 //  2. 背景问题
 //  3. 过场动画问题
 //
-public class MagicSceneManager : Singleton<MagicSceneManager>
+public class MagicSceneManager : MonoBehaviour
 {
+    private MagicWallManager _manager;
+
     //
     //  paramater
     //
@@ -20,19 +22,17 @@ public class MagicSceneManager : Singleton<MagicSceneManager>
 
     List<IScene> _scenes; // 场景列表
     int _index; // 当前的索引
-    private MagicWallManager _manager; // 主管理器
 
     //
     // Awake instead of Constructor
     //
     private void Awake()
     {
-        _manager = MagicWallManager.Instance;
 
-        Init();
     }
 
-    private void Init() {
+    public void Init(MagicWallManager manager) {
+        _manager = manager;
 
         //  初始化场景列表
         _scenes = new List<IScene>();
@@ -42,14 +42,16 @@ public class MagicSceneManager : Singleton<MagicSceneManager>
 
         //  加载场景
         // - 加载开始场景
-        _scenes.Add(new StartScene());
+        StartScene startScene = new StartScene();
+        startScene.Init(manager);
+        _scenes.Add(startScene);
 
         // - 加载普通场景
         List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++)
         {
             CommonScene commonScene = new CommonScene();
-            commonScene.DoConfig(sceneConfigs[i]);
+            commonScene.DoConfig(sceneConfigs[i],_manager);
             _scenes.Add(commonScene);
         }
 
@@ -77,7 +79,7 @@ public class MagicSceneManager : Singleton<MagicSceneManager>
         }
 
         // 背景始终运行
-        BackgroundManager.Instance.run();
+        _manager.backgroundManager.run();
 
         // 运行场景
         if (!_scenes[_index].Run())
@@ -103,7 +105,7 @@ public class MagicSceneManager : Singleton<MagicSceneManager>
     public void Reset() {
         _hasInit = false;
 
-        Init();
+        Init(_manager);
     }
 
 

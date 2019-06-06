@@ -8,6 +8,7 @@ using DG.Tweening;
 //
 public class DisplayBehaviorConfig
 {
+    private MagicWallManager _manager;
     private int _row;
     private int _column;
     private float _itemWidth;
@@ -24,6 +25,12 @@ public class DisplayBehaviorConfig
     {
         set { _itemsFactory = value; }
         get { return _itemsFactory; }
+    }
+
+    public MagicWallManager Manager
+    {
+        set { _manager = value; }
+        get { return _manager; }
     }
 
     public int Row {

@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
+    private DaoService _daoService;
     private DisplayBehaviorConfig _displayBehaviorConfig;
 
     //
@@ -18,18 +19,19 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Init(DisplayBehaviorConfig displayBehaviorConfig)
     {
         _displayBehaviorConfig = displayBehaviorConfig;
+        _manager = displayBehaviorConfig.Manager;
+        _daoService = _manager.daoService;
     }
 
     public void Run()
     {
-        _manager = MagicWallManager.Instance;
 
         // 面板向左移动
-        float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MoveFactor_Panel;
+        float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MovePanelFactor;
         Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
         _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
-        float backX = _manager.backPanel.anchoredPosition.x + Time.deltaTime * _manager.MoveFactor_Panel / 2;
+        float backX = _manager.backPanel.anchoredPosition.x + Time.deltaTime * _manager.MovePanelFactor / 2;
         Vector2 backTo = new Vector2(backX, _manager.backPanel.anchoredPosition.y);
         _manager.backPanel.DOAnchorPos(backTo, Time.deltaTime);
 
@@ -120,12 +122,12 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         FlockAgent go;
         if (front)
         {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
 
         }
         else
         {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.backPanel);
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.backPanel);
             go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
         }
 

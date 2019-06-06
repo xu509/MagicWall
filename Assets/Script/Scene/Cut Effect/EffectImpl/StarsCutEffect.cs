@@ -7,8 +7,6 @@ using DG.Tweening;
 // 过场效果 3 从后往前, 星空效果
 public class StarsCutEffect : CutEffect
 {
-    MagicWallManager manager;
-
     private int row;
     private int column;
 
@@ -24,31 +22,34 @@ public class StarsCutEffect : CutEffect
     //
     //  Init
     //
-    protected override void Init()
+    public override void Init(MagicWallManager manager)
     {
+        //  初始化 manager
+        _manager = manager;
+        _agentManager = _manager.agentManager;
+        _daoService = DaoService.Instance;
+
         //  获取动画的持续时间
         StartingDurTime = 17f;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
-        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_Stars).Value;
+        string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_Stars).Value;
         DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         //  设置销毁
         DestoryBehavior = new FadeOutDestoryBehavior();
-        DestoryBehavior.Init(DestoryDurTime);
+        DestoryBehavior.Init(_manager, DestoryDurTime);
 
         //  设置运行时间点
         HasDisplaying = false;
 
-        //  初始化 manager
-        manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
 
-        _distance = manager.managerConfig.StarEffectDistance;
-        animation_duration = manager.managerConfig.StarEffectDistanceTime;
+        _distance = _manager.managerConfig.StarEffectDistance;
+        animation_duration = _manager.managerConfig.StarEffectDistanceTime;
     }
 
     //
@@ -57,9 +58,9 @@ public class StarsCutEffect : CutEffect
     protected override void CreateLogo()
     {
         // 获取栅格信息
-        row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
+        row = _manager.Row;
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
 
         int gap = 10;
 
@@ -79,7 +80,7 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
-                Enterprise env = manager.DaoService.GetEnterprise();
+                Enterprise env = _manager.daoService.GetEnterprise();
                 
 
                 Vector2 vector2 = AppUtils
@@ -97,7 +98,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, env, manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, env, _manager.mainPanel);
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
@@ -116,9 +117,9 @@ public class StarsCutEffect : CutEffect
     protected override void CreateActivity()
     {
         // 获取栅格信息
-        row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
+        row = _manager.Row;
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
 
         int gap = 10;
 
@@ -136,7 +137,7 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
                 
-                Activity activity = DaoService.Instance.GetActivity();
+                Activity activity = _daoService.GetActivity();
                 Vector2 vector2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
 
                 int middleX = (column - 1) / 2;
@@ -150,7 +151,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, activity, manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, activity, _manager.mainPanel);
             
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
@@ -169,11 +170,11 @@ public class StarsCutEffect : CutEffect
         if (Time.time - last_generate_time > generate_agent_interval) {
 
             // 随机选择
-            int count = AgentManager.Instance.Agents.Count;
+            int count = _manager.agentManager.Agents.Count;
             for (int i=0; i<15; i++)
             {
                 int index = Random.Range(0, count);
-                FlockAgent agent = AgentManager.Instance.Agents[index];
+                FlockAgent agent = _agentManager.Agents[index];
                 if (!agent.StarsCutEffectIsPlaying) {
                     agent.StarsCutEffectIsPlaying = true;
                     agent.gameObject.SetActive(true);
@@ -239,9 +240,9 @@ public class StarsCutEffect : CutEffect
     protected override void CreateProduct()
     {
         // 获取栅格信息
-        row = manager.row;
-        int h = (int)manager.mainPanel.rect.height;
-        int w = (int)manager.mainPanel.rect.width;
+        row = _manager.Row;
+        int h = (int)_manager.mainPanel.rect.height;
+        int w = (int)_manager.mainPanel.rect.width;
 
         int gap = 10;
 
@@ -259,7 +260,7 @@ public class StarsCutEffect : CutEffect
                 float x = j * (itemWidth + gap) + itemWidth / 2;
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
-                Product product = DaoService.Instance.GetProduct();
+                Product product = _daoService.GetProduct();
                 Vector2 vector2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height));
 
                 int middleX = (column - 1) / 2;
@@ -273,7 +274,7 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, product, manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, product, _manager.mainPanel);
 
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;

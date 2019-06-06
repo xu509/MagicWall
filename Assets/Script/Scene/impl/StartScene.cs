@@ -48,9 +48,15 @@ public class StartScene : IScene
     //  Construct
     //
     public StartScene() {
+
+    }
+
+    public void Init(MagicWallManager manager)
+    {
         _resourseIsChecked = false;
-        _daoService = DaoService.Instance;
-        _manager = MagicWallManager.Instance;
+        _manager = manager;
+        _daoService = manager.daoService;
+
     }
 
     private void Init() {
@@ -67,7 +73,7 @@ public class StartScene : IScene
         _doHideLogoComplete = false;
 
         _isCompleted = false;
-}
+    }
 
 
 
@@ -230,6 +236,5 @@ public class StartScene : IScene
         _configIsLoaded = true;
     }
 
-
-
+    
 }

@@ -3,8 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//
+//  数据仓库模块
+//
+
 public class DaoService : Singleton<DaoService>
 {
+
     private List<Enterprise> _enterprises;
     private List<Activity> _activities;
     private List<Product> _products;
@@ -12,13 +17,24 @@ public class DaoService : Singleton<DaoService>
 
     void Awake()
     {
-
     }
 
     //
     //  Construct
     //
     protected DaoService() { }
+
+
+
+    public void Init() {
+        _enterprises = new List<Enterprise>();
+        _activities = new List<Activity>();
+        _products = new List<Product>();
+    }
+
+    public void Reset() {
+        Init();
+    }
 
     //
     //  加载信息
@@ -463,6 +479,7 @@ public class DaoService : Singleton<DaoService>
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
 
+
         // Real 
         CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
@@ -553,7 +570,7 @@ public class DaoService : Singleton<DaoService>
     //
     public List<string> GetCustomImage(CustomImageType type) {
         string[] leftImages = { "l1.jpg", "l2.jpg", "l3.jpg" };
-        string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg" };
+        string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg", "m4.jpg", "m5.jpg" };
         string[] rightImages = { "r1.jpg", "r2.jpg", "r3.jpg" };
 
         if (type == CustomImageType.LEFT1) {
@@ -569,7 +586,7 @@ public class DaoService : Singleton<DaoService>
         {
             List<string> images = new List<string>();
             int size = Random.Range(1, 4);
-            size = 3;
+            size = 5;
             for (int i = 0; i < size; i++)
             {
                 images.Add(middleImages[i]);

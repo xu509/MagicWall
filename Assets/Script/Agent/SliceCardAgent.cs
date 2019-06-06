@@ -26,7 +26,6 @@ public class SliceCardAgent : CardAgent
 
 
     void Awake() {
-        AwakeAgency();
     }
 
     //
@@ -42,6 +41,8 @@ public class SliceCardAgent : CardAgent
     /// <param name="id">产品ID或活动ID</param>
     /// <param name="type">类型</param>
     public void InitData(int id,int type) {
+
+        InitAgency();
 
         _type = type;
 

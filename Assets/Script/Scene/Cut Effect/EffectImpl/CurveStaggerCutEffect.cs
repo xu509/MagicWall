@@ -7,8 +7,6 @@ using DG.Tweening;
 // 过场效果 1 ，曲线麻花效果
 public class CurveStaggerCutEffect : CutEffect
 {
-    private MagicWallManager _manager;
-
 
     private int _page;  // 页码
 
@@ -22,15 +20,20 @@ public class CurveStaggerCutEffect : CutEffect
     //
     //  Init
     //
-    protected override void Init()
+    public override void Init(MagicWallManager manager)
     {
+        //  初始化 manager
+        _manager = manager;
+        _agentManager = manager.agentManager;
+        _daoService = DaoService.Instance;
+
         //  获取持续时间
         StartingDurTime = 3f;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
-        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
+        string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
         DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         // 获取Display的动画
@@ -38,10 +41,7 @@ public class CurveStaggerCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
-        DestoryBehavior.Init(DestoryDurTime);
-
-        //  初始化 manager
-        _manager = MagicWallManager.Instance;
+        DestoryBehavior.Init(_manager,DestoryDurTime);
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -85,7 +85,7 @@ public class CurveStaggerCutEffect : CutEffect
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
 
-                    Activity activity = _manager.DaoService.GetActivity();
+                    Activity activity = _manager.daoService.GetActivity();
                     //高固定
                     itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
                    
@@ -144,8 +144,8 @@ public class CurveStaggerCutEffect : CutEffect
     }
 
     public override void Starting() {
-        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++) {
-            FlockAgent agent = AgentManager.Instance.Agents[i];
+        for (int i = 0; i < _agentManager.Agents.Count; i++) {
+            FlockAgent agent = _agentManager.Agents[i];
             //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
@@ -197,6 +197,7 @@ public class CurveStaggerCutEffect : CutEffect
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
+        _displayBehaviorConfig.Manager = _manager;
         DisplayBehavior.Init(_displayBehaviorConfig);
 
     }
@@ -224,7 +225,7 @@ public class CurveStaggerCutEffect : CutEffect
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
 
-                    Product product = DaoService.Instance.GetProduct();
+                    Product product = _daoService.GetProduct();
                     itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
 
                     //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
@@ -283,6 +284,7 @@ public class CurveStaggerCutEffect : CutEffect
     {
         int _row = _manager.Row;
         int _column = ItemsFactory.GetSceneColumn();
+
         float itemWidth = ItemsFactory.GetItemWidth();
         float itemHeight = ItemsFactory.GetItemHeight();
         float gap = ItemsFactory.GetSceneGap();
@@ -325,7 +327,7 @@ public class CurveStaggerCutEffect : CutEffect
                 }
 
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
 
                 // 装载延迟参数
                 go.DelayX = delayX;

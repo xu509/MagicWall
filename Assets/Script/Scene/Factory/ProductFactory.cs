@@ -29,10 +29,14 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
 
     void Awake() {
-        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
-        _manager = MagicWallManager.Instance;
-        _agentManager = AgentManager.Instance;
-        _daoService = DaoService.Instance;
+    }
+
+    public void Init(MagicWallManager manager)
+    {
+        _manager = manager;
+        _operationPanel = _manager.OperationPanel;
+        _agentManager = _manager.agentManager;
+        _daoService = _manager.daoService;
 
         int _row = _manager.Row;
 
@@ -42,7 +46,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
-
     }
 
     public ProductFactory() {
@@ -63,7 +66,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
-                                    _manager.agentPrefab,
+                                    _manager.flockAgent,
                                     parent
                                     );
         //  命名
@@ -96,7 +99,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         boxCollider2D.size = new Vector2(width, height);
 
         //  初始化内容
-        newAgent.Initialize(ori_position, postion, row + 1, column + 1,
+        newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
             width, height, product.Pro_id, product.Image, false, 1);
 
         //  添加到组件袋
@@ -105,7 +108,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         return newAgent;
     }
     #endregion
-
 
 
     #region 生成滑动卡片
@@ -141,11 +143,14 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //  配置scene
         sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
+        // 添加管理器索引
+        sliceCardAgent.manager = _manager;
+
         //  初始化数据
         sliceCardAgent.InitData(flockAgent.DataId,0);
 
         // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(sliceCardAgent);
+        _agentManager.AddEffectItem(sliceCardAgent);
 
         return sliceCardAgent;
     }
@@ -160,7 +165,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
@@ -181,7 +186,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
