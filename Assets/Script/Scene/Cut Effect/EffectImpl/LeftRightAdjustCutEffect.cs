@@ -224,6 +224,7 @@ public class LeftRightAdjustCutEffect : CutEffect
         _displayBehaviorConfig.ItemHeight = _itemHeight;
         _displayBehaviorConfig.SceneContentType = sceneContentType;
         _displayBehaviorConfig.Page = _page;
+        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
 
         DisplayBehavior.Init(_displayBehaviorConfig);
