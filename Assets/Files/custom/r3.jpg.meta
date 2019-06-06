@@ -76,12 +76,11 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 
-    internalID: 0
+
     vertices: []
     indices: 
     edges: []
     weights: []
-    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
