@@ -533,7 +533,7 @@ public class DaoService : Singleton<DaoService>
         //sceneConfigs.Add(sceneConfig3);
 
         //SceneConfig sceneConfig4 = new SceneConfig();
-        //sceneConfig4.CutEffect = new MidDisperseCutEffect();
+        //sceneConfig4.CutEffect = new LeftRightAdjustCutEffect();
         //sceneConfig4.SceneContentType = SceneContentType.product;
         //sceneConfigs.Add(sceneConfig4);
 

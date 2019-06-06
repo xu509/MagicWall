@@ -6,22 +6,20 @@ using DG.Tweening;
 
 public class InfoPanelAgent : MonoBehaviour
 {
-    [SerializeField] RawImage _leftPanelImage;
-    [SerializeField] RawImage _middlePanelImage;
-    [SerializeField] RawImage _rightPanelImage;
+    [SerializeField] RectTransform leftPanel;
+    [SerializeField] RectTransform middlePanel;
+    [SerializeField] RectTransform rightPanel;
+    public RawImage rawImagePrefab;
+
 
     [SerializeField, Range(1f, 20f)] float _leftChangeTime = 10f;
     [SerializeField, Range(1f, 20f)] float _middleChangeTime = 5f;
     [SerializeField, Range(1f, 20f)] float _rightChangeTime = 5f;
 
-    [SerializeField, Range(1f, 20f)] float _fadeoutDuration = 0.5f;//淡出时间
-    [SerializeField, Range(1f, 20f)] float _fadeinDuration = 0.5f;//淡入时间
+    [SerializeField, Range(0f, 3f)] float _fadeoutDuration = 0.5f;//淡出时间
 
 
     List<string> _leftImages,_middleImages,_rightImages;
-    int _left_index = 0;
-    int _middle_index = 0;
-    int _right_index = 0;
 
 
     // Start is called before the first frame update
@@ -29,74 +27,118 @@ public class InfoPanelAgent : MonoBehaviour
     {
         // 初始化最左侧图片
         _leftImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.LEFT1);
-        SetLeftImage();
+        SetLeftImages();
 
         // 初始化中间图片
         _middleImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.LEFT2);
-        SetMiddleImage();
+        SetMiddleImages();
 
         // 初始化右侧图片
         _rightImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.RIGHT);
-        SetRightImage();
+        SetRightImages();
 
         if (_leftImages.Count > 1)
         {
-            InvokeRepeating("ChangeLeftImage", _leftChangeTime, _leftChangeTime + _fadeoutDuration + _fadeinDuration);
+            InvokeRepeating("ChangeLeftImage", _leftChangeTime, _leftChangeTime + _fadeoutDuration);
         }
         if (_middleImages.Count > 1)
         {
-            InvokeRepeating("ChangeMiddleImage", _middleChangeTime, _middleChangeTime + _fadeoutDuration + _fadeinDuration);
+            InvokeRepeating("ChangeMiddleImage", _middleChangeTime, _middleChangeTime + _fadeoutDuration);
         }
         if (_rightImages.Count > 1)
         {
-            InvokeRepeating("ChangeRightImage", _rightChangeTime, _rightChangeTime + _fadeoutDuration + _fadeinDuration);
+            InvokeRepeating("ChangeRightImage", _rightChangeTime, _rightChangeTime + _fadeoutDuration);
         }
     }
 
     void ChangeLeftImage()
     {
-        _leftPanelImage.DOFade(0.2f, _fadeoutDuration).OnComplete(() => {
-            _left_index++;
-            _left_index = _left_index % _leftImages.Count;
-            SetLeftImage();
-            _leftPanelImage.DOFade(1, _fadeinDuration);
-        });
+        RawImage[] rawImages = leftPanel.GetComponentsInChildren<RawImage>();
+        RawImage rawImage = rawImages[rawImages.Length - 1];
 
+        rawImage.DOFade(0, _fadeoutDuration).OnComplete(() => {
+            Destroy(rawImage.gameObject);
+            RawImage[] images = leftPanel.GetComponentsInChildren<RawImage>();
+            Debug.Log(images.Length);
+            if (images.Length == 2)
+            {
+                SetLeftImages();
+            }
+        });    
     }
 
     void ChangeMiddleImage()
     {
-        _middlePanelImage.DOFade(0.2f, _fadeoutDuration).OnComplete(() => {
-            _middle_index++;
-            _middle_index = _middle_index % _middleImages.Count;
-            SetMiddleImage();
-            _middlePanelImage.DOFade(1, _fadeinDuration);
+        RawImage[] rawImages = middlePanel.GetComponentsInChildren<RawImage>();
+        RawImage rawImage = rawImages[rawImages.Length - 1];
+
+        rawImage.DOFade(0, _fadeoutDuration).OnComplete(() => {
+            Destroy(rawImage.gameObject);
+            RawImage[] images = middlePanel.GetComponentsInChildren<RawImage>();
+            Debug.Log(images.Length);
+            if (images.Length == 2)
+            {
+                SetMiddleImages();
+            }
         });
     }
 
     void ChangeRightImage()
     {
-        _rightPanelImage.DOFade(0.2f, _fadeoutDuration).OnComplete(() => {
-            _right_index++;
-            _right_index = _right_index % _rightImages.Count;
-            SetRightImage();
-            _rightPanelImage.DOFade(1, _fadeinDuration);
+        RawImage[] rawImages = rightPanel.GetComponentsInChildren<RawImage>();
+        RawImage rawImage = rawImages[rawImages.Length - 1];
+
+        rawImage.DOFade(0, _fadeoutDuration).OnComplete(() => {
+            Destroy(rawImage.gameObject);
+            RawImage[] images = rightPanel.GetComponentsInChildren<RawImage>();
+            Debug.Log(images.Length);
+            if (images.Length == 2)
+            {
+                SetRightImages();
+            }
         });
     }
 
-    void SetLeftImage()
+    void SetLeftImages()
     {
-        _leftPanelImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[_left_index]);
+        for (int i = 0; i < _leftImages.Count; i++)
+        {
+            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RectTransform rtf = rawImage.GetComponent<RectTransform>();
+            rtf.SetParent(leftPanel);
+            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.localScale = new Vector3(1, 1, 1);
+            rtf.SetAsFirstSibling();
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[i]);
+        }
     }
 
-    void SetMiddleImage()
+    void SetMiddleImages()
     {
-        _middlePanelImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _middleImages[_middle_index]);
+        for (int i = 0; i < _leftImages.Count; i++)
+        {
+            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RectTransform rtf = rawImage.GetComponent<RectTransform>();
+            rtf.SetParent(middlePanel);
+            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.localScale = new Vector3(1, 1, 1);
+            rtf.SetAsFirstSibling();
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _middleImages[i]);
+        }
     }
 
-    void SetRightImage()
+    void SetRightImages()
     {
-        _rightPanelImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _rightImages[_right_index]);
+        for (int i = 0; i < _leftImages.Count; i++)
+        {
+            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RectTransform rtf = rawImage.GetComponent<RectTransform>();
+            rtf.SetParent(rightPanel);
+            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.localScale = new Vector3(1, 1, 1);
+            rtf.SetAsFirstSibling();
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _rightImages[i]);
+        }
     }
 
     public void Run() {

@@ -129,7 +129,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float itemWidth = 0;
         float itemHeight = 250;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(8 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
         if (Math.Abs(_manager.PanelOffsetX) > 0)
         {
@@ -167,8 +167,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float itemHeight = 250;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         float offset = Math.Abs(_manager.PanelOffsetX);
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
-
+        int extra = (int)(8 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
         if (offset > 0)
         {
             if (flag == false)
