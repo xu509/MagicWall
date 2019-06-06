@@ -5,6 +5,10 @@ using UnityEngine;
 // 过场效果
 public abstract class CutEffect : MonoBehaviour
 {
+    protected MagicWallManager _manager;
+    protected AgentManager _agentManager;
+    protected DaoService _daoService;
+
     //
     //  Parameter
     //
@@ -41,7 +45,7 @@ public abstract class CutEffect : MonoBehaviour
     internal ItemsFactory ItemsFactory { get { return _itemsFactory; }}
 
 
-    protected abstract void Init();
+    public abstract void Init(MagicWallManager manager);
 
     protected abstract void CreateActivity();
 
@@ -54,22 +58,25 @@ public abstract class CutEffect : MonoBehaviour
     //  Method
     //
     public void Create(SceneContentType st) {
-        Init();
+        _daoService = DaoService.Instance;
+
+        Init(_manager);
+
 
         sceneContentType = st;
 
         if (sceneContentType == SceneContentType.activity)
         {
-            _itemsFactory = ActivityFactory.Instance;
+            _itemsFactory = _manager.itemsFactoryAgent.activityFactory;
             CreateActivity();
         }
         else if (sceneContentType == SceneContentType.env)
         {
-            _itemsFactory = EnvFactory.Instance;
+            _itemsFactory = _manager.itemsFactoryAgent.envFactory;
             CreateLogo();
         }
         else {
-            _itemsFactory = ProductFactory.Instance;
+            _itemsFactory = _manager.itemsFactoryAgent.productFactory;
             CreateProduct();
         }
 

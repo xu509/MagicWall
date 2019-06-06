@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class FadeOutDestoryBehavior : CutEffectDestoryBehavior
 {
+    private MagicWallManager _manager;
+
     bool hasInit = false;
     float startTime;
     float totalTime;
     
-    public void Init(float destoryDurTime)
+    public void Init(MagicWallManager manager,float destoryDurTime)
     {
         totalTime = destoryDurTime;
+        _manager = manager;
     }
 
     public void Run()
@@ -21,8 +24,8 @@ public class FadeOutDestoryBehavior : CutEffectDestoryBehavior
         }
         float time = Time.time - startTime;  // 当前已运行的时间;
         float a = Mathf.Lerp(1, 0, time / totalTime);
-        MagicWallManager.Instance.mainPanel.GetComponent<CanvasGroup>().alpha = a;
-        MagicWallManager.Instance.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
+        _manager.mainPanel.GetComponent<CanvasGroup>().alpha = a;
+        _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
 
     }
 }

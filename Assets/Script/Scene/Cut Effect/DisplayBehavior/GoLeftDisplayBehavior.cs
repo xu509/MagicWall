@@ -10,6 +10,8 @@ using System;
 public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
+    private DaoService _daoService;
+
     private DisplayBehaviorConfig _displayBehaviorConfig;
     private bool flag = false;
 
@@ -19,16 +21,18 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Init(DisplayBehaviorConfig displayBehaviorConfig)
     {
         _displayBehaviorConfig = displayBehaviorConfig;
+        _manager = _displayBehaviorConfig.Manager;
+        _daoService = DaoService.Instance;
+
         flag = false;
 
     }
 
     public void Run()
 	{
-        _manager = MagicWallManager.Instance;
 
 		// 面板向左移动
-		float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MoveFactor_Panel;
+		float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MovePanelFactor;
 		Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
         _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
@@ -94,7 +98,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         int w = (int)_manager.mainPanel.rect.width;
         float itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
         float itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
-        float row = _manager.row;
+        float row = _manager.Row;
         int startColumn = _displayBehaviorConfig.ItemsFactory.GetSceneColumn();
         int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
@@ -110,7 +114,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float x = vector2.x;
                         float y = vector2.y;
                         //生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
 
                     }
                 }
@@ -140,7 +144,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                        Activity activity = _manager.DaoService.GetActivity();
+                        Activity activity = _manager.daoService.GetActivity();
                         //高固定
                         itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
                         ori_x = ori_x + itemWidth / 2 + gap;
@@ -178,7 +182,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = x;
                         float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
 
-                        Product product = _manager.DaoService.GetProduct();
+                        Product product = _manager.daoService.GetProduct();
                         //高固定
                         itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
                         ori_x = ori_x + itemWidth / 2 + gap;
@@ -204,7 +208,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
     }
 
 }

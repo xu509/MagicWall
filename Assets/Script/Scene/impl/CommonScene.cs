@@ -9,6 +9,10 @@ public class CommonScene : IScene
     //
     //  Parameter
     //
+    private MagicWallManager _manager;
+
+    // Dao Service
+    DaoService _daoService;
 
     //
     private bool isDoDestoryCompleting = false;
@@ -32,8 +36,6 @@ public class CommonScene : IScene
     SceneStatus status = SceneStatus.PREPARING; //场景状态
     public SceneStatus Status { get { return status; } set { status = value; } }
 
-    // Dao Service
-    DaoService daoService;
 
     //
     //  Private Methods
@@ -65,12 +67,12 @@ public class CommonScene : IScene
         if (!isDoDestoryCompleting)
         {
 
-            MagicWallManager.Instance.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
-            MagicWallManager.Instance.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
+            _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
+            _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
 
             isDoDestoryCompleting = true;
             // 清理面板
-            return MagicWallManager.Instance.Clear();
+            return _manager.Clear();
         }
         else {
  
@@ -97,9 +99,12 @@ public class CommonScene : IScene
 	//
 
 	//	配置
-	public void DoConfig(SceneConfig sceneConfig)
+	public void DoConfig(SceneConfig sceneConfig,MagicWallManager manager)
 	{
+        _manager = manager;
+
         _theCutEffect = sceneConfig.CutEffect; // 设置过场效果
+        _theCutEffect.Init(_manager);
         _sceneContentType = sceneConfig.SceneContentType; // 设置类型
 
     }
@@ -107,7 +112,7 @@ public class CommonScene : IScene
 	//  运行
 	public bool Run()
 	{
-		MagicWallManager magicWallManager = MagicWallManager.Instance;
+		MagicWallManager magicWallManager = _manager;
 
 		// 准备状态
 		if (Status == SceneStatus.PREPARING)
@@ -116,7 +121,7 @@ public class CommonScene : IScene
 			//Debug.Log("Scene is Cutting");
             _startTime = Time.time; //标记开始的时间
 
-			MagicWallManager.Instance.Status = WallStatusEnum.Cutting;   //标记项目进入过场状态
+			_manager.Status = WallStatusEnum.Cutting;   //标记项目进入过场状态
 
 			DoCreating();  //初始化场景
 
@@ -190,4 +195,5 @@ public class CommonScene : IScene
     {
         return _sceneContentType;
     }
+
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 企业工厂
 /// </summary>
-public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
+public class ActivityFactory :MonoBehaviour, ItemsFactory
 {
     private float _gap = 58;
     private float _itemWidth;   // Item Width
@@ -28,10 +28,20 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
 
 
     void Awake() {
-        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
-        _manager = MagicWallManager.Instance;
-        _agentManager = AgentManager.Instance;
-        _daoService = DaoService.Instance;
+
+    }
+
+    public ActivityFactory() {
+
+
+    }
+
+    public void Init(MagicWallManager manager)
+    {
+        _manager = manager;
+        _operationPanel = _manager.OperationPanel;
+        _agentManager = _manager.agentManager;
+        _daoService = _manager.daoService;
 
         int _row = _manager.Row;
 
@@ -41,13 +51,8 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         _itemWidth = 300;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
-
     }
 
-    public ActivityFactory() {
-
-
-    }
 
     #region 生成浮动块
     //
@@ -62,7 +67,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
 
         //  创建 Agent
         FlockAgent newAgent = Instantiate(
-                                    _manager.agentPrefab,
+                                    _manager.flockAgent,
                                     parent
                                     );
         //  命名
@@ -98,7 +103,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
         boxCollider2D.size = new Vector2(width, height);
         //  初始化内容
-        newAgent.Initialize(ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
+        newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
             width, height, activity.Ent_id, activity.Image, false, 2);
 
         //  添加到组件袋
@@ -141,11 +146,14 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         //  配置scene
         sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
+        // 添加管理器索引
+        sliceCardAgent.manager = _manager;
+
         //  初始化数据
         sliceCardAgent.InitData(flockAgent.DataId, 1);
 
         // 添加到effect agent
-        AgentManager.Instance.AddEffectItem(sliceCardAgent);
+        _agentManager.AddEffectItem(sliceCardAgent);
 
         return sliceCardAgent;
     }
@@ -160,7 +168,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
@@ -181,7 +189,7 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;
         int w = (int)_manager.mainPanel.rect.width;
 
-        float itemHeight = (h - _gap * 7) / _manager.row;
+        float itemHeight = (h - _gap * 7) / _manager.Row;
         float itemWidth = itemHeight;
 
 
@@ -222,5 +230,6 @@ public class ActivityFactory : Singleton<ActivityFactory>, ItemsFactory
 
         return cardAgent;
     }
+
 
 }

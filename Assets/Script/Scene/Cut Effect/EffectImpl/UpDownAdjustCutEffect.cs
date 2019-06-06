@@ -8,8 +8,6 @@ using DG.Tweening;
 public class UpDownAdjustCutEffect : CutEffect
 {
 
-    MagicWallManager _manager;
-
     private int _page;  // 页码
 
     private float _startingTimeWithOutDelay;
@@ -20,15 +18,20 @@ public class UpDownAdjustCutEffect : CutEffect
     //
     //  Init
     //
-    protected override void Init()
+    public override void Init(MagicWallManager manager)
     {
+        _manager = manager;
+        _agentManager = manager.agentManager;
+        _daoService = DaoService.Instance;
+
+
         //  获取持续时间
         StartingDurTime = 1f;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
-        string t = DaoService.Instance.GetConfigByKey(AppConfig.KEY_CutEffectDuring_UpDownAdjust).Value;
+        string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_UpDownAdjust).Value;
         DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         // 获取Display的动画
@@ -36,10 +39,8 @@ public class UpDownAdjustCutEffect : CutEffect
 
         // 获取销毁的动画
         DestoryBehavior = new FadeOutDestoryBehavior();
-        DestoryBehavior.Init(DestoryDurTime);
+        DestoryBehavior.Init(_manager, DestoryDurTime);
 
-        //  初始化 manager
-        _manager = MagicWallManager.Instance;
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
@@ -85,7 +86,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _manager.DaoService.GetEnterprise(), _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i , j , _itemWidth, _itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
 
                 // agent 一定时间内从透明至无透明
                 //go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
@@ -124,7 +125,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Activity activity = _manager.DaoService.GetActivity();
+                    Activity activity = _daoService.GetActivity();
                     //宽固定
                     _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                     ori_y = ori_y - _itemHeight / 2 - gap;
@@ -156,9 +157,9 @@ public class UpDownAdjustCutEffect : CutEffect
     }
 
     public override void Starting() {
-        for (int i = 0; i < AgentManager.Instance.Agents.Count; i++)
+        for (int i = 0; i < _agentManager.Agents.Count; i++)
         {
-            FlockAgent agent = AgentManager.Instance.Agents[i];
+            FlockAgent agent = _agentManager.Agents[i];
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
@@ -202,7 +203,7 @@ public class UpDownAdjustCutEffect : CutEffect
         _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-
+        _displayBehaviorConfig.Manager = _manager;
         DisplayBehavior.Init(_displayBehaviorConfig);
 
     }
@@ -230,7 +231,7 @@ public class UpDownAdjustCutEffect : CutEffect
                     float ori_x = j * (_itemWidth + gap) + _itemWidth / 2 + gap;
                     float ori_y = y;
 
-                    Product product = DaoService.Instance.GetProduct();
+                    Product product = _daoService.GetProduct();
                     //宽固定
                     _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
                     ori_y = ori_y - _itemHeight / 2 - gap;

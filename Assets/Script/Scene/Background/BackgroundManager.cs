@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
-public class BackgroundManager : Singleton<BackgroundManager>
+public class BackgroundManager : MonoBehaviour
 {
+    MagicWallManager _manager;
+      
 
-    public int test = 0;
-
-    private MagicWallManager _manager;
     private Transform _bubblesBackground;
     private float last_create_time = 0f;
 
@@ -21,15 +21,17 @@ public class BackgroundManager : Singleton<BackgroundManager>
     //
     private void Awake()
     {
-        _bubblesBackground = GameObject.Find("MagicWall/Background").GetComponent<Transform>();
-        _manager = MagicWallManager.Instance;
-        Init();
+        
     }
 
-    private void Init() {
+    public void Init(MagicWallManager manager) {
+
+        _manager = manager;
+
         last_create_time = 0.0f;
         bubbles = new List<GameObject>();
         hasInit = true;
+
 
     }
 
@@ -42,6 +44,7 @@ public class BackgroundManager : Singleton<BackgroundManager>
 
 
     public void run() {
+
         if (!hasInit)
             return;
 
@@ -80,8 +83,9 @@ public class BackgroundManager : Singleton<BackgroundManager>
             alpha = r == 0 ? 0.8f : 0.4f;
         }
         RectTransform rectTransform = bubble.GetComponent<RectTransform>();
-        rectTransform.SetParent(_bubblesBackground, false);
+        rectTransform.SetParent(_manager.BackgroundPanel, false);
         rectTransform.sizeDelta = new Vector2(w, w);
+
         float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
 
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
@@ -105,7 +109,7 @@ public class BackgroundManager : Singleton<BackgroundManager>
         for (int i = 0; i < bubbles.Count; i++) {
             Destroy(bubbles[i]);
         }
-        Init();
+        Init(_manager);
     }
 
 

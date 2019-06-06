@@ -9,120 +9,103 @@ using EasingUtil;
 //
 //  入口类
 //
-public class MagicWallManager : Singleton<MagicWallManager>
+public class MagicWallManager:MonoBehaviour
 {
     //
     //  Single
     //
     protected MagicWallManager() { }
 
-    #region PUBLIC PARAMETER
-    // 面板
+    #region 可配置项
+    // 场景管理器
+    [SerializeField] MagicSceneManager _magicSceneManager;
+    // 实体管理器
+    [SerializeField] AgentManager _agentManager;
+    // 背景管理器
+    [SerializeField] BackgroundManager _backgroundManager;
+
+    [SerializeField] ItemsFactoryAgent _itemsFactoryAgent;
+
+
+    /// 配置面板
     [SerializeField] ManagerConfig _managerConfig;
-    public ManagerConfig managerConfig { get { return _managerConfig; } }
-
+    // 定制 INFO 面板
     [SerializeField] InfoPanelAgent infoPanelAgent;
-
+    // MagicWall 面板
     [SerializeField] RectTransform _magicWallPanel;
-    public RectTransform MagincWallPanel { get { return _magicWallPanel; } }
+    // MainPanel 面板
+    [SerializeField] RectTransform _mainPanel;
+    // Back Panel 面板
+    [SerializeField] RectTransform _backPanel;
+    // Back ground 面板
+    [SerializeField] RectTransform _backgroundPanel;
+    // Operate Panle 面板 （操作面板）
+    [SerializeField] RectTransform _operationPanel;
 
-    public RectTransform mainPanel;
-    public FlockAgent agentPrefab;
-    public CardAgent crossCardgent;
-    public CardAgent sliceCardgent;
+    /// 预制体
+    // 浮动块
+    [SerializeField] FlockAgent _flockAgent;
+    //  十字块
+    [SerializeField] CardAgent _crossCardgent;
+    // 滑动块
+    [SerializeField] CardAgent _sliceCardgent;
+    // 气泡预制体
+    [SerializeField] GameObject _backgroundPrefab;
+    // 气泡预制体2 
+    [SerializeField] GameObject _backgroundPrefab2;
 
-    public RectTransform backPanel;//前后层展开效果的后层
+    /// 背景配置项
+    //气泡上升时间
+    [SerializeField, Range(10f, 30f)] float _backgroundUpDuration = 20f;
+    //生成气泡时间间隔
+    [SerializeField, Range(0.1f, 10f)] float _backgroundUubbleInterval = 0.2f;
 
-    // 背景管理器相关设置
-    public GameObject backgroundPrefab;//气泡预制体
-    public GameObject backgroundPrefab2;//气泡预制体
+    /// 卡片物理碰撞效果设置
+    // 影响距离
+    [SerializeField, Range(0f, 2f), Header("影响距离（当为1时，表示半径）")] float _influenceDistance;
+    // 影响移动距离系数
+    [SerializeField, Range(0f, 10f)] float _influenceMoveFactor;
+    // 卡片动画效果
+    [SerializeField] EaseEnum _influenceEaseEnum;
 
-    [Range(10f, 30f)]
-    public float backgroundUpDuration = 20f;//气泡上升时间
-    [Range(0.1f, 10f)]
-    public float backgroundUubbleInterval = 0.2f;//生成气泡时间间隔
-
-    [Range(0f, 2f), Header("影响距离（当为1时，表示半径）")]
-    public float InfluenceFactor;   // 影响距离
-
-    [Range(0f, 10f)]
-    public float InfluenceMoveFactor;   // 影响移动距离
-
-    [SerializeField] EaseEnum easeEnum;
-    public EaseEnum EaseEnum { get { return easeEnum; } }
-
-
+    /// 整体的移动速度
+    [SerializeField, Range(1f, 600f)] float _movePanelFactor = 100f;
+    
+    /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
-    public RectTransform BgLogo { get { return _bg_logo; } }
 
-
-
-    // 面板的差值
-    float panelOffsetX = 0f;
-    public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
-
-    float panelOffsetY = 0f;
-    public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
-
-    [SerializeField, Range(1f, 600f)]
-    public float MoveFactor_Panel;
-
-    private AgentType theItemType;
-    public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
-
-    //顶部logo
-    //   Transform wallLogo;
-    //public Transform WallLogo { get { return wallLogo; } }
-
-    //layout
-    public int row = 6;
-    public int Row { get { return row; } }
-
-    int gap = 58;
-    public int Gap { get { return gap; } }
-
-    public GraphicRaycaster graphicRaycaster;
-    PointerEventData m_PointerEventData;
-    public EventSystem m_EventSystem;
-
+    // 配置的行数
+    [SerializeField] int _row = 6;
 
     #endregion
 
-    #region PRIVATE PARAMETER
-    [SerializeField]
-    private int _sceneIndex = 0; // 场景索引
-    public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
 
-    [SerializeField]
+    #region 非配置属性
+
+    // 面板的差值
+    float panelOffsetX = 0f;
+    float panelOffsetY = 0f;
+
+    AgentType theItemType;
+    int _sceneIndex = 0; // 场景索引
     private IScene _currentScene; // 当前场景
-    public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
-
-
     private WallStatusEnum status;
-    public WallStatusEnum Status { get { return status; } set { status = value; } }
+    bool _reset = false;    // 重置标志
 
-    private RectTransform _operationPanel;
-    public RectTransform OperationPanel{get { return _operationPanel; } }
-
-    [SerializeField] private RectTransform _IndexPanel;
-    public RectTransform IndexPanel { get { return _IndexPanel; } }
+    public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
+    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
 
 
+    public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
 
     #endregion
 
     #region Private Parameter - Data
-
-
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
-
-
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
-
+    // 数据管理器
+    DaoService _daoService;
 
     //从下往上 列与底
     public Dictionary<int, float> columnAndBottoms;
@@ -130,34 +113,83 @@ public class MagicWallManager : Singleton<MagicWallManager>
     public Dictionary<int, float> columnAndTops;
     //行与右
     public Dictionary<int, float> rowAndRights;
+    #endregion
 
-    private bool _reset = false;
-    public void SetReset() { _reset = true; }
+    #region 引用
+    public ManagerConfig managerConfig { get { return _managerConfig; } }
+    public RectTransform magicWallPanel { get { return _magicWallPanel; } }
+    public RectTransform mainPanel { get { return _mainPanel; } }
+    public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
+    public FlockAgent flockAgent { get { return _flockAgent; } }
+    public CardAgent crossCardgent { get { return _crossCardgent; } }
+    public CardAgent sliceCardgent { get { return _sliceCardgent; } }
+    public GameObject backgroundPrefab { get { return _backgroundPrefab; } }//气泡预制体
+    public GameObject backgroundPrefab2 { get { return _backgroundPrefab2; } }//气泡预制体
+    public RectTransform BackgroundPanel { get { return _backgroundPanel; } }
+    public RectTransform OperationPanel { get { return _operationPanel; } }
+    public float backgroundUpDuration { get { return _backgroundUpDuration; } }//气泡上升时间
+    public float backgroundUubbleInterval { get { return _backgroundUubbleInterval; } }//生成气泡时间间隔.
+    public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
+    public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
+    public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
+    public float MovePanelFactor { get { return _movePanelFactor; } }
+    public RectTransform BgLogo { get { return _bg_logo; } }
+    public int Row { get { return _row; } }
+    public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
+    public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
+    public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
+    public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
+    public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
+    public WallStatusEnum Status { get { return status; } set { status = value; } }
 
-    public Camera MainCamera { get{ return _mainCamera; } }
-    [SerializeField]private Camera _mainCamera;
+    public AgentManager agentManager { get { return _agentManager; } }
+    public BackgroundManager backgroundManager { get { return _backgroundManager; } }
+    public DaoService daoService { get { return _daoService; } }
+
+    public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
 
     #endregion
 
-    DaoService daoService;
-    public DaoService DaoService { get { return daoService; } }
+
 
     UdpServer udpServer;
 
     private bool _hasInit = false;
 
     private void Init() {
-        Debug.Log("mainPanel.anchoredPosition :" + mainPanel.anchoredPosition);
 
-        //mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+
+        // 初始化数据连接服务
+        TheDataSource theDataSource = TheDataSource.Instance;
+
+        // 初始化数据服务
+        _daoService = DaoService.Instance;
+
+        // 初始化监听服务
+        udpServer = UdpServer.Instance;
+        udpServer.SetManager(this);
 
 
         ResetMainPanel(); //主面板归位
-        _hasInit = true;
 
         PanelOffsetX = 0f;   // 清理两个panel偏移量
         PanelOffsetY = 0f;   // 清理两个panel偏移量
 
+
+        // 初始化场景管理器
+        _magicSceneManager.Init(this);
+
+        // 初始化背景管理器
+        _backgroundManager.Init(this);
+
+        // 初始化实体管理器
+        _agentManager.Init(this);
+
+        // 初始化实体工厂
+        _itemsFactoryAgent.Init(this);
+
+
+        _hasInit = true;
     }
 
 
@@ -165,32 +197,17 @@ public class MagicWallManager : Singleton<MagicWallManager>
     // Awake - init manager of Singleton
     private void Awake()
     {
-        // 初始化场景管理器
-        MagicSceneManager sceneManager = MagicSceneManager.Instance;
-
-        // 初始化背景管理器
-        BackgroundManager backgroundManager = BackgroundManager.Instance;
-
-        // 初始化实体管理器
-        AgentManager agentManager = AgentManager.Instance;
+        _hasInit = false;
 
         //  装载内容
-        TheDataSource theDataSource = TheDataSource.Instance;
-
-        daoService = DaoService.Instance;
-
-        udpServer = UdpServer.Instance;
+        
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        // 初始化 UI 索引
-        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
-
         Init();
-
     }
 
     // Update is called once per frame
@@ -200,9 +217,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
             return;
 
         // 开启场景效果
-        MagicSceneManager.Instance.Run();
+        _magicSceneManager.Run();
 
-        AgentManager.Instance.Run();
+        _agentManager.Run();        
 
         //  启动监听
         udpServer.Listening();
@@ -219,7 +236,7 @@ public class MagicWallManager : Singleton<MagicWallManager>
 
     #region 清理面板
     public bool Clear() {
-        AgentManager.Instance.ClearAgents(); //清理 agent 袋
+        _agentManager.ClearAgents(); //清理 agent 袋
         ResetMainPanel(); //主面板归位
         backPanel.anchoredPosition = Vector2.zero;
 
@@ -264,19 +281,19 @@ public class MagicWallManager : Singleton<MagicWallManager>
         _reset = false;
 
         // 当前场景退出动画（淡出）
-        CanvasGroup cg = IndexPanel.GetComponent<CanvasGroup>();
+        CanvasGroup cg = _magicWallPanel.GetComponent<CanvasGroup>();
         cg.DOFade(0, 1).OnComplete(() => {
-            ////  初始化组件库
-            //AgentManager.Instance.Reset();
+            //  初始化组件库
+            _agentManager.Reset();
 
-            ////  初始化场景库
-            //MagicSceneManager.Instance.Reset();
+            //  初始化场景库
+            _magicSceneManager.Reset();
 
-            ////  初始化背景库
-            //BackgroundManager.Instance.Reset();
+            //  初始化背景库
+            _backgroundManager.Reset();
 
-            ////  初始化 SOCKET 接收器
-            //UdpServer.Instance.Reset();
+            //  初始化 SOCKET 接收器
+            UdpServer.Instance.Reset();
 
             //Init();
 
@@ -305,6 +322,9 @@ public class MagicWallManager : Singleton<MagicWallManager>
             }
         }
     }
+
+
+    public void SetReset() { _reset = true; }
 
 }
 

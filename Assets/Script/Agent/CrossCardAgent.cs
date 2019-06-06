@@ -50,6 +50,8 @@ public class CrossCardAgent : CardAgent
     //
     public void InitData()
     {
+        InitAgency();
+
         Timer myTimer = new Timer("生成卡片");
         myTimer.Record();
 
@@ -200,8 +202,6 @@ public class CrossCardAgent : CardAgent
 
 
     void Awake() {
-        AwakeAgency();
-
     }
 
     //

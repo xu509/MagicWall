@@ -10,6 +10,8 @@ using System.Threading;
 
 public class UdpServer : Singleton<UdpServer>
 {
+    private MagicWallManager _manager;
+
     private float lastReceiveTime = 0f;
     private bool _hasInit = false;
 
@@ -36,6 +38,10 @@ public class UdpServer : Singleton<UdpServer>
     private static int doUpdate = 5;
 
 
+    public void SetManager(MagicWallManager manager) {
+        _manager = manager;
+    }
+
 
     public void Listening() {
 
@@ -43,7 +49,7 @@ public class UdpServer : Singleton<UdpServer>
         {
             Debug.Log("您按下了W键");
 
-            MagicWallManager.Instance.Reset();
+            _manager.Reset();
 
         }
 
@@ -180,7 +186,7 @@ public class UdpServer : Singleton<UdpServer>
     }
 
     private void AfterRun() {
-        MagicWallManager.Instance.SetReset();
+        _manager.SetReset();
     }
 
 

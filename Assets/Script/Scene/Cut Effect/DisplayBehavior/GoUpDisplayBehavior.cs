@@ -10,6 +10,7 @@ using System;
 public class GoUpDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
+    private DaoService _daoService;
     private DisplayBehaviorConfig _displayBehaviorConfig;
 
     private int _initPage;
@@ -21,16 +22,19 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
     {
         _displayBehaviorConfig = displayBehaviorConfig;
         _initPage = _displayBehaviorConfig.Page;
+
+        _manager = displayBehaviorConfig.Manager;
+        _daoService = _manager.daoService;
+
         flag = false;
 
     }
 
     public void Run()
     {
-        _manager = MagicWallManager.Instance;
 
         // 面板向上移动
-        float y = _manager.mainPanel.anchoredPosition.y + Time.deltaTime * _manager.MoveFactor_Panel;
+        float y = _manager.mainPanel.anchoredPosition.y + Time.deltaTime * _manager.MovePanelFactor;
         Vector2 to = new Vector2(_manager.mainPanel.anchoredPosition.x, y);
         _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
@@ -80,7 +84,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Activity activity = _manager.DaoService.GetActivity();
+                        Activity activity = _manager.daoService.GetActivity();
                         //宽固定
                         _itemHeight = _itemWidth / activity.TextureImage.width * activity.TextureImage.height;
                         ori_y = ori_y - _itemHeight / 2 - gap;
@@ -171,7 +175,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GoUpGetOriginPosition(i, j);
                         float x = vector2.x;
                         float y = vector2.y;
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, _itemWidth, _itemHeight, DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, _itemWidth, _itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
 
                     }
                 }
@@ -193,7 +197,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), DaoService.Instance.GetEnterprise(), _manager.mainPanel);
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
 
     }
 
@@ -221,7 +225,7 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
 
-                        Product product = _manager.DaoService.GetProduct();
+                        Product product = _manager.daoService.GetProduct();
                         //宽固定
                         _itemHeight = _itemWidth / product.TextureImage.width * product.TextureImage.height;
                         ori_y = ori_y - _itemHeight / 2 - gap;

@@ -7,7 +7,7 @@ using DG.Tweening;
 //
 //  实体管理器
 //
-public class AgentManager : Singleton<AgentManager>
+public class AgentManager : MonoBehaviour
 {
 
     #region Parameter
@@ -23,25 +23,13 @@ public class AgentManager : Singleton<AgentManager>
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
 
-
-
-
-    //
-    //  Paramater UI
-    //
-    RectTransform _operationPanel;
-
     #endregion
 
     //
     //  single pattern
     // 
     void Awake() {
-        _manager = MagicWallManager.Instance;
-        effectAgent = new List<FlockAgent>();
-        _agents = new List<FlockAgent>();
-        //cardAgents = new List<CardAgent>();
-        _operationPanel = GameObject.Find("OperatePanel").GetComponent<RectTransform>();
+
     }
 
     //
@@ -51,6 +39,13 @@ public class AgentManager : Singleton<AgentManager>
 
 
     #region Public Methods
+
+    public void Init(MagicWallManager manager) {
+        effectAgent = new List<FlockAgent>();
+        _agents = new List<FlockAgent>();
+        _manager = manager;
+    }
+
 
     //
     //  清理所有的agents
@@ -157,9 +152,6 @@ public class AgentManager : Singleton<AgentManager>
             //EffectAgent[0].GetCardAgent.DoCloseDirect();
         }
 
-
-
-
     }
 
 
@@ -167,8 +159,6 @@ public class AgentManager : Singleton<AgentManager>
     #endregion
 
 
-    #region Private methods
 
-    #endregion
 
 }
