@@ -21,12 +21,19 @@ public class InfoPanelAgent : MonoBehaviour
 
     List<string> _leftImages,_middleImages,_rightImages;
 
+    private float _panelWidth;
+    private float _panelHeight;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         // 初始化最左侧图片
         _leftImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.LEFT1);
+
+        //AdjustLayout();
+
         SetLeftImages();
 
         // 初始化中间图片
@@ -35,7 +42,8 @@ public class InfoPanelAgent : MonoBehaviour
 
         // 初始化右侧图片
         _rightImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.RIGHT);
-        SetRightImages();
+        if(_rightImages.Count > 0)
+            SetRightImages();
 
         if (_leftImages.Count > 1)
         {
@@ -103,10 +111,9 @@ public class InfoPanelAgent : MonoBehaviour
     {
         for (int i = 0; i < _leftImages.Count; i++)
         {
-            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RawImage rawImage = Instantiate(rawImagePrefab, leftPanel) as RawImage;
             RectTransform rtf = rawImage.GetComponent<RectTransform>();
-            rtf.SetParent(leftPanel);
-            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
             rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[i]);
@@ -115,12 +122,11 @@ public class InfoPanelAgent : MonoBehaviour
 
     void SetMiddleImages()
     {
-        for (int i = 0; i < _leftImages.Count; i++)
+        for (int i = 0; i < _middleImages.Count; i++)
         {
-            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RawImage rawImage = Instantiate(rawImagePrefab, middlePanel) as RawImage;
             RectTransform rtf = rawImage.GetComponent<RectTransform>();
-            rtf.SetParent(middlePanel);
-            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
             rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _middleImages[i]);
@@ -129,12 +135,11 @@ public class InfoPanelAgent : MonoBehaviour
 
     void SetRightImages()
     {
-        for (int i = 0; i < _leftImages.Count; i++)
+        for (int i = 0; i < _rightImages.Count; i++)
         {
-            RawImage rawImage = Instantiate(rawImagePrefab) as RawImage;
+            RawImage rawImage = Instantiate(rawImagePrefab, rightPanel) as RawImage;
             RectTransform rtf = rawImage.GetComponent<RectTransform>();
-            rtf.SetParent(rightPanel);
-            rtf.anchoredPosition3D = new Vector3(-540, 0, 0);
+            rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
             rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _rightImages[i]);
@@ -145,5 +150,28 @@ public class InfoPanelAgent : MonoBehaviour
         //TODO 左侧的动画更换
 
     }
+
+    void AdjustLayout() {
+        Texture texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[0]);
+
+        float h = texture.height;
+        float w = texture.width;
+
+        //調整最左側的礦體
+        _panelHeight = leftPanel.rect.height;
+
+        float radio = w / h;
+        _panelWidth = radio * _panelHeight;
+
+        leftPanel.sizeDelta = new Vector2(_panelWidth, _panelHeight);
+        middlePanel.sizeDelta = new Vector2(_panelWidth, _panelHeight);
+        rightPanel.sizeDelta = new Vector2(_panelWidth, _panelHeight);
+
+        Debug.Log("_panelWidth : " + _panelWidth + " |_panelHeight " + _panelHeight);
+
+
+
+    }
+
 
 }

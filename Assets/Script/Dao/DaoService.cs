@@ -571,7 +571,7 @@ public class DaoService : Singleton<DaoService>
     public List<string> GetCustomImage(CustomImageType type) {
         string[] leftImages = { "l1.jpg", "l2.jpg", "l3.jpg" };
         string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg", "m4.jpg", "m5.jpg" };
-        string[] rightImages = { "r1.jpg", "r2.jpg", "r3.jpg" };
+        string[] rightImages = { "r1.jpg"};
 
         if (type == CustomImageType.LEFT1) {
             List<string> images = new List<string>();
@@ -597,7 +597,7 @@ public class DaoService : Singleton<DaoService>
         {
             List<string> images = new List<string>();
             int size = Random.Range(1, 4);
-            size = 3;
+            size = 1;
             for (int i = 0; i < size; i++)
             {
                 images.Add(rightImages[i]);
