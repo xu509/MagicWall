@@ -144,11 +144,12 @@ public class AgentManager : MonoBehaviour
 
         // 检测打开的个数大于8个时，关闭早的
         if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount) {
-
             // 此时得到的是CardAgent
             CardAgent effectAgent = EffectAgent[0] as CardAgent;
-            effectAgent.DoCloseDirect();
-
+            if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND 
+                && effectAgent.CardStatus != CardStatusEnum.DESTORYED) {
+                effectAgent.DoCloseDirect();
+            }
             //EffectAgent[0].GetCardAgent.DoCloseDirect();
         }
 

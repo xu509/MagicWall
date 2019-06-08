@@ -57,7 +57,7 @@ public class VideoAgent : MonoBehaviour
 
     public void Init() {
         _videoPlayer.source = VideoSource.Url;
-        _videoPlayer.url = MagicWallManager.URL_ASSET + "video\\" + _address;
+        _videoPlayer.url = MagicWallManager.FileDir + "video\\" + _address;
 
         // 设置进度条
         _progress.anchoredPosition = _progress_init;

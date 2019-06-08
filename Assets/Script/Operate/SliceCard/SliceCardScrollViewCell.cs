@@ -66,11 +66,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             string address;
             if (cellData.IsProduct())
             {
-                address = MagicWallManager.URL_ASSET + "product\\detail\\" + cellData.Image;
+                address = MagicWallManager.FileDir + "product\\detail\\" + cellData.Image;
             }
             else
             {
-                address = MagicWallManager.URL_ASSET + "activity\\detail\\" + cellData.Image;
+                address = MagicWallManager.FileDir + "activity\\detail\\" + cellData.Image;
             }
 
             _cover.texture = TextureResource.Instance.GetTexture(address);
@@ -80,7 +80,7 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         }
         else {
             videoContainer.gameObject.SetActive(true);
-            string address = MagicWallManager.URL_ASSET + "video\\" + cellData.Image;
+            string address = MagicWallManager.FileDir + "video\\" + cellData.Image;
 
             _video_cover.texture = TextureResource.Instance.GetTexture(address);
             CanvasExtensions.SizeToParent(_video_cover);

@@ -256,7 +256,7 @@ public class MidDisperseCutEffect : CutEffect
 
                     Product product = _daoService.GetProduct();
 
-                    Texture t = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "product\\" + product.Image);
+                    Texture t = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "product\\" + product.Image);
 
                     //宽固定
                     _itemHeight = _itemWidth / t.width * t.height;

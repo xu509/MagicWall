@@ -84,8 +84,8 @@ public class StarsCutEffect : CutEffect
                 
 
                 Vector2 vector2 = AppUtils
-                    .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo).width
-                    , TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo).height));
+                    .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).width
+                    , TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).height));
 
                 int middleX = (column - 1) / 2;
 

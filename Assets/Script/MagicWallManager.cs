@@ -79,7 +79,6 @@ public class MagicWallManager:MonoBehaviour
 
     #endregion
 
-
     #region 非配置属性
 
     // 面板的差值
@@ -92,14 +91,13 @@ public class MagicWallManager:MonoBehaviour
     private WallStatusEnum status;
     bool _reset = false;    // 重置标志
 
-    //public static string URL_ASSET_LOGO = "E:\\workspace\\MagicWall\\Assets\\Files\\logo\\";
-    public static string URL_ASSET_LOGO = "D:\\MagicWall\\Assets\\Files\\logo\\";
-    //public static string URL_ASSET_LOGO = "D:\\MagicWall\\Files\\logo\\";
+    // 配置选项
 
+    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
-    //public static string URL_ASSET = "E:\\workspace\\MagicWall\\Assets\\Files\\";
-    public static string URL_ASSET = "D:\\MagicWall\\Assets\\Files\\";
-    //public static string URL_ASSET = "D:\\MagicWall\\Files\\";
+    //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string FileDir = "D:\\MagicWall\\Files\\";
 
     #endregion
 
@@ -141,13 +139,12 @@ public class MagicWallManager:MonoBehaviour
     public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
     public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
     public WallStatusEnum Status { get { return status; } set { status = value; } }
-
     public AgentManager agentManager { get { return _agentManager; } }
     public BackgroundManager backgroundManager { get { return _backgroundManager; } }
     public DaoService daoService { get { return _daoService; } }
-
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
 
+    // 获取文件地址
     #endregion
 
 
@@ -157,7 +154,6 @@ public class MagicWallManager:MonoBehaviour
     private bool _hasInit = false;
 
     private void Init() {
-
 
         // 初始化数据连接服务
         TheDataSource theDataSource = TheDataSource.Instance;
@@ -169,6 +165,8 @@ public class MagicWallManager:MonoBehaviour
         udpServer = UdpServer.Instance;
         udpServer.SetManager(this);
 
+        // 设置 Dotween 插件
+        DOTween.logBehaviour = LogBehaviour.ErrorsOnly;
 
         ResetMainPanel(); //主面板归位
 
@@ -325,6 +323,7 @@ public class MagicWallManager:MonoBehaviour
 
 
     public void SetReset() { _reset = true; }
+
 
 }
 

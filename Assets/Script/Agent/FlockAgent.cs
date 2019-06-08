@@ -11,7 +11,6 @@ using System;
 public class FlockAgent : MonoBehaviour
 {
     protected MagicWallManager _manager;
-    
 
     protected AgentManager _agentManager;
 
@@ -121,8 +120,7 @@ public class FlockAgent : MonoBehaviour
     #endregion
 
 
-
-        // Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
         agentRectTransform = GetComponent<RectTransform>();
@@ -152,7 +150,6 @@ public class FlockAgent : MonoBehaviour
         _data_type = dataType;
 
         // 定义 agent 的名字
-
         _sceneIndex = _manager.SceneIndex;
 
         // 定义工厂
@@ -175,11 +172,7 @@ public class FlockAgent : MonoBehaviour
 
         }
         //_itemsFactory.Init(_manager);
-
-
-
     }
-
 
     #region 更新位置
     public void updatePosition()
@@ -456,11 +449,10 @@ public class FlockAgent : MonoBehaviour
     {
         IsRecovering = true;
 
-
         // 如果组件已不在原场景，则不进行恢复
         if (_sceneIndex != _manager.SceneIndex) {
             gameObject.SetActive(false);
-            Destroy(gameObject);
+            DestoryAgency();
             return;
         }
 
@@ -499,38 +491,38 @@ public class FlockAgent : MonoBehaviour
 
     #endregion
 
-
-
     protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
     {
+        Debug.Log("Do Destory On Complete");
 
         // 进行销毁
         if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
             _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-
             CardAgent ca = agent as CardAgent;
 
-            Destroy(ca.gameObject);
-            Destroy(ca.OriginAgent.gameObject);
+            ca.DestoryAgency();
+            ca.OriginAgent.DestoryAgency();
+            //Destroy(ca.gameObject);
+            //Destroy(ca.OriginAgent.gameObject);
 
         }
         else if (typeof(SliceCardAgent).IsAssignableFrom(agent.GetType()))
         {
             _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-
             CardAgent ca = agent as CardAgent;
 
-            Destroy(ca.gameObject);
-            Destroy(ca.OriginAgent.gameObject);
+            ca.DestoryAgency();
+            ca.OriginAgent.DestoryAgency();
+            //Destroy(ca.gameObject);
+            //Destroy(ca.OriginAgent.gameObject);
 
         }
         else if (typeof(FlockAgent).IsAssignableFrom(agent.GetType())) {
-            Destroy(agent.gameObject);
+            //Destroy(agent.gameObject);
+            agent.DestoryAgency();
         }
 
     }
-
-
 
     //
     //  获取Logo
@@ -554,7 +546,6 @@ public class FlockAgent : MonoBehaviour
                     return transform_logo.GetComponent<RectTransform>();
                 }
             }
-
         }
         
         return null;
@@ -585,7 +576,6 @@ public class FlockAgent : MonoBehaviour
             return false;
         }
 
-
         float effect_width = 300f;
         float effect_height = 300f;
 
@@ -601,6 +591,15 @@ public class FlockAgent : MonoBehaviour
         {  
             return false;
         }
+
+    }
+
+    //  删除代理
+    public void DestoryAgency() {
+        // 清除 Dotween 代理
+
+        // 删除 Gameobject
+        Destroy(gameObject);
 
     }
 
