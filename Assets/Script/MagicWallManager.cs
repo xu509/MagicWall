@@ -93,8 +93,8 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
     //public static string FileDir = "D:\\MagicWall\\Files\\";
@@ -146,7 +146,6 @@ public class MagicWallManager:MonoBehaviour
 
     // 获取文件地址
     #endregion
-
 
 
     UdpServer udpServer;
