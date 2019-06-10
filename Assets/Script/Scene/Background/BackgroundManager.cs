@@ -60,11 +60,11 @@ public class BackgroundManager : MonoBehaviour
     void CreateBubble()
     {
         GameObject bubble;
-        float random = Random.Range(0.0f, 1.0f);
+        float random = Random.Range(0, 2);
         int w = 0;
         float alpha = 1;
         float duration = _manager.backgroundUpDuration;
-        if (random < 0.5)
+        if (random == 0)
         {
             //实球
             bubble = Instantiate(_manager.backgroundPrefab) as GameObject;
