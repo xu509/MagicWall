@@ -45,8 +45,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
 
-        Debug.Log("1111111:" + _column + "H :" + h + " /W :" + w );
-
     }
 
 
@@ -90,8 +88,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         Vector2 ori_position = new Vector2(ori_x, ori_y);
         newAgent.GenVector2 = postion;
 
-
-
         // 调整agent的长与宽
         Vector2 sizeDelta = new Vector2(width, height);
         rectTransform.sizeDelta = sizeDelta;
@@ -100,9 +96,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         //Enterprise env = _daoService.GetEnterprise();
 
         // 初始化显示图片
-        //rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        //newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
-        newAgent.GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET_LOGO + env.Logo);
+        newAgent.GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "logo\\" + env.Logo);
 
         // 调整 collider
         BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();

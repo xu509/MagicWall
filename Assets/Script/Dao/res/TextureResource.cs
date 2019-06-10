@@ -36,6 +36,9 @@ public class TextureResource : Singleton<TextureResource>
         }
         else
         {
+            Debug.Log("Address : " + address);
+
+
             Texture texture = AppUtils.LoadPNG(address);
             Add(address, texture);
             return texture;

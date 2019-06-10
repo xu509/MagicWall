@@ -153,7 +153,9 @@ public class StartScene : IScene
         foreach (Enterprise env in enterprises)
         {
             string logo = env.Logo;
-            string address = MagicWallManager.URL_ASSET_LOGO + logo;
+            string address = MagicWallManager.FileDir + "logo\\" + logo;
+            TextureResource.Instance.GetTexture(address);
+
 
             // 预加载企业卡片
             for (int i = 0; i < env.EnvCards.Count; i++) {
@@ -164,7 +166,7 @@ public class StartScene : IScene
             List<Catalog> catalogs =  _daoService.GetCatalogs(env.Ent_id);
             for (int i = 0; i < catalogs.Count; i++)
             {
-                string category_address = MagicWallManager.URL_ASSET + "env\\" + catalogs[i].Img;
+                string category_address = MagicWallManager.FileDir + "env\\" + catalogs[i].Img;
                 TextureResource.Instance.GetTexture(category_address);
             }
         }
@@ -173,7 +175,7 @@ public class StartScene : IScene
         foreach (Activity activity in activities)
         {
             string img = activity.Image;
-            string address = MagicWallManager.URL_ASSET + "activity\\" + img;
+            string address = MagicWallManager.FileDir + "activity\\" + img;
             activity.TextureImage = TextureResource.Instance.GetTexture(address);
         }
 
@@ -181,7 +183,7 @@ public class StartScene : IScene
         foreach (Product product in products)
         {
             string img = product.Image;
-            string address = MagicWallManager.URL_ASSET + "product\\" + img;
+            string address = MagicWallManager.FileDir + "product\\" + img;
             product.TextureImage = TextureResource.Instance.GetTexture(address);
         }
 
@@ -190,7 +192,7 @@ public class StartScene : IScene
         foreach (Video video in videos)
         {
             string cover = video.Cover;
-            string address = MagicWallManager.URL_ASSET + "video\\" + cover;
+            string address = MagicWallManager.FileDir + "video\\" + cover;
             TextureResource.Instance.GetTexture(address);
 
             // TODO 处理视频的加载
@@ -201,14 +203,16 @@ public class StartScene : IScene
             // TODO 
             Debug.Log("加载定制资源");
 
-            DaoService.CustomImageType[] types = { DaoService.CustomImageType.LEFT1, DaoService.CustomImageType.LEFT2, DaoService.CustomImageType.RIGHT };
+            DaoService.CustomImageType[] types = { DaoService.CustomImageType.LEFT1,
+                DaoService.CustomImageType.LEFT2,
+                DaoService.CustomImageType.RIGHT };
 
             foreach (DaoService.CustomImageType customImageType in types) {
                 List<string> images = _daoService.GetCustomImage(customImageType);
 
                 foreach (string image in images)
                 {
-                    string address = MagicWallManager.URL_ASSET + "custom\\" + image;
+                    string address = MagicWallManager.FileDir + "custom\\" + image;
                     TextureResource.Instance.GetTexture(address);
 
                 }
