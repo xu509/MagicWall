@@ -90,6 +90,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         _safe_distance_width = GetComponent<RectTransform>().rect.width / 3;
         _safe_distance_height = GetComponent<RectTransform>().rect.height / 3;
+
+        _agentManager = _manager.agentManager;
     }
 
     //
@@ -111,7 +113,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             }
 
             // 第二次缩小
-            if (_cardStatus == CardStatusEnum.DESTORING)
+            if (_cardStatus == CardStatusEnum.DESTORING_STEP_FIRST)
             {
                 if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
                 {
@@ -151,7 +153,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (CardStatus == CardStatusEnum.NORMAL) {
             _recentActiveTime = Time.time;
         }
-        else if (CardStatus == CardStatusEnum.DESTORING) {
+        else if (CardStatus == CardStatusEnum.DESTORING_STEP_FIRST) {
             DoRecover();
         }
     }
@@ -168,7 +170,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         //  缩放至2倍大
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
-        _cardStatus = CardStatusEnum.DESTORING;
+        _cardStatus = CardStatusEnum.DESTORING_STEP_FIRST;
 
         GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
             .OnUpdate(() =>
@@ -191,6 +193,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     private void DoDestoriedForSecondStep()
     {
+        _cardStatus = CardStatusEnum.DESTORYING_STEP_SCEOND;
 
         //  如果场景没有变，则回到原位置
         if (SceneIndex == _manager.SceneIndex)
@@ -204,23 +207,23 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
             //  获取位置
             FlockAgent oriAgent = _originAgent;
-            Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX, oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
+            Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX
+                , oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
             rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
                 //  使卡片消失
                 _agentManager.RemoveItemFromEffectItems(this);
 
-                gameObject.SetActive(false);
-                Destroy(gameObject);
+                //gameObject.SetActive(false);
+                DestoryAgency();
+                //Destroy(gameObject);
 
                 OriginAgent.DoRecoverAfterChoose();
-            }); ;
+            });
         }
         //  直接消失
         else
         {
-
-
             // 慢慢缩小直到消失
             Vector3 vector3 = Vector3.zero;
 
@@ -232,7 +235,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 })
                 .OnComplete(() => DoDestoryOnCompleteCallBack(this));
 
-            // 将原
         }
 
         _cardStatus = CardStatusEnum.DESTORYED;

@@ -23,7 +23,7 @@ public class CardItemVideoFactory : CardItemFactory
             cd.VideoUrl = e.Address;
 
             // 设置video的封面
-            string address = MagicWallManager.URL_ASSET + "video\\" + e.Cover;
+            string address = MagicWallManager.FileDir + "video\\" + e.Cover;
             cd.Image = address;
             
             _cellDatas.Add(cd);

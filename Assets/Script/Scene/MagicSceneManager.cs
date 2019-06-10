@@ -93,6 +93,7 @@ public class MagicSceneManager : MonoBehaviour
             {
                 _index++;
             }
+
             _manager.SceneIndex  = _manager.SceneIndex + 1;
             _manager.CurrentScene = _scenes[_index];
         }

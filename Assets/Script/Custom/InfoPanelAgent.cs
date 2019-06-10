@@ -67,7 +67,6 @@ public class InfoPanelAgent : MonoBehaviour
         rawImage.DOFade(0, _fadeoutDuration).OnComplete(() => {
             Destroy(rawImage.gameObject);
             RawImage[] images = leftPanel.GetComponentsInChildren<RawImage>();
-            Debug.Log(images.Length);
             if (images.Length == 2)
             {
                 SetLeftImages();
@@ -83,7 +82,6 @@ public class InfoPanelAgent : MonoBehaviour
         rawImage.DOFade(0, _fadeoutDuration).OnComplete(() => {
             Destroy(rawImage.gameObject);
             RawImage[] images = middlePanel.GetComponentsInChildren<RawImage>();
-            Debug.Log(images.Length);
             if (images.Length == 2)
             {
                 SetMiddleImages();
@@ -116,7 +114,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _leftImages[i]);
         }
     }
 
@@ -129,7 +127,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _middleImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _middleImages[i]);
         }
     }
 
@@ -142,7 +140,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _rightImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _rightImages[i]);
         }
     }
 
@@ -152,7 +150,7 @@ public class InfoPanelAgent : MonoBehaviour
     }
 
     void AdjustLayout() {
-        Texture texture = TextureResource.Instance.GetTexture(MagicWallManager.URL_ASSET + "custom\\" + _leftImages[0]);
+        Texture texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _leftImages[0]);
 
         float h = texture.height;
         float w = texture.width;

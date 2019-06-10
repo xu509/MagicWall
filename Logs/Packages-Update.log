@@ -94,3 +94,16 @@ The following packages were added:
   com.unity.package-manager-ui@2.1.2
   com.unity.multiplayer-hlapi@1.0.2
   com.unity.xr.legacyinputhelpers@2.0.2
+
+=== Fri Jun  7 13:54:57 2019
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were added:
+  com.unity.analytics@3.3.2
+  com.unity.ads@2.0.8
+  com.unity.textmeshpro@2.0.1
+  com.unity.package-manager-ui@2.1.2
+  com.unity.multiplayer-hlapi@1.0.2
+  com.unity.xr.legacyinputhelpers@2.0.2
