@@ -53,6 +53,8 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] GameObject _backgroundPrefab;
     // 气泡预制体2 
     [SerializeField] GameObject _backgroundPrefab2;
+    // 搜索预制体
+    [SerializeField] SearchAgent _searchAgentPrefab;
 
     /// 背景配置项
     //气泡上升时间
@@ -93,11 +95,11 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
     //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
-    public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
+    //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
     //public static string FileDir = "D:\\MagicWall\\Files\\";
 
     #endregion
@@ -124,6 +126,7 @@ public class MagicWallManager:MonoBehaviour
     public CardAgent sliceCardgent { get { return _sliceCardgent; } }
     public GameObject backgroundPrefab { get { return _backgroundPrefab; } }//气泡预制体
     public GameObject backgroundPrefab2 { get { return _backgroundPrefab2; } }//气泡预制体
+    public SearchAgent searchAgentPrefab { get { return _searchAgentPrefab; } }// 搜索预制体
     public RectTransform BackgroundPanel { get { return _backgroundPanel; } }
     public RectTransform OperationPanel { get { return _operationPanel; } }
     public float backgroundUpDuration { get { return _backgroundUpDuration; } }//气泡上升时间
