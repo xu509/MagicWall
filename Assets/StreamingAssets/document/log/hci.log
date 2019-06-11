@@ -1093,3 +1093,491 @@ hã¡ƒ4©˛ëåS6µ	ãeÁ‚á˛_å◊;^MJn¶\«	ÓR§ªÄ©æq’ó∞CuÔñπÃùSXXz7d=¬–™%“©#)´ñ0&é.ƒ
 2019-06-10 17:53:56 Unity.exe(22500:20320) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x383a9a00
 2019-06-10 17:53:56 Unity.exe(22500:20320) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
 2019-06-10 17:53:56 Unity.exe(22500:20320) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560160436379, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::Init] ______ StartLog Success ______
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::Init] ParseConfig Success
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::Init] eUdidType:-1
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Load]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::ReadUserInfo]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::SplitUdidString]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::SplitUdidString]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::ReadUserInfo] get udid from userinfo type:0 udid:086266276a510000000000000000
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_udid_by_type]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][get_win_mac_address]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][get_win_mac_address]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_udid_by_type]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) WARNING [HCI_SYS][CUserInfo::ReadUserInfo] new udid 08606ef0761c0000000000000000 is not in udid list
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::ReadUserInfo]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_udid]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][get_win_mac_address]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][get_win_mac_address]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_udid]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::ReBuild] update udid type:0 udid:08606ef0761c0000000000000000
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Load]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::ReadMaxSessionCount]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_LICENSE) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) WARNING [HCI_SYS][HciAuth::ReadMaxSessionCount] failed to open file D:/MagicWall/Assets/StreamingAssets/document//HCI_LICENSE
+
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::ReadMaxSessionCount]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::ReadMaxSessionCountBatch]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_LICENSE_BATCH) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) WARNING [HCI_SYS][HciAuth::ReadMaxSessionCountBatch] failed to open file D:/MagicWall/Assets/StreamingAssets/document//HCI_LICENSE_BATCH
+
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::ReadMaxSessionCountBatch]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::Init] max_session_count:2
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_AUTH_FOREVER) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) WARNING [HCI_SYS][CBasicAuth::LoadFromFile] failed to open basic_auth file D:/MagicWall/Assets/StreamingAssets/document//HCI_AUTH_FOREVER
+
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_BASIC_AUTH) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) WARNING [HCI_SYS][CBasicAuth::LoadFromFile] failed to open basic_auth file D:/MagicWall/Assets/StreamingAssets/document//HCI_BASIC_AUTH
+
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_APP_FILE) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91da30
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x9800c100
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::ShareDNSHandle] libcurl version:libcurl/7.37.0 OpenSSL/1.0.2q
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][curl_share_handle] libcurl version:libcurl/7.37.0 OpenSSL/1.0.2q
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 14:47:58
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:903d9b6edc50c187cda239db1c957f1a
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800b1e0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feeb40
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":16,"ccn":47,"cpt":47,"cst":172,"cnt":172,"cuz":374,"cdz":4673,"snt":163,"ngx":0,"svc":83,"spl":163,"spc":163,"stc":0}
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feeb40
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x9800c100
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800b1e0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91da30
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0xf15f2f50
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][UploadDataInterFace::StartUpload]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//USER_CUSTOM_HIS) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][UploadDataInterFace::StartUpload]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][HciAuth::CheckAuthThreadFunc]Enter
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::IsExpire]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::Init] SUCCESS
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::IsExpire]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::Init]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CUserInfo::IsNeedRegister] true,(1560235678,1
+2019-06-11 14:47:58 Unity.exe(11964: 1972) DEBUG   [HCI_SYS][UploadDataInterFace::UploadThreadFunc]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x437ff8f8
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][HciAuth::Register]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][HciAuth::TxSettingThreadFunc]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0xd0cf1a70
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:10000
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 14:47:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 14:47:58
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x9800c100
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:903d9b6edc50c187cda239db1c957f1a
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800b960
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x9802b0f0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/Register
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 14:47:58
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feeee0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:903d9b6edc50c187cda239db1c957f1a
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800b2c0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x98041c70
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 14:47:58
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:903d9b6edc50c187cda239db1c957f1a
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800b1a0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x9805bdd0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91dbd0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98074320
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 14:47:58
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:903d9b6edc50c187cda239db1c957f1a
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800be60
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x9807cf10
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":16,"ccn":47,"cpt":47,"cst":78,"cnt":78,"cuz":195,"cdz":167,"snt":72,"ngx":0,"svc":0,"spl":72,"spc":72,"stc":0}
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feeee0
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800b960
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [HCI_SYS][HciAuth::TxGetIdThreadFunc] json item data missing
+2019-06-11 14:47:58 Unity.exe(11964: 9756) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x437ff8f8
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":16,"ccn":47,"cpt":47,"cst":78,"cnt":78,"cuz":135,"cdz":175,"snt":82,"ngx":0,"svc":0,"spl":82,"spc":82,"stc":0}
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x98041c70
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x9800c100
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800b2c0
+2019-06-11 14:47:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 14:47:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560235678453, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":47,"cpt":47,"cst":94,"cnt":94,"cuz":374,"cdz":240,"snt":92,"ngx":0,"svc":9,"spl":92,"spc":92,"stc":0}
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x9805bdd0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x9802b0f0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800b1a0
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push></response_info>
+]
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][HciAuth::Register]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) INFO    [HCI_SYS][HciAuth::UpdateLocalAuth] read basic auth
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Enter
+2019-06-11 14:47:58 Unity.exe(11964:15768) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_AUTH_FOREVER) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964:15768) WARNING [HCI_SYS][CBasicAuth::LoadFromFile] failed to open basic_auth file D:/MagicWall/Assets/StreamingAssets/document//HCI_AUTH_FOREVER
+
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Enter
+2019-06-11 14:47:58 Unity.exe(11964:15768) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_BASIC_AUTH) failed (2:No such file or directory)
+2019-06-11 14:47:58 Unity.exe(11964:15768) WARNING [HCI_SYS][CBasicAuth::LoadFromFile] failed to open basic_auth file D:/MagicWall/Assets/StreamingAssets/document//HCI_BASIC_AUTH
+
+2019-06-11 14:47:58 Unity.exe(11964:15768) DEBUG   [HCI_SYS][CBasicAuth::LoadFromFile]Leave
+2019-06-11 14:47:58 Unity.exe(11964:15768) WARNING [HCI_SYS][HciAuth::UpdateLocalAuth] read basic auth failed
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":32,"cpt":32,"cst":157,"cnt":157,"cuz":374,"cdz":4673,"snt":148,"ngx":0,"svc":73,"spl":148,"spc":148,"stc":0}
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x9807cf10
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98074320
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800be60
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91dbd0
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::GetAuthExpireTime] SUCCESS
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Leave
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Enter
+2019-06-11 14:47:58 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::SetCurrentUserId] SUCCESS
+2019-06-11 14:47:58 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Leave
+2019-06-11 14:48:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 14:48:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 14:48:58
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:55c60de15352c67691a29a44ce568208
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bf00
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":32,"cpt":32,"cst":63,"cnt":63,"cuz":135,"cdz":175,"snt":59,"ngx":0,"svc":0,"spl":59,"spc":59,"stc":0}
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bf00
+2019-06-11 14:48:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 14:48:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560235738537, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 14:50:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 14:50:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 14:50:58
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:cde5315de18fff41ef88a6973ddbbd99
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800be60
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":47,"cpt":47,"cst":78,"cnt":78,"cuz":135,"cdz":175,"snt":71,"ngx":0,"svc":0,"spl":71,"spc":71,"stc":0}
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800be60
+2019-06-11 14:50:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 14:50:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560235858598, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 14:54:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 14:54:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 14:54:58
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:a543a4cc8efab36787db2d147b134a3e
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bfa0
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":47,"cpt":47,"cst":78,"cnt":78,"cuz":135,"cdz":175,"snt":73,"ngx":0,"svc":0,"spl":73,"spc":73,"stc":0}
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bfa0
+2019-06-11 14:54:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 14:54:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560236098670, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91dbd0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:admin
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 15:00:16
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:0c41bfeddd75942656208def393b4c34
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800ba20
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":32,"cpt":32,"cst":157,"cnt":157,"cuz":374,"cdz":4673,"snt":160,"ngx":0,"svc":79,"spl":160,"spc":160,"stc":0}
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800ba20
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91dbd0
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::GetAuthExpireTime] SUCCESS
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Leave
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Enter
+2019-06-11 15:00:16 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::SetCurrentUserId] SUCCESS
+2019-06-11 15:00:16 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Leave
+2019-06-11 15:02:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 15:02:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 15:02:58
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:ca9432219c856fdeb171efa8b793ef83
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bba0
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":16,"cpt":16,"cst":47,"cnt":47,"cuz":135,"cdz":175,"snt":60,"ngx":0,"svc":0,"spl":60,"spc":60,"stc":0}
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bba0
+2019-06-11 15:02:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 15:02:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560236578743, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91dbd0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:admin
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 15:04:47
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:6f8993d59cdbcd09db71d73d85279a45
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800ba20
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":32,"cpt":32,"cst":141,"cnt":141,"cuz":374,"cdz":4673,"snt":145,"ngx":0,"svc":72,"spl":145,"spc":145,"stc":0}
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800ba20
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91dbd0
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::GetAuthExpireTime] SUCCESS
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Leave
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Enter
+2019-06-11 15:04:47 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::SetCurrentUserId] SUCCESS
+2019-06-11 15:04:47 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91dbd0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:admin
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 15:11:26
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:631d434eba8185304bf262bc04690aa0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bac0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":32,"cpt":32,"cst":157,"cnt":157,"cuz":374,"cdz":4673,"snt":150,"ngx":0,"svc":79,"spl":150,"spc":150,"stc":0}
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bac0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91dbd0
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::GetAuthExpireTime] SUCCESS
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Leave
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Enter
+2019-06-11 15:11:26 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::SetCurrentUserId] SUCCESS
+2019-06-11 15:11:26 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Leave
+2019-06-11 15:18:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 15:18:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 15:18:58
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:693506f5128a42c1b1716ad0ccf2005f
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bd40
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":31,"cpt":31,"cst":62,"cnt":62,"cuz":135,"cdz":175,"snt":62,"ngx":0,"svc":0,"spl":62,"spc":62,"stc":0}
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bd40
+2019-06-11 15:18:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 15:18:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560237538809, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 15:50:58 Unity.exe(11964: 6340) INFO    [jtcommon][FileReader::Load] open file (D:/MagicWall/Assets/StreamingAssets/document//HCI_TX_SETTING) failed (2:No such file or directory)
+2019-06-11 15:50:58 Unity.exe(11964: 6340) ERROR   [HCI_SYS][TxSetting::LoadFromFile] HCI_TX_SETTING IsValid false
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] http url:http://conf.open.tianxing.com:13000
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:appKey:195d5435
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:nonceStr:2019-06-11 15:50:58
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] header:sessionKey:61cff89de2932972cc02545cc2f54324
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800be20
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":16,"cpt":16,"cst":63,"cnt":63,"cuz":135,"cdz":175,"snt":60,"ngx":0,"svc":0,"spl":60,"spc":60,"stc":0}
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800be20
+2019-06-11 15:50:58 Unity.exe(11964: 6340) WARNING [HCI_SYS][TxSetting::LoadFromString] get json(data) failed
+2019-06-11 15:50:58 Unity.exe(11964: 6340) DEBUG   [HCI_SYS][TxSetting::LoadFromNet] response({"timestamp": 1560239458873, "cmdid": 5041, "apiVersion": "V1.0", "error": {"message": "\u672c\u5e94\u7528\u6ca1\u6709\u8fd9\u6761\u534f\u8bae\u7684\u6388\u6743", "code": 56}})
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_init]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlHttp] CurlHttp ctor, addr = 0x3e91dbd0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlInit] curl easy init, handle = 0x98021470
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] http url:http://api.hcicloud.com:8888/CheckAuth
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-app-key:195d5435
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-udid:0:08606ef0761c0000000000000000
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-sdk-version:8.1.1.39683
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-tid:0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-eid:0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-userid:admin
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-call-type:0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-request-date:2019-06-11 16:29:28
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] header:x-session-key:a9918095ead1369931f6c02f2cc53a11
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::Post] curl slist init, list = 0x9800bda0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi init, handle = 0x97feedd0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::MultiPerfrom] ACCESS_TIME:{"tkn":"curlhttp","idx":-1,"chc":200,"cds":0,"ccn":31,"cpt":31,"cst":688,"cnt":688,"cuz":374,"cdz":4673,"snt":686,"ngx":0,"svc":607,"spl":686,"spc":686,"stc":0}
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlPerform] curl multi clean up, handle = 0x97feedd0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl easy clean up, handle = 0x98021470
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::CurlCleanup_i] curl slist free all, list = 0x9800bda0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth] http response xml[<?xml version="1.0"?>
+<response_info><res_code>0</res_code><res_message>Auth Success</res_message><tx_server_address_type>production</tx_server_address_type><tx_txd>0</tx_txd><tx_eid>0</tx_eid><tx_need_push>2</tx_need_push><auth_len>4408</auth_len></response_info>
+4f˛CB:ﬁòë…úfÏIz¿]N†8fº¡¯˛¢±NBÎÙ˛ŒÅrM⁄Åß	˚Ê>5°§'/¿p»∞cazybÒa7µ/ﬂ#Ö◊këäµ9Ç(îÔœ’ÚqÀ) ÜyPMæåˆ@€ê·f∞Ó©I8¥˛ep/mÒ}Zè—NTòqËJjù˝ækm]
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CBasicAuth::LoadFromBuff] sKay_first[0:08606ef0761c0000000000000000#3a6d22a54d7d453d0689551661ea3f8e#195d5435]
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::WriteUserInfo]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CUserInfo::Storage]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::UpdateCloudAuth]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::CheckAuth]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][CheckAuthAction::DoProcess]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::CheckAuth] SUCCESS
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [jtcommon][CurlHttp::~CurlHttp] CurlHttp dtor, addr = 0x3e91dbd0
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][HciAuth::CheckAuth]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_check_auth]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::GetAuthExpireTime] SUCCESS
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_get_auth_expire_time]Leave
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Enter
+2019-06-11 16:29:28 Unity.exe(11964: 8764) INFO    [HCI_SYS][HciAuth::SetCurrentUserId] SUCCESS
+2019-06-11 16:29:28 Unity.exe(11964: 8764) DEBUG   [HCI_SYS][hci_set_current_userid]Leave
