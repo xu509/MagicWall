@@ -10,6 +10,8 @@ using System;
 //
 public class SearchAgent : MonoBehaviour
 {
+    Action _onClickReturn;
+
     private int sessionId; //该会话
 
     //灵云SDK头文件：
@@ -238,12 +240,23 @@ public class SearchAgent : MonoBehaviour
 
     // 开启 HWR 识别会话
 
-
-
     //  灵云调用失败
     private void LingYunIsBreakCallback(string apiname,int result) {
         Debug.Log("灵云初始化失败");
     }
+
+    #region 其他功能
+    public void OnClickReturn(Action action) {
+        _onClickReturn = action;
+    }
+
+    // 点击回退
+    public void ClickReturn() {
+        _onClickReturn.Invoke();
+    }
+
+
+    #endregion
 
     #region 灵云错误类型 
 
