@@ -20,6 +20,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     private ScaleAgent _scaleAgent;     // 缩放代理
     private VideoAgent _videoAgent;
+    private SearchAgent _searchAgent;
 
     private float _panel_top;
     private float _panel_bottom;
@@ -41,6 +42,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] RectTransform _main_container;    //  主框体
     [SerializeField] RectTransform _scale_container;    //  缩放容器
     [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
+    [SerializeField] RectTransform _searchContainer;    //  搜索容器
+    [SerializeField] SearchAgent _searchAgentPrefab;    //  搜索 prefab
     [SerializeField] RectTransform _move_mask; // 移动蒙板
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
     [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
@@ -597,7 +600,51 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
     #endregion
 
+    /// <summary>
+    /// 搜索功能
+    /// </summary>
+    public void DoSearch() {
+        // 生成搜索angent
 
+        _searchAgent = Instantiate(_searchAgentPrefab,
+                              _searchContainer
+                                ) as SearchAgent;
+
+        _keepOpen = true;
+
+        _searchAgent.OnClickReturn(OnClickSearchReturnBtn);
+
+        //_scaleAgent.SetImage(texture);
+        //_scaleAgent.SetOnCloseClicked(OnScaleClose);
+        //_scaleAgent.SetOnReturnClicked(OnScaleReturn);
+        //_scaleAgent.SetOnUpdated(OnScaleUpdate);
+
+        // 显示缩放框体，隐藏普通框体
+        if (_main_container.gameObject.activeSelf)
+        {
+            _main_container.gameObject.SetActive(false);
+        }
+
+        if (!_searchAgent.gameObject.activeSelf)
+        {
+            _searchAgent.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnClickSearchReturnBtn() {
+        if (!_main_container.gameObject.activeSelf)
+        {
+            _main_container.gameObject.SetActive(true);
+        }
+
+        if (_searchAgent.gameObject.activeSelf)
+        {
+            _searchAgent.gameObject.SetActive(false);
+        }
+
+        TurnOffKeepOpen();
+
+    }
 }
 
 
