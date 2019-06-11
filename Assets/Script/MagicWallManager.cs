@@ -64,7 +64,7 @@ public class MagicWallManager:MonoBehaviour
     // 影响距离
     [SerializeField, Range(0f, 2f), Header("影响距离（当为1时，表示半径）")] float _influenceDistance;
     // 影响移动距离系数
-    [SerializeField, Range(0f, 10f)] float _influenceMoveFactor;
+    [SerializeField, Range(0f, 10f)] float _influenceMoveFactor = 0.5f;
     // 卡片动画效果
     [SerializeField] EaseEnum _influenceEaseEnum;
 
