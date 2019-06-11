@@ -10,6 +10,8 @@ using System;
 //
 public class SearchAgent : MonoBehaviour
 {
+    private int sessionId; //该会话
+
     //灵云SDK头文件：
     //hci_hwr.h
     //hci_sys.h
@@ -37,9 +39,6 @@ public class SearchAgent : MonoBehaviour
 
 
     #region  DLL 调用映射
-    [DllImport("hci_hwr")]
-    public static extern int hci_hwr_session_start(string str);
-
     [DllImport("hci_sys")]
     public static extern int hci_init(string pszConfig);
 
@@ -69,14 +68,20 @@ public class SearchAgent : MonoBehaviour
 
 
     /// <summary>
-    /// 设置当前用户（暂不支持本地能力）
-    ///开发者指定当前用户。此处可以进行用户关联操作，即多个设备可以通过该接口建立请求数据映射。
+    /// 灵云HWR能力 初始化
     /// </summary>
-    /// <param name="userid">指定当前用户，如果不存在则创建,字符串，最多64个字符</param>
+    /// <param name="pszConfig">初始化配置串,ASCII字符串，以'\0'结束</param>
     /// <returns></returns>
-    [DllImport("hci_sys")]
+    [DllImport("hci_hwr")]
     public static extern int hci_hwr_init(string pszConfig);
 
+    /// <summary>
+    ///     开始会话
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    [DllImport("hci_hwr")]
+    public static extern int hci_hwr_session_start(string pszConfig,ref int sessionId);
 
     #endregion
 
@@ -85,8 +90,12 @@ public class SearchAgent : MonoBehaviour
     private static string devKey = "3a6d22a54d7d453d0689551661ea3f8e";
     private static string appKey = "195d5435";
     private static string cloudUrl = "http://api.hcicloud.com:8888";
-    private static string authpath = Application.streamingAssetsPath + "/document/";
-    private static string logFilePath = Application.streamingAssetsPath + "/document/log/";
+    private static string authpath = Application.streamingAssetsPath + "/lingyun/document/";
+    private static string logFilePath = Application.streamingAssetsPath + "/lingyun/document/log/";
+
+    private static string hwrDataPath = Application.streamingAssetsPath + "/lingyun/data/hwr";
+    private static string hwrCapKey_Letter = "hwr.local.letter";
+
     #endregion
     // 初始化手写服务
 
@@ -123,10 +132,12 @@ public class SearchAgent : MonoBehaviour
         try
         {
             InitLingYunSystem();
-
             CheckLingYunAuth();
+            InitLingYunHWR();
+            InitLingYunHwrSessionStart();
+            Debug.Log("Session ID : " + sessionId);
         }
-        catch (LinyunException ex) {
+        catch (LingyunException ex) {
             Debug.Log(ex.GetError());
         }
         
@@ -154,7 +165,7 @@ public class SearchAgent : MonoBehaviour
         int apiResult = hci_init(pszConfig);
 
         if (apiResult != 0) {
-            throw new LinyunApiException("hci_init", apiResult);
+            throw new LingyunApiException("hci_init", apiResult);
         }
          
     }
@@ -166,7 +177,7 @@ public class SearchAgent : MonoBehaviour
         int apiResult = hci_check_auth();
         if (apiResult != 0)
         {
-            throw new LinyunApiException("hci_check_auth", apiResult);
+            throw new LingyunApiException("hci_check_auth", apiResult);
         }
 
         long expiredTime = 1;
@@ -174,7 +185,7 @@ public class SearchAgent : MonoBehaviour
         apiResult = hci_get_auth_expire_time(ref expiredTime);
         if (apiResult != 0)
         {
-            throw new LinyunApiException("hci_get_auth_expire_time", apiResult);
+            throw new LingyunApiException("hci_get_auth_expire_time", apiResult);
         }
 
         // 获取当前的时间戳
@@ -183,7 +194,7 @@ public class SearchAgent : MonoBehaviour
         //  判断是否已过期
         if (expiredTime < currentTimestamp) {
             // 已过期
-            throw new LinyunLogicException("Lingyun Auth Is Expired");
+            throw new LingyunLogicException("Lingyun Auth Is Expired");
         }
 
         apiResult = hci_set_current_userid("admin");
@@ -191,10 +202,41 @@ public class SearchAgent : MonoBehaviour
         // 设置当前用户
         if (apiResult != 0)
         {
-            throw new LinyunApiException("hci_set_current_userid", apiResult);
+            throw new LingyunApiException("hci_set_current_userid", apiResult);
         }
 
     }
+
+    // 初始化 HWR 能力
+    private void InitLingYunHWR() {
+        //string pszConfig = "dataPath=" + hwrDataPath 
+        //    + ",initCapKeys=" + hwrCapKey_Letter;
+        string pszConfig = "";
+
+        int apiResult = hci_hwr_init(pszConfig);
+        if (apiResult == 301)
+        {
+            Debug.Log("HWR 已经初始化");
+        }
+        else if (apiResult != 0)
+        {
+            throw new LingyunApiException("hci_hwr_init", apiResult);
+        }
+
+    }
+
+    // 开启 HWR 识别会话
+    private void InitLingYunHwrSessionStart() {
+        
+        string pszConfig = "capKey=hwr.cloud.letter";
+        int apiResult = hci_hwr_session_start(pszConfig,ref sessionId);
+         if (apiResult != 0)
+        {
+            throw new LingyunApiException("InitLingYunHwrSessionStart", apiResult);
+        }
+    }
+
+    // 开启 HWR 识别会话
 
 
 
@@ -203,12 +245,12 @@ public class SearchAgent : MonoBehaviour
         Debug.Log("灵云初始化失败");
     }
 
-    //  
+    #region 灵云错误类型 
 
-    abstract class LinyunException : ApplicationException
+    abstract class LingyunException : ApplicationException
     {
 
-        public LinyunException() {
+        public LingyunException() {
 
         }
 
@@ -216,11 +258,11 @@ public class SearchAgent : MonoBehaviour
 
     }
 
-    class LinyunApiException : LinyunException {
+    class LingyunApiException : LingyunException {
         string api;
         int result;
 
-        public LinyunApiException(string api, int result) {
+        public LingyunApiException(string api, int result) {
             this.api = api;
             this.result = result;
         }
@@ -232,11 +274,11 @@ public class SearchAgent : MonoBehaviour
         }
     }
 
-    class LinyunLogicException : LinyunException
+    class LingyunLogicException : LingyunException
     {
         string message;
 
-        public LinyunLogicException(string message)
+        public LingyunLogicException(string message)
         {
             this.message = message;
         }
@@ -247,6 +289,6 @@ public class SearchAgent : MonoBehaviour
             return errorMessage;
         }
     }
-
+    #endregion
 
 }
