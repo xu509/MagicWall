@@ -133,11 +133,11 @@ public class SearchAgent : MonoBehaviour
 
         try
         {
-            InitLingYunSystem();
-            CheckLingYunAuth();
-            InitLingYunHWR();
-            InitLingYunHwrSessionStart();
-            Debug.Log("Session ID : " + sessionId);
+            //InitLingYunSystem();
+            //CheckLingYunAuth();
+            //InitLingYunHWR();
+            //InitLingYunHwrSessionStart();
+            //Debug.Log("Session ID : " + sessionId);
         }
         catch (LingyunException ex) {
             Debug.Log(ex.GetError());
