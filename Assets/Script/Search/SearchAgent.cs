@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using System;
+using UnityEngine.UI;
+
 
 
 //
@@ -11,6 +13,16 @@ using System;
 public class SearchAgent : MonoBehaviour
 {
     Action _onClickReturn;
+
+    [SerializeField] WritePadAgent _writePadAgent;  // 手写板agent
+    [SerializeField] RectTransform _associateWordArea; // 联想内容区域
+    [SerializeField] AssociateWordAgent _associateWordPrefab; //联想字的prefab
+    [SerializeField] RectTransform _associateWordMessagePrefab; //联想字提示的prefab
+    [SerializeField] RectTransform _backspaceRect; //退格控件
+    [SerializeField] Text _searchText; //搜索词的文本控件
+
+    private string _searchWord;
+
 
     private int sessionId; //该会话
 
@@ -110,7 +122,21 @@ public class SearchAgent : MonoBehaviour
         //Debug.Log("hci_hwr" + sessionId);
         InitLingYun();
 
+        // 初始化
+        Init();
+
+        // 初始化手写板相关
+        _writePadAgent.SetOnRecognized(OnRecognized);
+
     }
+
+    void Init() {
+        _searchWord = "";
+
+        InitBackspaceStatus();
+    }
+
+
 
     // Update is called once per frame
     void Update()
@@ -303,5 +329,94 @@ public class SearchAgent : MonoBehaviour
         }
     }
     #endregion
+
+    //  手写板识别内容后的回调
+    private void OnRecognized(string[] strs) {
+        // 清理联想板块
+        ClearAssociateWordArea();
+
+        // 增加联想的内容
+        if (strs.Length == 0)
+        {
+            RectTransform item = Instantiate(_associateWordMessagePrefab, _associateWordArea);
+            item.GetComponent<Text>().text = "未能识别您的笔迹。";
+        }
+        else {
+            int length = strs.Length;
+            if (length > 6)
+                length = 6;
+
+            for (int i = 0; i < length; i++) {
+                AssociateWordAgent associateWordAgent = Instantiate(_associateWordPrefab, _associateWordArea);
+                associateWordAgent.SetText(strs[i]);
+                // 装载点击事件
+                associateWordAgent.SetOnClickWord(OnClickAssociateWord);
+
+            }
+
+        }
+
+    }
+
+
+
+    // 清理联想板块
+    private void ClearAssociateWordArea() {
+        foreach (Transform child in _associateWordArea)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    // 联想词点击事件
+    private void OnClickAssociateWord(string str) {
+        // 将被点击的字添加至搜索框内
+
+        _searchWord += str;
+
+        UpdateSearchWord();
+
+        // 清理联想面板
+        ClearAssociateWordArea();
+
+        // 更新退格状态
+        InitBackspaceStatus();
+    }
+
+    //  初始化退格状态
+    private void InitBackspaceStatus() {
+        int count = _searchWord.Length;
+        if (count == 0)
+        {
+            _backspaceRect.gameObject.SetActive(false);
+        }
+        else {
+            _backspaceRect.gameObject.SetActive(true);
+        }
+
+    }
+
+
+    // 退格功能
+    public void DoBackspace() {
+        _searchWord = _searchWord.Substring(0, _searchWord.Length - 1);
+
+        UpdateSearchWord();
+
+        InitBackspaceStatus();
+    }
+
+    // 搜索功能
+    public void DoSearch()
+    {
+        // 进行搜索
+    }
+
+
+
+
+    private void UpdateSearchWord() {
+        _searchText.text = _searchWord;
+    }
 
 }
