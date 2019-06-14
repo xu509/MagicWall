@@ -20,9 +20,12 @@ public class SearchAgent : MonoBehaviour
     [SerializeField] RectTransform _associateWordMessagePrefab; //联想字提示的prefab
     [SerializeField] RectTransform _backspaceRect; //退格控件
     [SerializeField] Text _searchText; //搜索词的文本控件
+    [SerializeField] SearchResultAgent _searchResultAgentPrefab;   //  搜索结果的prefab
+    [SerializeField] RectTransform _searchResultContainer;   //  搜索结果的容器
 
-    private string _searchWord;
 
+    private string _searchWord; //  搜索词
+    private SearchResultAgent _searchResultAgent;    //  搜索结果索引
 
     private int sessionId; //该会话
 
@@ -411,10 +414,22 @@ public class SearchAgent : MonoBehaviour
     // 搜索功能
     public void DoSearch()
     {
-        // 进行搜索
-         
+        //  获取查询词，进行搜索，得到 SearchBean 列表
+        List<SearchBean> searchBeans = DaoService.Instance.Search(_searchWord);
 
-        // 获取搜索结果
+        //  生成搜索结果控件，并进行初始化
+        if (_searchResultAgent == null)
+        {
+            _searchResultAgent = Instantiate(_searchResultAgentPrefab, _searchResultContainer) as SearchResultAgent;
+            _searchResultAgent.Init();
+        }
+        else {
+            _searchResultAgent.Init();
+        }
+
+
+        //  搜索结果控件进行加载数据
+        _searchResultAgent.InitData(searchBeans, _searchWord);
 
     }
 
