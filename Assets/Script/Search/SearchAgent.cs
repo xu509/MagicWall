@@ -13,6 +13,11 @@ public class SearchAgent : MonoBehaviour
     [DllImport("hci_hwr")]
     public static extern int hci_hwr_session_start(string str);
 
+    [DllImport("hci_hwr_pinyin")]
+    public static extern int hci_hwr_pinyin(string str);
+
+    
+
     void Start()
     {
         string session_config = "capkey=hwr.local.pinyin";
