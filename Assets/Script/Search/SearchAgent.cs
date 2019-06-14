@@ -353,9 +353,7 @@ public class SearchAgent : MonoBehaviour
                 associateWordAgent.SetOnClickWord(OnClickAssociateWord);
 
             }
-
         }
-
     }
 
 
@@ -393,7 +391,6 @@ public class SearchAgent : MonoBehaviour
         else {
             _backspaceRect.gameObject.SetActive(true);
         }
-
     }
 
 
@@ -410,6 +407,9 @@ public class SearchAgent : MonoBehaviour
     public void DoSearch()
     {
         // 进行搜索
+
+        // 获取搜索结果
+
     }
 
 
