@@ -606,5 +606,17 @@ public class DaoService : Singleton<DaoService>
         }
     }
 
+    /// <summary>
+    /// 搜索
+    /// </summary>
+    /// <param name="keys">关键词</param>
+    /// <returns></returns>
+    public List<SearchBean> Search(string keys) {
+
+        return null;
+    }
+ 
+
+
 
 }
