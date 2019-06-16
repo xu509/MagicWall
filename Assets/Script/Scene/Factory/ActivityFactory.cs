@@ -114,7 +114,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #endregion
 
     #region 生成滑动卡片
-    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
+    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId, bool isActive)
     {
 
         //  创建 Agent
@@ -123,8 +123,14 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
                                     _operationPanel
                                     ) as SliceCardAgent;
 
-        //  命名
-        sliceCardAgent.name = "Activity (" + flockAgent.name + ")";
+        if (flockAgent != null) {
+            //  命名
+            sliceCardAgent.name = "Activity (" + flockAgent.name + ")";
+
+            //  添加原组件
+            sliceCardAgent.OriginAgent = flockAgent;
+        }
+
 
         //  获取rect引用
         RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
@@ -140,9 +146,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         sliceCardAgent.Width = rectTransform.rect.width;
         sliceCardAgent.Height = rectTransform.rect.height;
 
-        //  添加原组件
-        sliceCardAgent.OriginAgent = flockAgent;
-
         //  配置scene
         sliceCardAgent.SceneIndex = _manager.SceneIndex;
 
@@ -150,10 +153,13 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         sliceCardAgent.manager = _manager;
 
         //  初始化数据
-        sliceCardAgent.InitData(flockAgent.DataId, 1);
+        sliceCardAgent.InitData(dataId, 1);
 
         // 添加到effect agent
         _agentManager.AddEffectItem(sliceCardAgent);
+
+        // 设置显示状态
+        sliceCardAgent.gameObject.SetActive(isActive);
 
         return sliceCardAgent;
     }
@@ -222,14 +228,14 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         return _gap;
     }
 
-    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
-    {
-        CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
-        // 设置显示状态
-        cardAgent.gameObject.SetActive(isActive);
+    //public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId , bool isActive)
+    //{
+    //    CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
+    //    // 设置显示状态
+    //    cardAgent.gameObject.SetActive(isActive);
 
-        return cardAgent;
-    }
+    //    return cardAgent;
+    //}
 
 
 }

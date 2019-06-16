@@ -138,7 +138,6 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         }
         else {
             _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
-
         }
 
         string likesStr;

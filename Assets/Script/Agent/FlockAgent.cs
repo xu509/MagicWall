@@ -374,7 +374,7 @@ public class FlockAgent : MonoBehaviour
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
-            _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this,false);
+            _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
 
             //靠近四周边界需要偏移
             float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
@@ -399,31 +399,33 @@ public class FlockAgent : MonoBehaviour
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
-                // 使原组件消失
-                gameObject.SetActive(false);
+                //// 使原组件消失
+                //gameObject.SetActive(false);
 
-                //// 此处需要区分
-                //_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
-                _cardAgent.gameObject.SetActive(true);
+                ////// 此处需要区分
+                ////_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
+                //_cardAgent.gameObject.SetActive(true);
 
-                Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
-                _cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+                //Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
+                //_cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
 
-                Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
+                //Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
-                _cardAgent.GetComponent<RectTransform>()
-                    .DOScale(scaleVector3, 0.5f)
-                    .OnUpdate(() =>
-                        {
-                            _cardAgent.Width = w;
-                            _cardAgent.Height = h;
+                //_cardAgent.GetComponent<RectTransform>()
+                //    .DOScale(scaleVector3, 0.5f)
+                //    .OnUpdate(() =>
+                //        {
+                //            _cardAgent.Width = w;
+                //            _cardAgent.Height = h;
 
-                        }).OnComplete(() => {
-                            // 执行完成后动画
-                            _cardAgent.DoOnCreatedCompleted();
+                //        }).OnComplete(() => {
+                //            // 执行完成后动画
+                //            _cardAgent.DoOnCreatedCompleted();
 
 
-                        }).SetEase(Ease.OutBack);
+                //        }).SetEase(Ease.OutBack);
+
+                _cardAgent.GoToFront();
 
             });
 

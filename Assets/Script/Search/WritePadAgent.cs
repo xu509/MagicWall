@@ -69,13 +69,13 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         //raw图片鼠标位置，宽度计算
         rawWidth = raw.rectTransform.sizeDelta.x;
         rawHeight = raw.rectTransform.sizeDelta.y;
-        Debug.Log("rawWidth : " + rawWidth);
-        Debug.Log("rawHeight : " + rawHeight);
 
-
+        //  TODO ERROR 多个手写板时出现错误
         Vector2 rawanchorPositon = new Vector2(raw.rectTransform.anchoredPosition.x - raw.rectTransform.sizeDelta.x / 2.0f
         , raw.rectTransform.anchoredPosition.y - raw.rectTransform.sizeDelta.y / 2.0f);
         rawMousePosition = rawanchorPositon + new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
+
+        Debug.Log("rawMousePosition : " + rawMousePosition);
 
         //texRender = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
@@ -188,8 +188,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         float bottom = (destRect.yMin - rawMousePosition.y) * Screen.height / rawHeight + destRect.height * scale / 2.0f;
 
         // 位置偏移
-        top = top + 250;
-        bottom = bottom + 250;
+        //top = top + 250;
+        //bottom = bottom + 250;
 
         Graphics.SetRenderTarget(destTexture);
 
@@ -392,9 +392,17 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {"probability", "false"}
         };
         // 带参数调用通用文字识别, 图片参数为本地图片
-        var result = client.GeneralBasic(image, options);
-        //Console.WriteLine(result);
-        Debug.Log("111：" + result);
+        try {
+            var result = client.GeneralBasic(image, options);
+            //Console.WriteLine(result);
+            Debug.Log("111：" + result);
+        } catch (Exception ex) {
+            //  识别错误服务
+            Debug.Log("Exception : " + ex.Message);
+        }
+
+
+        
 
         //  模拟返回结构 
         string[] strs = { "徐", "我", "汉" };

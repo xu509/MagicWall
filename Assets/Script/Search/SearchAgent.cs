@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class SearchAgent : MonoBehaviour
 {
     Action _onClickReturn;
+    Action _onClickMove;
 
     [SerializeField] WritePadAgent _writePadAgent;  // 手写板agent
     [SerializeField] RectTransform _associateWordArea; // 联想内容区域
@@ -22,10 +23,14 @@ public class SearchAgent : MonoBehaviour
     [SerializeField] Text _searchText; //搜索词的文本控件
     [SerializeField] SearchResultAgent _searchResultAgentPrefab;   //  搜索结果的prefab
     [SerializeField] RectTransform _searchResultContainer;   //  搜索结果的容器
+    [SerializeField] RectTransform _searchAgentContainer;   //  搜索代理的容器
 
 
     private string _searchWord; //  搜索词
     private SearchResultAgent _searchResultAgent;    //  搜索结果索引
+    private MagicWallManager _manager;  //  主管理器索引
+    private FlockAgent _flockAgent; //  原浮块索引
+    private CardAgent _cardAgent;   //  原卡片索引
 
     private int sessionId; //该会话
 
@@ -134,17 +139,22 @@ public class SearchAgent : MonoBehaviour
         Init();
 
         // 初始化手写板相关
-        _writePadAgent.SetOnRecognized(OnRecognized);
 
     }
 
-    void Init() {
+    public void Init() {
         _searchWord = "";
+
+        _writePadAgent.SetOnRecognized(OnRecognized);
 
         InitBackspaceStatus();
     }
 
-
+    public void InitData(MagicWallManager manager,CardAgent cardAgent) {
+        _manager = manager;
+        _cardAgent = cardAgent;
+        _flockAgent = cardAgent.OriginAgent;
+    }
 
     // Update is called once per frame
     void Update()
@@ -152,6 +162,7 @@ public class SearchAgent : MonoBehaviour
         
     }
 
+    #region 灵云相关功能
 
     //  灵云识别流程： 
     //      初始化灵云系统 
@@ -180,9 +191,6 @@ public class SearchAgent : MonoBehaviour
         
         return false;
     }
-
-
-
 
     //  初始化灵云系统
     private void InitLingYunSystem() {
@@ -278,17 +286,6 @@ public class SearchAgent : MonoBehaviour
     private void LingYunIsBreakCallback(string apiname,int result) {
         Debug.Log("灵云初始化失败");
     }
-
-    #region 其他功能
-    public void OnClickReturn(Action action) {
-        _onClickReturn = action;
-    }
-
-    // 点击回退
-    public void ClickReturn() {
-        _onClickReturn.Invoke();
-    }
-
 
     #endregion
 
@@ -401,6 +398,87 @@ public class SearchAgent : MonoBehaviour
         }
     }
 
+    #region 自有功能
+    /// <summary>
+    /// 关闭搜索结果的容器
+    /// </summary>
+    private void CloseSearchResultContainer(bool doDestory) {
+        _searchResultContainer.gameObject.SetActive(false);
+
+        if (doDestory)
+        {
+            Destroy(_searchResultContainer.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// 打开搜索结果的容器
+    /// </summary>
+    private void OpenSearchResultContainer() {
+        _searchResultContainer.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// 关闭搜索代理的容器 
+    /// </summary>
+    private void CloseSearchAgentContainer(bool doDestory) {
+        _searchAgentContainer.gameObject.SetActive(false);
+
+        if (doDestory)
+        {
+            Destroy(_searchAgentContainer.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// 打开搜索代理的容器
+    /// </summary>
+    private void OpenSearchAgentContainer() {
+        _searchAgentContainer.gameObject.SetActive(true);
+    }
+
+    private ItemsFactory GetItemFactory(MWTypeEnum type) {
+        //  生成实体工厂
+        ItemsFactory itemsFactory;
+
+        if (type == MWTypeEnum.Activity)
+        {
+            itemsFactory = _manager.itemsFactoryAgent.activityFactory;
+        }
+        else if (type == MWTypeEnum.Product)
+        {
+            itemsFactory = _manager.itemsFactoryAgent.productFactory;
+        }
+        else
+        {
+            itemsFactory = _manager.itemsFactoryAgent.envFactory;
+        }
+        return itemsFactory;
+    }
+
+
+    #endregion
+
+    #region Search Result 代理功能
+    // Search Result 点击回退的功能
+    private void OnClickSearchResultReturnBtn() {
+
+        // 关闭新打开的结果窗口
+        CloseSearchResultContainer(false);
+
+        //  打开原来的Search窗口
+        OpenSearchAgentContainer();
+
+    }
+
+    //  Search Result 点击移动的功能
+    private void OnClickSearchResultMoveBtn() {
+        DoMove();
+    }
+
+    #endregion
+
+    #region 可外部调用方法
 
     // 退格功能
     public void DoBackspace() {
@@ -414,6 +492,8 @@ public class SearchAgent : MonoBehaviour
     // 搜索功能
     public void DoSearch()
     {
+        CloseSearchAgentContainer(false);
+
         //  获取查询词，进行搜索，得到 SearchBean 列表
         List<SearchBean> searchBeans = DaoService.Instance.Search(_searchWord);
 
@@ -427,17 +507,75 @@ public class SearchAgent : MonoBehaviour
             _searchResultAgent.Init();
         }
 
-
         //  搜索结果控件进行加载数据
-        _searchResultAgent.InitData(searchBeans, _searchWord);
+        _searchResultAgent.InitData(searchBeans, _searchWord,_manager);
+
+
+        //  装载事件代理
+        _searchResultAgent.SetOnClickMoveBtn(OnClickSearchResultMoveBtn);
+        _searchResultAgent.SetOnClickReturnBtn(OnClickSearchResultReturnBtn);
+        _searchResultAgent.SetOnClickSearchResultItem(OnClickSearchResultItem);
+
+        OpenSearchResultContainer();
+
+    }
+
+    // 点击回退
+    public void DoReturn()
+    {
+        _onClickReturn.Invoke();
+    }
+
+    //  点击移动
+    public void DoMove()
+    {
+        _onClickMove.Invoke();
+    }
+
+    /// <summary>
+    /// 点击搜索结果的 Item
+    /// </summary>
+    /// <param name="searchBean"></param>
+    private void OnClickSearchResultItem(SearchBean searchBean) {
+
+        //  将 SearchAgent 关闭
+        CloseSearchAgentContainer(true);
+        CloseSearchResultContainer(true);
+
+        _manager.agentManager.RemoveItemFromEffectItems(_cardAgent); // 将影响实体清除
+
+        //  打开新的卡片
+        ItemsFactory itemsFactory = GetItemFactory(searchBean.type);
+        Vector3 genVector3 = _cardAgent.GetComponent<RectTransform>().anchoredPosition;
+
+        Debug.Log("genVector3 : " + genVector3);
+
+
+        CardAgent cardAgent = itemsFactory.GenerateCardAgent(genVector3, null, searchBean.id,true);
+        cardAgent.GoToFront();
 
     }
 
 
 
+    #endregion
+
+    #region 事件代理装载
+    public void OnClickReturn(Action action)
+    {
+        _onClickReturn = action;
+    }
+
+    public void OnClickMove(Action action)
+    {
+        _onClickMove = action;
+    }
+    #endregion
 
     private void UpdateSearchWord() {
         _searchText.text = _searchWord;
     }
+
+
 
 }
