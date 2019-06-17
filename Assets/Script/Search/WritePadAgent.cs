@@ -42,7 +42,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
     // 书写状态
-    private enum WriteStatus {
+    private enum WriteStatus
+    {
         Init,   //  复位
         Writing,    // 手写中
         WriteFinished,  // 手写结束
@@ -70,6 +71,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         rawWidth = raw.rectTransform.sizeDelta.x;
         rawHeight = raw.rectTransform.sizeDelta.y;
 
+        Debug.Log("rawWidth : " + rawWidth);
+        Debug.Log("rawHeight : " + rawHeight);
+
+        Debug.Log("raw.rectTransform.anchoredPosition.x : " + raw.rectTransform.anchoredPosition.x);
+        Debug.Log("raw.rectTransform.anchoredPosition.y : " + raw.rectTransform.anchoredPosition.y);
+
+
+
         //  TODO ERROR 多个手写板时出现错误
         Vector2 rawanchorPositon = new Vector2(raw.rectTransform.anchoredPosition.x - raw.rectTransform.sizeDelta.x / 2.0f
         , raw.rectTransform.anchoredPosition.y - raw.rectTransform.sizeDelta.y / 2.0f);
@@ -90,10 +99,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         float now = Time.time;
 
-        if (_writeStatus == WriteStatus.WriteFinished && ((now - _lastWriteTime) > _recognizeIntervalTime)) {
+        if (_writeStatus == WriteStatus.WriteFinished && ((now - _lastWriteTime) > _recognizeIntervalTime))
+        {
 
             // 开始确认
-            Debug.Log("Begin Recognize");            
+            Debug.Log("Begin Recognize");
             _writeStatus = WriteStatus.RecognizeStart;
         }
 
@@ -102,10 +112,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             Recognizing();
         }
 
-        if (_writeStatus == WriteStatus.Recognizing) {
+        if (_writeStatus == WriteStatus.Recognizing)
+        {
             // Do Recognizing
             Debug.Log(" Do Recognizing");
-            
+
         }
 
         if (_writeStatus == WriteStatus.RecognizeFinished)
@@ -162,8 +173,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         startPosition = endPosition;
         lastDistance = distance;
-
-
     }
 
     void Clear(RenderTexture destTexture)
@@ -201,6 +210,13 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         mat.SetPass(0);
 
         GL.Begin(GL.QUADS);
+
+        //Debug.Log("left / Screen.width : " + left / Screen.width + " top / Screen.height : " + top / Screen.height);
+        //Debug.Log("right / Screen.width : " + right / Screen.width + " top / Screen.height : " + top / Screen.height);
+        //Debug.Log("right / Screen.width : " + right / Screen.width + " bottom / Screen.height : " + top / Screen.height);
+        //Debug.Log("left / Screen.width : " + right / Screen.width + " bottom / Screen.height : " + top / Screen.height);
+
+
 
         GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(left / Screen.width, top / Screen.height, 0);
         GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(right / Screen.width, top / Screen.height, 0);
@@ -392,17 +408,20 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {"probability", "false"}
         };
         // 带参数调用通用文字识别, 图片参数为本地图片
-        try {
+        try
+        {
             var result = client.GeneralBasic(image, options);
             //Console.WriteLine(result);
             Debug.Log("111：" + result);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             //  识别错误服务
             Debug.Log("Exception : " + ex.Message);
         }
 
 
-        
+
 
         //  模拟返回结构 
         string[] strs = { "徐", "我", "汉" };
@@ -442,7 +461,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
     // 进行识别
-    private void Recognizing() {
+    private void Recognizing()
+    {
         _writeStatus = WriteStatus.Recognizing;
 
         //  识别功能
@@ -455,7 +475,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
     // 识别完成
-    private void RecognizeComplete() {
+    private void RecognizeComplete()
+    {
         _writeStatus = WriteStatus.RecognizeFinished;
 
         // 清理画布
@@ -467,7 +488,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
     // 装载识别回调
-    public void SetOnRecognized(Action<string[]> action) {
+    public void SetOnRecognized(Action<string[]> action)
+    {
         this.OnRecognized = action;
     }
 
