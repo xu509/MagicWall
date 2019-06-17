@@ -39,6 +39,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     [SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
 
     Action<string[]> OnRecognized;    //识别结果回调
+    Thread TRecognizing;    //  识别线程
 
 
     // 书写状态
@@ -71,20 +72,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         rawWidth = raw.rectTransform.sizeDelta.x;
         rawHeight = raw.rectTransform.sizeDelta.y;
 
-        Debug.Log("rawWidth : " + rawWidth);
-        Debug.Log("rawHeight : " + rawHeight);
-
-        Debug.Log("raw.rectTransform.anchoredPosition.x : " + raw.rectTransform.anchoredPosition.x);
-        Debug.Log("raw.rectTransform.anchoredPosition.y : " + raw.rectTransform.anchoredPosition.y);
-
-
-
-        //  TODO ERROR 多个手写板时出现错误
-        Vector2 rawanchorPositon = new Vector2(raw.rectTransform.anchoredPosition.x - raw.rectTransform.sizeDelta.x / 2.0f
-        , raw.rectTransform.anchoredPosition.y - raw.rectTransform.sizeDelta.y / 2.0f);
-        rawMousePosition = rawanchorPositon + new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
-
-        Debug.Log("rawMousePosition : " + rawMousePosition);
+        UpdateRawMousePosition();
 
         //texRender = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
@@ -137,6 +125,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         a = 0;
         b = 0;
         s = 0;
+
+        UpdateRawMousePosition();
     }
     //设置画笔宽度
     float SetScale(float distance)
@@ -344,6 +334,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         OnMouseUp();
         _lastWriteTime = Time.time;
         _writeStatus = WriteStatus.WriteFinished;
+
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -367,30 +358,36 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     //}
 
     //将RenderTexture保存成一张png图片  
-    public bool SaveRenderTextureToPNG(RenderTexture rt, string contents, string pngName)
-    {
-        RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = rt;
-        Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
-        png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-        byte[] bytes = png.EncodeToPNG();
-        if (!Directory.Exists(contents))
-            Directory.CreateDirectory(contents);
-        string path = contents + "/" + pngName + ".png";
-        FileStream file = File.Open(path, FileMode.Create);
-        BinaryWriter writer = new BinaryWriter(file);
-        writer.Write(bytes);
-        file.Close();
+    //IEnumerator SaveRenderTextureToPNG(RenderTexture rt, string contents, string pngName)
+    //{
+    //    Debug.Log("222");
 
-        GeneralBasicDemo(path);
-        //GeneralBasicUrlDemo();
+    //    RenderTexture prev = RenderTexture.active;
+    //    RenderTexture.active = rt;
 
-        Texture2D.DestroyImmediate(png);
-        png = null;
-        RenderTexture.active = prev;
+    //    Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
 
-        return true;
-    }
+    //    png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+    //    byte[] bytes = png.EncodeToPNG();
+    //    if (!Directory.Exists(contents))
+    //        Directory.CreateDirectory(contents);
+    //    string path = contents + "/" + pngName + ".png";
+    //    FileStream file = File.Open(path, FileMode.Create);
+    //    BinaryWriter writer = new BinaryWriter(file);
+    //    writer.Write(bytes);
+    //    file.Close();
+
+    //    GeneralBasicDemo(path);
+    //    //GeneralBasicUrlDemo();
+
+    //    Texture2D.DestroyImmediate(png);
+    //    png = null;
+    //    RenderTexture.active = prev;
+
+    //    Debug.Log("333");
+
+    //    yield return null;
+    //}
 
     public void GeneralBasicDemo(string path)
     {
@@ -419,8 +416,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             //  识别错误服务
             Debug.Log("Exception : " + ex.Message);
         }
-
-
 
 
         //  模拟返回结构 
@@ -463,16 +458,117 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     // 进行识别
     private void Recognizing()
     {
+        Debug.Log("Recognizing");
+
         _writeStatus = WriteStatus.Recognizing;
+
+        StartCoroutine(RecognizingFun());
+    }
+
+    IEnumerator RecognizingFun() {
 
         //  识别功能
         //  将 texture 保存为图片
-        string path = Application.streamingAssetsPath + "/temp/ss";
+        string pathDir = Application.streamingAssetsPath + "/temp/ss";
 
-        //Thread connectThread = new Thread(new ThreadStart(SaveRenderTextureToPNG));
-        SaveRenderTextureToPNG(texRender, @path, UnityEngine.Random.Range(0, 999) + "");
+        RenderTexture prev = RenderTexture.active;
+        RenderTexture.active = texRender;
 
+        // 加载内容
+        Texture2D png = new Texture2D(texRender.width, texRender.height, TextureFormat.ARGB32, false);
+        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
+        yield return null;
+
+        byte[] bytes = png.EncodeToPNG();
+
+        yield return null;
+
+        if (!Directory.Exists(pathDir))
+            Directory.CreateDirectory(pathDir);
+
+        yield return null;
+
+        string pngName = UnityEngine.Random.Range(0, 999).ToString();
+        string path = pathDir + "/" + pngName + ".png";
+        FileStream file = File.Open(path, FileMode.Create);
+
+        yield return null;
+
+        BinaryWriter writer = new BinaryWriter(file);
+        writer.Write(bytes);
+
+        yield return null;
+        file.Close();
+
+        yield return null;
+
+        // 进行网络请求
+
+        var image = File.ReadAllBytes(path);
+        yield return null;
+
+
+        // 如果有可选参数
+        var options = new Dictionary<string, object>{
+        {"language_type", "CHN_ENG"},
+        {"detect_direction", "false"},
+        {"detect_language", "false"},
+        {"probability", "false"}
+        };
+        // 带参数调用通用文字识别, 图片参数为本地图片
+        try
+        {
+            var result = client.GeneralBasic(image, options);
+
+            Debug.Log("111：" + result);
+        }
+        catch (Exception ex)
+        {
+            //  识别错误服务
+            Debug.Log("Exception : " + ex.Message);
+        }
+
+        yield return null;
+
+
+
+
+        //  模拟返回结构 
+        string[] strs = { "徐", "我", "汉" };
+
+        //string[] strs = {};
+        OnRecognized.Invoke(strs);
+        _writeStatus = WriteStatus.RecognizeFinished;
+
+        //// 图片识别完成
+        //RecognizeComplete();
+        //GeneralBasicUrlDemo();
+
+        // 清理
+        Destroy(png);
+
+        //Texture2D.DestroyImmediate(png);
+        png = null;
+        RenderTexture.active = prev;
     }
+
+
+    IEnumerator GetBytes() {
+        Texture2D png = new Texture2D(texRender.width, texRender.height, TextureFormat.ARGB32, false);
+        yield return null;
+
+        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
+        yield return null;
+
+        byte[] bytes = png.EncodeToPNG();
+
+        yield return bytes;
+    }
+
+
+
+
+
 
     // 识别完成
     private void RecognizeComplete()
@@ -483,6 +579,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         Clear(texRender);
         DrawImage();
 
+        if (TRecognizing != null) {
+            TRecognizing.Abort();
+        }
+
+
         _writeStatus = WriteStatus.Init;
     }
 
@@ -491,6 +592,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void SetOnRecognized(Action<string[]> action)
     {
         this.OnRecognized = action;
+    }
+
+    //  获取的左下角的屏幕坐标
+    private void UpdateRawMousePosition() {
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(raw.GetComponent<RectTransform>().position);
+        Vector2 rawanchorPositon = new Vector2(screenPos.x - raw.rectTransform.sizeDelta.x / 2.0f
+        , screenPos.y - raw.rectTransform.sizeDelta.y / 2.0f);
+        rawMousePosition = rawanchorPositon;
     }
 
 

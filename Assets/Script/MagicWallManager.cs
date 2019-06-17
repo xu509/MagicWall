@@ -328,5 +328,16 @@ public class MagicWallManager:MonoBehaviour
     public void SetReset() { _reset = true; }
 
 
+    void OnGUI()
+    {
+
+        GUIStyle titleStyle2 = new GUIStyle();
+        titleStyle2.normal.textColor = Color.black;
+        titleStyle2.fontSize = 60;
+
+
+        GUI.Label(new Rect(30, 10, 300, 300), Input.mousePosition.ToString(), titleStyle2);
+    }
+
 }
 
