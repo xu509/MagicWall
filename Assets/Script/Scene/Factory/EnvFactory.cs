@@ -179,7 +179,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     }
 
     #region 生成十字卡片
-    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent)
+    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent,int dataId, bool isActive)
     {
 
         //  创建 Agent
@@ -189,7 +189,12 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
                                     ) as CrossCardAgent;
 
         //  命名
-        crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+        if (flockAgent != null) {
+            crossCardAgent.name = "Choose(" + flockAgent.name + ")";
+
+            //  添加原组件
+            crossCardAgent.OriginAgent = flockAgent;
+        }
 
         //  获取rect引用
         RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
@@ -206,8 +211,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         crossCardAgent.Width = rectTransform.rect.width;
         crossCardAgent.Height = rectTransform.rect.height;
 
-        //  添加原组件
-        crossCardAgent.OriginAgent = flockAgent;
 
         //  配置scene
         crossCardAgent.SceneIndex = _manager.SceneIndex;
@@ -220,22 +223,21 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
 
         // 初始化 CrossAgent 数据
-        crossCardAgent.InitData();
+        crossCardAgent.InitData(dataId);
 
-
-
+        crossCardAgent.gameObject.SetActive(isActive);
 
         return crossCardAgent;
     }
     #endregion
 
-    public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, bool isActive)
-    {
+    //public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId,bool isActive)
+    //{
      
-        CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
-        // 设置显示状态
-        cardAgent.gameObject.SetActive(isActive);
+    //    CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent,dataId);
+    //    // 设置显示状态
+    //    cardAgent.gameObject.SetActive(isActive);
 
-        return cardAgent;
-    }
+    //    return cardAgent;
+    //}
 }

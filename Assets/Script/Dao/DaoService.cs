@@ -614,5 +614,26 @@ public class DaoService : Singleton<DaoService>
         }
     }
 
+    /// <summary>
+    /// 搜索
+    /// </summary>
+    /// <param name="keys">关键词</param>
+    /// <returns></returns>
+    public List<SearchBean> Search(string keys) {
+        Debug.Log("搜索KEYS ：" + keys);
+
+        int count = 20;
+
+        List<SearchBean> beans = new List<SearchBean>();
+        for(int i = 0; i < count; i++)
+        {
+            beans.Add(new SearchBean().Generator());
+        }
+
+        return beans;
+    }
+ 
+
+
 
 }

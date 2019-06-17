@@ -90,6 +90,13 @@ public class AgentManager : MonoBehaviour
     //  移除效果列表中的项
     //
     public bool RemoveItemFromEffectItems(CardAgent agent) {
+
+        // 删除agent
+        if (agent.gameObject != null) {
+            Destroy(agent.gameObject);
+        }
+
+
         return effectAgent.Remove(agent);
     }
 

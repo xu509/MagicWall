@@ -48,7 +48,7 @@ public class CrossCardAgent : CardAgent
     //
     //  初始化数据
     //
-    public void InitData()
+    public void InitData(int dataId)
     {
         InitAgency();
 

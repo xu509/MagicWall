@@ -46,3 +46,8 @@ Packages/manifest.json
 ProjectSettings/XRSettings.asset
 
 Assets/StreamingAssets/lingyun/document/log/
+Assets/StreamingAssets/lingyun/document/HCI_AUTH
+Assets/StreamingAssets/lingyun/document/HCI_AUTH.meta
+Assets/StreamingAssets/lingyun/document/HCI_USER_INFO
+Assets/StreamingAssets/lingyun/document/log/
+

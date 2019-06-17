@@ -103,7 +103,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected void UpdateAgency()
     {
 
-        if (!_keepOpen)
+        if (!_keepOpen && !_doMoving)
         {
             // 缩小一半
             if (_cardStatus == CardStatusEnum.NORMAL)
@@ -199,7 +199,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _cardStatus = CardStatusEnum.DESTORYING_STEP_SCEOND;
 
         //  如果场景没有变，则回到原位置
-        if (SceneIndex == _manager.SceneIndex)
+        if (SceneIndex == _manager.SceneIndex && _originAgent != null)
         {
             //恢复并归位
             // 缩到很小很小
@@ -317,7 +317,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         // 移动
         if (!_doMoving)
         {
-            _keepOpen = true;
             _doMoving = true;
             _move_reminder_container.gameObject.SetActive(true);
             _move_mask.gameObject.SetActive(true);
@@ -325,7 +324,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         else
         {
             DoUpdate();
-            _keepOpen = false;
             _doMoving = false;
             _move_reminder_container.gameObject.SetActive(false);
             _move_mask.gameObject.SetActive(false);
@@ -610,14 +608,12 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                               _searchContainer
                                 ) as SearchAgent;
 
-        _keepOpen = true;
-
+        //  设置 manager 
+        _searchAgent.Init();
+        _searchAgent.InitData(_manager, this);
         _searchAgent.OnClickReturn(OnClickSearchReturnBtn);
-
-        //_scaleAgent.SetImage(texture);
-        //_scaleAgent.SetOnCloseClicked(OnScaleClose);
-        //_scaleAgent.SetOnReturnClicked(OnScaleReturn);
-        //_scaleAgent.SetOnUpdated(OnScaleUpdate);
+        _searchAgent.OnClickMove(OnClickSearchReturnMoveBtn);
+        _keepOpen = true;
 
         // 显示缩放框体，隐藏普通框体
         if (_main_container.gameObject.activeSelf)
@@ -643,7 +639,43 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
 
         TurnOffKeepOpen();
+    }
 
+    private void OnClickSearchReturnMoveBtn() {
+        DoMove();
+    }
+
+
+    /// <summary>
+    /// 卡片走向前台
+    /// </summary>
+    public void GoToFront() {
+        RectTransform rectTransfrom = GetComponent<RectTransform>();
+
+
+        gameObject.SetActive(true);
+
+        Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
+        GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+
+        Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
+
+        //float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
+        //float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y;
+
+        GetComponent<RectTransform>()
+            .DOScale(scaleVector3, 0.5f)
+            .OnUpdate(() =>
+            {
+                Width = GetComponent<RectTransform>().sizeDelta.x; ;
+                Height = GetComponent<RectTransform>().sizeDelta.y;
+
+            }).OnComplete(() => {
+                // 执行完成后动画
+                DoOnCreatedCompleted();
+
+
+            }).SetEase(Ease.OutBack);
     }
 }
 
