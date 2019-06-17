@@ -38,7 +38,9 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private float _lastWriteTime = 0f;  //  最近的书写时间点
     [SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
 
-    Action<string[]> OnRecognized;    //识别结果回调
+    Action<string[]> OnRecognizeSuccess;    //识别成功回调
+    Action<string> OnRecognizeError;    //识别失败回调
+
     Thread TRecognizing;    //  识别线程
 
 
@@ -75,6 +77,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         UpdateRawMousePosition();
 
         //texRender = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
+        //RenderTexture.GetTemporary
+
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
         Clear(texRender);
 
@@ -351,121 +355,19 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
 
-    //public void OnClickClear()
-    //{
-    //    SaveRenderTextureToPNG(texRender, @"d:\lijingkun\Desktop\111", Random.Range(0, 999) + "");
-    //    Clear(texRender);
-    //}
-
-    //将RenderTexture保存成一张png图片  
-    //IEnumerator SaveRenderTextureToPNG(RenderTexture rt, string contents, string pngName)
-    //{
-    //    Debug.Log("222");
-
-    //    RenderTexture prev = RenderTexture.active;
-    //    RenderTexture.active = rt;
-
-    //    Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
-
-    //    png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-    //    byte[] bytes = png.EncodeToPNG();
-    //    if (!Directory.Exists(contents))
-    //        Directory.CreateDirectory(contents);
-    //    string path = contents + "/" + pngName + ".png";
-    //    FileStream file = File.Open(path, FileMode.Create);
-    //    BinaryWriter writer = new BinaryWriter(file);
-    //    writer.Write(bytes);
-    //    file.Close();
-
-    //    GeneralBasicDemo(path);
-    //    //GeneralBasicUrlDemo();
-
-    //    Texture2D.DestroyImmediate(png);
-    //    png = null;
-    //    RenderTexture.active = prev;
-
-    //    Debug.Log("333");
-
-    //    yield return null;
-    //}
-
-    public void GeneralBasicDemo(string path)
-    {
-        var image = File.ReadAllBytes(path);
-        // 调用通用文字识别, 图片参数为本地图片，可能会抛出网络等异常，请使用try/catch捕获
-        //var result = client.GeneralBasic(image);
-        ////Console.WriteLine(result);
-        //Debug.Log("222：" + result);
-
-        // 如果有可选参数
-        var options = new Dictionary<string, object>{
-        {"language_type", "CHN_ENG"},
-        {"detect_direction", "false"},
-        {"detect_language", "false"},
-        {"probability", "false"}
-        };
-        // 带参数调用通用文字识别, 图片参数为本地图片
-        try
-        {
-            var result = client.GeneralBasic(image, options);
-            //Console.WriteLine(result);
-            Debug.Log("111：" + result);
-        }
-        catch (Exception ex)
-        {
-            //  识别错误服务
-            Debug.Log("Exception : " + ex.Message);
-        }
-
-
-        //  模拟返回结构 
-        string[] strs = { "徐", "我", "汉" };
-
-        //string[] strs = {};
-
-
-        OnRecognized.Invoke(strs);
-
-        _writeStatus = WriteStatus.RecognizeFinished;
-
-        //// 图片识别完成
-        //RecognizeComplete();
-
-    }
-
-    //public void GeneralBasicUrlDemo()
-    //{
-    //    var url = @"http://www.akuziti.com/ysz.png";
-
-    //    // 调用通用文字识别, 图片参数为远程url图片，可能会抛出网络等异常，请使用try/catch捕获
-    //    var result = client.GeneralBasicUrl(url);
-    //    Debug.Log("222：" + result);
-    //    // 如果有可选参数
-    //    var options = new Dictionary<string, object>{
-    //    {"language_type", "CHN_ENG"},
-    //    {"detect_direction", "true"},
-    //    {"detect_language", "true"},
-    //    {"probability", "true"}
-    //};
-    //    // 带参数调用通用文字识别, 图片参数为远程url图片
-    //    result = client.GeneralBasicUrl(url, options);
-    //    Debug.Log("111：" + result);
-    //}
-
-
-
 
     // 进行识别
     private void Recognizing()
     {
         Debug.Log("Recognizing");
+        Debug.Log("0 : " + Time.realtimeSinceStartup);
 
         _writeStatus = WriteStatus.Recognizing;
 
-        StartCoroutine(RecognizingFun());
+        RecognizingFun();
     }
 
-    IEnumerator RecognizingFun() {
+    void RecognizingFun() {
 
         //  识别功能
         //  将 texture 保存为图片
@@ -477,36 +379,48 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         // 加载内容
         Texture2D png = new Texture2D(texRender.width, texRender.height, TextureFormat.ARGB32, false);
         png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
-        yield return null;
-
         byte[] bytes = png.EncodeToPNG();
 
-        yield return null;
-
-        if (!Directory.Exists(pathDir))
-            Directory.CreateDirectory(pathDir);
-
-        yield return null;
-
-        string pngName = UnityEngine.Random.Range(0, 999).ToString();
-        string path = pathDir + "/" + pngName + ".png";
-        FileStream file = File.Open(path, FileMode.Create);
-
-        yield return null;
-
-        BinaryWriter writer = new BinaryWriter(file);
-        writer.Write(bytes);
-
-        yield return null;
-        file.Close();
-
-        yield return null;
+        string filename = UnityEngine.Random.Range(0, 999).ToString();
+        SaveBytesToFile(bytes, pathDir, filename);
 
         // 进行网络请求
+        string path = pathDir + "/" + filename + ".png";
+        RecognizeImage(path);
 
+
+        // 清理
+        Destroy(png);
+
+        //Texture2D.DestroyImmediate(png);
+        png = null;
+        RenderTexture.active = prev;
+    }
+
+
+
+    /// <summary>
+    ///    将字节保存进文件
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <param name="dir"></param>
+    /// <param name="filename"></param>
+    private void SaveBytesToFile(byte[] bytes, string dir, string filename) {
+        if (!Directory.Exists(dir))
+            Directory.CreateDirectory(dir); // 这步耗时
+        string path = dir + "/" + filename + ".png";
+        FileStream file = File.Open(path, FileMode.Create);
+        BinaryWriter writer = new BinaryWriter(file);
+        writer.Write(bytes);
+        file.Close();
+    }
+
+    /// <summary>
+    /// 识别图片
+    /// </summary>
+    /// <param name="path">全路径</param>
+    private void RecognizeImage(string path) {
         var image = File.ReadAllBytes(path);
-        yield return null;
-
 
         // 如果有可选参数
         var options = new Dictionary<string, object>{
@@ -518,51 +432,26 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         // 带参数调用通用文字识别, 图片参数为本地图片
         try
         {
-            var result = client.GeneralBasic(image, options);
+            var result = client.GeneralBasic(image, options);   //  这部耗时
 
             Debug.Log("111：" + result);
+
+            //  模拟返回结构 
+            string[] strs = { "徐", "我", "汉" };
+
+            //string[] strs = {};
+            OnRecognizeSuccess.Invoke(strs);
         }
         catch (Exception ex)
         {
             //  识别错误服务
             Debug.Log("Exception : " + ex.Message);
+
+            OnRecognizeError(ex.Message);
         }
-
-        yield return null;
-
-
-
-
-        //  模拟返回结构 
-        string[] strs = { "徐", "我", "汉" };
-
-        //string[] strs = {};
-        OnRecognized.Invoke(strs);
-        _writeStatus = WriteStatus.RecognizeFinished;
-
-        //// 图片识别完成
-        //RecognizeComplete();
-        //GeneralBasicUrlDemo();
-
-        // 清理
-        Destroy(png);
-
-        //Texture2D.DestroyImmediate(png);
-        png = null;
-        RenderTexture.active = prev;
-    }
-
-
-    IEnumerator GetBytes() {
-        Texture2D png = new Texture2D(texRender.width, texRender.height, TextureFormat.ARGB32, false);
-        yield return null;
-
-        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
-        yield return null;
-
-        byte[] bytes = png.EncodeToPNG();
-
-        yield return bytes;
+        finally {
+            _writeStatus = WriteStatus.RecognizeFinished;
+        }
     }
 
 
@@ -589,9 +478,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
     // 装载识别回调
-    public void SetOnRecognized(Action<string[]> action)
+    public void SetOnRecognizedSuccess(Action<string[]> action)
     {
-        this.OnRecognized = action;
+        this.OnRecognizeSuccess = action;
+    }
+
+    public void SetOnRecognizedError(Action<string> action)
+    {
+        this.OnRecognizeError = action;
     }
 
     //  获取的左下角的屏幕坐标

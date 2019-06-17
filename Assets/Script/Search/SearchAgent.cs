@@ -145,7 +145,8 @@ public class SearchAgent : MonoBehaviour
     public void Init() {
         _searchWord = "";
 
-        _writePadAgent.SetOnRecognized(OnRecognized);
+        _writePadAgent.SetOnRecognizedSuccess(OnRecognizedSuccess);
+        _writePadAgent.SetOnRecognizedError(OnRecognizedError);
 
         InitBackspaceStatus();
     }
@@ -336,7 +337,7 @@ public class SearchAgent : MonoBehaviour
     #endregion
 
     //  手写板识别内容后的回调
-    private void OnRecognized(string[] strs) {
+    private void OnRecognizedSuccess(string[] strs) {
         // 清理联想板块
         ClearAssociateWordArea();
 
@@ -359,6 +360,21 @@ public class SearchAgent : MonoBehaviour
 
             }
         }
+    }
+
+    /// <summary>
+    ///     识别失败回调
+    /// </summary>
+    /// <param name="message">消息</param>
+    private void OnRecognizedError(string message)
+    {
+        // 清理联想板块
+        ClearAssociateWordArea();
+
+        // 增加联想的内容
+
+        RectTransform item = Instantiate(_associateWordMessagePrefab, _associateWordArea);
+        item.GetComponent<Text>().text = message;
     }
 
 
