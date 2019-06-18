@@ -17,7 +17,7 @@ public class Timer
         if (times == null) {
             times = new List<float>();
         }
-        float time = Time.deltaTime;
+        float time = Time.realtimeSinceStartup;
         times.Add(time);
     }
 
