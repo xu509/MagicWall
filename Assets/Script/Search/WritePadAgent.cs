@@ -162,6 +162,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (startPosition == Vector3.zero)
         {
             startPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+            print("startPosition:" + startPosition);
         }
 
         endPosition = pos;
@@ -334,7 +335,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         OnMouseUp();
         OnMouseMove(new Vector3(eventData.position.x, eventData.position.y, 0));
-
+        print("OnBeginDrag:" + eventData.position + name);
         _writeStatus = WriteStatus.Init;
     }
 
@@ -342,6 +343,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         OnMouseMove(new Vector3(eventData.position.x, eventData.position.y, 0));
         OnMouseUp();
+        print("OnEndDrag:" + eventData.position);
         _lastWriteTime = Time.time;
         _writeStatus = WriteStatus.WriteFinished;
     }
