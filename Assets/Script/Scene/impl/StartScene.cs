@@ -221,10 +221,10 @@ public class StartScene : IScene
 
         // 加载其他资源
         //  - 手写板用的texture
-        Texture2D png = new Texture2D(100, 100, TextureFormat.ARGB32, false);
+        Texture2D png = new Texture2D(200, 200, TextureFormat.ARGB32, false);
         TextureResource.Instance.Add(TextureResource.Write_Pad_Texture, png);
 
-        Texture2D png2 = new Texture2D(150, 150, TextureFormat.ARGB32, false);
+        Texture2D png2 = new Texture2D(300, 300, TextureFormat.ARGB32, false);
         TextureResource.Instance.Add(TextureResource.Write_Pad_Texture_Big, png2);
 
 

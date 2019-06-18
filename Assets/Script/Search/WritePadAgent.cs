@@ -369,13 +369,12 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         //RenderTexture prev = RenderTexture.active;
         //RenderTexture.active = texRender;   //设置当前的 render
-
         
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
 
-        // 获取缩放后的图片, 此时的图片大小为100，100
-        Texture2D newPng = ScaleTexture(raw.texture, 100, 100);
+        // 获取缩放后的图片, 此时的图片大小为200，200
+        Texture2D newPng = ScaleTexture(raw.texture, 200, 200);
 
         //  保存至本地,可关闭该功能        
         string filename = UnityEngine.Random.Range(0, 999).ToString();
@@ -417,7 +416,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         result.name = "ScaleTextureResult";
         RenderTexture.active = rt;
-        result.ReadPixels(new Rect(0, 0, width, height), 33, 33);
+
+        int desx = (result.width - width) / 2;
+        int desy = (result.height - height) / 2;
+
+        result.ReadPixels(new Rect(0, 0, width, height), desx, desy);
 
         // 去除所有的透明像素
         for (int x = 0; x < result.width; x++)
