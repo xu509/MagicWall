@@ -15,6 +15,7 @@ public class SearchResultAgent : MonoBehaviour
     [SerializeField] Text _title;   //  标题
     [SerializeField] RectTransform _ScrollViewItemContainer;    //  列表内容容器
     [SerializeField] SearchResultItemAgent _searchResultItemAgentPrefab;    //  搜索 item 代理
+    [SerializeField] SearchResultScrollBarAgent _searchResultScrollBarAgent; // 滚动条代理
 
 
     private List<SearchResultItemAgent> _resultItems;   //结果 items
@@ -69,6 +70,9 @@ public class SearchResultAgent : MonoBehaviour
         // 获取高度
         SetContentSize();
 
+        // 初始化滚动条
+        _searchResultScrollBarAgent.Init();
+
     }
 
     #region 事件
@@ -110,13 +114,27 @@ public class SearchResultAgent : MonoBehaviour
         _onClickReturn.Invoke();
     }
 
+    public void DoSearchResultChanged(Vector2 position) {
+        // Position : 1.0 -> 0.0
+
+        Debug.Log("On Changed Position : " + position);
+        _searchResultScrollBarAgent.Refresh(position.y);
+    }
+
+
+
+    #endregion
+
+    #region  搜索结果项委托
     /// <summary>
     /// 点击搜索结果项
     /// </summary>
     /// <param name="searchBean"></param>
-    private void OnClickResultItem(SearchBean searchBean) {
+    private void OnClickResultItem(SearchBean searchBean)
+    {
         _onClickSearchResultItem.Invoke(searchBean);
     }
+
 
     #endregion
 
