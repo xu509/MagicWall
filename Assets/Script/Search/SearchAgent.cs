@@ -564,9 +564,6 @@ public class SearchAgent : MonoBehaviour
         ItemsFactory itemsFactory = GetItemFactory(searchBean.type);
         Vector3 genVector3 = _cardAgent.GetComponent<RectTransform>().anchoredPosition;
 
-        Debug.Log("genVector3 : " + genVector3);
-
-
         CardAgent cardAgent = itemsFactory.GenerateCardAgent(genVector3, null, searchBean.id,true);
         cardAgent.GoToFront();
 

@@ -37,6 +37,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private WriteStatus _writeStatus = WriteStatus.Init;   //  书写状态
     private float _lastWriteTime = 0f;  //  最近的书写时间点
     [SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
+    [SerializeField] private bool enableBurrEffect = false;   //启用毛刺效果
 
     Action<string[]> _OnRecognizeSuccess;    //识别成功回调
     Action<string> _OnRecognizeError;    //识别失败回调
@@ -206,21 +207,13 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         GL.Begin(GL.QUADS);
 
-        //Debug.Log("left / Screen.width : " + left / Screen.width + " top / Screen.height : " + top / Screen.height);
-        //Debug.Log("right / Screen.width : " + right / Screen.width + " top / Screen.height : " + top / Screen.height);
-        //Debug.Log("right / Screen.width : " + right / Screen.width + " bottom / Screen.height : " + top / Screen.height);
-        //Debug.Log("left / Screen.width : " + right / Screen.width + " bottom / Screen.height : " + top / Screen.height);
-
 
 
         GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(left / Screen.width, top / Screen.height, 0);
         GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(right / Screen.width, top / Screen.height, 0);
         GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(right / Screen.width, bottom / Screen.height, 0);
         GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(left / Screen.width, bottom / Screen.height, 0);
-        //GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(left / 1000, top / 1000, 0);
-        //GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(right / 1000, top / 1000, 0);
-        //GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(right / 1000, bottom / 1000, 0);
-        //GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(left / 1000, bottom / 1000, 0);
+
 
         GL.End();
         GL.PopMatrix();
@@ -290,8 +283,15 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 float deltaspeed = (float)(speedArray[3] - speedArray[0]) / num;
 
                 //模拟毛刺效果
-                float randomOffset = UnityEngine.Random.Range(-targetPosOffset, targetPosOffset);
-                //float randomOffset = 0;
+                float randomOffset;
+                if (enableBurrEffect)
+                {
+                    randomOffset = UnityEngine.Random.Range(-targetPosOffset, targetPosOffset);
+                }
+                else {
+                    randomOffset = 0;
+                }
+
 
                 DrawBrush(texRender, (int)(target.x + randomOffset), (int)(target.y + randomOffset), brushTypeTexture, brushColor, SetScale(speedArray[0] + (deltaspeed * index1)));
             }
@@ -314,15 +314,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     }
 
-    //    if (Input.GetMouseButton(0))
-    //{
-    //    OnMouseMove(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-    //}
-    //if (Input.GetMouseButtonUp(0))
-    //{
-    //    OnMouseUp();
-    //}
-    //DrawImage();
 
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -374,46 +365,25 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         //  识别功能
         //  将 texture 保存为图片
-        string pathDir = Application.streamingAssetsPath + "/temp/ss";
+        string pathDir = Application.streamingAssetsPath + "/temp/writepanel";
 
-        RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = texRender;   //设置当前的 render
+        //RenderTexture prev = RenderTexture.active;
+        //RenderTexture.active = texRender;   //设置当前的 render
 
-        Texture2D newPng = ScaleTexture(raw.texture, 200, 200); // 获取缩放的图片
-        SaveBytesToFile(newPng.EncodeToPNG(), pathDir, "new");
-
-
-        // 加载内容
-        Texture2D png = TextureResource.Instance.GetTexture(TextureResource.Screen_Texture) as Texture2D;
-
-
+        
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-
         sw.Start();
-        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
-        sw.Stop();
-        Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
-        sw.Start();
-        byte[] bytes = png.EncodeToPNG();  //此步耗费大量时间
-        sw.Stop();
-        Debug.Log("Time2 : " + sw.ElapsedMilliseconds / 1000f);
+        // 获取缩放后的图片, 此时的图片大小为100，100
+        Texture2D newPng = ScaleTexture(raw.texture, 100, 100);
 
-        sw.Start();
+        //  保存至本地,可关闭该功能        
         string filename = UnityEngine.Random.Range(0, 999).ToString();
-        SaveBytesToFile(bytes, pathDir, filename);
+        SaveBytesToFile(newPng.EncodeToPNG(), pathDir, filename);
+
         sw.Stop();
-        Debug.Log("Time3 : " + sw.ElapsedMilliseconds / 1000f);
 
-
-        // 进行网络请求
-        //string path = pathDir + "/" + filename + ".png";
-
-        //_recogQueuer.AddRecogTask(path, _OnRecognizeError, _OnRecognizeSuccess, () => {
-        //    _writeStatus = WriteStatus.RecognizeFinished;
-        //});
-
-        _recogQueuer.AddRecogTask(png.EncodeToPNG(), _OnRecognizeError, _OnRecognizeSuccess, () => {
+        _recogQueuer.AddRecogTask(newPng.EncodeToPNG(), _OnRecognizeError, _OnRecognizeSuccess, () => {
             _writeStatus = WriteStatus.RecognizeFinished;
         });
 
@@ -424,18 +394,47 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
         //Texture2D.DestroyImmediate(png);
-        RenderTexture.active = prev;
+        //RenderTexture.active = prev;
     }
 
     private Texture2D ScaleTexture(Texture target, int width, int height)
     {
-        RenderTexture rt = new RenderTexture(width, height, 24);
+        
+        RenderTexture rt = new RenderTexture(width, height, 24 , RenderTextureFormat.ARGB32);
+
         Graphics.Blit(target, rt);
-        var result = TextureResource.Instance.GetTexture(TextureResource.Write_Pad_Texture)as Texture2D;
-            
+
+        var result = TextureResource.Instance.GetTexture(TextureResource.Write_Pad_Texture_Big)as Texture2D;
+
+        //// 涂白底部
+        for (int x = 0; x < result.width; x++)
+        {
+            for (int y = 0; y < result.height; y++)
+            {
+                result.SetPixel(x, y, Color.white);
+            }
+        }
+
         result.name = "ScaleTextureResult";
         RenderTexture.active = rt;
-        result.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        result.ReadPixels(new Rect(0, 0, width, height), 33, 33);
+
+        // 去除所有的透明像素
+        for (int x = 0; x < result.width; x++)
+        {
+            for (int y = 0; y < result.height; y++)
+            {
+
+                Color currentColor = result.GetPixel(x, y);
+
+                if (currentColor != Color.white && currentColor != Color.black)
+                {
+                    result.SetPixel(x, y, Color.white);
+                }
+
+            }
+        }
+
         result.Apply();
         RenderTexture.active = null;
         GameObject.Destroy(rt);
@@ -453,55 +452,28 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private void SaveBytesToFile(byte[] bytes, string dir, string filename) {
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir); // 这步耗时
+
+        // 判断当前目录下有多少个文件，如超过上限则进行清理
+        //获取文件信息
+        DirectoryInfo direction = new DirectoryInfo(dir);
+        FileInfo[] files = direction.GetFiles("*");
+
+        // 如果文件数量超过100，则清空文件夹
+        if (files.Length > 100) {
+            // 清理文件夹下所有的文件
+            for (int i = 0; i < files.Length; i++) {
+                string fp = dir + "/" + files[i].Name;
+                File.Delete(fp);
+            }
+
+        }
+
         string path = dir + "/" + filename + ".png";
         FileStream file = File.Open(path, FileMode.Create);
         BinaryWriter writer = new BinaryWriter(file);
         writer.Write(bytes);
         file.Close();
     }
-
-    /// <summary>
-    /// 识别图片
-    /// </summary>
-    /// <param name="path">全路径</param>
-    private void RecognizeImage(string path) {
-        var image = File.ReadAllBytes(path);
-
-        // 如果有可选参数
-        var options = new Dictionary<string, object>{
-        {"language_type", "CHN_ENG"},
-        {"detect_direction", "false"},
-        {"detect_language", "false"},
-        {"probability", "false"}
-        };
-        // 带参数调用通用文字识别, 图片参数为本地图片
-        try
-        {
-            var result = client.GeneralBasic(image, options);   //  这部耗时
-
-            Debug.Log("111：" + result);
-
-            //  模拟返回结构 
-            string[] strs = { "徐", "我", "汉" };
-
-            //string[] strs = {};
-            _OnRecognizeSuccess.Invoke(strs);
-        }
-        catch (Exception ex)
-        {
-            //  识别错误服务
-            Debug.Log("Exception : " + ex.Message);
-
-            _OnRecognizeError(ex.Message);
-        }
-        finally {
-            _writeStatus = WriteStatus.RecognizeFinished;
-        }
-    }
-
-
-
-
 
 
     // 识别完成

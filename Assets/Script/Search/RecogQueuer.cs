@@ -5,7 +5,7 @@ using System.Threading;
 using System.IO;
 using UnityEngine;
 using Baidu.Aip.Ocr;
-
+using Newtonsoft.Json.Linq;
 
 /// <summary>
 /// 识别队列
@@ -112,14 +112,29 @@ public class RecogQueuer : MonoBehaviour
         // 带参数调用通用文字识别, 图片参数为本地图片
         try
         {
-            var result = client.GeneralBasic(image, options);   //  这部耗时
+            JObject result = client.GeneralBasic(image, options);   //  这部耗时
 
-            Debug.Log("111：" + result);
+            int r = (int)result["words_result_num"];
 
-            //  模拟返回结构 
-            string[] strs = { "徐", "我", "汉" };
+            if (r == 0)
+            {
+                _errorCallBackQueue.Enqueue(new ErrorActionCallBackBean("未能识别", recognizeImageParams.errorCallBack));
+            }
+            else {
+                JArray results = (JArray)result["words_result"];
 
-            _successCallBackQueue.Enqueue(new SuccessActionCallBackBean(strs, recognizeImageParams.successCallBack));
+                string[] strs = new string[r];
+
+                for (int i = 0; i < results.Count; i++) {
+                    string word = (string) results[i]["words"];
+                    strs[i] = word;
+                }
+
+                ////  模拟返回结构 
+                //string[] strs = { "徐", "我", "汉" };
+
+                _successCallBackQueue.Enqueue(new SuccessActionCallBackBean(strs, recognizeImageParams.successCallBack));
+            }
 
         }
         catch (Exception ex)
