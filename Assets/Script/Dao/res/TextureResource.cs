@@ -8,6 +8,10 @@ using UnityEngine;
 /// </summary>
 public class TextureResource : Singleton<TextureResource>
 {
+    public static string Screen_Texture = "ScreenTexture";   // 屏幕大小的Texture
+    public static string Write_Pad_Texture = "WritePadTexture";   // 手写板的图片
+
+
     private Dictionary<string, Texture> _resources;
 
     public void Add(string address, Texture texture) {
@@ -36,17 +40,14 @@ public class TextureResource : Singleton<TextureResource>
         }
         else
         {
-            //Debug.Log("Address : " + address);
-
-
             Texture texture = AppUtils.LoadPNG(address);
             Add(address, texture);
             return texture;
         }
-
-
-
     }
+
+
+
 
 
 }

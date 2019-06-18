@@ -38,10 +38,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private float _lastWriteTime = 0f;  //  最近的书写时间点
     [SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
 
-    Action<string[]> OnRecognizeSuccess;    //识别成功回调
-    Action<string> OnRecognizeError;    //识别失败回调
+    Action<string[]> _OnRecognizeSuccess;    //识别成功回调
+    Action<string> _OnRecognizeError;    //识别失败回调
 
-    Thread TRecognizing;    //  识别线程
+
+    [SerializeField] private RecogQueuer _recogQueuer;  //识别队列
 
 
     // 书写状态
@@ -360,12 +361,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private void Recognizing()
     {
         Debug.Log("Recognizing");
-        Debug.Log("0 : " + Time.realtimeSinceStartup);
 
         _writeStatus = WriteStatus.Recognizing;
 
         RecognizingFun();
     }
+
+    //byte[] bytes = null;
+    //private IEnumerator coroutine;
 
     void RecognizingFun() {
 
@@ -374,29 +377,71 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         string pathDir = Application.streamingAssetsPath + "/temp/ss";
 
         RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = texRender;
+        RenderTexture.active = texRender;   //设置当前的 render
+
+        Texture2D newPng = ScaleTexture(raw.texture, 200, 200); // 获取缩放的图片
+        SaveBytesToFile(newPng.EncodeToPNG(), pathDir, "new");
+
 
         // 加载内容
-        Texture2D png = new Texture2D(texRender.width, texRender.height, TextureFormat.ARGB32, false);
-        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
-        byte[] bytes = png.EncodeToPNG();
+        Texture2D png = TextureResource.Instance.GetTexture(TextureResource.Screen_Texture) as Texture2D;
 
+
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+        sw.Start();
+        png.ReadPixels(new Rect(0, 0, texRender.width, texRender.height), 0, 0);
+        sw.Stop();
+        Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
+
+        sw.Start();
+        byte[] bytes = png.EncodeToPNG();  //此步耗费大量时间
+        sw.Stop();
+        Debug.Log("Time2 : " + sw.ElapsedMilliseconds / 1000f);
+
+        sw.Start();
         string filename = UnityEngine.Random.Range(0, 999).ToString();
         SaveBytesToFile(bytes, pathDir, filename);
+        sw.Stop();
+        Debug.Log("Time3 : " + sw.ElapsedMilliseconds / 1000f);
+
 
         // 进行网络请求
-        string path = pathDir + "/" + filename + ".png";
-        RecognizeImage(path);
+        //string path = pathDir + "/" + filename + ".png";
+
+        //_recogQueuer.AddRecogTask(path, _OnRecognizeError, _OnRecognizeSuccess, () => {
+        //    _writeStatus = WriteStatus.RecognizeFinished;
+        //});
+
+        _recogQueuer.AddRecogTask(png.EncodeToPNG(), _OnRecognizeError, _OnRecognizeSuccess, () => {
+            _writeStatus = WriteStatus.RecognizeFinished;
+        });
 
 
         // 清理
-        Destroy(png);
+        //Destroy(png);
+        //png = null;
+
 
         //Texture2D.DestroyImmediate(png);
-        png = null;
         RenderTexture.active = prev;
     }
 
+    private Texture2D ScaleTexture(Texture target, int width, int height)
+    {
+        RenderTexture rt = new RenderTexture(width, height, 24);
+        Graphics.Blit(target, rt);
+        var result = TextureResource.Instance.GetTexture(TextureResource.Write_Pad_Texture)as Texture2D;
+            
+        result.name = "ScaleTextureResult";
+        RenderTexture.active = rt;
+        result.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        result.Apply();
+        RenderTexture.active = null;
+        GameObject.Destroy(rt);
+        rt = null;
+        return result;
+    }
 
 
     /// <summary>
@@ -440,14 +485,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             string[] strs = { "徐", "我", "汉" };
 
             //string[] strs = {};
-            OnRecognizeSuccess.Invoke(strs);
+            _OnRecognizeSuccess.Invoke(strs);
         }
         catch (Exception ex)
         {
             //  识别错误服务
             Debug.Log("Exception : " + ex.Message);
 
-            OnRecognizeError(ex.Message);
+            _OnRecognizeError(ex.Message);
         }
         finally {
             _writeStatus = WriteStatus.RecognizeFinished;
@@ -468,11 +513,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         Clear(texRender);
         DrawImage();
 
-        if (TRecognizing != null) {
-            TRecognizing.Abort();
-        }
-
-
         _writeStatus = WriteStatus.Init;
     }
 
@@ -480,12 +520,12 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     // 装载识别回调
     public void SetOnRecognizedSuccess(Action<string[]> action)
     {
-        this.OnRecognizeSuccess = action;
+        this._OnRecognizeSuccess = action;
     }
 
     public void SetOnRecognizedError(Action<string> action)
     {
-        this.OnRecognizeError = action;
+        this._OnRecognizeError = action;
     }
 
     //  获取的左下角的屏幕坐标
@@ -498,5 +538,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
 
 
+
+    IEnumerator Wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        print("WaitAndPrint " + Time.time);
+    }
 
 }

@@ -219,6 +219,12 @@ public class StartScene : IScene
             }
         }
 
+        // 加载其他资源
+        //  - 手写板用的texture
+        Texture2D png = new Texture2D(200, 200, TextureFormat.ARGB32, false);
+        TextureResource.Instance.Add(TextureResource.Write_Pad_Texture, png);
+
+
         _resourseIsChecked = true;
 
     }
