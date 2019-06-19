@@ -11,17 +11,35 @@ public class SearchResultAgent : MonoBehaviour
     Action _onClickReturn;
     Action<SearchBean> _onClickSearchResultItem;
 
+    [SerializeField] float _itemHeight = 175f;
     [SerializeField] Text _title;   //  标题
     [SerializeField] RectTransform _ScrollViewItemContainer;    //  列表内容容器
     [SerializeField] SearchResultItemAgent _searchResultItemAgentPrefab;    //  搜索 item 代理
+    [SerializeField] SearchResultScrollBarAgent _searchResultScrollBarAgent; // 滚动条代理
 
+
+    private List<SearchResultItemAgent> _resultItems;   //结果 items
     private ItemsFactory _itemsFactory;   //  实体生成器
     private MagicWallManager _manager;
+
+    private float _default_scrollview_height;
+    private Vector2 _default_scrollview_anchorposition;
+
+
+    void Awake()
+    {
+        _resultItems = new List<SearchResultItemAgent>();
+
+        // 设置默认的滑动结果栏高度
+        _default_scrollview_height = 3 * (_itemHeight + 10);
+        _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, _default_scrollview_height);
+        _default_scrollview_anchorposition = _ScrollViewItemContainer.anchoredPosition;
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -48,6 +66,13 @@ public class SearchResultAgent : MonoBehaviour
         for (int i = 0; i < searchBeans.Count; i++) {
             CreateItem(searchBeans[i]);
         }
+
+        // 获取高度
+        SetContentSize();
+
+        // 初始化滚动条
+        _searchResultScrollBarAgent.Init();
+
     }
 
     #region 事件
@@ -62,7 +87,24 @@ public class SearchResultAgent : MonoBehaviour
         searchResultItemAgent.Init();
         searchResultItemAgent.InitData(searchBean,_manager);
         searchResultItemAgent.SetOnClickItem(OnClickResultItem);
+
+        _resultItems.Add(searchResultItemAgent);
     }
+
+    private void SetContentSize() {
+        if (_resultItems.Count > 6) { 
+            // 此时动态高度
+            float height = (_resultItems.Count / 2) * (_itemHeight + 10);
+
+
+            float height_offset = height - _default_scrollview_height;
+            float anchor_y = _default_scrollview_anchorposition.y - height_offset;
+
+            _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height);
+            _ScrollViewItemContainer.anchoredPosition = new Vector2(_default_scrollview_anchorposition.x, anchor_y);
+        }
+    }
+
 
     public void DoMove() {
         _onClickMove.Invoke();
@@ -72,13 +114,27 @@ public class SearchResultAgent : MonoBehaviour
         _onClickReturn.Invoke();
     }
 
+    public void DoSearchResultChanged(Vector2 position) {
+        // Position : 1.0 -> 0.0
+
+        Debug.Log("On Changed Position : " + position);
+        _searchResultScrollBarAgent.Refresh(position.y);
+    }
+
+
+
+    #endregion
+
+    #region  搜索结果项委托
     /// <summary>
     /// 点击搜索结果项
     /// </summary>
     /// <param name="searchBean"></param>
-    private void OnClickResultItem(SearchBean searchBean) {
+    private void OnClickResultItem(SearchBean searchBean)
+    {
         _onClickSearchResultItem.Invoke(searchBean);
     }
+
 
     #endregion
 

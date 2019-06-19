@@ -23,6 +23,7 @@ public class TextureResource : Singleton<TextureResource>
 
         if (_resources.ContainsKey(address))
         {
+            _resources.Remove(address);
             _resources.Add(address, texture);
         }
         else {
