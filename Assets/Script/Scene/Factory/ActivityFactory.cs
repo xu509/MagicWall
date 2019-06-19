@@ -48,7 +48,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         int h = (int)_manager.mainPanel.rect.height;    // 高度
         int w = (int)_manager.mainPanel.rect.width; //宽度
         _itemHeight = (h - _gap * 7) / _row;
-        _itemWidth = 300;
+        _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
     }

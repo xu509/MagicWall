@@ -143,7 +143,6 @@ public class FrontBackUnfoldCutEffect : CutEffect
         float itemWidth = 250;
         float itemHeight = 250;
         float gap = ItemsFactory.GetSceneGap();
-
         //从左往右，从下往上
         for (int i = 0; i < _row; i++)
         {

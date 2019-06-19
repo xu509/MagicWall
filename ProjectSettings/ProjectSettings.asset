@@ -634,10 +634,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: a9ee31e2-bfd7-4212-bfd5-87053097a5f1
+  cloudProjectId: a6fe7b31-d32d-4fe7-9d40-b82599490f5c
   framebufferDepthMemorylessMode: 0
   projectName: MagicWall
-  organizationId: xuningxin
+  organizationId: zhgzhx
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

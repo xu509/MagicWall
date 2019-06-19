@@ -483,7 +483,10 @@ public class DaoService : Singleton<DaoService>
         // Real 
         CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
+        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+
 
         for (int i = 0; i < effects.Length; i++)
         {
@@ -544,8 +547,13 @@ public class DaoService : Singleton<DaoService>
 
         //SceneConfig sceneConfig6 = new SceneConfig();
         //sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
-        //sceneConfig6.SceneContentType = SceneContentType.product;
+        //sceneConfig6.SceneContentType = SceneContentType.activity;
         //sceneConfigs.Add(sceneConfig6);
+
+        //SceneConfig sceneConfig7 = new SceneConfig();
+        //sceneConfig7.CutEffect = new FrontBackUnfoldCutEffect();
+        //sceneConfig7.SceneContentType = SceneContentType.product;
+        //sceneConfigs.Add(sceneConfig7);
 
         return sceneConfigs;
     }

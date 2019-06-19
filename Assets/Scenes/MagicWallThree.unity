@@ -566,7 +566,7 @@ MonoBehaviour:
   _backgroundUpDuration: 20
   _backgroundUubbleInterval: 0.2
   _influenceDistance: 0
-  _influenceMoveFactor: 0.52
+  _influenceMoveFactor: 0.5
   _influenceEaseEnum: 13
   _movePanelFactor: 100
   _bg_logo: {fileID: 2060558020}

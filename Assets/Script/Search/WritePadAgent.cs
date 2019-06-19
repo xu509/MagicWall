@@ -145,6 +145,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         else
         {
             Scale = 0.425f - 0.00125f * distance;
+
         }
         if (Scale <= 0.05f)
         {
@@ -320,7 +321,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         OnMouseUp();
         OnMouseMove(new Vector3(eventData.position.x, eventData.position.y, 0));
-
         _writeStatus = WriteStatus.Init;
     }
 
@@ -374,7 +374,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         sw.Start();
 
         // 获取缩放后的图片, 此时的图片大小为200，200
-        Texture2D newPng = ScaleTexture(raw.texture, 200, 200);
+        Texture2D newPng = ScaleTexture(raw.texture, 100, 100);
 
         //  保存至本地,可关闭该功能        
         string filename = UnityEngine.Random.Range(0, 999).ToString();
