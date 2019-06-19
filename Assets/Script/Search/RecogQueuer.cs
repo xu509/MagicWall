@@ -112,7 +112,8 @@ public class RecogQueuer : MonoBehaviour
         // 带参数调用通用文字识别, 图片参数为本地图片
         try
         {
-            JObject result = client.GeneralBasic(image, options);   //  这部耗时
+            //JObject result = client.GeneralBasic(image, options);   //  这部耗时 
+            JObject result = client.AccurateBasic(image, options);   //  这部耗时
 
             int r = (int)result["words_result_num"];
 

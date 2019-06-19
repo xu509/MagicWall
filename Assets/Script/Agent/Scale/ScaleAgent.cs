@@ -34,7 +34,7 @@ public class ScaleAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     void FixedUpdate() {
