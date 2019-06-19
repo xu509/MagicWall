@@ -569,6 +569,9 @@ MonoBehaviour:
   _container: {fileID: 643476352172617853}
   _itemPrefab: {fileID: 1842031527981737284, guid: 264982ac4149cf14fa38e69eb1eff64b,
     type: 3}
+  _minItemWidth: 20
+  _maxItemWidth: 50
+  _influenceEaseEnum: 0
 --- !u!1 &6136907311824599634
 GameObject:
   m_ObjectHideFlags: 0
