@@ -4,10 +4,8 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System;
-
-
-
-
+using System.Security.Cryptography;
+using System.IO;
 
 /// <summary>
 /// 灵云客户端
@@ -20,14 +18,58 @@ public class SVClient
     //  appKey : 195d5435
     private static string api_hwr_recognize = api_address + "/hwr/Recognise";
 
+    /// <summary>
+    /// 应用标识
+    /// </summary>
+    private static string x_app_key = "x-app-key";
+
+    /// <summary>
+    /// sdk版本号
+    /// </summary>
+    private static string x_sdk_version = "x-sdk-version";
+
+    /// <summary>
+    ///     请求时间 : 2016-6-18 10:10:11
+    /// </summary>
+    private static string x_request_date = "x-request-date";
+
+    /// <summary>
+    /// 任务参数信息: capkey=hwr.cloud.freewrite, candNum=10  [必选，为name=value形式，多个参数以逗号隔开]
+    /// </summary>
+    private static string x_task_config = "x-task-config";
+
+    /// <summary>
+    /// 请求数据签名: 必选 x-session-key生成算法说明： x-session-key = md5(x-request-date + devkey)
+    /// </summary>
+    private static string x_session_key = "x-session-key";
+
+    /// <summary>
+    /// 可选，如使用设备取设备标识号，如不使用设备设置为例子中的默认值
+    /// </summary>
+    private static string x_udid = "x-udid";
+
+    /// <summary>
+    /// APP KEY
+    /// </summary>
+    private string _appKey; 
+
+    /// <summary>
+    /// DEV KEY
+    /// </summary>
+    private string _devKey;
+
+    /// <summary>
+    /// 请求日期
+    /// </summary>
+    private string _requestDate;
+
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="appKey"></param>
     /// <param name=""></param>
-    public SVClient(string appKey) {
-
+    public SVClient(string appKey,string devKey) {
 
 
     }
@@ -41,10 +83,54 @@ public class SVClient
     public JObject Recognize(short[] datas) {
 
         Uri uri = new Uri(api_hwr_recognize);
+        HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(uri);
+        request.Method = "POST";    //  设置请求模式
 
+        // 设置 header
+        request.Headers.Add(x_app_key , _appKey);
+        request.Headers.Add(x_sdk_version, "5.0");
+        request.Headers.Add(x_request_date, GetRequestDateStr());
+        request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter");
+        request.Headers.Add(x_session_key, GetSessionKey()) ;
+
+        // 设置过期时间
+        request.Timeout = 20000;
+
+        // 获得 response
+        HttpWebResponse httpWebResponse = (HttpWebResponse)request.GetResponse();
+        StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+        string responseContent = streamReader.ReadToEnd();
+
+        Debug.Log(responseContent);
+
+        httpWebResponse.Close();
+        streamReader.Close();
+        request.Abort();
+        httpWebResponse.Close();
 
         return null;
     }
 
+
+    private string GetRequestDateStr() {
+        DateTime date = DateTime.Now;
+        string str = date.ToString();
+        _requestDate = str;
+        return str;
+    }
+
+
+    /// <summary>
+    /// x-session-key生成算法说明： x-session-key = md5(x-request-date + devkey)
+    /// </summary>
+    /// <returns></returns>
+    private string GetSessionKey() {
+        string content = _requestDate + _devKey;
+
+        // MD5 加密过程
+        MD5 md5 = new MD5CryptoServiceProvider();
+        byte[] result = md5.ComputeHash(System.Text.Encoding.Default.GetBytes(content));
+        return System.Text.Encoding.Default.GetString(result);
+    }
 
 }
