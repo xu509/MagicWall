@@ -96,7 +96,6 @@ public class SearchResultAgent : MonoBehaviour
             // 此时动态高度
             float height = (_resultItems.Count / 2) * (_itemHeight + 10);
 
-
             float height_offset = height - _default_scrollview_height;
             float anchor_y = _default_scrollview_anchorposition.y - height_offset;
 
@@ -116,9 +115,15 @@ public class SearchResultAgent : MonoBehaviour
 
     public void DoSearchResultChanged(Vector2 position) {
         // Position : 1.0 -> 0.0
+        float y = position.y;
 
-        Debug.Log("On Changed Position : " + position);
-        _searchResultScrollBarAgent.Refresh(position.y);
+        if (y < 0) { 
+            y = 0f;
+        }
+        else if ( y > 1){
+            y = 1f;
+        }
+        _searchResultScrollBarAgent.Refresh(y);
     }
 
 
