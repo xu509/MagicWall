@@ -85,7 +85,7 @@ public class StarsCutEffect : CutEffect
 
                 Vector2 vector2 = AppUtils
                     .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).width
-                    , TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).height));
+                    , TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).height), _manager.displayFactor);
 
                 int middleX = (column - 1) / 2;
 
@@ -138,7 +138,8 @@ public class StarsCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2;
                 
                 Activity activity = _daoService.GetActivity();
-                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
+                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height)
+                    , _manager.displayFactor);
 
                 int middleX = (column - 1) / 2;
 
@@ -261,7 +262,8 @@ public class StarsCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
                 Product product = _daoService.GetProduct();
-                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height));
+                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height)
+                    , _manager.displayFactor);
 
                 int middleX = (column - 1) / 2;
 

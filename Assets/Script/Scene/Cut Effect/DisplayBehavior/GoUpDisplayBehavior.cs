@@ -64,12 +64,12 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
     {
 
         int h = (int)_manager.mainPanel.rect.height;
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
         int page = _displayBehaviorConfig.Page;
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
@@ -205,12 +205,12 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
     {
 
         int h = (int)_manager.mainPanel.rect.height;
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         int offsetUnit = Mathf.CeilToInt((h * 1.0f) / 3);
         int page = _displayBehaviorConfig.Page;
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {

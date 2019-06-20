@@ -17,6 +17,8 @@ public class MagicWallManager:MonoBehaviour
     protected MagicWallManager() { }
 
     #region 可配置项
+    // 显示比例
+    [SerializeField,Range(0.1f,1f)] float _displayFactor = 0.5f; // 8640 * 1920
     // 场景管理器
     [SerializeField] MagicSceneManager _magicSceneManager;
     // 实体管理器
@@ -58,7 +60,7 @@ public class MagicWallManager:MonoBehaviour
 
     /// 背景配置项
     //气泡上升时间
-    [SerializeField, Range(10f, 30f)] float _backgroundUpDuration = 20f;
+    [SerializeField, Range(10f, 100f)] float _backgroundUpDuration = 60f;
     //生成气泡时间间隔
     [SerializeField, Range(0.1f, 10f)] float _backgroundUubbleInterval = 0.2f;
 
@@ -95,13 +97,14 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
 
-    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
-    //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+    public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";
+    // public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
     #endregion
 
@@ -118,6 +121,9 @@ public class MagicWallManager:MonoBehaviour
     #endregion
 
     #region 引用
+
+    public float displayFactor { get { return _displayFactor; } }
+
     public ManagerConfig managerConfig { get { return _managerConfig; } }
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
     public RectTransform mainPanel { get { return _mainPanel; } }
@@ -233,6 +239,25 @@ public class MagicWallManager:MonoBehaviour
         if (managerConfig.IsCustom) {
             infoPanelAgent.Run();
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("您按下了W键");
+
+            _movePanelFactor = _movePanelFactor - 0.1f;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("您按下了W键");
+
+            _movePanelFactor = _movePanelFactor + 0.1f;
+
+        }
+
+
+
 
     }
 
