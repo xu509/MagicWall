@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08396c27294ff3c4d92355e5186eb8e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displayFactor: 0.5
+  _displayFactor: 0.66
   _magicSceneManager: {fileID: 1167712291}
   _agentManager: {fileID: 1167712289}
   _backgroundManager: {fileID: 1167712290}

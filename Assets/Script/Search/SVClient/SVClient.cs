@@ -6,6 +6,7 @@ using System.Net;
 using System;
 using System.Security.Cryptography;
 using System.IO;
+using System.Globalization;
 
 /// <summary>
 /// 灵云客户端
@@ -95,10 +96,14 @@ public class SVClient
 
         // 设置 header
         request.Headers.Add(x_app_key , _appKey);
-        request.Headers.Add(x_sdk_version, "5.0");
+        request.Headers.Add(x_sdk_version, "8.0");
         request.Headers.Add(x_request_date, GetRequestDateStr());
         request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter");
         request.Headers.Add(x_session_key, GetSessionKey()) ;
+        request.Headers.Add("x-udid", "101:1234567890") ;
+
+        Debug.Log(request.Headers);
+
 
         // 设置过期时间
         request.Timeout = _timeOut;
@@ -125,10 +130,14 @@ public class SVClient
         return null;
     }
 
-
+    /// <summary>
+    ///  日期格式：2016-6-18 10:10:11
+    /// </summary>
+    /// <returns></returns>
     private string GetRequestDateStr() {
         DateTime date = DateTime.Now;
-        string str = date.ToString();
+        string str = date.ToString("yyyy-M-d HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+
         _requestDate = str;
         return str;
     }
@@ -140,16 +149,17 @@ public class SVClient
     /// <returns></returns>
     private string GetSessionKey() {
         string content = _requestDate + _devKey;
-
-        Debug.Log("Session Key : " + content);
+        Debug.Log("CONTENT: " + content);
 
         // MD5 加密过程
-        MD5 md5 = new MD5CryptoServiceProvider();
-        byte[] result = md5.ComputeHash(System.Text.Encoding.Default.GetBytes(content));
+        var md5 = new MD5CryptoServiceProvider();
+        string t2 = BitConverter.ToString(md5.ComputeHash(System.Text.Encoding.Default.GetBytes(content)), 4, 8);
+        t2 = t2.Replace("-", "");
 
-        string re = System.Text.Encoding.Default.GetString(result);
+        Debug.Log("RE: " + t2);
 
-        return re;
+        return t2;
     }
+
 
 }
