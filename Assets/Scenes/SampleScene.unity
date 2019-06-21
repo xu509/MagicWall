@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -541,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08396c27294ff3c4d92355e5186eb8e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _displayFactor: 0.66
   _magicSceneManager: {fileID: 1167712291}
   _agentManager: {fileID: 1167712289}
   _backgroundManager: {fileID: 1167712290}
@@ -562,12 +563,13 @@ MonoBehaviour:
     type: 3}
   _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
     type: 3}
-  _backgroundUpDuration: 20
-  _backgroundUubbleInterval: 0.2
+  _searchAgentPrefab: {fileID: 0}
+  _backgroundUpDuration: 100
+  _backgroundUubbleInterval: 0.8
   _influenceDistance: 0
   _influenceMoveFactor: 0.5
   _influenceEaseEnum: 13
-  _movePanelFactor: 100
+  _movePanelFactor: 30
   _bg_logo: {fileID: 2060558020}
   _row: 6
 --- !u!225 &438711673
@@ -1298,7 +1300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9372549, g: 0.9372549, b: 0.9372549, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

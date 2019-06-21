@@ -43,6 +43,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         _agentManager = _manager.agentManager;
         _daoService = _manager.daoService;
 
+        _gap = _gap * manager.displayFactor;
+
         int _row = _manager.Row;
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
@@ -63,6 +65,11 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     //
     public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
+        // 调整百分之80分辨率
+        width = width * 0.8f;
+        height = height * 0.8f;
+
+
         Activity activity = data as Activity;
 
         //  创建 Agent

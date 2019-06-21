@@ -492,6 +492,10 @@ public class DaoService : Singleton<DaoService>
         {
             for (int j = 0; j < contentTypes.Length; j++)
             {
+
+                if (i == 3 && j == 0)
+                    continue;
+
                 SceneConfig sceneConfig = new SceneConfig();
                 sceneConfig.CutEffect = effects[i];
                 sceneConfig.SceneContentType = contentTypes[j];

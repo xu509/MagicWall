@@ -120,7 +120,7 @@ public class MidDisperseCutEffect : CutEffect
 
         // 获取栅格信息
         float gap = ItemsFactory.GetSceneGap();
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float w = _manager.mainPanel.rect.width;
         float h = _manager.mainPanel.rect.height;
@@ -237,7 +237,7 @@ public class MidDisperseCutEffect : CutEffect
 
         // 获取栅格信息
         float gap = ItemsFactory.GetSceneGap();
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float w = _manager.mainPanel.rect.width;
         float h = _manager.mainPanel.rect.height;
