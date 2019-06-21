@@ -31,7 +31,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     float rawWidth;                               //raw图片宽度
     float rawHeight;                              //raw图片长度
 
-
     private Ocr client;
 
     private WriteStatus _writeStatus = WriteStatus.Init;   //  书写状态
@@ -42,8 +41,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     Action<string[]> _OnRecognizeSuccess;    //识别成功回调
     Action<string> _OnRecognizeError;    //识别失败回调
 
-
     [SerializeField] private RecogQueuer _recogQueuer;  //识别队列
+
+    // 灵云识别相关
+    private List<short> _letterData;    //笔记数据
+    private Vector2 _lastWriterPoint = Vector2.zero;
 
 
     // 书写状态
@@ -63,28 +65,20 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     void Start()
     {
 
-        //// 设置APPID/AK/SK
-        var APP_ID = "16425018";
-        var API_KEY = "cZwexXD7l60l3OcZ4IT8yWPm";
-        var SECRET_KEY = "4hrFgtVchql08SgZ3CQ9iE4oMhg42F5s";
-
-        client = new Ocr(API_KEY, SECRET_KEY);
-        client.Timeout = 60000;  // 修改超时时间
-
-
         //raw图片鼠标位置，宽度计算
         rawWidth = raw.rectTransform.sizeDelta.x;
         rawHeight = raw.rectTransform.sizeDelta.y;
 
         UpdateRawMousePosition();
 
-        //texRender = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
-        //RenderTexture.GetTemporary
 
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
         Clear(texRender);
 
         DrawImage();
+
+        _letterData = new List<short>();
+
     }
 
     Vector3 startPosition = Vector3.zero;
@@ -95,6 +89,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         if (_writeStatus == WriteStatus.WriteFinished && ((now - _lastWriteTime) > _recognizeIntervalTime))
         {
+            FinishAddLetterData();
 
             // 开始确认
             Debug.Log("Begin Recognize");
@@ -156,6 +151,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     void OnMouseMove(Vector3 pos)
     {
+
         if (startPosition == Vector3.zero)
         {
             startPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
@@ -193,9 +189,15 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         float top = (destRect.yMin - rawMousePosition.y) * Screen.height / rawHeight - destRect.height * scale / 2.0f;
         float bottom = (destRect.yMin - rawMousePosition.y) * Screen.height / rawHeight + destRect.height * scale / 2.0f;
 
-        // 位置偏移
-        //top = top + 250;
-        //bottom = bottom + 250;
+
+        //AddLetterData(Mathf.RoundToInt(eventData.position.x), Mathf.RoundToInt(eventData.position.y));
+
+        float l = (destRect.xMin - rawMousePosition.x) * Screen.width / rawWidth;
+        float r = (destRect.xMin - rawMousePosition.x) * Screen.width / rawWidth;
+        float t = (destRect.yMin - rawMousePosition.y) * Screen.height / rawHeight;
+        float b = (destRect.yMin - rawMousePosition.y) * Screen.height / rawHeight;
+
+        AddLetterData(Mathf.RoundToInt((l + r) / 2 / 2), Mathf.RoundToInt((t + b) / 2 / 2));
 
         Graphics.SetRenderTarget(destTexture);
 
@@ -316,7 +318,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
 
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         OnMouseUp();
@@ -328,6 +329,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         OnMouseMove(new Vector3(eventData.position.x, eventData.position.y, 0));
         OnMouseUp();
+        AddLetterDataEnd();
         _lastWriteTime = Time.time;
         _writeStatus = WriteStatus.WriteFinished;
 
@@ -343,6 +345,54 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void OnPointerClick(PointerEventData eventData)
     {
     }
+
+    /// <summary>
+    /// 增加笔迹数据
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    private void AddLetterData(int x,int y) {
+
+        Vector2 position = new Vector2(x, y);
+        if (position != _lastWriterPoint)
+        {
+            _letterData.Add((short)x);
+            _letterData.Add((short)y);
+        }
+        else {
+        }
+        _lastWriterPoint = new Vector2(x, y);
+
+    }
+
+    /// <summary>
+    /// 增加一次笔迹的结束
+    /// </summary>
+    private void AddLetterDataEnd() {
+        _letterData.Add(-1);
+        _letterData.Add(0);
+    }
+
+    /// <summary>
+    /// 结束笔迹
+    /// </summary>
+    private void FinishAddLetterData() {
+        _letterData.Add(-1);
+        _letterData.Add(-1);
+    }
+
+    /// <summary>
+    /// 清理笔迹
+    /// </summary>
+    private void ClearLetterData() {
+        _letterData = new List<short>();
+    }
+
+    private short[] PrepareLetterData() {
+        return _letterData.ToArray();
+    }
+
+
     #endregion
 
 
@@ -382,7 +432,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         sw.Stop();
 
-        _recogQueuer.AddRecogTask(newPng.EncodeToPNG(), _OnRecognizeError, _OnRecognizeSuccess, () => {
+        _recogQueuer.AddRecogTask(PrepareLetterData(), _OnRecognizeError, _OnRecognizeSuccess, () => {
             _writeStatus = WriteStatus.RecognizeFinished;
         });
 
@@ -487,6 +537,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         // 清理画布
         Clear(texRender);
         DrawImage();
+        ClearLetterData();
 
         _writeStatus = WriteStatus.Init;
     }
