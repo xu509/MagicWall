@@ -65,10 +65,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     //
     public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
-        // 调整百分之80分辨率
-        width = width * 0.8f;
-        height = height * 0.8f;
-
+        width = (int)width;
+        height = (int)height;
 
         Activity activity = data as Activity;
 

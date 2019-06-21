@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ScaleAgentCell : MonoBehaviour
 {
 
     public ScrollRect scrollRect;
     private RectTransform imgRtf;
     //缩放
-    private Vector2 first = Vector2.zero;//第一次鼠标按键位置
-    private Vector2 second = Vector2.zero;//第二次
-    private float originalDistance;//初始距离
-
-    private bool startScale;//检测缩放
+    Vector2 oldPos1 = Vector2.zero;
+    Vector2 oldPos2 = Vector2.zero;
+    //记录单指双指的变换
+    private bool isSingleFinger;
+    private float originalDistance;
     public ScaleAgent scaleAgent;
     private float startScalePer;//开始缩放时比例
 
@@ -26,22 +26,51 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt) && startScale==false)
+        if (Input.touchCount == 1)
         {
-            Vector2 pos;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRtf, Input.mousePosition, Camera.main, out pos))
+            isSingleFinger = true;
+        }
+        else if (Input.touchCount > 1)
+        {
+            if (isSingleFinger)
             {
-                startScale = true;
-                first = pos;
-                print("first:" + first);
+                oldPos1 = Input.GetTouch(0).position;
+                oldPos2 = Input.GetTouch(1).position;
             }
+            if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved)
+            {
+                Vector2 newPos1 = Input.GetTouch(0).position;
+                Vector2 newPos2 = Input.GetTouch(1).position;
+                float newDistance = Vector2.Distance(newPos1, newPos2);
+                float oldDistance = Vector2.Distance(oldPos1, oldPos2);
+                float s = startScalePer + (newDistance - oldDistance) / oldDistance;
+                scaleAgent.currentScale = s;
+                scaleAgent.ResetImage();
+                oldPos1 = newPos1;
+                oldPos2 = newPos2;
+            }
+            if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(1).phase == TouchPhase.Ended && isSingleFinger == false)
+            {
+                if (scaleAgent.currentScale < 1)
+                {
+                    scaleAgent.currentScale = 1;
+                    scaleAgent.ResetImage();
+                }
+                else if (scaleAgent.currentScale > scaleAgent.maxScale)
+                {
+                    scaleAgent.currentScale = scaleAgent.maxScale;
+                    scaleAgent.ResetImage();
+                }
+            }
+            isSingleFinger = false;
+
         }
-        if (Input.GetKeyUp(KeyCode.LeftAlt))
-        {
-            startScale = false;
-        }
+
     }
 
+
+
+    /*
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!startScale)
@@ -100,4 +129,5 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             scaleAgent.ResetImage();
         }
     }
+    */
 }
