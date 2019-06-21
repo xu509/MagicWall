@@ -18,7 +18,7 @@ public class MagicWallManager:MonoBehaviour
 
     #region 可配置项
     // 显示比例
-    [SerializeField,Range(0.1f,1f)] float _displayFactor = 0.5f; // 8640 * 1920
+    [SerializeField,Range(0.1f,1f)] float _displayFactor; // 8640 * 1920
     // 场景管理器
     [SerializeField] MagicSceneManager _magicSceneManager;
     // 实体管理器
@@ -97,10 +97,10 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+   // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
     //public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";

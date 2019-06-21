@@ -43,7 +43,7 @@ public class Activity : BaseData,Generator<Activity>
 
         for (int i = 0; i < 177; i++)
         {
-            images[i] = (i + 1) + ".jpg";
+            images[i] = (i + 1) + ".png";
         }
 
         activity._image = images[Random.Range(0, images.Length)];
