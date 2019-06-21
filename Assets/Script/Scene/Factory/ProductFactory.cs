@@ -65,7 +65,8 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
     //
     public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
-
+        width = (int)width;
+        height = (int)height;
         Product product = data as Product;
 
         //  创建 Agent

@@ -64,6 +64,8 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     //
     public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
+        width = (int)width;
+        height = (int)height;
         Enterprise env = data as Enterprise;
 
         if (gen_x == ori_x)

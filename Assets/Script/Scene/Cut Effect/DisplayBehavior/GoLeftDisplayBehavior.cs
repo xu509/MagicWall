@@ -34,8 +34,9 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 		// 面板向左移动
 		float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MovePanelFactor;
 		Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
-        _manager.mainPanel.anchoredPosition = to;
+        //_manager.mainPanel.anchoredPosition = to;
 
+        _manager.mainPanel.transform.Translate(Vector3.left * Time.deltaTime);
         //_manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
 
         // 调整panel的差值

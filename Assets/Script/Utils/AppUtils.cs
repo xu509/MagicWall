@@ -59,6 +59,9 @@ public class AppUtils : MonoBehaviour
             height = Random.Range(200 * displayFactor, 400 * displayFactor);
             width = w / h * height;
         }
+        width = (int)width;
+        height = (int)height;
+        Debug.Log("width:" + width+ "height:" + height);
         return new Vector2(width, height);
     }
 
