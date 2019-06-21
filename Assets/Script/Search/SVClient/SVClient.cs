@@ -90,23 +90,29 @@ public class SVClient
 
     public JObject Recognize(short[] datas) {
 
+        //string test_url = "http://systemapi.shsportshistory.com/api/company/companies";
+        // api_hwr_recognize
+
+
         Uri uri = new Uri(api_hwr_recognize);
         HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(uri);
         request.Method = "POST";    //  设置请求模式
 
         // 设置 header
-        request.Headers.Add(x_app_key , _appKey);
+        request.Headers.Add(x_app_key, _appKey);
         request.Headers.Add(x_sdk_version, "8.0");
         request.Headers.Add(x_request_date, GetRequestDateStr());
-        request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter");
-        request.Headers.Add(x_session_key, GetSessionKey()) ;
-        request.Headers.Add("x-udid", "101:1234567890") ;
+        request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter,candNum=10");
+        request.Headers.Add(x_session_key, GetSessionKey());
+        request.Headers.Add("x-udid", "101:1234567890");
 
         Debug.Log(request.Headers);
 
 
         // 设置过期时间
         request.Timeout = _timeOut;
+
+        
 
         // 设置包体数据
         var reqStream = request.GetRequestStream();

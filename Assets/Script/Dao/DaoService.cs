@@ -485,7 +485,8 @@ public class DaoService : Singleton<DaoService>
             new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
 
         for (int i = 0; i < effects.Length; i++)
