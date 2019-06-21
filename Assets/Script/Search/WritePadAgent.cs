@@ -353,6 +353,9 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     /// <param name="y"></param>
     private void AddLetterData(int x,int y) {
 
+        // 现在笔迹是倒的！
+       
+
         Vector2 position = new Vector2(x, y);
         if (position != _lastWriterPoint)
         {

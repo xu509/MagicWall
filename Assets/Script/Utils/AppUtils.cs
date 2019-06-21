@@ -61,7 +61,6 @@ public class AppUtils : MonoBehaviour
         }
         width = (int)width;
         height = (int)height;
-        Debug.Log("width:" + width+ "height:" + height);
         return new Vector2(width, height);
     }
 
