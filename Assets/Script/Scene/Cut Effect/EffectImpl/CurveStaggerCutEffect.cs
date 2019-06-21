@@ -66,10 +66,11 @@ public class CurveStaggerCutEffect : CutEffect
 
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 35;//宽度自适应，列数变多确保可以铺满整行
+        int _column = 50;//宽度自适应，列数变多确保可以铺满整行
         float itemWidth = 0;
-        float itemHeight = 250;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
+
         float h = _manager.mainPanel.rect.height;
         float w = _manager.mainPanel.rect.width;
 
@@ -122,7 +123,7 @@ public class CurveStaggerCutEffect : CutEffect
 
 
                     // 生成透明度动画
-                    go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime - delayX + delayY).From();
+                    //go.GetComponentInChildren<RawImage>().DOFade(0, StartingDurTime - delayX + delayY).From();
 
 
                     // 获取启动动画的延迟时间
@@ -206,9 +207,9 @@ public class CurveStaggerCutEffect : CutEffect
     {
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 35;
+        int _column = 50;
         float itemWidth = 0;
-        float itemHeight = 250;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
         float h = _manager.mainPanel.rect.height;
         float w = _manager.mainPanel.rect.width;

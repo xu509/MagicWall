@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 {
-    private float _gap = 58;
+    private float _gap = 58f;
     private float _itemWidth;   // Item Width
     private float _itemHeight;  // Item Height
     private int _column;    // 列数
@@ -38,6 +38,9 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         _agentManager = _manager.agentManager;
         _daoService = _manager.daoService;
 
+        _gap = _gap * manager.displayFactor;
+
+
         int _row = _manager.Row;
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
@@ -62,6 +65,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
     //
     public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
     {
+
         Product product = data as Product;
 
         //  创建 Agent

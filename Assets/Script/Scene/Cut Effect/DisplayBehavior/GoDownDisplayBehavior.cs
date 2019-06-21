@@ -56,10 +56,10 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
     }
 
     private void UpdateAgentsOfActivity() {
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
@@ -69,7 +69,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float y = pair.Value;
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
@@ -93,10 +93,10 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfProduct()
     {
-        float _itemWidth = 300;
+        float _itemWidth = 300 * _manager.displayFactor;
         float _itemHeight = 0;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
@@ -106,7 +106,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                 {
                     //Debug.Log(pair.Key + "+++" + pair.Value);
                     float y = pair.Value;
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < extra; i++)
                     {
                         float ori_x = pair.Key * (_itemWidth + gap) + _itemWidth / 2 + gap;
                         float ori_y = y;
@@ -128,19 +128,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         }
     }
 
-    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
-    {
-        row = row - 1;
-        column = column - 1;
 
-        Vector2 vector2 = factory.GetOriginPosition(row, column);
-
-        float x = vector2.x;
-        float y = vector2.y;
-
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
-
-    }
 
     void UpdateAgentsOfEnv()
     {
@@ -185,7 +173,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
         float _itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
         float _itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
 
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+        int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
         if (Math.Abs(_manager.PanelOffsetY) > 0)
         {
             if (flag == false)
@@ -204,5 +192,19 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                 flag = true;
             }
         }                    
+    }
+
+    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
+    {
+        row = row - 1;
+        column = column - 1;
+
+        Vector2 vector2 = factory.GetOriginPosition(row, column);
+
+        float x = vector2.x;
+        float y = vector2.y;
+
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
+
     }
 }

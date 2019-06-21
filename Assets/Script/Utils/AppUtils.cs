@@ -33,7 +33,7 @@ public class AppUtils : MonoBehaviour
         return tex;
     }
 
-    public static Vector2 ResetTexture(Vector2 size)
+    public static Vector2 ResetTexture(Vector2 size,float displayFactor)
     {
         //图片宽高
         float w = size.x;
@@ -50,13 +50,13 @@ public class AppUtils : MonoBehaviour
         if (w >= h)
         {
             //宽固定
-            width = Random.Range(300, 500);
+            width = Random.Range(300 * displayFactor, 500 * displayFactor);
             height = h / w * width;
         }
         else
         {
             //高固定
-            height = Random.Range(200, 400);
+            height = Random.Range(200 * displayFactor, 400 * displayFactor);
             width = w / h * height;
         }
         return new Vector2(width, height);

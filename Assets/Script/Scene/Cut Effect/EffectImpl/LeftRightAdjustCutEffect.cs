@@ -117,9 +117,9 @@ public class LeftRightAdjustCutEffect : CutEffect
         // 获取栅格信息
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 35;
+        int _column = 50;
         float itemWidth = 0;
-        float itemHeight = 250;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
         float h = _manager.mainPanel.rect.height;
         float w = _manager.mainPanel.rect.width;
@@ -238,9 +238,9 @@ public class LeftRightAdjustCutEffect : CutEffect
         // 获取栅格信息
         _manager.rowAndRights = new Dictionary<int, float>();
         int _row = _manager.Row;
-        int _column = 35;
+        int _column = 50;
         float itemWidth = 0;
-        float itemHeight = 250;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
         float h = _manager.mainPanel.rect.height;
         float w = _manager.mainPanel.rect.width;

@@ -26,7 +26,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     private DaoService _daoService;
 
     void Awake() {
-
     }
 
     public void Init(MagicWallManager manager)
@@ -37,6 +36,8 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         _daoService = _manager.daoService;
 
         int _row = _manager.Row;
+
+        _gap = _gap * manager.displayFactor;
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
         int w = (int)_manager.mainPanel.rect.width; //宽度

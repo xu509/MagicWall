@@ -6,13 +6,14 @@ using System.Net;
 using System;
 using System.Security.Cryptography;
 using System.IO;
+using System.Globalization;
 
 /// <summary>
 /// 灵云客户端
 /// </summary>
 public class SVClient
 {
-    private static string api_address = "api.hcicloud.com:8888";
+    private static string api_address = "http://api.hcicloud.com:8888";
 
     //  devKey : 3a6d22a54d7d453d0689551661ea3f8e
     //  appKey : 195d5435
@@ -40,7 +41,7 @@ public class SVClient
 
     /// <summary>
     /// 请求数据签名: 必选 x-session-key生成算法说明： x-session-key = md5(x-request-date + devkey)
-    /// </summary>
+    /// </summary
     private static string x_session_key = "x-session-key";
 
     /// <summary>
@@ -63,14 +64,21 @@ public class SVClient
     /// </summary>
     private string _requestDate;
 
+    /// <summary>
+    /// 超时时间
+    /// </summary>
+    private int _timeOut;
+
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="appKey"></param>
     /// <param name=""></param>
-    public SVClient(string appKey,string devKey) {
-
+    public SVClient(string appKey,string devKey,int timeOut) {
+        _appKey = appKey;
+        _devKey = devKey;
+        _timeOut = timeOut;
 
     }
 
@@ -88,13 +96,24 @@ public class SVClient
 
         // 设置 header
         request.Headers.Add(x_app_key , _appKey);
-        request.Headers.Add(x_sdk_version, "5.0");
+        request.Headers.Add(x_sdk_version, "8.0");
         request.Headers.Add(x_request_date, GetRequestDateStr());
         request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter");
         request.Headers.Add(x_session_key, GetSessionKey()) ;
+        request.Headers.Add("x-udid", "101:1234567890") ;
+
+        Debug.Log(request.Headers);
+
 
         // 设置过期时间
-        request.Timeout = 20000;
+        request.Timeout = _timeOut;
+
+        // 设置包体数据
+        var reqStream = request.GetRequestStream();
+        byte[] b = new byte[datas.Length * sizeof(short)];  // 类型转换
+        Buffer.BlockCopy(datas, 0, b, 0, b.Length);
+        reqStream.Write(b, 0, datas.Length);
+
 
         // 获得 response
         HttpWebResponse httpWebResponse = (HttpWebResponse)request.GetResponse();
@@ -111,10 +130,14 @@ public class SVClient
         return null;
     }
 
-
+    /// <summary>
+    ///  日期格式：2016-6-18 10:10:11
+    /// </summary>
+    /// <returns></returns>
     private string GetRequestDateStr() {
         DateTime date = DateTime.Now;
-        string str = date.ToString();
+        string str = date.ToString("yyyy-M-d HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+
         _requestDate = str;
         return str;
     }
@@ -126,11 +149,17 @@ public class SVClient
     /// <returns></returns>
     private string GetSessionKey() {
         string content = _requestDate + _devKey;
+        Debug.Log("CONTENT: " + content);
 
         // MD5 加密过程
-        MD5 md5 = new MD5CryptoServiceProvider();
-        byte[] result = md5.ComputeHash(System.Text.Encoding.Default.GetBytes(content));
-        return System.Text.Encoding.Default.GetString(result);
+        var md5 = new MD5CryptoServiceProvider();
+        string t2 = BitConverter.ToString(md5.ComputeHash(System.Text.Encoding.Default.GetBytes(content)), 4, 8);
+        t2 = t2.Replace("-", "");
+
+        Debug.Log("RE: " + t2);
+
+        return t2;
     }
+
 
 }

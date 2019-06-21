@@ -140,8 +140,8 @@ public class FrontBackUnfoldCutEffect : CutEffect
     {
         int _row = 6;
         int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
-        float itemWidth = 250;
-        float itemHeight = 250;
+        float itemWidth = 250 * _manager.displayFactor;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
         //从左往右，从下往上
         for (int i = 0; i < _row; i++)
@@ -152,7 +152,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                 Activity activity = _daoService.GetActivity();
-                Vector2 v2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height));
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height), _manager.displayFactor);
                 //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
                 //float x = vector2.x;
                 //float y = vector2.y;
@@ -268,8 +268,8 @@ public class FrontBackUnfoldCutEffect : CutEffect
     {
         int _row = 6;
         int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
-        float itemWidth = 250;
-        float itemHeight = 250;
+        float itemWidth = 250 * _manager.displayFactor;
+        float itemHeight = 250 * _manager.displayFactor;
         float gap = ItemsFactory.GetSceneGap();
 
         //从左往右，从下往上
@@ -281,7 +281,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                 Product product = _daoService.GetProduct();
-                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height));
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height), _manager.displayFactor);
                 //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
                 //float x = vector2.x;
                 //float y = vector2.y;
