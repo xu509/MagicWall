@@ -104,7 +104,7 @@ public class SVClient
         request.Headers.Add(x_app_key, _appKey);
         request.Headers.Add(x_sdk_version, "8.1");
         request.Headers.Add(x_request_date, GetRequestDateStr());
-        request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter,candNum=10,openSlant=yes");
+        request.Headers.Add(x_task_config, "capkey=hwr.cloud.letter,candNum=10");
         request.Headers.Add(x_session_key, GetSessionKey());
         request.Headers.Add("x-udid", "101:1234567890");
 
@@ -129,7 +129,7 @@ public class SVClient
 
 
         JObject result = ReadXmlResult(responseContent);
-        Debug.Log(result);
+        //Debug.Log(result);
 
         httpWebResponse.Close();
         streamReader.Close();

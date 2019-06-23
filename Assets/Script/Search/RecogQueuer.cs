@@ -163,14 +163,7 @@ public class RecogQueuer : MonoBehaviour
             //    444, 741, 442, 748, 441, 754, 440, 759, 439, 764, 438, 768, 437, 772, 437, 775, 437, 778, 436, 780,
             //    436, 781, 436, 782, 436, 783, 436, 781, 436, -1, 0, -1, -1 };
 
-
-            Debug.Log("Length : " + datas.Length);
-
             var r = sVClient.Recognize(datas);
-
-
-            Debug.Log(String.Join(",",datas));
-
 
             if ((string)r["result"] == "success")
             {

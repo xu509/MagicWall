@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
         Vector2 rawanchorPositon = new Vector2(raw.rectTransform.anchoredPosition.x - raw.rectTransform.sizeDelta.x / 2.0f, raw.rectTransform.anchoredPosition.y - raw.rectTransform.sizeDelta.y / 2.0f);
         rawMousePosition = rawanchorPositon + new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
 
+        Debug.Log("rawMousePosition : " + rawMousePosition);
+
+
         //texRender = new RenderTexture(1000, 1000, 24, RenderTextureFormat.ARGB32);
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
         Clear(texRender);
