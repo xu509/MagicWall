@@ -32,9 +32,10 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 	{
 
 		// 面板向下移动
-		float y = _manager.mainPanel.anchoredPosition.y - Time.deltaTime * _manager.MovePanelFactor;
-		Vector2 to = new Vector2(_manager.mainPanel.anchoredPosition.x, y);
-        _manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+		//float y = _manager.mainPanel.anchoredPosition.y - Time.deltaTime * _manager.MovePanelFactor;
+		//Vector2 to = new Vector2(_manager.mainPanel.anchoredPosition.x, y);
+        //_manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
+        _manager.mainPanel.transform.Translate(Vector3.down * Time.deltaTime);
 
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();

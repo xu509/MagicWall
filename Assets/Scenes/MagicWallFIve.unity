@@ -370,7 +370,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 1.8e-44}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 2.8e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -541,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08396c27294ff3c4d92355e5186eb8e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _displayFactor: 1
   _magicSceneManager: {fileID: 1288535280}
   _agentManager: {fileID: 1288535278}
   _backgroundManager: {fileID: 1288535279}
@@ -562,6 +563,7 @@ MonoBehaviour:
     type: 3}
   _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
     type: 3}
+  _searchAgentPrefab: {fileID: 0}
   _backgroundUpDuration: 20
   _backgroundUubbleInterval: 0.2
   _influenceDistance: 0

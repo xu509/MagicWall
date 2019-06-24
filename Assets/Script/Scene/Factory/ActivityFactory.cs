@@ -94,6 +94,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         //newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
 
         newAgent.GetComponent<RawImage>().texture = activity.TextureImage;
+        //Texture2D texture = activity.TextureImage as Texture2D;
+        //newAgent.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         // 调整agent的长与宽
         Vector2 sizeDelta = new Vector2(width, height);
         rectTransform.sizeDelta = sizeDelta;

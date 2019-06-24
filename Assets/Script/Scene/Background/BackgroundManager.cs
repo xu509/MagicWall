@@ -90,7 +90,7 @@ public class BackgroundManager : MonoBehaviour
 
         bubble.GetComponent<RawImage>().DOFade(alpha, 0);
         rectTransform.anchoredPosition3D = new Vector3(x, -w, 0);
-        rectTransform.DOLocalMoveY(2000, duration).OnComplete(() => BubbleMoveComplete(bubble));
+        rectTransform.DOAnchorPos(new Vector2(x, _manager.mainPanel.rect.height), duration).OnComplete(() => BubbleMoveComplete(bubble));
 
         bubbles.Add(bubble);
 
