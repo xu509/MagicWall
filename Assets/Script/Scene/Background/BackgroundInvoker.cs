@@ -4,13 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public static class BackgroundInvoker
+public static class BackgroundInvoker<T> where T : BubbleAgent
 {
-    public static void Do(RectTransform rectTransform) {
-
-        Debug.Log(11111);
-        rectTransform.DOAnchorPos(Vector2.zero, Time.deltaTime);
-
+    public static T CreateBubble(T t, RectTransform container) {
+        T agent = GameObject.Instantiate(t, container);
+        return agent;
     }
    
 

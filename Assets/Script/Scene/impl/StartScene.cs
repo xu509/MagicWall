@@ -230,7 +230,6 @@ public class StartScene : IScene
         Texture2D writePanelTotalPanel = new Texture2D(_manager.writePanelConfig.writePanelTotalRectWidth, _manager.writePanelConfig.writePanelTotalRectHeight, TextureFormat.ARGB32, false);
         TextureResource.Instance.Add(TextureResource.Write_Pad_Texture_Big, writePanelTotalPanel);
 
-
         _resourseIsChecked = true;
 
     }

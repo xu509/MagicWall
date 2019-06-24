@@ -16,3 +16,5 @@ MonoBehaviour:
   StarEffectDistance: 5000
   StarEffectDistanceTime: 4
   SelectedItemMaxCount: 5
+  ClearBubblePoolTotal: 25
+  DimBubblePoolTotal: 25

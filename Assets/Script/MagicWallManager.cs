@@ -179,7 +179,7 @@ public class MagicWallManager:MonoBehaviour
         // 初始化场景管理器
         _magicSceneManager.Init(this);
 
-        // 初始化背景管理器
+        // 初始化背景管理器, 此时对象池完成
         _backgroundManager.Init(this);
 
         // 初始化实体管理器

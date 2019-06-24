@@ -16,5 +16,16 @@ public class ManagerConfig : ScriptableObject
     [Range(3, 8), Header("点开的最大数量")]
     public int SelectedItemMaxCount;
 
+    [Range(10,80),Header("清晰的背景气球池")]
+    public int ClearBubblePoolTotal;
+    
+    [Range(10, 80), Header("模糊的背景气球池")]
+    public int DimBubblePoolTotal;
+
+    [Range(0.1f,5f),Header("气球的生成间隔(清晰)")]
+    public float ClearBubbbleCreateIntervalTime;
+
+    [Range(0.1f, 5f), Header("气球的生成间隔(模糊)")]
+    public float DimBubbbleCreateIntervalTime;
 
 }

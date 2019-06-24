@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -437,7 +437,7 @@ MonoBehaviour:
   _movePanelFactor: 30
   _bg_logo: {fileID: 2060558020}
   _row: 6
-  _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
+  _writePanelConfig: {fileID: 0}
   FPS: 60
 --- !u!225 &438711673
 CanvasGroup:
@@ -806,12 +806,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ea4c999e3fd934683510b3d325871d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
+  _clearBubbleAgentPrefab: {fileID: 4444414888624938364, guid: 161eda6f10cd71d41abe04646f927486,
     type: 3}
-  _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
+  _dimBubbleAgentPrefab: {fileID: 5846501649382090687, guid: 981e7a6cae9bb8840a9bf76525dc639a,
     type: 3}
-  _backgroundUpDuration: 60
-  _backgroundUubbleInterval: 0.2
+  _ClearBubbleMoveFactor: 2.33
+  _DimBubbleMoveFactor: 1.2
+  _bubblesBackground: {fileID: 1569125506}
 --- !u!114 &1167712291
 MonoBehaviour:
   m_ObjectHideFlags: 0

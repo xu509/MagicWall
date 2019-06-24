@@ -4,41 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 清晰的背景球 Agent
+/// 模糊的背景球 Agent
 /// </summary>
-public class ClearBubbleAgent : BubbleAgent
+public class DimBubbleAgent : BubbleAgent
 {
-
     void Awake()
     {
-        _width = Random.Range(400, 80);
-        _alpha = _width / (400f + 100f);
+        int r = Random.Range(0, 2);
+        _width = (r == 0) ? 200 : 80;
+        //_upDuringTime += 10f;
+
+        _alpha = r == 0 ? 0.8f : 0.4f;
     }
 
-    ///// <summary>
-    ///// 初始化
-    ///// </summary>
-    //public void Init(float upDuringTime,MagicWallManager manager) {
+
+    //public void Init(float upDuringTime, MagicWallManager manager)
+    //{
     //    _upDuringTime = upDuringTime;
     //    _manager = manager;
 
-        
+    //    int r = Random.Range(0, 2);
+    //    int w = (r == 0) ? 200 : 80;
+    //    _upDuringTime += 10f;
 
-    //    int w = Random.Range(400, 80);
-    //    float alpha = w / (400f + 100f);
-
-    //    _upDuringTime -= alpha * 5;
+    //    float alpha = r == 0 ? 0.8f : 0.4f;
 
     //    GetComponent<RectTransform>().sizeDelta = new Vector2(w, w);
-    //    float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
 
     //    SetAlpha(alpha);
 
-    //    GetComponent<RectTransform>().anchoredPosition3D = new Vector3(x, -w, 0);
 
     //    hasInit = true;
     //}
-
 
     // Start is called before the first frame update
     void Start()
@@ -55,13 +52,14 @@ public class ClearBubbleAgent : BubbleAgent
     void FixedUpdate()
     {
         DoBaseFixedUpdate();
+
     }
 
     protected override float SetAlpha()
     {
-        float alpha = _width / (400f + 100f);
-        return alpha;
+        return _alpha;
     }
+
 
     protected override float SetWidth()
     {
@@ -71,7 +69,7 @@ public class ClearBubbleAgent : BubbleAgent
     protected override Vector3 SetGenPosition()
     {
         float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
-        Vector3 position =  new Vector3(x, -_width, 0);
+        Vector3 position = new Vector3(x, -_width, 0);
         return position;
     }
 }
