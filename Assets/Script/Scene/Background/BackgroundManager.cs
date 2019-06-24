@@ -7,6 +7,18 @@ using UnityEngine.SceneManagement;
 
 public class BackgroundManager : MonoBehaviour
 {
+
+    // 气泡预制体
+    [SerializeField] GameObject _backgroundPrefab;
+    // 气泡预制体2 
+    [SerializeField] GameObject _backgroundPrefab2;
+
+    /// 背景配置项
+    //气泡上升时间
+    [SerializeField, Range(10f, 100f)] float _backgroundUpDuration = 60f;
+    //生成气泡时间间隔
+    [SerializeField, Range(0.1f, 10f)] float _backgroundUubbleInterval = 0.2f;
+
     MagicWallManager _manager;
       
 
@@ -32,6 +44,7 @@ public class BackgroundManager : MonoBehaviour
         bubbles = new List<GameObject>();
         hasInit = true;
 
+        //  初始化对象池
 
     }
 
@@ -48,7 +61,7 @@ public class BackgroundManager : MonoBehaviour
         if (!hasInit)
             return;
 
-        if ((Time.time - last_create_time) > _manager.backgroundUubbleInterval) {
+        if ((Time.time - last_create_time) > _backgroundUubbleInterval) {
             CreateBubble();
             last_create_time = Time.time;
         }
@@ -63,11 +76,11 @@ public class BackgroundManager : MonoBehaviour
         float random = Random.Range(0, 2);
         int w = 0;
         float alpha = 1;
-        float duration = _manager.backgroundUpDuration;
+        float duration = _backgroundUpDuration;
         if (random == 0)
         {
             //实球
-            bubble = Instantiate(_manager.backgroundPrefab) as GameObject;
+            bubble = Instantiate(_backgroundPrefab) as GameObject;
             w = Random.Range(400, 80);
             alpha = w / (400f+100f);
             //print(w);
@@ -76,7 +89,7 @@ public class BackgroundManager : MonoBehaviour
         else
         {
             //虚球
-            bubble = Instantiate(_manager.backgroundPrefab2) as GameObject;
+            bubble = Instantiate(_backgroundPrefab2) as GameObject;
             int r = Random.Range(0, 2);
             w = (r == 0) ? 200 : 80;
             duration += 10f;
@@ -93,7 +106,6 @@ public class BackgroundManager : MonoBehaviour
         rectTransform.DOLocalMoveY(2000, duration).OnComplete(() => BubbleMoveComplete(bubble));
 
         bubbles.Add(bubble);
-
     }
 
     //气泡上升结束后销毁

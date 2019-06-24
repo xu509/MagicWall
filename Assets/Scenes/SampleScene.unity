@@ -431,13 +431,6 @@ MonoBehaviour:
     type: 3}
   _sliceCardgent: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
     type: 3}
-  _backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
-    type: 3}
-  _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
-    type: 3}
-  _searchAgentPrefab: {fileID: 0}
-  _backgroundUpDuration: 100
-  _backgroundUubbleInterval: 0.8
   _influenceDistance: 0
   _influenceMoveFactor: 0.5
   _influenceEaseEnum: 13
@@ -787,7 +780,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &1167712289
 MonoBehaviour:
@@ -813,6 +806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ea4c999e3fd934683510b3d325871d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
+    type: 3}
+  _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
+    type: 3}
+  _backgroundUpDuration: 60
+  _backgroundUubbleInterval: 0.2
 --- !u!114 &1167712291
 MonoBehaviour:
   m_ObjectHideFlags: 0

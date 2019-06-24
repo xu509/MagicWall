@@ -51,16 +51,7 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] CardAgent _crossCardgent;
     // 滑动块
     [SerializeField] CardAgent _sliceCardgent;
-    // 气泡预制体
-    [SerializeField] GameObject _backgroundPrefab;
-    // 气泡预制体2 
-    [SerializeField] GameObject _backgroundPrefab2;
 
-    /// 背景配置项
-    //气泡上升时间
-    [SerializeField, Range(10f, 100f)] float _backgroundUpDuration = 60f;
-    //生成气泡时间间隔
-    [SerializeField, Range(0.1f, 10f)] float _backgroundUubbleInterval = 0.2f;
 
     /// 卡片物理碰撞效果设置
     // 影响距离
@@ -135,12 +126,8 @@ public class MagicWallManager:MonoBehaviour
     public FlockAgent flockAgent { get { return _flockAgent; } }
     public CardAgent crossCardgent { get { return _crossCardgent; } }
     public CardAgent sliceCardgent { get { return _sliceCardgent; } }
-    public GameObject backgroundPrefab { get { return _backgroundPrefab; } }//气泡预制体
-    public GameObject backgroundPrefab2 { get { return _backgroundPrefab2; } }//气泡预制体
     public RectTransform BackgroundPanel { get { return _backgroundPanel; } }
     public RectTransform OperationPanel { get { return _operationPanel; } }
-    public float backgroundUpDuration { get { return _backgroundUpDuration; } }//气泡上升时间
-    public float backgroundUubbleInterval { get { return _backgroundUubbleInterval; } }//生成气泡时间间隔.
     public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
     public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
     public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
