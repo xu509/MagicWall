@@ -24,9 +24,9 @@ public class SearchBean : Generator<SearchBean>
         MWTypeEnum[] typeEnums = Enum.GetValues(typeof(MWTypeEnum)) as MWTypeEnum[];
         bean.type = typeEnums[UnityEngine.Random.Range(0, typeEnums.Length)];
 
-        string[] covers = { "activity\\1.jpg", "activity\\2.jpg", "activity\\3.jpg"
+        string[] covers = { "activity\\1.png", "activity\\2.png", "activity\\3.png"
                 ,"env\\business-card-1.png","env\\business-card-2.png","env\\business-card-3.png"
-                ,"product\\1.jpg","product\\2.jpg","product\\3.jpg"};
+                ,"product\\1.png","product\\2.png","product\\3.png"};
 
         bean.cover = covers[UnityEngine.Random.Range(0, covers.Length)];
 
