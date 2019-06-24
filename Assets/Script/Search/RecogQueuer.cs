@@ -89,6 +89,16 @@ public class RecogQueuer : MonoBehaviour
 
     }
 
+    public void AddRecogTask(short[] shorts, Action<string> errorCallBack, Action<string[]> successCallBack, Action finishCallBack)
+    {
+
+        ParameterizedThreadStart start = RecognizeImage;
+
+        Thread thread = new Thread(start);
+        thread.Start(new RecognizeImageParams(shorts, errorCallBack, successCallBack, finishCallBack));
+
+    }
+
 
 
     /// <summary>
@@ -99,16 +109,17 @@ public class RecogQueuer : MonoBehaviour
     {
         RecognizeImageParams recognizeImageParams = p as RecognizeImageParams;
 
-        byte[] image = null;
-        if (recognizeImageParams.bytes != null)
-        {
-            image = recognizeImageParams.bytes;
-        }
-        else {
-            image = File.ReadAllBytes(recognizeImageParams.path);
-        }
+        //byte[] image = null;
+        //if (recognizeImageParams.bytes != null)
+        //{
+        //    image = recognizeImageParams.bytes;
+        //}
+        //else {
+        //    image = File.ReadAllBytes(recognizeImageParams.path);
+        //}
 
-
+        // 获取识别用数组
+        short[] datas = recognizeImageParams.shorts;
 
         // 如果有可选参数
         var options = new Dictionary<string, object>{
@@ -123,61 +134,67 @@ public class RecogQueuer : MonoBehaviour
             //JObject result = client.GeneralBasic(image, options);   //  这部耗时 
             //JObject result = client.AccurateBasic(image, options);   //  这部耗时
 
-            short[] datas = {   103 ,283 ,105 ,283 ,107 ,283 ,113 ,283 ,120 ,283
-    ,129 ,283 ,138 ,283 ,146 ,283 ,156 ,283 ,162 ,283
-    ,165 ,283 ,166 ,283 ,-1 ,0 ,282 ,245 ,277 ,247
-    ,270 ,251 ,266 ,255 ,263 ,257 ,259 ,261 ,254 ,266
-    ,250 ,273 ,246 ,281 ,243 ,286 ,240 ,292 ,240 ,294
-    ,239 ,296 ,238 ,297 ,238 ,298 ,-1 ,0 ,262 ,271
-    ,264 ,272 ,266 ,272 ,268 ,272 ,270 ,273 ,272 ,274
-    ,275 ,274 ,278 ,276 ,280 ,278 ,283 ,279 ,286 ,281
-    ,289 ,282 ,289 ,283 ,291 ,284 ,292 ,285 ,292 ,286
-    ,-1 ,0 ,268 ,281 ,268 ,282 ,268 ,284 ,270 ,287
-    ,270 ,290 ,270 ,294 ,270 ,297 ,270 ,299 ,270 ,301
-    ,270 ,303 ,270 ,304 ,270 ,306 ,270 ,308 ,269 ,309
-    ,269 ,310 ,269 ,311 ,269 ,312 ,269 ,314 ,269 ,316
-    ,269 ,318 ,269 ,319 ,269 ,321 ,269 ,322 ,269 ,323
-    ,269 ,324 ,268 ,324 ,-1 ,0 ,382 ,255 ,382 ,256
-    ,382 ,260 ,382 ,263 ,381 ,267 ,378 ,274 ,375 ,278
-    ,373 ,282 ,372 ,287 ,371 ,291 ,369 ,294 ,368 ,297
-    ,367 ,300 ,367 ,301 ,366 ,302 ,365 ,304 ,364 ,305
-    ,364 ,306 ,363 ,308 ,362 ,308 ,362 ,309 ,361 ,310
-    ,361 ,311 ,360 ,311 ,-1 ,0 ,376 ,289 ,377 ,290
-    ,378 ,290 ,380 ,291 ,381 ,292 ,382 ,293 ,384 ,294
-    ,385 ,294 ,387 ,297 ,388 ,298 ,390 ,299 ,393 ,300
-    ,394 ,301 ,396 ,302 ,398 ,303 ,400 ,305 ,401 ,306
-    ,403 ,307 ,404 ,309 ,405 ,309 ,407 ,311 ,408 ,312
-    ,409 ,314 ,410 ,314 ,411 ,314 ,-1 ,0 ,-1 ,-1,};
-
-            Debug.Log("SV CLIENT RECOGNIZE");
+            //short[] datas = { 526, 159, 532, 159, 541, 159, 550, 159, 560, 159, 570,
+            //    159, 581, 159, 593, 158, 603, 157, 614, 156, 624, 155, 634, 153, 642,
+            //    152, 649, 151, 655, 150, 659, 149, 662, 148, 663, 148, -1, 0, 578,
+            //    141, 573, 154, 567, 169, 561, 185, 555, 201, 549, 217, 543, 232, 539,
+            //    246, 535, 258, 531, 268, 529, 275, 527, 281, 527, 285, 527, 287, 528,
+            //    288, 530, 288, 534, 287, 539, 285, 545, 283, 552, 280, 560, 277, 569,
+            //    273, 578, 270, 588, 267, 598, 265, 607, 263, 616, 263, 625, 262, 633,
+            //    262, 640, 262, 646, 262, 651, 263, 655, 263, 658, 264, 659, 265, 659,
+            //    266, -1, 0, 523, 396, 527, 393, 532, 391, 539, 388, 546, 386, 554,
+            //    383, 563, 382, 573, 381, 582, 380, 592, 379, 602, 379, 612, 378, 621,
+            //    377, 629, 377, 637, 376, 645, 375, 652, 374, 658, 373, 663, 372, 667,
+            //    372, 670, 371, 671, 369, 671, 367, -1, 0, 604, 238, 604, 249, 603, 262,
+            //    602, 278, 601, 295, 600, 312, 598, 330, 596, 348, 594, 366, 592, 383, 591,
+            //    399, 589, 414, 587, 426, 586, 437, 586, 445, 585, 453, 585, 459, 585, 463,
+            //    585, 467, 585, 469, -1, 0, 440, 131, 441, 136, 444, 143, 446, 150, 449, 158,
+            //    452, 167, 455, 176, -1, 0, 450, 234, 455, 234, 459, 235, 463, 236, 468, 237, 471,
+            //    240, 475, 242, 477, 246, 479, 250, 480, 255, 480, 260, 480, 266, 479, 272, 477, 278,
+            //    474, 284, 472, 289, 470, 294, 469, 298, 467, 302, 466, 305, 466, 308, 466, 310, 466,
+            //    312, 467, 313, 469, 315, 471, 316, 474, 317, 478, 318, 481, 320, 485, 322, 488, 324,
+            //    491, 326, 494, 330, 496, 334, 498, 339, 500, 345, 500, 352, 501, 359, 501, 368, 500,
+            //    377, 498, 386, 496, 397, 493, 407, 489, 418, 486, 430, 481, 440, 477, 451, 473, 461,
+            //    469, 470, 465, 477, 462, 484, 459, 489, 457, 492, 455, 495, 454, 496, 454, 497, 456,
+            //    497, 458, 497, 461, 496, 465, 495, 469, 493, 474, 491, 480, 489, 486, 487, 492, 485, 498,
+            //    484, 505, 482, 511, 481, 517, 480, 524, 478, 531, 478, 537, 477, 544, 477, 552, 476, 560,
+            //    476, 568, 476, 576, 476, 585, 476, 594, 475, 603, 474, 612, 473, 621, 472, 631, 470, 640, 467,
+            //    650, 465, 659, 463, 669, 460, 679, 457, 689, 454, 698, 452, 708, 450, 717, 447, 726, 445, 734,
+            //    444, 741, 442, 748, 441, 754, 440, 759, 439, 764, 438, 768, 437, 772, 437, 775, 437, 778, 436, 780,
+            //    436, 781, 436, 782, 436, 783, 436, 781, 436, -1, 0, -1, -1 };
 
             var r = sVClient.Recognize(datas);
 
-            Debug.Log(r);
+            if ((string)r["result"] == "success")
+            {
+                int count = (int)r["count"];
 
+                if (count == 0)
+                {
+                    _errorCallBackQueue.Enqueue(new ErrorActionCallBackBean("未能识别", recognizeImageParams.errorCallBack));
+                }
+                else {
+                    JArray results = (JArray)r["data"];
+                    string[] words = new string[results.Count];
 
-            //int r = (int)result["words_result_num"];
+                    for (int i = 0; i < results.Count; i++)
+                    {
+                        string word = (string)results[i];
+                        words[i] = word;
+                    }
 
-            //if (r == 0)
-            //{
-            //    _errorCallBackQueue.Enqueue(new ErrorActionCallBackBean("未能识别", recognizeImageParams.errorCallBack));
-            //}
-            //else {
-            //    JArray results = (JArray)result["words_result"];
+                    _successCallBackQueue.Enqueue(new SuccessActionCallBackBean(words, recognizeImageParams.successCallBack));
+                }
 
-            //    string[] strs = new string[r];
+            }
+            else {
+                _errorCallBackQueue.Enqueue(new ErrorActionCallBackBean("识别服务错误", recognizeImageParams.errorCallBack));
+            }
 
-            //    for (int i = 0; i < results.Count; i++) {
-            //        string word = (string) results[i]["words"];
-            //        strs[i] = word;
-            //    }
-
-            //    _successCallBackQueue.Enqueue(new SuccessActionCallBackBean(strs, recognizeImageParams.successCallBack));
-            //}
 
             //  模拟返回结构 
-            string[] strs = { "徐", "我", "汉" };
-            _successCallBackQueue.Enqueue(new SuccessActionCallBackBean(strs, recognizeImageParams.successCallBack));
+            //string[] strs = { "徐", "我", "汉" };
+            //_successCallBackQueue.Enqueue(new SuccessActionCallBackBean(strs, recognizeImageParams.successCallBack));
 
         }
         catch (Exception ex)
@@ -198,6 +215,7 @@ public class RecogQueuer : MonoBehaviour
 
     class RecognizeImageParams {
         byte[] _bytes;
+        short[] _shorts;
         string _path;   //  完整路径
         Action<string> _errorCallBack;
         Action<string[]> _successCallBack;
@@ -218,7 +236,18 @@ public class RecogQueuer : MonoBehaviour
             _finishCallBack = finishCallBack;
         }
 
+        public RecognizeImageParams(short[] shorts, Action<string> errorCallBack, Action<string[]> successCallBack, Action finishCallBack)
+        {
+            _shorts = shorts;
+            _errorCallBack = errorCallBack;
+            _successCallBack = successCallBack;
+            _finishCallBack = finishCallBack;
+        }
+
         public byte[] bytes { set { _bytes = value; } get { return _bytes; } }
+
+        public short[] shorts { set { _shorts = value; } get { return _shorts; } }
+
         public string path { set { _path = value; } get { return _path; } }
         public Action<string> errorCallBack { set { _errorCallBack = value; } get { return _errorCallBack; } }
         public Action<string[]> successCallBack { set { _successCallBack = value; } get { return _successCallBack; } }

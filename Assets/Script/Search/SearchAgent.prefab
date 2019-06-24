@@ -697,6 +697,7 @@ MonoBehaviour:
   num: 50
   _recognizeIntervalTime: 1.88
   enableBurrEffect: 0
+  enableResevalLetter: 1
   _recogQueuer: {fileID: 5427671724874046696}
 --- !u!1 &2353901904315046433
 GameObject:

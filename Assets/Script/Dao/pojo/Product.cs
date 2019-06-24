@@ -56,7 +56,7 @@ public class Product : BaseData,Generator<Product>
         string[] images = new string[121];
 
         for (int i = 0; i < 121; i++) {
-            images[i] = (i + 1) + ".jpg";
+            images[i] = (i + 1) + ".png";
         }
 
 
