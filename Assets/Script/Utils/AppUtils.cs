@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class AppUtils : MonoBehaviour
+public class AppUtils
 {
   
     public static float ConvertToFloat(string str) {
@@ -62,6 +62,16 @@ public class AppUtils : MonoBehaviour
         width = (int)width;
         height = (int)height;
         return new Vector2(width, height);
+    }
+
+
+    /// <summary>
+    /// 获取完整的图片路径
+    /// </summary>
+    /// <param name="filepath"></param>
+    /// <returns></returns>
+    public static string GetFullFileAddressOfImage(string filepath) {
+        return MagicWallManager.FileDir + filepath;
     }
 
 }

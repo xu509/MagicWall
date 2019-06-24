@@ -98,12 +98,12 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         // 初始化 数据
         //Enterprise env = _daoService.GetEnterprise();
 
-        // 初始化显示图片
-        newAgent.GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "logo\\" + env.Logo);
+        //// 初始化显示图片
+        //newAgent.GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "logo\\" + env.Logo);
 
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
+        //// 调整 collider
+        //BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
+        //boxCollider2D.size = new Vector2(width, height);
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,

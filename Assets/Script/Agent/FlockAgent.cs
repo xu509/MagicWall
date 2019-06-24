@@ -7,7 +7,6 @@ using EasingUtil;
 using System;
 
 
-[RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
     protected MagicWallManager _manager;
@@ -148,6 +147,10 @@ public class FlockAgent : MonoBehaviour
         _data_img = dataImg;
         _data_iscustom = dataIsCustom;
         _data_type = dataType;
+
+        // 设置显示图片
+        GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(dataImg));
+
 
         // 定义 agent 的名字
         _sceneIndex = _manager.SceneIndex;
@@ -399,46 +402,9 @@ public class FlockAgent : MonoBehaviour
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
-                //// 使原组件消失
-                //gameObject.SetActive(false);
-
-                ////// 此处需要区分
-                ////_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
-                //_cardAgent.gameObject.SetActive(true);
-
-                //Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
-                //_cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
-
-                //Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
-
-                //_cardAgent.GetComponent<RectTransform>()
-                //    .DOScale(scaleVector3, 0.5f)
-                //    .OnUpdate(() =>
-                //        {
-                //            _cardAgent.Width = w;
-                //            _cardAgent.Height = h;
-
-                //        }).OnComplete(() => {
-                //            // 执行完成后动画
-                //            _cardAgent.DoOnCreatedCompleted();
-
-
-                //        }).SetEase(Ease.OutBack);
-
                 _cardAgent.GoToFront();
 
             });
-
-            //List<CardAgent> cards = _agentManager.cardAgents;
-            //cards.Add(_cardAgent);
-            //if (cards.Count > 8)
-            //{
-            //    // 会报错
-            //    cards[0].DoClose();
-            //    cards.Remove(cards[0]);
-            //}
-            //_agentManager.cardAgents = cards;
-
 
         }
     }

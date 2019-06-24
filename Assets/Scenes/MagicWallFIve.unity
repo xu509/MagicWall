@@ -541,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08396c27294ff3c4d92355e5186eb8e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _displayFactor: 0
   _magicSceneManager: {fileID: 1288535280}
   _agentManager: {fileID: 1288535278}
   _backgroundManager: {fileID: 1288535279}
@@ -562,6 +563,7 @@ MonoBehaviour:
     type: 3}
   _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
     type: 3}
+  _searchAgentPrefab: {fileID: 0}
   _backgroundUpDuration: 20
   _backgroundUubbleInterval: 0.2
   _influenceDistance: 0
@@ -570,6 +572,8 @@ MonoBehaviour:
   _movePanelFactor: 100
   _bg_logo: {fileID: 2060558020}
   _row: 6
+  _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
+  FPS: 60
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0

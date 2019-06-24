@@ -93,7 +93,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         ////newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
         //newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
 
-        newAgent.GetComponent<RawImage>().texture = activity.TextureImage;
         // 调整agent的长与宽
         Vector2 sizeDelta = new Vector2(width, height);
         rectTransform.sizeDelta = sizeDelta;
@@ -104,9 +103,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         Vector2 ori_position = new Vector2(ori_x, ori_y);
         newAgent.OriVector2 = ori_position;
 
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
             width, height, activity.Ent_id, activity.Image, false, 2);

@@ -97,11 +97,12 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         // 初始化 数据
         //Enterprise env = _daoService.GetEnterprise();
 
-        // 初始化显示图片
-        newAgent.GetComponent<RawImage>().texture = product.TextureImage ;
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
+        //// 初始化显示图片
+        //newAgent.GetComponent<RawImage>().texture = product.TextureImage ;
+
+        //// 调整 collider
+        //BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
+        //boxCollider2D.size = new Vector2(width, height);
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,

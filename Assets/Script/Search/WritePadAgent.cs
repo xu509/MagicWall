@@ -10,11 +10,13 @@ using System;
 
 public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
+    [SerializeField] WritePanelConfig writePanelConfig;
+
+
 
     private RenderTexture texRender;   //画布
     public Material mat;     //给定的shader新建材质
     public Texture brushTypeTexture;   //画笔纹理，半透明
-    private Camera mainCamera;
     private float brushScale = 0.5f;
     public Color brushColor = Color.black;
     public RawImage raw;                   //使用UGUI的RawImage显示，方便进行添加UI,将pivot设为(0.5,0.5)
@@ -35,8 +37,10 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     private WriteStatus _writeStatus = WriteStatus.Init;   //  书写状态
     private float _lastWriteTime = 0f;  //  最近的书写时间点
-    [SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
-    [SerializeField] private bool enableBurrEffect = false;   //启用毛刺效果
+
+    //[SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
+    //[SerializeField] private bool enableBurrEffect = false;   //启用毛刺效果
+
     [SerializeField] private bool enableResevalLetter = false;   //启用翻转生成坐标
 
     Action<string[]> _OnRecognizeSuccess;    //识别成功回调
@@ -79,9 +83,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         UpdateRawMousePosition();
 
-        Debug.Log("rawposition : " + rawMousePosition);
-
-
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
         Clear(texRender);
 
@@ -102,7 +103,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
 
 
-        if (_writeStatus == WriteStatus.WritingPause && ((now - _lastWriteTime) > _recognizeIntervalTime))
+        if (_writeStatus == WriteStatus.WritingPause && ((now - _lastWriteTime) > writePanelConfig.recognizeIntervalTime))
         {
             _writeStatus = WriteStatus.WriteFinished;
 
@@ -174,9 +175,9 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         // 此时存在没有动过的点，scale = 0.8f
 
-        if (distance == 0f) {
-            Debug.Log("On Mouse Move Drag Exists， brushScale : " + brushScale);
-        }
+        //if (distance == 0f) {
+        //    Debug.Log("On Mouse Move Drag Exists， brushScale : " + brushScale);
+        //}
 
 
         ThreeOrderBézierCurse(pos, distance, 4.5f);
@@ -302,7 +303,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
                 //模拟毛刺效果
                 float randomOffset;
-                if (enableBurrEffect)
+                if (writePanelConfig.enableBurrEffect)
                 {
                     randomOffset = UnityEngine.Random.Range(-targetPosOffset, targetPosOffset);
                 }
@@ -407,7 +408,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
 
-    #region Event Trigger
+    #region Event Trigger(拖动、点击)
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -442,7 +443,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
     #endregion
-
 
     #region 笔记数据相关方法
 
@@ -617,24 +617,23 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         //RenderTexture prev = RenderTexture.active;
         //RenderTexture.active = texRender;   //设置当前的 render
 
-        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-        sw.Start();
+        //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        //sw.Start();
 
         // 获取缩放后的图片, 此时的图片大小为200，200
-        Texture2D newPng = ScaleTexture(raw.texture, 100, 100);
+        Texture2D newPng = ScaleTexture(raw.texture, writePanelConfig.writePanelWordRectWidth, writePanelConfig.writePanelWordRectHeight);
 
         //  保存至本地,可关闭该功能        
         string filename = UnityEngine.Random.Range(0, 999).ToString();
         SaveBytesToFile(newPng.EncodeToPNG(), pathDir, filename);
 
-        sw.Stop();
+        //sw.Stop();
 
         short[] datas = PrepareLetterData();
 
         // write
         File.WriteAllText(Application.streamingAssetsPath + "/temp/writepanel/" + filename + ".txt", String.Join(",", datas));
         //Debug.Log("File : " + filename);
-
 
 
         _recogQueuer.AddRecogTask(datas, _OnRecognizeError, _OnRecognizeSuccess, () => {
@@ -651,10 +650,21 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         //RenderTexture.active = prev;
     }
 
+    // 识别完成
+    private void RecognizeComplete()
+    {
+        _writeStatus = WriteStatus.RecognizeFinished;
+
+        // 清理画布
+        Clear(texRender);
+        DrawImage();
+        ClearLetterData();
+
+        _writeStatus = WriteStatus.Init;
+    }
+
+
     #endregion
-
-
-
 
 
 
@@ -691,18 +701,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
 
-    // 识别完成
-    private void RecognizeComplete()
-    {
-        _writeStatus = WriteStatus.RecognizeFinished;
-
-        // 清理画布
-        Clear(texRender);
-        DrawImage();
-        ClearLetterData();
-
-        _writeStatus = WriteStatus.Init;
-    }
 
 
     // 装载识别回调

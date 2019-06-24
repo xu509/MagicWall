@@ -16,4 +16,5 @@ public class ManagerConfig : ScriptableObject
     [Range(3, 8), Header("点开的最大数量")]
     public int SelectedItemMaxCount;
 
+
 }
