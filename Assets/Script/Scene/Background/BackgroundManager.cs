@@ -109,9 +109,6 @@ public class BackgroundManager : MonoBehaviour
             last_create_dim_time = Time.time;
         }
 
-
-        //InvokeRepeating("CreateBubble", 0, bubbleInterval);
-
     }
 
     ////创建气泡

@@ -31,14 +31,14 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Run()
 	{
 
-		// 面板向左移动
+		    // 面板向左移动
         Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
         _manager.mainPanel.transform.Translate(to);
 
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();
 
-        //UpdateAgents();
+        UpdateAgents();
 
     }
 
@@ -129,7 +129,6 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float itemHeight = 250 * _manager.displayFactor;
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
-
         if (Math.Abs(_manager.PanelOffsetX) > 0)
         {
             if (flag == false)
@@ -167,6 +166,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
         float offset = Math.Abs(_manager.PanelOffsetX);
         int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
+
         if (offset > 0)
         {
             if (flag == false)

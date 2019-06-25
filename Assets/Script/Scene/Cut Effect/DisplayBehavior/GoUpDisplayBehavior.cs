@@ -37,7 +37,6 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         Vector3 to = new Vector3(0, Time.deltaTime * _manager.MovePanelFactor, 0);
         _manager.mainPanel.transform.Translate(to);
 
-
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();
 

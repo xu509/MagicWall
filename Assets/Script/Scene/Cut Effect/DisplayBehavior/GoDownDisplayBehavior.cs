@@ -29,9 +29,9 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
     }
 
     public void Run()
-	{
+	 {
 
-		// 面板向下移动
+	    	// 面板向下移动
         Vector3 to = new Vector3(0,0 - Time.deltaTime * _manager.MovePanelFactor, 0);
         _manager.mainPanel.transform.Translate(to);
 
