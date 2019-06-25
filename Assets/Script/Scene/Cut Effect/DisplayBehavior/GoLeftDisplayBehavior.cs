@@ -113,7 +113,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         float x = vector2.x;
                         float y = vector2.y;
                         //生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, 
+                            _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
                     }
                 }
@@ -148,7 +149,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         ori_x = ori_x + itemWidth / 2 + gap;
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, itemWidth, itemHeight, activity, _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, 
+                            pair.Key, i, itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
                         x = x + go.Width + gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }
@@ -186,7 +188,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                         ori_x = ori_x + itemWidth / 2 + gap;
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, itemWidth, itemHeight, product, _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key,
+                            i, itemWidth, itemHeight, product, AgentContainerType.MainPanel);
                         x = x + go.Width + gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }
@@ -206,7 +209,8 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
+        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(),
+            _daoService.GetEnterprise(), AgentContainerType.MainPanel);
     }
 
 }

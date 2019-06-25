@@ -96,11 +96,13 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 FlockAgent go;
                 if (front)
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                        itemWidth, itemHeight, _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
                 }   else
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.backPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                        itemWidth, itemHeight, _daoService.GetEnterprise(), AgentContainerType.BackPanel);
                     go.UpdateImageAlpha(0.2f);
                 }
 
@@ -152,7 +154,12 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                 Activity activity = _daoService.GetActivity();
-                Vector2 v2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height), _manager.displayFactor);
+
+                float imageWidth = activity.SpriteImage.rect.width;
+                float imageHeight = activity.SpriteImage.rect.height;
+
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                    _manager.displayFactor);
                 //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
                 //float x = vector2.x;
                 //float y = vector2.y;
@@ -173,11 +180,13 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 FlockAgent go;
                 if (front)
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                        itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
 
                 }   else
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.backPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                        itemWidth, itemHeight, activity, AgentContainerType.BackPanel);
                     go.UpdateImageAlpha(0.2f);
                 }
 
@@ -222,11 +231,12 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                 Product product = _daoService.GetProduct();
-                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height), _manager.displayFactor);
-                //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
-                //float x = vector2.x;
-                //float y = vector2.y;
 
+                float imageWidth = product.SpriteImage.rect.width;
+                float imageHeight = product.SpriteImage.rect.height;
+
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                    _manager.displayFactor);
 
                 int middleY = _row / 2;
                 int middleX = _column / 2;
@@ -243,12 +253,14 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 FlockAgent go;
                 if (front)
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j,
+                        itemWidth, itemHeight, product, AgentContainerType.MainPanel);
 
                 }
                 else
                 {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.backPanel);
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                        itemWidth, itemHeight, product, AgentContainerType.BackPanel);
                     go.UpdateImageAlpha(0.2f);
                 }
 
@@ -290,6 +302,8 @@ public class FrontBackUnfoldCutEffect : CutEffect
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
+            agent.NextVector2 = agent_vector2;
+
             float run_time = (_startingTimeWithOutDelay - agent.DelayX + agent.DelayY) - _timeBetweenStartAndDisplay; // 动画运行的总时间
 
             //Ease.InOutQuad
@@ -297,7 +311,6 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
             if (time > run_time)
             {
-                agent.updatePosition();
                 continue;
             }
 
@@ -314,7 +327,6 @@ public class FrontBackUnfoldCutEffect : CutEffect
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, time);
 
             agent.NextVector2 = to;
-            agent.updatePosition();
         }
 
     }

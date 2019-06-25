@@ -72,6 +72,8 @@ public class CurveStaggerCutEffect : CutEffect
             //Ease.InOutQuad
             float time = Time.time - StartTime;  // 当前已运行的时间;
 
+            agent.NextVector2 = agent_vector2;
+
             if (time > run_time) {
 
                 //agent.updatePosition();
@@ -92,8 +94,6 @@ public class CurveStaggerCutEffect : CutEffect
 
             agent.NextVector2 = to;
 
-
-            agent.updatePosition();
         }
 
 
@@ -143,11 +143,10 @@ public class CurveStaggerCutEffect : CutEffect
                     float ori_x = x;
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
-
                     Product product = _daoService.GetProduct();
-                    itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
 
-                    //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
+                    itemWidth = AppUtils.GetSpriteWidthByHeight(product.SpriteImage, itemHeight);
+
                     ori_x = ori_x + itemWidth / 2 + gap;
 
                     int middleY = _row / 2;
@@ -172,7 +171,8 @@ public class CurveStaggerCutEffect : CutEffect
                     }
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, 
+                        itemWidth, itemHeight, product, AgentContainerType.MainPanel);
 
                     // 装载延迟参数
                     go.DelayX = delayX;
@@ -246,7 +246,8 @@ public class CurveStaggerCutEffect : CutEffect
                 }
 
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight,
+                    _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
@@ -309,9 +310,8 @@ public class CurveStaggerCutEffect : CutEffect
                     Activity activity = _manager.daoService.GetActivity();
 
                     //高固定
-                    itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
+                    itemWidth = AppUtils.GetSpriteWidthByHeight(activity.SpriteImage, itemHeight);
 
-                    //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
                     ori_x = ori_x + itemWidth / 2 + gap;
 
                     int middleY = _row / 2;
@@ -336,7 +336,8 @@ public class CurveStaggerCutEffect : CutEffect
                     }
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j,
+                        itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
 
                     // 装载延迟参数
                     go.DelayX = delayX;

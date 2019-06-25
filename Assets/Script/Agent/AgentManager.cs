@@ -30,6 +30,11 @@ public class AgentManager : MonoBehaviour
     /// </summary>
     [SerializeField] RectTransform _flockContainer;
 
+    /// <summary>
+    ///    后层的浮动块容器
+    /// </summary>
+    [SerializeField] RectTransform _backContainer;
+
 
     /// <summary>
     /// 操作卡片块容器
@@ -43,9 +48,14 @@ public class AgentManager : MonoBehaviour
     private MagicWallManager _manager;
 
     /// <summary>
-    /// 普通浮动块对象池
+    ///     普通浮动块对象池
     /// </summary>
     private FlockAgentPool<FlockAgent> _flockAgentPool;
+
+    /// <summary>
+    ///     后层的对象池
+    /// </summary>
+    private FlockAgentPool<FlockAgent> _flockAgentInBackPool;
 
     /// <summary>
     /// 十字展开操作块对象池
@@ -100,6 +110,9 @@ public class AgentManager : MonoBehaviour
         _flockAgentPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize);
         _flockAgentPool.Init(_flockAgentPrefab, _flockContainer);
 
+        _flockAgentInBackPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
+        _flockAgentInBackPool.Init(_flockAgentPrefab, _backContainer);
+
         _crossCardAgentPool = FlockAgentPool<CrossCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
         _crossCardAgentPool.Init(_crossCardgentPrefab as CrossCardAgent, _cardContainer);
 
@@ -115,7 +128,7 @@ public class AgentManager : MonoBehaviour
     {
         if (!agent.IsChoosing)
         {
-            _flockAgentPool.ReleaseObj(agent);
+            DestoryAgent(agent);
             _agents.Remove(agent);
         }
     }
@@ -222,6 +235,15 @@ public class AgentManager : MonoBehaviour
                 _sliceCardAgentPool.ReleaseObj(agent as SliceCardAgent);
             }
         }
+        else {
+            if (agent.agentContainerType == AgentContainerType.MainPanel)
+            {
+                _flockAgentPool.ReleaseObj(agent);
+            }
+            else {
+                _flockAgentInBackPool.ReleaseObj(agent);
+            }
+        }
     }
 
 
@@ -229,9 +251,16 @@ public class AgentManager : MonoBehaviour
     #endregion
 
 
-    public FlockAgent GetFlockAgent() {
-        return _flockAgentPool.GetObj();
+    public FlockAgent GetFlockAgent(AgentContainerType type) {
+        if (type == AgentContainerType.MainPanel)
+        {
+            return _flockAgentPool.GetObj();
+        }
+        else {
+            return _flockAgentInBackPool.GetObj();
+        }
     }
+
 
     public CrossCardAgent GetCrossCardAgent()
     {
@@ -242,5 +271,8 @@ public class AgentManager : MonoBehaviour
     {
         return _sliceCardAgentPool.GetObj();
     }
+
+
+
 
 }

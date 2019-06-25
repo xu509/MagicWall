@@ -65,7 +65,8 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y,
+        int row, int column, float width, float height, BaseData data, AgentContainerType agentContainerType)
     {
         width = (int)width;
         height = (int)height;
@@ -76,7 +77,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
             //print(row+"---"+column);
         }
         //  创建 Agent
-        FlockAgent newAgent = _agentManager.GetFlockAgent();
+        FlockAgent newAgent = _agentManager.GetFlockAgent(agentContainerType);
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
@@ -97,7 +98,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
-            width, height, env.Ent_id, env.Logo, env.IsCustom, MWTypeEnum.Enterprise);
+            width, height, env.Ent_id, env.Logo, env.IsCustom, MWTypeEnum.Enterprise, agentContainerType);
 
         //  添加到组件袋
         _agentManager.AddItem(newAgent);

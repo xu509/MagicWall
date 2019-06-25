@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCustom: 0
   SelectedItemMaxCount: 8
-  FlockPoolSize: 300
+  FlockPoolSize: 220
   CardPoolSize: 10
   StarEffectDistance: 5092
   StarEffectDistanceTime: 4

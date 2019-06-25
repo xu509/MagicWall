@@ -19,6 +19,7 @@ public class FlockAgent : MonoBehaviour
     private int _data_id; // id
     private MWTypeEnum _type;
     private bool _isCard;
+    private AgentContainerType _agentContainerType;
 
 
     #endregion
@@ -88,6 +89,7 @@ public class FlockAgent : MonoBehaviour
     public bool DataIsCustom { set { _data_iscustom = value; } get { return _data_iscustom; } }
     public bool IsCard { set { _isCard = value; } get { return _isCard; } }
     public MWTypeEnum type { set { _type = value; } get { return _type; } }
+    public AgentContainerType agentContainerType { set { _agentContainerType = value; } get { return _agentContainerType; } }
     public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
     public float DelayX { set { delayX = value; } get { return delayX; } }
     public float DelayY { set { delayY = value; } get { return delayY; } }
@@ -149,7 +151,8 @@ public class FlockAgent : MonoBehaviour
     /// <param name="dataIsCustom"></param>
     /// <param name="dataType"></param>
 	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
-        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom, MWTypeEnum dataType)
+        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom, 
+        MWTypeEnum dataType,AgentContainerType agentContainerType)
     {
         InitBase(manager,dataId, dataType,false);
 
@@ -190,6 +193,8 @@ public class FlockAgent : MonoBehaviour
             _itemsFactory = _manager.itemsFactoryAgent.activityFactory;
 
         }
+
+        _agentContainerType = agentContainerType;
         //_itemsFactory.Init(_manager);
     }
 
@@ -603,9 +608,8 @@ public class FlockAgent : MonoBehaviour
                 GetComponent<RectTransform>().localScale = scale;
             }
 
-            if (transform.parent != _manager.mainPanel) {
-                transform.SetParent(_manager.mainPanel);
-            }
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            
             
         }
     }

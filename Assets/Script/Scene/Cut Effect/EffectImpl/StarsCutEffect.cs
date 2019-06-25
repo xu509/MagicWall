@@ -81,11 +81,16 @@ public class StarsCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2;
 
                 Enterprise env = _manager.daoService.GetEnterprise();
-                
+
+                Sprite logoSprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + env.Logo);
+                    
+                //Vector2 vector2 = AppUtils
+                //    .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.FileDir + env.Logo).width
+                //    , TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).height), _manager.displayFactor);
 
                 Vector2 vector2 = AppUtils
-                    .ResetTexture(new Vector2(TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).width
-                    , TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "\\logo\\" + env.Logo).height), _manager.displayFactor);
+                   .ResetTexture(new Vector2(logoSprite.rect.width
+                   , logoSprite.rect.height), _manager.displayFactor);
 
                 int middleX = (column - 1) / 2;
 
@@ -98,7 +103,8 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, env, _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                    vector2.x, vector2.y, env, AgentContainerType.MainPanel);
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
 
@@ -138,7 +144,10 @@ public class StarsCutEffect : CutEffect
                 float y = i * (itemHeight + gap) + itemHeight / 2;
                 
                 Activity activity = _daoService.GetActivity();
-                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(activity.TextureImage.width, activity.TextureImage.height)
+
+
+                Vector2 vector2 = AppUtils.ResetTexture(new Vector2(activity.SpriteImage.rect.width
+                    , activity.SpriteImage.rect.height)
                     , _manager.displayFactor);
 
                 int middleX = (column - 1) / 2;
@@ -152,7 +161,8 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , vector2.x, vector2.y, activity, _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i , j , 
+                    vector2.x, vector2.y, activity, AgentContainerType.MainPanel);
             
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;
@@ -276,7 +286,8 @@ public class StarsCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(x, y);
 
                 //				FlockAgent go = AgentGenerator.GetInstance ().generator (name, gen_position, ori_position, magicWallManager);
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, vector2.x, vector2.y, product, _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, 
+                    vector2.x, vector2.y, product, AgentContainerType.MainPanel);
 
                 // 星空效果不会被物理特效影响
                 go.CanEffected = false;

@@ -52,6 +52,12 @@ public class AppUtils
         return tex;
     }
 
+    /// <summary>
+    ///     随机设置图片大小，用于前后分层效果与星空效果
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="displayFactor"></param>
+    /// <returns></returns>
     public static Vector2 ResetTexture(Vector2 size,float displayFactor)
     {
         //图片宽高
@@ -92,5 +98,33 @@ public class AppUtils
     public static string GetFullFileAddressOfImage(string filepath) {
         return MagicWallManager.FileDir + filepath;
     }
+
+    /// <summary>
+    ///     根据固定高度，获取 sprite 的宽
+    /// </summary>
+    /// <param name="sprite"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public static float GetSpriteWidthByHeight(Sprite sprite ,float height) {
+        float imageWidth = sprite.rect.width;
+        float imageHeight = sprite.rect.height;
+
+        return imageWidth / (float)imageHeight * height;
+    }
+
+    /// <summary>
+    ///     根据固定宽度，获取 sprite 的高
+    /// </summary>
+    /// <param name="sprite"></param>
+    /// <param name="width"></param>
+    /// <returns></returns>
+    public static float GetSpriteHeightByWidth(Sprite sprite, float width)
+    {
+        float imageWidth = sprite.rect.width;
+        float imageHeight = sprite.rect.height;
+        return width / imageWidth * imageHeight;
+    }
+
+
 
 }

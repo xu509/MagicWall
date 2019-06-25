@@ -475,14 +475,12 @@ public class DaoService : Singleton<DaoService>
     public List<SceneConfig> GetShowConfigs()
     {
 
-
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
-
-
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() , new FrontBackUnfoldCutEffect(), new LeftRightAdjustCutEffect(),
-            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
+        CutEffect[] effects = new CutEffect[] { new LeftRightAdjustCutEffect(),new CurveStaggerCutEffect()
+            , new FrontBackUnfoldCutEffect() ,new StarsCutEffect() 
+            , new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };

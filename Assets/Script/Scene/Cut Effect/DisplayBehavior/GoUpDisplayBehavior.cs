@@ -104,7 +104,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         gen_x = ori_x; //横坐标不变        
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, activity, _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i,
+                            _itemWidth, _itemHeight, activity, AgentContainerType.MainPanel);
                         y = y - go.Height - gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }
@@ -174,7 +175,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GoUpGetOriginPosition(i, j);
                         float x = vector2.x;
                         float y = vector2.y;
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, _itemWidth, _itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, 
+                            _itemWidth, _itemHeight, _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
                     }
                 }
@@ -196,7 +198,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
         float x = vector2.x;
         float y = vector2.y;
 
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
+        return factory.Generate(x, y, x, y, row, column,
+            factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
     }
 
@@ -245,7 +248,8 @@ public class GoUpDisplayBehavior : CutEffectDisplayBehavior
                         gen_x = ori_x; //横坐标不变        
 
                         // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, _itemWidth, _itemHeight, product, _manager.mainPanel);
+                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key, i, 
+                            _itemWidth, _itemHeight, product, AgentContainerType.MainPanel);
                         y = y - go.Height - gap;
                         //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
                     }

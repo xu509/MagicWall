@@ -40,6 +40,15 @@ public class Activity : BaseData,Generator<Activity>
         }
     }
 
+    public Sprite SpriteImage
+    {
+        get
+        {
+            string path = MagicWallManager.FileDir + Image;
+            return SpriteResource.Instance.GetData(path);
+        }
+    }
+
 
     public Activity Generator()
     {

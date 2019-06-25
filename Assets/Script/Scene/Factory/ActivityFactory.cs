@@ -49,7 +49,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
         int w = (int)_manager.mainPanel.rect.width; //宽度
-        _itemHeight = (h - _gap * 7) / _row;
+        _itemHeight = 250f;
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
@@ -63,7 +63,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, 
+        float height, BaseData data, AgentContainerType agentContainerType)
     {
         width = (int)width;
         height = (int)height;
@@ -71,12 +72,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         Activity activity = data as Activity;
 
         //  创建 Agent
-        FlockAgent newAgent = _agentManager.GetFlockAgent();
-
-        if (parent != _manager.mainPanel) {
-            newAgent.transform.SetParent(parent);
-        }
-
+        FlockAgent newAgent = _agentManager.GetFlockAgent(agentContainerType);
 
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
@@ -100,7 +96,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity);
+            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);

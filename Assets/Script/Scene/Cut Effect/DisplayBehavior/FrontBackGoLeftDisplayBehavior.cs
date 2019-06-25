@@ -119,12 +119,14 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         FlockAgent go;
         if (front)
         {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.mainPanel);
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), 
+                _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
         }
         else
         {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), _daoService.GetEnterprise(), _manager.backPanel);
+            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), 
+                _daoService.GetEnterprise(), AgentContainerType.BackPanel);
             go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
         }
 

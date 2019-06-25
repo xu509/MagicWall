@@ -82,6 +82,7 @@ public class FlockAgentPool<T> where T:FlockAgent
     /// <param name="obj"></param>
     public void ReleaseObj(T obj) {
         obj.Reset();
+        obj.gameObject.name = "flock(prepared)";
         obj.gameObject.SetActive(false);
         _pool.Enqueue(obj);
     }
@@ -102,6 +103,7 @@ public class FlockAgentPool<T> where T:FlockAgent
     private void Add() {
         T flockAgent = FlockAgentInvoker<T>.CreateAgent(_t, _container);
         flockAgent.gameObject.SetActive(false);
+        flockAgent.gameObject.name = "flock(prepared)";
         _pool.Enqueue(flockAgent);
     }
 

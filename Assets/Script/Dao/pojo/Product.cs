@@ -42,10 +42,19 @@ public class Product : BaseData,Generator<Product>
     {
         get
         {
-            string path = MagicWallManager.FileDir + "product\\" + Image;
+            string path = MagicWallManager.FileDir + Image;
             return TextureResource.Instance.GetTexture(path);
         }
      }
+
+    public Sprite SpriteImage
+    {
+        get
+        {
+            string path = MagicWallManager.FileDir + Image;
+            return SpriteResource.Instance.GetData(path);
+        }
+    }
 
 
     public Product Generator()

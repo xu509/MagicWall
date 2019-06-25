@@ -96,7 +96,8 @@ public class LeftRightAdjustCutEffect : CutEffect
                 Vector2 gen_position = new Vector2(gen_x, gen_y);
 
                 // 生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j , _itemWidth, _itemHeight, _daoService.GetEnterprise(), _manager.mainPanel);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j , 
+                    _itemWidth, _itemHeight, _daoService.GetEnterprise(), AgentContainerType.MainPanel);
                 go.Delay = delay;
                 go.DelayTime = delay;
 
@@ -137,8 +138,8 @@ public class LeftRightAdjustCutEffect : CutEffect
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                     Activity activity = _manager.daoService.GetActivity();
-                    //高固定
-                    itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
+
+                    itemWidth = AppUtils.GetSpriteWidthByHeight(activity.SpriteImage, itemHeight);
 
                     //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
                     ori_x = ori_x + itemWidth / 2 + gap;
@@ -163,11 +164,16 @@ public class LeftRightAdjustCutEffect : CutEffect
                         gen_x = ori_x - w - 500;
                     }
                     gen_y = ori_y; //纵坐标不变
-
+         
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, activity, _manager.mainPanel);
-                    //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
-                    //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, 
+                        itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
+
+                    if (i == 5 && j == 17)
+                    {
+                        Debug.Log(go.name + " - (6,18) : " + gen_x + " | " + gen_y + " - delay_time : " + delay);
+                    }
+
                     go.Delay = delay;
                     go.DelayTime = delay;
                     x = x + go.Width + gap;
@@ -176,61 +182,6 @@ public class LeftRightAdjustCutEffect : CutEffect
             _manager.rowAndRights.Add(i, x);
             x = 0;
         }
-    }
-
-
-    public override void Starting() {
-
-        for (int i = 0; i < _agentManager.Agents.Count; i++)
-        {
-            FlockAgent agent = _agentManager.Agents[i];
-            Vector2 agent_vector2 = agent.GenVector2;
-            Vector2 ori_vector2 = agent.OriVector2;
-
-            // 延时的时间
-            float delay_time = agent.DelayTime;
-
-            // 获取此 agent 需要的动画时间
-            float run_time = _startingTimeWithOutDelay - delay_time - _timeBetweenStartAndDisplay;
-
-            // 当前总运行的时间;
-            float time = Time.time - StartTime;
-            
-            // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
-            if (time > StartingDurTime || time < delay_time)
-            {
-                //Debug.Log(agent.name);
-                agent.updatePosition();
-
-                continue;
-            }
-
-            float t = (time - delay_time) / run_time;
-            Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-
-            agent.NextVector2 = to;
-            agent.updatePosition();
-        }
-    }
-
-    public override void OnStartingCompleted(){
-        //  初始化表现形式
-        int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
-
-        _displayBehaviorConfig.Row = _row;
-        _displayBehaviorConfig.Column = _column;
-        _displayBehaviorConfig.ItemWidth = _itemWidth;
-        _displayBehaviorConfig.ItemHeight = _itemHeight;
-        _displayBehaviorConfig.SceneContentType = sceneContentType;
-        _displayBehaviorConfig.Page = _page;
-        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
-        _displayBehaviorConfig.Manager = _manager;
-        DisplayBehavior.Init(_displayBehaviorConfig);
-
     }
 
     protected override void CreateProduct()
@@ -258,8 +209,9 @@ public class LeftRightAdjustCutEffect : CutEffect
                     float ori_y = i * (itemHeight + gap) + itemHeight / 2 + gap;
 
                     Product product = _daoService.GetProduct();
-                    //高固定
-                    itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
+
+                    itemWidth = AppUtils.GetSpriteWidthByHeight(product.SpriteImage, itemHeight);
+
 
                     //print(env.TextureLogo.width+"---"+ env.TextureLogo.height+"---"+itemWidth+"+++"+itemHeight);
                     ori_x = ori_x + itemWidth / 2 + gap;
@@ -286,9 +238,9 @@ public class LeftRightAdjustCutEffect : CutEffect
                     gen_y = ori_y; //纵坐标不变
 
                     //生成 agent
-                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
-                    //print("gen_x:" + gen_x+ " gen_y:" + gen_y+ " ori_x:" + ori_x+ " ori_y:" + ori_y+" i:"+i+" j:"+j);
-                    //print("OriVector2:" + go.OriVector2+ " GenVector2:" + go.GenVector2);
+                    FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j,
+                        itemWidth, itemHeight, product, AgentContainerType.MainPanel);
+
                     go.Delay = delay;
                     go.DelayTime = delay;
                     x = x + go.Width + gap;
@@ -298,6 +250,65 @@ public class LeftRightAdjustCutEffect : CutEffect
             x = 0;
         }
     }
+
+
+    public override void Starting() {
+
+        for (int i = 0; i < _agentManager.Agents.Count; i++)
+        {
+            FlockAgent agent = _agentManager.Agents[i];
+            Vector2 agent_vector2 = agent.GenVector2;
+            Vector2 ori_vector2 = agent.OriVector2;
+
+            agent.NextVector2 = agent_vector2;
+
+            // 延时的时间
+            float delay_time = agent.DelayTime;
+
+            // 获取此 agent 需要的动画时间
+            float run_time = _startingTimeWithOutDelay - delay_time - _timeBetweenStartAndDisplay;
+
+            // 当前总运行的时间;
+            float time = Time.time - StartTime;
+
+            agent.NextVector2 = agent_vector2;
+            // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
+            if (time > StartingDurTime)
+            {
+                continue;
+            } else if (time <= delay_time) {
+                // 此时该 Agent 还在持续时间内
+                continue;
+            }
+
+            float t = (time - delay_time) / run_time;
+            Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
+
+            agent.NextVector2 = to;
+        }
+    }
+
+    public override void OnStartingCompleted(){
+        //  初始化表现形式
+        int _row = _manager.Row;
+        int _column = ItemsFactory.GetSceneColumn();
+        float _itemWidth = ItemsFactory.GetItemWidth();
+        float _itemHeight = ItemsFactory.GetItemHeight();
+
+        _displayBehaviorConfig.Row = _row;
+        _displayBehaviorConfig.Column = _column;
+        _displayBehaviorConfig.ItemWidth = _itemWidth;
+        _displayBehaviorConfig.ItemHeight = _itemHeight;
+        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.Page = _page;
+        _displayBehaviorConfig.DisplayTime = DisplayDurTime;
+        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+        _displayBehaviorConfig.Manager = _manager;
+        DisplayBehavior.Init(_displayBehaviorConfig);
+
+    }
+
+
 
 
 }
