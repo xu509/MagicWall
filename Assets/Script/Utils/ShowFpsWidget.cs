@@ -25,12 +25,16 @@ public class ShowFpsWidget : MonoBehaviour
     void OnGUI()
     {
         GUIStyle gStyle = new GUIStyle();
-        gStyle.normal.textColor = Color.black;
-        gStyle.fontSize = 50;
+        gStyle.normal.textColor = Color.yellow;
+        gStyle.fontSize = 100;
 
-        float w = Screen.width - 250;
+        float width = Screen.width / 3;
 
-        GUI.Label(new Rect(w, 20, 200, 200), "FPS:" + f_Fps.ToString("f2"), gStyle);
+
+        float w = Screen.width - (width + 50);
+
+
+        GUI.Label(new Rect(w, 20, width, width), "FPS:" + f_Fps.ToString("f2"), gStyle);
     }
 
     void Update()

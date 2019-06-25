@@ -40,16 +40,14 @@ public class SliceCardAgent : CardAgent
     /// </summary>
     /// <param name="id">产品ID或活动ID</param>
     /// <param name="type">类型</param>
-    public void InitData(int id,int type) {
+    public void InitSliceCard() {
 
         InitAgency();
 
-        _type = type;
-
         List<SliceCardCellData> cellDatas;
-        if (type == 0)
+        if (type == MWTypeEnum.Product)
         {
-            Product product = DaoService.Instance.GetProductDetail(id);
+            Product product = DaoService.Instance.GetProductDetail(DataId);
 
             // 获取产品标题
             _title.text = product.Name;
@@ -70,7 +68,7 @@ public class SliceCardAgent : CardAgent
         }
         else {
             // 初始化活动信息
-            Activity activity = DaoService.Instance.GetActivityDetail(id);
+            Activity activity = DaoService.Instance.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
             InitComponents(activity.Ent_id != 0);

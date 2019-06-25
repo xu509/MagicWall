@@ -10,15 +10,15 @@ using System;
 public class FlockAgent : MonoBehaviour
 {
     protected MagicWallManager _manager;
-
     protected AgentManager _agentManager;
 
 
     #region Data Parameter 
-    private int _data_type;  //类型 0:env 1:prod 2:act
     private bool _data_iscustom; // 是定制的
     private string _data_img;    //背景图片
     private int _data_id; // id
+    private MWTypeEnum _type;
+    private bool _isCard;
 
 
     #endregion
@@ -76,27 +76,18 @@ public class FlockAgent : MonoBehaviour
     // 能被影响
     private bool _canEffected = true;
 
-
     //  工厂 & 管理器
     ItemsFactory _itemsFactory;
-
-
-    // Tweener
-    Tweener rectTransformTweener;
-
-
-    float show_move_offset_x;
-    float show_move_offset_y;
-
 
 
     #endregion
 
     #region 引用
-    public int DataType { set { _data_type = value; } get { return _data_type; } }
     public string DataImg { set { _data_img = value; } get { return _data_img; } }
     public int DataId { set { _data_id = value; } get { return _data_id; } }
     public bool DataIsCustom { set { _data_iscustom = value; } get { return _data_iscustom; } }
+    public bool IsCard { set { _isCard = value; } get { return _isCard; } }
+    public MWTypeEnum type { set { _type = value; } get { return _type; } }
     public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
     public float DelayX { set { delayX = value; } get { return delayX; } }
     public float DelayY { set { delayY = value; } get { return delayY; } }
@@ -126,16 +117,43 @@ public class FlockAgent : MonoBehaviour
 //        nameTextComponent.text = name;
     }
 
-    //
-    //  初始化 Agent 信息
-    //      originVector : 在屏幕上显示的位置
-    //      genVector ： 出生的位置
-    //
-	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
-        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom,int dataType)
-    {
+
+    /// <summary>
+    ///     初始化基础数据
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="dataId"></param>
+    /// <param name="type"></param>
+    /// <param name="isCard"></param>
+    protected void InitBase(MagicWallManager manager,int dataId, MWTypeEnum type, bool isCard) {
         _manager = manager;
         _agentManager = _manager.agentManager;
+        _data_id = dataId;
+        _type = type;
+        _isCard = isCard;
+    }
+
+
+    /// <summary>
+    ///         初始化 Agent 信息,在生成浮动块时调用
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="originVector">在屏幕上显示的位置</param>
+    /// <param name="genVector">出生的位置</param>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="dataId"></param>
+    /// <param name="dataImg"></param>
+    /// <param name="dataIsCustom"></param>
+    /// <param name="dataType"></param>
+	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
+        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom, MWTypeEnum dataType)
+    {
+        InitBase(manager,dataId, dataType,false);
+
+        _manager = manager;
 
         OriVector2 = originVector;
         GenVector2 = genVector;
@@ -143,26 +161,24 @@ public class FlockAgent : MonoBehaviour
         y = column;
         _width = width;
         _height = height;
-        _data_id = dataId;
         _data_img = dataImg;
         _data_iscustom = dataIsCustom;
-        _data_type = dataType;
 
         // 设置显示图片
-        GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(dataImg));
-
+        GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(DataImg));
+        //GetComponent<Image>().sprite = SpriteResource.Instance.GetData(AppUtils.GetFullFileAddressOfImage(DataImg));
 
         // 定义 agent 的名字
         _sceneIndex = _manager.SceneIndex;
 
         // 定义工厂
-        if (dataType == 0)
+        if (dataType == MWTypeEnum.Enterprise)
         {
             //_itemsFactory = new EnvFactory();
             _itemsFactory = _manager.itemsFactoryAgent.envFactory;
 
         }
-        else if (dataType == 1)
+        else if (dataType == MWTypeEnum.Product)
         {
 
             //_itemsFactory = new ProductFactory();
@@ -567,8 +583,7 @@ public class FlockAgent : MonoBehaviour
         // 清除 Dotween 代理
 
         // 删除 Gameobject
-        Destroy(gameObject);
-
+        _agentManager.DestoryAgent(this);
     }
 
 

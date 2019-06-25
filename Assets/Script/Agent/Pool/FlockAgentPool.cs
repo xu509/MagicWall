@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 气球对象池
+/// 浮动快对象池
 /// </summary>
-public class BubblePool<T> where T:BubbleAgent
+public class FlockAgentPool<T> where T:FlockAgent
 {
     #region 单例
-    private static BubblePool<T> instance;
-    private BubblePool(int initTotal)
+    private static FlockAgentPool<T> instance;
+    private FlockAgentPool(int initTotal)
     {
         _pool = new Queue<T>();
         _initTotal = initTotal;
     }
-    public static BubblePool<T> GetInstance(int total)
+    public static FlockAgentPool<T> GetInstance(int total)
     {
         if (instance == null)
         {
-            instance = new BubblePool<T>(total);
+            instance = new FlockAgentPool<T>(total);
         }
         return instance;
     }
@@ -99,13 +99,9 @@ public class BubblePool<T> where T:BubbleAgent
 
 
     private void Add() {
-        T bubbleAgent = BackgroundInvoker<T>.CreateBubble(_t, _container);
-        bubbleAgent.gameObject.SetActive(false);
-        _pool.Enqueue(bubbleAgent);
+        T flockAgent = FlockAgentInvoker<T>.CreateAgent(_t, _container);
+        flockAgent.gameObject.SetActive(false);
+        _pool.Enqueue(flockAgent);
     }
 
-}
-
-public enum BubbleType {
-    Clear,Dim
 }

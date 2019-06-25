@@ -81,23 +81,23 @@ public class MagicSceneManager : MonoBehaviour
         // 背景始终运行
         _manager.backgroundManager.run();
 
-        //// 运行场景
-        //if (!_scenes[_index].Run())
-        //{
-        //    // 返回为false时，表示场景已运行结束
-        //    if (_index == _scenes.Count - 1)
-        //    {
-        //        _index = 0;
-        //    }
-        //    else
-        //    {
-        //        _index++;
-        //    }
+        // 运行场景
+        if (!_scenes[_index].Run())
+        {
+            // 返回为false时，表示场景已运行结束
+            if (_index == _scenes.Count - 1)
+            {
+                _index = 0;
+            }
+            else
+            {
+                _index++;
+            }
 
-        //    _manager.SceneIndex  = _manager.SceneIndex + 1;
-        //    _manager.CurrentScene = _scenes[_index];
-        //}
-   
+            _manager.SceneIndex = _manager.SceneIndex + 1;
+            _manager.CurrentScene = _scenes[_index];
+        }
+
     }
 
     /// <summary>

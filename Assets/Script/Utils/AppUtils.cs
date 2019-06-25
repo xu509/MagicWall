@@ -24,10 +24,29 @@ public class AppUtils
         if (File.Exists(filePath))
         {
             fileData = File.ReadAllBytes(filePath);
-            tex = new Texture2D(100, 100);
+            tex = new Texture2D(600, 600);
             bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         else {
+            Debug.Log("File is not found : " + filePath);
+        }
+        return tex;
+    }
+
+    public static Texture2D LoadPNGToTexture2D(string filePath)
+    {
+
+        Texture2D tex = null;
+        byte[] fileData;
+
+        if (File.Exists(filePath))
+        {
+            fileData = File.ReadAllBytes(filePath);
+            tex = new Texture2D(600, 600);
+            bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+        }
+        else
+        {
             Debug.Log("File is not found : " + filePath);
         }
         return tex;

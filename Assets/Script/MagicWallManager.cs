@@ -39,18 +39,10 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] RectTransform _mainPanel;
     // Back Panel 面板
     [SerializeField] RectTransform _backPanel;
-    // Back ground 面板
-    [SerializeField] RectTransform _backgroundPanel;
     // Operate Panle 面板 （操作面板）
     [SerializeField] RectTransform _operationPanel;
 
-    /// 预制体
-    // 浮动块
-    [SerializeField] FlockAgent _flockAgent;
-    //  十字块
-    [SerializeField] CardAgent _crossCardgent;
-    // 滑动块
-    [SerializeField] CardAgent _sliceCardgent;
+
 
 
     /// 卡片物理碰撞效果设置
@@ -62,7 +54,7 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] EaseEnum _influenceEaseEnum;
 
     /// 整体的移动速度
-    [SerializeField, Range(1f, 600f)] float _movePanelFactor = 100f;
+    [SerializeField, Range(0f, 100f)] float _movePanelFactor = 100f;
     
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
@@ -123,10 +115,6 @@ public class MagicWallManager:MonoBehaviour
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
     public RectTransform mainPanel { get { return _mainPanel; } }
     public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
-    public FlockAgent flockAgent { get { return _flockAgent; } }
-    public CardAgent crossCardgent { get { return _crossCardgent; } }
-    public CardAgent sliceCardgent { get { return _sliceCardgent; } }
-    public RectTransform BackgroundPanel { get { return _backgroundPanel; } }
     public RectTransform OperationPanel { get { return _operationPanel; } }
     public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
     public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离

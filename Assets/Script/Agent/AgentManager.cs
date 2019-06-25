@@ -4,17 +4,62 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-//
-//  实体管理器
-//
+/// <summary>
+/// 浮动体块
+/// </summary>
 public class AgentManager : MonoBehaviour
 {
+    
+    /// <summary>
+    ///     普通浮动块
+    /// </summary>
+    [SerializeField] FlockAgent _flockAgentPrefab;
+    
+    /// <summary>
+    ///     十字浮动块
+    /// </summary>
+    [SerializeField] CardAgent _crossCardgentPrefab;
+    
+    /// <summary>
+    ///     滑动浮动块
+    /// </summary>
+    [SerializeField] CardAgent _sliceCardgentPrefab;
 
-    #region Parameter
+    /// <summary>
+    /// 普通浮动块容器
+    /// </summary>
+    [SerializeField] RectTransform _flockContainer;
+
+
+    /// <summary>
+    /// 操作卡片块容器
+    /// </summary>
+    [SerializeField] RectTransform _cardContainer;
+
+
+
 
     // 主管理器
     private MagicWallManager _manager;
 
+    /// <summary>
+    /// 普通浮动块对象池
+    /// </summary>
+    private FlockAgentPool<FlockAgent> _flockAgentPool;
+
+    /// <summary>
+    /// 十字展开操作块对象池
+    /// </summary>
+    private FlockAgentPool<CrossCardAgent> _crossCardAgentPool;
+
+    /// <summary>
+    /// 滑动操作块对象池
+    /// </summary>
+    private FlockAgentPool<SliceCardAgent> _sliceCardAgentPool;
+
+
+
+    #region 业务逻辑相关属性
     //  当前界面的 agents
     List<FlockAgent> _agents;
     public List<FlockAgent> Agents { get { return _agents; } }
@@ -22,8 +67,8 @@ public class AgentManager : MonoBehaviour
     //  正在操作的 agents
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
-
     #endregion
+
 
     //
     //  single pattern
@@ -44,6 +89,22 @@ public class AgentManager : MonoBehaviour
         effectAgent = new List<FlockAgent>();
         _agents = new List<FlockAgent>();
         _manager = manager;
+
+        PrepareAgentPool();
+    }
+
+    /// <summary>
+    ///     准备对象池
+    /// </summary>
+    private void PrepareAgentPool() {
+        _flockAgentPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize);
+        _flockAgentPool.Init(_flockAgentPrefab, _flockContainer);
+
+        _crossCardAgentPool = FlockAgentPool<CrossCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
+        _crossCardAgentPool.Init(_crossCardgentPrefab as CrossCardAgent, _cardContainer);
+
+        _sliceCardAgentPool = FlockAgentPool<SliceCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
+        _sliceCardAgentPool.Init(_sliceCardgentPrefab as SliceCardAgent, _cardContainer);
     }
 
 
@@ -54,10 +115,7 @@ public class AgentManager : MonoBehaviour
     {
         if (!agent.IsChoosing)
         {
-            // 清除 agent 挂载的 tween
-
-
-            Destroy(agent.gameObject);
+            _flockAgentPool.ReleaseObj(agent);
             _agents.Remove(agent);
         }
     }
@@ -91,11 +149,7 @@ public class AgentManager : MonoBehaviour
     //
     public bool RemoveItemFromEffectItems(CardAgent agent) {
 
-        // 删除agent
-        if (agent.gameObject != null) {
-            Destroy(agent.gameObject);
-        }
-
+        DestoryAgent(agent);
 
         return effectAgent.Remove(agent);
     }
@@ -123,20 +177,16 @@ public class AgentManager : MonoBehaviour
         //  清理 Agents
         for (int i = 0; i < Agents.Count; i++) {
             FlockAgent agent = Agents[i];
-            Destroy(agent.gameObject);
+            _flockAgentPool.ReleaseObj(agent);
         }
         _agents = new List<FlockAgent>();
 
         //  清理 Effect Agents
         for (int i = 0; i < EffectAgent.Count; i++) {
             FlockAgent agent = EffectAgent[i];
-            Destroy(agent.gameObject);
+            DestoryAgent(agent);
         }
         effectAgent = new List<FlockAgent>();
-
-        // 清理 Card Agent
-        //cardAgents = new List<CardAgent>();
-
     }
 
 
@@ -162,11 +212,37 @@ public class AgentManager : MonoBehaviour
 
     }
 
+    public void DestoryAgent(FlockAgent agent) {
+        if (agent.IsCard)
+        {
+            if (agent.type == MWTypeEnum.Enterprise)
+            {
+                _crossCardAgentPool.ReleaseObj(agent as CrossCardAgent);
+            }
+            else if (agent.type == MWTypeEnum.Activity || agent.type == MWTypeEnum.Product)
+            {
+                _sliceCardAgentPool.ReleaseObj(agent as SliceCardAgent);
+            }
+        }
+    }
 
-   
+
+
     #endregion
 
 
+    public FlockAgent GetFlockAgent() {
+        return _flockAgentPool.GetObj();
+    }
 
+    public CrossCardAgent GetCrossCardAgent()
+    {
+        return _crossCardAgentPool.GetObj();
+    }
+
+    public SliceCardAgent GetSliceCardAgent()
+    {
+        return _sliceCardAgentPool.GetObj();
+    }
 
 }

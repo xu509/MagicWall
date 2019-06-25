@@ -64,9 +64,9 @@ public class BackgroundManager : MonoBehaviour
     public void Init(MagicWallManager manager) {
         _manager = manager;
 
-        _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.ClearBubblePoolTotal);
+        _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.ClearBubblePoolSize);
 
-        _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.DimBubblePoolTotal);
+        _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.DimBubblePoolSize);
 
         last_create_clear_time = 0.0f;
         last_create_dim_time = 0.0f;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4511088241186586017}
   - component: {fileID: 4511088241186586023}
   - component: {fileID: 5846501649382090687}
-  - component: {fileID: 8619430999029279795}
+  - component: {fileID: 5090910705578981589}
   m_Layer: 5
   m_Name: DimBubble
   m_TagString: Untagged
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
---- !u!114 &8619430999029279795
+--- !u!114 &5090910705578981589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

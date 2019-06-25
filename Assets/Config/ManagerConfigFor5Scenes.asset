@@ -18,3 +18,5 @@ MonoBehaviour:
   SelectedItemMaxCount: 5
   ClearBubblePoolTotal: 25
   DimBubblePoolTotal: 25
+  ClearBubbbleCreateIntervalTime: 1
+  DimBubbbleCreateIntervalTime: 2

@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: ManagerConfigFor8Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
+  SelectedItemMaxCount: 8
+  FlockPoolSize: 300
+  CardPoolSize: 0
   StarEffectDistance: 5092
   StarEffectDistanceTime: 4
-  SelectedItemMaxCount: 8
-  ClearBubblePoolTotal: 50
-  DimBubblePoolTotal: 50
+  ClearBubblePoolSize: 100
+  DimBubblePoolSize: 50
   ClearBubbbleCreateIntervalTime: 1
   DimBubbbleCreateIntervalTime: 2

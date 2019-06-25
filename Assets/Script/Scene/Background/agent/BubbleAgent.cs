@@ -120,7 +120,6 @@ public abstract class BubbleAgent : MonoBehaviour
 
 
     private bool IsOverTop() {
-
         float y_max = _manager.magicWallPanel.rect.yMax;
         return GetComponent<RectTransform>().anchoredPosition.y > (y_max * 2);
     }
