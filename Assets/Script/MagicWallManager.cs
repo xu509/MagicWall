@@ -189,7 +189,7 @@ public class MagicWallManager:MonoBehaviour
         _hasInit = false;
 
         //  帧数限制
-        Application.targetFrameRate = FPS;
+        //Application.targetFrameRate = FPS;
 
     }
 
@@ -201,7 +201,7 @@ public class MagicWallManager:MonoBehaviour
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
+    private void Update()
     {
         if (!_hasInit)
             return;

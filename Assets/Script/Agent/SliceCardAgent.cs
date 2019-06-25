@@ -9,7 +9,6 @@ using DG.Tweening;
 //
 public class SliceCardAgent : CardAgent
 {
-    private int _type; // 类型，0：产品；1：活动
 
     [SerializeField, Header("卡片 - 标题")] Text _title;
     [SerializeField, Header("卡片 - 描述")] Text _description;
@@ -21,8 +20,6 @@ public class SliceCardAgent : CardAgent
 
     private Vector2 ButtomTool_Origin_Position = new Vector2(0, 100);
     private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
-
-
 
 
     void Awake() {

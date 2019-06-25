@@ -148,9 +148,7 @@ public class AgentManager : MonoBehaviour
     //  移除效果列表中的项
     //
     public bool RemoveItemFromEffectItems(CardAgent agent) {
-
         DestoryAgent(agent);
-
         return effectAgent.Remove(agent);
     }
 

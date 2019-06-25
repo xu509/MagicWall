@@ -101,7 +101,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 }   else
                 {
                     go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, _daoService.GetEnterprise(), _manager.backPanel);
-                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
+                    go.UpdateImageAlpha(0.2f);
                 }
 
                 // 装载延迟参数
@@ -178,7 +178,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 }   else
                 {
                     go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, activity, _manager.backPanel);
-                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
+                    go.UpdateImageAlpha(0.2f);
                 }
 
                 // 装载延迟参数
@@ -192,6 +192,82 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 // 将agent的z轴定义在后方
                 //Vector3 position = the_RectTransform.anchoredPosition3D;
                 //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+
+                // 装载进 pagesAgents
+                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
+                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
+                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
+
+            }
+        }
+
+        // 调整启动动画的时间
+        StartingDurTime += _startDelayTime;
+    }
+
+    protected override void CreateProduct()
+    {
+        int _row = 6;
+        int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
+        float itemWidth = 250 * _manager.displayFactor;
+        float itemHeight = 250 * _manager.displayFactor;
+        float gap = ItemsFactory.GetSceneGap();
+
+        //从左往右，从下往上
+        for (int i = 0; i < _row; i++)
+        {
+            for (int j = 0; j < _column; j++)
+            {
+                float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
+                float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
+
+                Product product = _daoService.GetProduct();
+                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height), _manager.displayFactor);
+                //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
+                //float x = vector2.x;
+                //float y = vector2.y;
+
+
+                int middleY = _row / 2;
+                int middleX = _column / 2;
+
+                // 定义源位置
+                float ori_x, ori_y;
+                ori_x = _manager.mainPanel.rect.width + itemWidth + gap;
+                ori_y = y;
+
+                bool front = (i + j) % 2 == 0 ? true : false;
+                //float offsetX = (z == 0) ? 0 : -500;
+                //x = x + offsetX;
+                //生成 agent
+                FlockAgent go;
+                if (front)
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
+
+                }
+                else
+                {
+                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.backPanel);
+                    go.UpdateImageAlpha(0.2f);
+                }
+
+                // 装载延迟参数
+                go.DelayX = 0;
+                go.DelayY = 0;
+
+                // 调整大小
+                RectTransform the_RectTransform = go.GetComponent<RectTransform>();
+                the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
+
+                // 将agent的z轴定义在后方
+                //Vector3 position = the_RectTransform.anchoredPosition3D;
+                //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
+
+                //if (z != 0)
+                //{
+                //    the_RectTransform.SetAsFirstSibling();
+                //}
 
                 // 装载进 pagesAgents
                 int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
@@ -264,80 +340,6 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
     }
 
-    protected override void CreateProduct()
-    {
-        int _row = 6;
-        int _column = ItemsFactory.GetSceneColumn() + (int)(8 / 20f * DisplayDurTime) + 1;
-        float itemWidth = 250 * _manager.displayFactor;
-        float itemHeight = 250 * _manager.displayFactor;
-        float gap = ItemsFactory.GetSceneGap();
 
-        //从左往右，从下往上
-        for (int i = 0; i < _row; i++)
-        {
-            for (int j = 0; j < _column; j++)
-            {
-                float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
-                float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
-
-                Product product = _daoService.GetProduct();
-                Vector2 v2 = AppUtils.ResetTexture(new Vector2(product.TextureImage.width, product.TextureImage.height), _manager.displayFactor);
-                //Vector2 vector2 = ItemsFactory.GetOriginPosition(i, j);
-                //float x = vector2.x;
-                //float y = vector2.y;
-
-
-                int middleY = _row / 2;
-                int middleX = _column / 2;
-
-                // 定义源位置
-                float ori_x, ori_y;
-                ori_x = _manager.mainPanel.rect.width + itemWidth + gap;
-                ori_y = y;
-
-                bool front = (i + j) % 2 == 0 ? true : false;
-                //float offsetX = (z == 0) ? 0 : -500;
-                //x = x + offsetX;
-                //生成 agent
-                FlockAgent go;
-                if (front)
-                {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.mainPanel);
-
-                }
-                else
-                {
-                    go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight, product, _manager.backPanel);
-                    go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
-                }
-
-                // 装载延迟参数
-                go.DelayX = 0;
-                go.DelayY = 0;
-
-                // 调整大小
-                RectTransform the_RectTransform = go.GetComponent<RectTransform>();
-                the_RectTransform.sizeDelta = new Vector2(v2.x, v2.y);
-
-                // 将agent的z轴定义在后方
-                //Vector3 position = the_RectTransform.anchoredPosition3D;
-                //the_RectTransform.anchoredPosition3D = the_RectTransform.anchoredPosition3D + new Vector3(0, 0, z);
-
-                //if (z != 0)
-                //{
-                //    the_RectTransform.SetAsFirstSibling();
-                //}
-
-                // 装载进 pagesAgents
-                int colUnit = Mathf.CeilToInt(_column * 1.0f / 4);
-                _page = Mathf.CeilToInt((j + 1) * 1.0f / colUnit);
-                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
-
-            }
-        }
-
-        // 调整启动动画的时间
-        StartingDurTime += _startDelayTime;
-    }
 
 }

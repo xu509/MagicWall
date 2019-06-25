@@ -73,6 +73,11 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         //  创建 Agent
         FlockAgent newAgent = _agentManager.GetFlockAgent();
 
+        if (parent != _manager.mainPanel) {
+            newAgent.transform.SetParent(parent);
+        }
+
+
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 

@@ -29,9 +29,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _safe_distance_width;
     private float _safe_distance_height;
 
-    protected int id;
-    public int Id { set { id = value; } get { return id; } }
-
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
 
@@ -253,13 +250,17 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
             rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
                 //  使卡片消失
-                _agentManager.RemoveItemFromEffectItems(this);
-
-                //gameObject.SetActive(false);
-                DestoryAgency();
-                //Destroy(gameObject);
 
                 OriginAgent.DoRecoverAfterChoose();
+
+
+                _agentManager.RemoveItemFromEffectItems(this);
+
+
+                //gameObject.SetActive(false);
+                //DestoryAgency();
+                //Destroy(gameObject);
+
             });
         }
         //  直接消失
@@ -305,15 +306,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
 
     #endregion
-
-
-    //
-    //  Private Methods
-    //
-
-
-
-
 
     //
     //  Call Back
@@ -471,14 +463,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             DoMove();
 
             DoUpdate();
-
         }
-        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-
         if (_doMoving)
         {
 

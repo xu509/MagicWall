@@ -81,6 +81,7 @@ public class FlockAgentPool<T> where T:FlockAgent
     /// </summary>
     /// <param name="obj"></param>
     public void ReleaseObj(T obj) {
+        obj.Reset();
         obj.gameObject.SetActive(false);
         _pool.Enqueue(obj);
     }

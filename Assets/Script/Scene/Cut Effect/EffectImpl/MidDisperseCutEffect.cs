@@ -196,7 +196,8 @@ public class MidDisperseCutEffect : CutEffect
             float t = time / run_time;
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
             float a = Mathf.Lerp(0f, 1f, t);
-            agent.GetComponent<RawImage>().color = new Color(1, 1, 1, a);
+
+            agent.GetComponent<Image>().color = new Color(1, 1, 1, a);
             agent.NextVector2 = to;
             agent.updatePosition();
         }

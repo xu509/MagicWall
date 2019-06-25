@@ -13,7 +13,6 @@ public class SpriteResource : Singleton<SpriteResource>
     public static string Write_Pad_Texture_Big = "WritePadTextureBig";   // 手写板的图片大型
 
 
-
     private Dictionary<string, Sprite> _resources;
 
     public void Add(string address, Sprite sprite) {

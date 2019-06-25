@@ -165,8 +165,8 @@ public class FlockAgent : MonoBehaviour
         _data_iscustom = dataIsCustom;
 
         // 设置显示图片
-        GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(DataImg));
-        //GetComponent<Image>().sprite = SpriteResource.Instance.GetData(AppUtils.GetFullFileAddressOfImage(DataImg));
+        //GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(DataImg));
+        GetComponent<Image>().sprite = SpriteResource.Instance.GetData(AppUtils.GetFullFileAddressOfImage(DataImg));
 
         // 定义 agent 的名字
         _sceneIndex = _manager.SceneIndex;
@@ -215,10 +215,7 @@ public class FlockAgent : MonoBehaviour
             if (NeedAdjustPostion()) {
                 UpdatePositionEffect();
             }
-            
         }
-
-        
     }
 
 
@@ -259,7 +256,6 @@ public class FlockAgent : MonoBehaviour
                 continue;
             }
 
-
             Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
 
             float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
@@ -283,24 +279,19 @@ public class FlockAgent : MonoBehaviour
         }
         // 判断结束
 
-
         // 获取有效影响范围，是宽度一半以上
         float effectDistance = (w / 2) + (w / 2) * _manager.InfluenceMoveFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
-
 
         // 进入影响范围
         if (offset >= 0)
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
 
-
             // 获取offset_x;offset_y
             float offset_x = Mathf.Abs(refVector2WithOffset.x - targetVector2.x);
             float offset_y = Mathf.Abs(refVector2WithOffset.y - targetVector2.y);
-
-
 
             float m_scale = -(1f / effectDistance) * offset + 1f;
 
@@ -399,7 +390,7 @@ public class FlockAgent : MonoBehaviour
             float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
             float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y; 
 
-            if (cardGenPosition.x < w/2)
+            if (cardGenPosition.x < w / 2)
             {
                 cardGenPosition.x = w / 2;
             }
@@ -418,10 +409,9 @@ public class FlockAgent : MonoBehaviour
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
+                rect.gameObject.SetActive(false);
                 _cardAgent.GoToFront();
-
             });
-
         }
     }
 
@@ -477,7 +467,6 @@ public class FlockAgent : MonoBehaviour
 
     protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
     {
-        Debug.Log("Do Destory On Complete");
 
         // 进行销毁
         if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
@@ -585,6 +574,42 @@ public class FlockAgent : MonoBehaviour
         // 删除 Gameobject
         _agentManager.DestoryAgent(this);
     }
+
+
+    public void UpdateImageAlpha(float alpha) {
+        Color color = GetComponent<Image>().color;
+        color.a = alpha;
+        GetComponent<Image>().color = color;
+
+    }
+
+
+    /// <summary>
+    ///     重置 Agent
+    /// </summary>
+    public void Reset() {
+        if (!IsCard) {
+
+            // 透明度调整
+            //GetComponent<RawImage>().color = new Color(255, 255, 255, 255);
+            if (GetComponent<Image>().color != new Color(255, 255, 255, 255)) {
+                GetComponent<Image>().color = new Color(255, 255, 255, 255);
+            }
+            
+            // 设置 scale
+            Vector3 scale = new Vector3(1, 1, 1);
+            if (GetComponent<RectTransform>().localScale != scale)
+            {
+                GetComponent<RectTransform>().localScale = scale;
+            }
+
+            if (transform.parent != _manager.mainPanel) {
+                transform.SetParent(_manager.mainPanel);
+            }
+            
+        }
+    }
+
 
 
 }
