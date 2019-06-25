@@ -38,8 +38,14 @@ public class Product : BaseData,Generator<Product>
 
     // Component
 
-    private Texture texture_image;
-    public Texture TextureImage { set { texture_image = value; } get { return texture_image; } }
+    public Texture TextureImage
+    {
+        get
+        {
+            string path = MagicWallManager.FileDir + "product\\" + Image;
+            return TextureResource.Instance.GetTexture(path);
+        }
+     }
 
 
     public Product Generator()
@@ -64,7 +70,7 @@ public class Product : BaseData,Generator<Product>
         //    "48.jpg", "48.jpg"
         //};
 
-        product.image = images[Random.Range(0, images.Length)];
+        product.image = "product\\" + images[Random.Range(0, images.Length)];
 
         product.likes = Random.Range(1, 100);
 

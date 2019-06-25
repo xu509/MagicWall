@@ -28,13 +28,13 @@ public class Video : Generator<Video>
 
         Video video = new Video();
         video._description = descriptions[0];
-        video._address = addresses[0];
-        video._cover = covers[0];
+        video._address = "video\\" + addresses[0];
+        video._cover = "video\\" + covers[0];
 
         Video video2 = new Video();
         video2._description = descriptions[1];
-        video2._address = addresses[1];
-        video2._cover = covers[1];
+        video2._address = "video\\" + addresses[1];
+        video2._cover = "video\\" + covers[1];
 
         Video[] videos = { video, video2 };
         return videos[Random.Range(0,2)];

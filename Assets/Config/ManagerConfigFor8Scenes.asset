@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62b06450fb1fc94982e8790f91c1054, type: 3}
   m_Name: ManagerConfigFor8Scenes
   m_EditorClassIdentifier: 
+  IsCustom: 0
+  SelectedItemMaxCount: 8
+  FlockPoolSize: 300
+  CardPoolSize: 0
   StarEffectDistance: 5092
   StarEffectDistanceTime: 4
-  SelectedItemMaxCount: 8
+  ClearBubblePoolSize: 100
+  DimBubblePoolSize: 50
+  ClearBubbbleCreateIntervalTime: 1
+  DimBubbbleCreateIntervalTime: 2

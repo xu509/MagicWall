@@ -26,16 +26,11 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Run()
     {
 
-        // 面板向左移动
-        //float x = _manager.mainPanel.anchoredPosition.x - Time.deltaTime * _manager.MovePanelFactor;
-        //Vector2 to = new Vector2(x, _manager.mainPanel.anchoredPosition.y);
-        //_manager.mainPanel.DOAnchorPos(to, Time.deltaTime);
-        _manager.mainPanel.transform.Translate(Vector3.left * Time.deltaTime);
+        Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
+        _manager.mainPanel.transform.Translate(to);
 
-        //float backX = _manager.backPanel.anchoredPosition.x + Time.deltaTime * _manager.MovePanelFactor / 2;
-        //Vector2 backTo = new Vector2(backX, _manager.backPanel.anchoredPosition.y);
-        //_manager.backPanel.DOAnchorPos(backTo, Time.deltaTime);
-        _manager.mainPanel.transform.Translate(Vector3.left * Time.deltaTime * 0.5f);
+        Vector3 backTo = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
+        _manager.backPanel.transform.Translate(backTo);
 
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();

@@ -39,30 +39,11 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] RectTransform _mainPanel;
     // Back Panel 面板
     [SerializeField] RectTransform _backPanel;
-    // Back ground 面板
-    [SerializeField] RectTransform _backgroundPanel;
     // Operate Panle 面板 （操作面板）
     [SerializeField] RectTransform _operationPanel;
 
-    /// 预制体
-    // 浮动块
-    [SerializeField] FlockAgent _flockAgent;
-    //  十字块
-    [SerializeField] CardAgent _crossCardgent;
-    // 滑动块
-    [SerializeField] CardAgent _sliceCardgent;
-    // 气泡预制体
-    [SerializeField] GameObject _backgroundPrefab;
-    // 气泡预制体2 
-    [SerializeField] GameObject _backgroundPrefab2;
-    // 搜索预制体
-    [SerializeField] SearchAgent _searchAgentPrefab;
 
-    /// 背景配置项
-    //气泡上升时间
-    [SerializeField, Range(10f, 100f)] float _backgroundUpDuration = 60f;
-    //生成气泡时间间隔
-    [SerializeField, Range(0.1f, 10f)] float _backgroundUubbleInterval = 0.2f;
+
 
     /// 卡片物理碰撞效果设置
     // 影响距离
@@ -73,13 +54,16 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] EaseEnum _influenceEaseEnum;
 
     /// 整体的移动速度
-    [SerializeField, Range(1f, 600f)] float _movePanelFactor = 100f;
+    [SerializeField, Range(0f, 100f)] float _movePanelFactor = 100f;
     
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
 
     // 配置的行数
     [SerializeField] int _row = 6;
+
+    // 手写板配置项
+    [SerializeField] WritePanelConfig _writePanelConfig;
 
     #endregion
 
@@ -97,9 +81,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
@@ -131,16 +115,7 @@ public class MagicWallManager:MonoBehaviour
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
     public RectTransform mainPanel { get { return _mainPanel; } }
     public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
-    public FlockAgent flockAgent { get { return _flockAgent; } }
-    public CardAgent crossCardgent { get { return _crossCardgent; } }
-    public CardAgent sliceCardgent { get { return _sliceCardgent; } }
-    public GameObject backgroundPrefab { get { return _backgroundPrefab; } }//气泡预制体
-    public GameObject backgroundPrefab2 { get { return _backgroundPrefab2; } }//气泡预制体
-    public SearchAgent searchAgentPrefab { get { return _searchAgentPrefab; } }// 搜索预制体
-    public RectTransform BackgroundPanel { get { return _backgroundPanel; } }
     public RectTransform OperationPanel { get { return _operationPanel; } }
-    public float backgroundUpDuration { get { return _backgroundUpDuration; } }//气泡上升时间
-    public float backgroundUubbleInterval { get { return _backgroundUubbleInterval; } }//生成气泡时间间隔.
     public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
     public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
     public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
@@ -158,6 +133,9 @@ public class MagicWallManager:MonoBehaviour
     public DaoService daoService { get { return _daoService; } }
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
 
+    public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
+
+
     // 获取文件地址
     #endregion
 
@@ -167,7 +145,6 @@ public class MagicWallManager:MonoBehaviour
     private bool _hasInit = false;
 
     private void Init() {
-
         // 初始化数据连接服务
         TheDataSource theDataSource = TheDataSource.Instance;
 
@@ -190,7 +167,7 @@ public class MagicWallManager:MonoBehaviour
         // 初始化场景管理器
         _magicSceneManager.Init(this);
 
-        // 初始化背景管理器
+        // 初始化背景管理器, 此时对象池完成
         _backgroundManager.Init(this);
 
         // 初始化实体管理器
@@ -199,19 +176,12 @@ public class MagicWallManager:MonoBehaviour
         // 初始化实体工厂
         _itemsFactoryAgent.Init(this);
 
-
         _hasInit = true;
     }
 
 
 
-    const float fpsMeasurePeriod = 0.5f;    //FPS测量间隔
-    private int m_FpsAccumulator = 0;   //帧数累计的数量
-    private float m_FpsNextPeriod = 0;  //FPS下一段的间隔
-    private int m_CurrentFps;   //当前的帧率
-    const string display = "{0} FPS";   //显示的文字
-    public Text m_Text;    //UGUI中Text组件
-    public int FPS;//限帧
+
 
     // Awake - init manager of Singleton
     private void Awake()
@@ -219,12 +189,7 @@ public class MagicWallManager:MonoBehaviour
         _hasInit = false;
 
         //  帧数限制
-        Application.targetFrameRate = 60;
-
-        m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod; //Time.realtimeSinceStartup获取游戏开始到当前的时间，增加一个测量间隔，计算出下一次帧率计算是要在什么时候
-
-
-
+        Application.targetFrameRate = FPS;
 
     }
 
@@ -260,7 +225,6 @@ public class MagicWallManager:MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("您按下了W键");
-
             _movePanelFactor = _movePanelFactor - 0.1f;
 
         }
@@ -268,9 +232,7 @@ public class MagicWallManager:MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             Debug.Log("您按下了W键");
-
             _movePanelFactor = _movePanelFactor + 0.1f;
-
         }
 
 
@@ -371,32 +333,20 @@ public class MagicWallManager:MonoBehaviour
     public void SetReset() { _reset = true; }
 
 
+    const float fpsMeasurePeriod = 0.5f;    //FPS测量间隔
+    private int m_FpsAccumulator = 0;   //帧数累计的数量
+    private float m_FpsNextPeriod = 0;  //FPS下一段的间隔
+    private int m_CurrentFps;   //当前的帧率
+    const string display = "{0} FPS";   //显示的文字
+    public int FPS;//限帧
+
     void OnGUI()
     {
-
         GUIStyle titleStyle2 = new GUIStyle();
         titleStyle2.normal.textColor = Color.black;
         titleStyle2.fontSize = 60;
 
-
         GUI.Label(new Rect(30, 10, 300, 300), Input.mousePosition.ToString(), titleStyle2);
-
-
-        // 帧数
-        // 测量每一秒的平均帧率
-        m_FpsAccumulator++;
-        if (Time.realtimeSinceStartup > m_FpsNextPeriod)    //当前时间超过了下一次的计算时间
-        {
-            m_CurrentFps = (int)(m_FpsAccumulator / fpsMeasurePeriod);   //计算
-            m_FpsAccumulator = 0;   //计数器归零
-            m_FpsNextPeriod += fpsMeasurePeriod;    //在增加下一次的间隔
-
-
-            GUI.Label(new Rect(30, 40, 300, 300), string.Format(display, m_CurrentFps), titleStyle2);
-
-        }
-
-
     }
 
 }

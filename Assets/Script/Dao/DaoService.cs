@@ -104,7 +104,7 @@ public class DaoService : Singleton<DaoService>
         string[] descriptions = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
         for (int i = 0; i < imgs.Length; i++) {
             Catalog catalog = new Catalog();
-            catalog.Img = imgs[i];
+            catalog.Img = "env\\" + imgs[i];
             catalog.Description = descriptions[i];
             catalogs.Add(catalog);
         }
@@ -591,7 +591,7 @@ public class DaoService : Singleton<DaoService>
             int size = Random.Range(1, 4);
             size = 3;
             for (int i = 0; i < size; i++) {
-                images.Add(leftImages[i]);
+                images.Add("custom\\" + leftImages[i]);
             }
             return images;
         }
@@ -602,7 +602,7 @@ public class DaoService : Singleton<DaoService>
             size = 5;
             for (int i = 0; i < size; i++)
             {
-                images.Add(middleImages[i]);
+                images.Add("custom\\" + middleImages[i]);
             }
             return images;
         }
@@ -613,7 +613,7 @@ public class DaoService : Singleton<DaoService>
             size = 1;
             for (int i = 0; i < size; i++)
             {
-                images.Add(rightImages[i]);
+                images.Add("custom\\" + rightImages[i]);
             }
             return images;
         }

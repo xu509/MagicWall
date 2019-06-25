@@ -572,6 +572,8 @@ MonoBehaviour:
   _movePanelFactor: 100
   _bg_logo: {fileID: 2060558020}
   _row: 6
+  _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
+  FPS: 60
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -79,6 +79,44 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     #region Protected Method
 
+    /// <summary>
+    ///     初始化卡片类型浮动块数据
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="dataId"></param>
+    /// <param name="dataType"></param>
+    /// <param name="genPosition">生成位置</param>
+    /// <param name="scaleVector3">缩放比例</param>
+    /// <param name="originAgent">原关联的浮块</param>
+    public void InitCardData(MagicWallManager manager,int dataId,MWTypeEnum dataType,
+        Vector3 genPosition,Vector3 scaleVector3,FlockAgent originAgent)
+    {
+        InitBase(manager, dataId, dataType, true);
+
+        //  命名
+        if (originAgent != null)
+        {
+            name = dataType.ToString() + "(" + originAgent.name + ")";
+
+            //  添加原组件
+            OriginAgent = originAgent;
+        }
+
+        //  定出生位置
+        GetComponent<RectTransform>().anchoredPosition3D = genPosition;
+
+        //  配置scene
+        SceneIndex = _manager.SceneIndex;
+
+        GetComponent<RectTransform>().localScale = scaleVector3;
+
+        //  初始化长宽字段
+        Width = GetComponent<RectTransform>().rect.width;
+        Height = GetComponent<RectTransform>().rect.height;
+
+    }
+
+
     //
     //  Init 代理
     //
