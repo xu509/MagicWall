@@ -55,7 +55,7 @@ public class AgentManager : MonoBehaviour
     /// <summary>
     ///     后层的对象池
     /// </summary>
-    private FlockAgentPool<FlockAgent> _flockAgentInBackPool;
+    private FlockAgentInBackPool<FlockAgent> _flockAgentInBackPool;
 
     /// <summary>
     /// 十字展开操作块对象池
@@ -110,7 +110,7 @@ public class AgentManager : MonoBehaviour
         _flockAgentPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize);
         _flockAgentPool.Init(_flockAgentPrefab, _flockContainer);
 
-        _flockAgentInBackPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
+        _flockAgentInBackPool = FlockAgentInBackPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
         _flockAgentInBackPool.Init(_flockAgentPrefab, _backContainer);
 
         _crossCardAgentPool = FlockAgentPool<CrossCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
@@ -203,8 +203,6 @@ public class AgentManager : MonoBehaviour
         _flockAgentInBackPool.Reset();
         _sliceCardAgentPool.Reset();
         _crossCardAgentPool.Reset();
-
-
     }
 
 

@@ -10,16 +10,34 @@ public class DisplayBehaviorConfig
 {
     private MagicWallManager _manager;
     private int _row;
-    private int _column;
+    private int _column;    // 最右侧的列数
     private float _itemWidth;
     private float _itemHeight;
-    private Dictionary<int, float> _lastPositionXDic;
-    private Dictionary<int, float> _lastPositionYDic;
     private SceneContentType _sceneContentType;
     private Dictionary<int, List<FlockAgent>> _agentsOfPages = new Dictionary<int, List<FlockAgent>>();
     private int _page = 0;
     private ItemsFactory _itemsFactory;
     private float _displayTime;
+    private SceneUtils _sceneUtils;
+
+    /// <summary>
+    /// 根据行数的数据字典
+    /// </summary>
+    private Dictionary<int, ItemPositionInfoBean> _rowAgentsDic = new Dictionary<int, ItemPositionInfoBean>();
+    /// <summary>
+    /// 根据行数的数据字典
+    /// </summary>
+    public Dictionary<int, ItemPositionInfoBean> rowAgentsDic { set { _rowAgentsDic = value; } get { return _rowAgentsDic; } }
+
+    /// <summary>
+    /// 根据列数的数据字典
+    /// </summary>
+    private Dictionary<int, ItemPositionInfoBean> _columnAgentsDic = new Dictionary<int, ItemPositionInfoBean>();
+    /// <summary>
+    /// 根据列数的数据字典
+    /// </summary>
+    public Dictionary<int, ItemPositionInfoBean> columnAgentsDic { set { _columnAgentsDic = value; } get { return _columnAgentsDic; } }
+
 
     public ItemsFactory ItemsFactory
     {
@@ -38,6 +56,9 @@ public class DisplayBehaviorConfig
         get { return _row; }
     }
 
+    /// <summary>
+    /// 最右侧的列数
+    /// </summary>
     public int Column
     {
         set { _column = value; }
@@ -54,18 +75,6 @@ public class DisplayBehaviorConfig
     {
         set { _itemHeight = value; }
         get { return _itemHeight; }
-    }
-
-    public Dictionary<int, float>  LastPositionXDic
-    {
-        set { _lastPositionXDic = value; }
-        get { return _lastPositionXDic; }
-    }
-
-    public Dictionary<int, float> LastPositionYDic
-    {
-        set { _lastPositionYDic = value; }
-        get { return _lastPositionYDic; }
     }
 
     public SceneContentType SceneContentType
@@ -91,6 +100,17 @@ public class DisplayBehaviorConfig
         set { _displayTime = value; }
         get { return _displayTime; }
     }
+
+    public SceneUtils sceneUtils
+    {
+        set { _sceneUtils = value; }
+        get { return _sceneUtils; }
+    }
+
+
+
+
+
 
 
     //

@@ -25,12 +25,10 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         _daoService = DaoService.Instance;
 
         flag = false;
-
     }
 
     public void Run()
 	{
-
 	    // 面板向左移动
         Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
         _manager.mainPanel.transform.Translate(to);
@@ -39,9 +37,11 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
         _manager.updateOffsetOfCanvas();
 
         UpdateAgents();
-
     }
 
+    /// <summary>
+    ///     更新移动状态
+    /// </summary>
     private void UpdateAgents()
     {
         if (_displayBehaviorConfig.SceneContentType == SceneContentType.activity)
@@ -60,68 +60,42 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnv()
     {
-        /*
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
+        int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
 
-        int offsetUnit = Mathf.CeilToInt((w * 1.0f) / 4);
-        int page = _displayBehaviorConfig.Page;
+        // 获取右侧最小的距离
+        int column = _displayBehaviorConfig.Column;
 
-        if (w + _manager.PanelOffsetX - (offsetUnit * page) > 0)
-        {
-            // 需要获得当前的 column
-            int cols_offsets = Mathf.CeilToInt(_displayBehaviorConfig.Column * 1.0f / 4);
-            int y = page * cols_offsets + 1;
-            int rows = _displayBehaviorConfig.Row;
+        Vector2 position = _displayBehaviorConfig.sceneUtils.GetPositionOfSquareItem(itemHeight, 0, column);
 
-            for (int x = 1; x <= rows; x++)
-            {
-                for (int z = y; z < (y + cols_offsets); z++)
-                {
+        // 超过屏幕的距离
+        float overDistense = (position.x - itemHeight / 2) - Screen.width;
 
-                    FlockAgent agent = CreateItem(_displayBehaviorConfig.ItemsFactory, x, z); // 创建新的
-                    _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
-                }
-            }
-            _displayBehaviorConfig.Page += 1;
-
-            if ((_displayBehaviorConfig.Page - 5) > 0)
-                AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
-        }
-        else
-        {
-
-        }
-        */
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
-        float itemWidth = _displayBehaviorConfig.ItemsFactory.GetItemWidth();
-        float itemHeight = _displayBehaviorConfig.ItemsFactory.GetItemHeight();
-        float row = _manager.Row;
-        int startColumn = _displayBehaviorConfig.ItemsFactory.GetSceneColumn();
-        int extra = (int)(7 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
-
-        if (Math.Abs(_manager.PanelOffsetX) > 0)
+        if ((overDistense - _manager.PanelOffsetX) < 0)
         {
             if (flag == false)
             {
-                for (int i = 0; i < row; i++)
+                flag = true;
+                //int startColumn = _displayBehaviorConfig.sceneUtils.GetColumnNumberByFixedWidth(itemHeight);
+                int extra = 2; // 该值需注意不要与自动清理的功能冲突
+
+                for (int i = 0; i < _displayBehaviorConfig.Row; i++)
                 {
-                    for (int j = startColumn; j < startColumn + extra; j++)
+                    for (int j = column; j < column + extra; j++)
                     {
-                        Vector2 vector2 = _displayBehaviorConfig.ItemsFactory.GetOriginPosition(i, j);
+                        Vector2 vector2 = _displayBehaviorConfig.sceneUtils.GetPositionOfSquareItem(itemHeight, i, j);
                         float x = vector2.x;
                         float y = vector2.y;
-                        //生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j, itemWidth, itemHeight, 
-                            _daoService.GetEnterprise(), AgentContainerType.MainPanel);
 
+                        //生成 agent
+                         _displayBehaviorConfig.ItemsFactory.Generate(x, y, x, y, i, j,
+                            itemHeight, itemHeight,_daoService.GetEnterprise(), AgentContainerType.MainPanel);
                     }
                 }
-                flag = true;
+
+                _displayBehaviorConfig.Column = column + extra;
+                flag = false;
             }
         }
-
     }
 
     private void UpdateAgentsOfActivity()
@@ -199,18 +173,6 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
             }
         }
 
-    }
-
-    private FlockAgent CreateItem(ItemsFactory factory, int row, int column) {
-        row = row - 1;
-        column = column - 1;
-
-        Vector2 vector2 = factory.GetOriginPosition(row, column);
-        float x = vector2.x;
-        float y = vector2.y;
-
-        return factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(),
-            _daoService.GetEnterprise(), AgentContainerType.MainPanel);
     }
 
 }

@@ -589,6 +589,34 @@ public class FlockAgent : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
+        if (_manager.Status != WallStatusEnum.Cutting)
+        {
+            Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            if (position.x + (Width * 4) < 0)
+            {
+                _agentManager.ClearAgent(this);
+            }
+            else if (position.x - (Width * 4) > Screen.width)
+            {
+                _agentManager.ClearAgent(this);
+
+            }
+            else if (position.y + (Height * 4) < 0)
+            {
+                _agentManager.ClearAgent(this);
+
+            }
+            else if (position.y - (Height * 4) > Screen.height)
+            {
+                _agentManager.ClearAgent(this);
+
+            }
+        }
+    }
+
 
 
 }

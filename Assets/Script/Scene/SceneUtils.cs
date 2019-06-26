@@ -9,7 +9,6 @@ public class SceneUtils
 {
     private float _gap = 58;
 
-
     MagicWallManager _manager;
 
     /// <summary>
@@ -40,6 +39,7 @@ public class SceneUtils
         _screen_height = manager.mainPanel.rect.height;
     }
 
+    #region 当列数固定时，获取固定的宽度
     /// <summary>
     ///    当列数固定时，获取固定的宽度
     /// </summary>
@@ -53,7 +53,9 @@ public class SceneUtils
         float w =  (_screen_width - gap / 2) / _column - gap;
         return Mathf.RoundToInt(w);
     }
+    #endregion
 
+    #region 当列数固定时，获取固定的宽度
     /// <summary>
     ///    当列数固定时，获取固定的宽度
     /// </summary>
@@ -64,6 +66,9 @@ public class SceneUtils
         float h = (_screen_height - gap) / _row - gap;
         return Mathf.RoundToInt(h);
     }
+    #endregion
+
+    #region 获取间隙
 
     /// <summary>
     ///     获取间隙
@@ -77,7 +82,9 @@ public class SceneUtils
 
         return Mathf.RoundToInt(gap);
     }
+    #endregion
 
+    #region 获取正方形 item 的坐标
 
     /// <summary>
     ///     获取正方形 item 的坐标
@@ -95,7 +102,41 @@ public class SceneUtils
         return new Vector2(x, y);
 
     }
+    #endregion
 
+    /// <summary>
+    /// 根据宽度获取列数
+    /// </summary>
+    /// <param name="ItemWidth"></param>
+    /// <returns></returns>
+    public int GetColumnNumberByFixedWidth(int ItemWidth) {
+        float columnf = _screen_width / (ItemWidth + GetGap());
+        return Mathf.RoundToInt(columnf);
+    }
 
+    /// <summary>
+    ///     获得固定高度状态下，不规律的item的位置
+    /// </summary>
+    /// <param name="previousItem">上一个item的信息</param>
+    /// <param name="fixedHeight">固定的高度</param>
+    /// <param name="itemWidth">当前item的宽度</param>
+    /// <returns></returns>
+    public Vector2 GetPositionOfIrregularItemByFixedHeight(ItemPositionInfoBean previousItem,int fixedHeight,int itemWidth,int row)
+    {
+        int gap = GetGap();
+        int x;
+        if (previousItem == null)
+        {
+            // 首个
+            x = 0 + gap / 2 + itemWidth / 2;
+        }
+        else {
+            x = previousItem.xposition + gap / 2 + itemWidth / 2;
+        }
+
+        int y = row * (fixedHeight + gap) + fixedHeight / 2 + gap;
+        return new Vector2(x, y);
+
+    }
 
 }

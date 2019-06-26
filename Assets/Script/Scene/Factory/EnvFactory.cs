@@ -72,10 +72,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         height = (int)height;
         Enterprise env = data as Enterprise;
 
-        if (gen_x == ori_x)
-        {
-            //print(row+"---"+column);
-        }
         //  创建 Agent
         FlockAgent newAgent = _agentManager.GetFlockAgent(agentContainerType);
         //  命名
