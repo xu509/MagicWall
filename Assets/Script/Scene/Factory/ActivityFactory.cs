@@ -132,6 +132,12 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #endregion
 
 
+    /// <summary>
+    /// 获取生成的位置
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
     public Vector2 GetOriginPosition(int row, int column)
     {
         //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
@@ -174,11 +180,19 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         return new Vector2(x, y);
     }
 
+    /// <summary>
+    /// 获取固定的长度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemWidth()
     {
         return _itemWidth;
     }
 
+    /// <summary>
+    /// 获取固定的高度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemHeight()
     {
         return _itemHeight;
@@ -193,15 +207,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     {
         return _gap;
     }
-
-    //public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId , bool isActive)
-    //{
-    //    CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
-    //    // 设置显示状态
-    //    cardAgent.gameObject.SetActive(isActive);
-
-    //    return cardAgent;
-    //}
 
 
 }

@@ -8,6 +8,7 @@ public abstract class CutEffect : MonoBehaviour
     protected MagicWallManager _manager;
     protected AgentManager _agentManager;
     protected DaoService _daoService;
+    protected SceneUtils _sceneUtil;
 
     //
     //  Parameter
@@ -61,6 +62,8 @@ public abstract class CutEffect : MonoBehaviour
         _daoService = DaoService.Instance;
 
         Init(_manager);
+
+        _sceneUtil = new SceneUtils(_manager);
 
 
         sceneContentType = st;

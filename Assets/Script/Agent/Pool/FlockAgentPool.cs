@@ -107,4 +107,9 @@ public class FlockAgentPool<T> where T:FlockAgent
         _pool.Enqueue(flockAgent);
     }
 
+    public void Reset() {
+        _pool = new Queue<T>();
+        _initTotal = 0;
+    }
+
 }

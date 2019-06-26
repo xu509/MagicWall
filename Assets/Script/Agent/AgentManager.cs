@@ -198,6 +198,13 @@ public class AgentManager : MonoBehaviour
             DestoryAgent(agent);
         }
         effectAgent = new List<FlockAgent>();
+
+        _flockAgentPool.Reset();
+        _flockAgentInBackPool.Reset();
+        _sliceCardAgentPool.Reset();
+        _crossCardAgentPool.Reset();
+
+
     }
 
 

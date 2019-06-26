@@ -478,13 +478,13 @@ public class DaoService : Singleton<DaoService>
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         // Real 
-        CutEffect[] effects = new CutEffect[] { new LeftRightAdjustCutEffect(),new CurveStaggerCutEffect()
+        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(), new LeftRightAdjustCutEffect()
             , new FrontBackUnfoldCutEffect() ,new StarsCutEffect() 
             , new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
+        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
+        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
 
         for (int i = 0; i < effects.Length; i++)

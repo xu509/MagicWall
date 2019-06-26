@@ -59,15 +59,18 @@ public class MagicWallManager:MonoBehaviour
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
 
-    // 配置的行数
-    [SerializeField] int _row = 6;
-
     // 手写板配置项
     [SerializeField] WritePanelConfig _writePanelConfig;
 
+    /// <summary>
+    ///     间隙系数
+    /// </summary>
+    [SerializeField, Range(0f, 5f)]float _gapFactor;
     #endregion
 
     #region 非配置属性
+
+    int _row = 6;   //  列数
 
     // 面板的差值
     float panelOffsetX = 0f;
@@ -81,9 +84,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-     public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+     //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
@@ -132,9 +135,8 @@ public class MagicWallManager:MonoBehaviour
     public BackgroundManager backgroundManager { get { return _backgroundManager; } }
     public DaoService daoService { get { return _daoService; } }
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
-
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
-
+    public float GapFactor { get { return _gapFactor; } }
 
     // 获取文件地址
     #endregion

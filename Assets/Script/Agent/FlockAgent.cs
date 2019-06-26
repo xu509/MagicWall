@@ -502,32 +502,7 @@ public class FlockAgent : MonoBehaviour
 
     }
 
-    //
-    //  获取Logo
-    //
-    public RectTransform GetLogo() {
-        Transform transform_thumb = null;
-        Transform transform_logo = null;
-        foreach(Transform child in transform){
-            if (child.name == "thumb") {
-                transform_thumb = child;
-                break;
-            }
-        }
 
-        if (transform_thumb != null) {
-            foreach (Transform child in transform_thumb)
-            {
-                if (child.name == "logo")
-                {
-                    transform_logo = child;
-                    return transform_logo.GetComponent<RectTransform>();
-                }
-            }
-        }
-        
-        return null;
-    }
 
 
     //  判断是否需要调整位置

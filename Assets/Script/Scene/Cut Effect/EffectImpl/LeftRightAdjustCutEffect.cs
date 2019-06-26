@@ -169,11 +169,6 @@ public class LeftRightAdjustCutEffect : CutEffect
                     FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, j, 
                         itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
 
-                    if (i == 5 && j == 17)
-                    {
-                        Debug.Log(go.name + " - (6,18) : " + gen_x + " | " + gen_y + " - delay_time : " + delay);
-                    }
-
                     go.Delay = delay;
                     go.DelayTime = delay;
                     x = x + go.Width + gap;

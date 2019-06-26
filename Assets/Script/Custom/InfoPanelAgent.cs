@@ -114,7 +114,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _leftImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir  + _leftImages[i]);
         }
     }
 
@@ -127,7 +127,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _middleImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir  + _middleImages[i]);
         }
     }
 
@@ -140,7 +140,7 @@ public class InfoPanelAgent : MonoBehaviour
             rtf.anchoredPosition = Vector2.zero;
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
-            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _rightImages[i]);
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + _rightImages[i]);
         }
     }
 
@@ -150,7 +150,7 @@ public class InfoPanelAgent : MonoBehaviour
     }
 
     void AdjustLayout() {
-        Texture texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + "custom\\" + _leftImages[0]);
+        Texture texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir  + _leftImages[0]);
 
         float h = texture.height;
         float w = texture.width;

@@ -74,4 +74,5 @@ public class ClearBubbleAgent : BubbleAgent
         Vector3 position =  new Vector3(x, -_width, 0);
         return position;
     }
+
 }
