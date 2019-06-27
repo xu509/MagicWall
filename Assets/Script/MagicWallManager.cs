@@ -54,7 +54,7 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] EaseEnum _influenceEaseEnum;
 
     /// 整体的移动速度
-    [SerializeField, Range(0f, 100f)] float _movePanelFactor = 100f;
+    [SerializeField, Range(0f, 100f)] float _movePanelFactor;
     
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
@@ -86,9 +86,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";

@@ -157,7 +157,7 @@ public class SceneUtils
     /// <param name="itemHeight"></param>
     /// <param name="row"></param>
     /// <returns></returns>
-    public float GetXPositionByFixedHeight(int itemWidth, int column)
+    public float GetXPositionByFixedWidth(int itemWidth, int column)
     {
         int gap = GetGap();
         float x = column * (itemWidth + gap) + itemWidth / 2 + gap;

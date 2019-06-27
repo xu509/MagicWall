@@ -77,7 +77,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 
         // 查看每一列顶部是否已低于阈值
         int column = 0;    // 最短的列下表
-        int last_y = 10000000;
+        int last_y = int.MaxValue;
         ItemPositionInfoBean bean = new ItemPositionInfoBean();
         foreach (KeyValuePair<int, ItemPositionInfoBean> keyValuePair in columnAgentsDic)
         {
@@ -109,7 +109,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                 Sprite coverSprite = data.GetCoverSprite();
                 int itemHeight = Mathf.RoundToInt(AppUtils.GetSpriteHeightByWidth(coverSprite, itemwidth));
 
-                float ori_x = _displayBehaviorConfig.sceneUtils.GetXPositionByFixedHeight(itemwidth, column);
+                float ori_x = _displayBehaviorConfig.sceneUtils.GetXPositionByFixedWidth(itemwidth, column);
                 float ori_y = Mathf.RoundToInt(last_y + itemHeight / 2);
 
                 int row = bean.row + 1;

@@ -447,7 +447,7 @@ public class DaoService : Singleton<DaoService>
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
         {
-            appConfig.Value = "30";
+            appConfig.Value = "20";
         }
         else
         {
@@ -486,12 +486,12 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
         CutEffect[] effects = new CutEffect[] {
+            new CurveStaggerCutEffect(),
+            new UpDownAdjustCutEffect(),
             new MidDisperseCutEffect(),
             new StarsCutEffect(),
             new FrontBackUnfoldCutEffect(),
             new LeftRightAdjustCutEffect(),
-            new CurveStaggerCutEffect(),
-            new UpDownAdjustCutEffect()
         };
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
@@ -519,60 +519,7 @@ public class DaoService : Singleton<DaoService>
         }
 
 
-        //SceneConfig sceneConfig = new SceneConfig();
-        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig.SceneContentType = SceneContentType.env;
-        //sceneConfigs.Add(sceneConfig);
-        //CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(),  new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
-        //    new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product,SceneContentType.activity, SceneContentType.env };
 
-        //for (int i = 0; i < effects.Length; i++)
-        //{
-        //    for (int j = 0; j < contentTypes.Length; j++)
-        //    {
-        //        SceneConfig sceneConfig = new SceneConfig();
-        //        sceneConfig.CutEffect = effects[i];
-        //        sceneConfig.SceneContentType = contentTypes[j];
-        //        sceneConfigs.Add(sceneConfig);
-        //    }
-        //}
-
-
-        //SceneConfig sceneConfig = new SceneConfig();
-        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig);
-
-        //SceneConfig sceneConfig2 = new SceneConfig();
-        //sceneConfig2.CutEffect = new MidDisperseCutEffect();
-        //sceneConfig2.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig2);
-
-        //SceneConfig sceneConfig3 = new SceneConfig();
-        //sceneConfig3.CutEffect = new StarsCutEffect();
-        //sceneConfig3.SceneContentType = SceneContentType.activity;
-        //sceneConfigs.Add(sceneConfig3);
-
-        //SceneConfig sceneConfig4 = new SceneConfig();
-        //sceneConfig4.CutEffect = new LeftRightAdjustCutEffect();
-        //sceneConfig4.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig4);
-
-        //SceneConfig sceneConfig5 = new SceneConfig();
-        //sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
-        //sceneConfig5.SceneContentType = SceneContentType.env;
-        //sceneConfigs.Add(sceneConfig5);
-
-        //SceneConfig sceneConfig6 = new SceneConfig();
-        //sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
-        //sceneConfig6.SceneContentType = SceneContentType.activity;
-        //sceneConfigs.Add(sceneConfig6);
-
-        //SceneConfig sceneConfig7 = new SceneConfig();
-        //sceneConfig7.CutEffect = new FrontBackUnfoldCutEffect();
-        //sceneConfig7.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig7);
 
         return sceneConfigs;
     }

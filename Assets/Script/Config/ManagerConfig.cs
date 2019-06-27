@@ -11,7 +11,7 @@ public class ManagerConfig : ScriptableObject
     public int SelectedItemMaxCount;
 
     /// <summary>
-    /// 8屏时，固定为28列
+    /// 8屏时，固定为28列; 5 屏 18
     /// </summary>
     [Range(5, 30), Header("固定的列数")]
     public int Column;

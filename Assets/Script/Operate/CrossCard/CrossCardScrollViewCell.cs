@@ -55,7 +55,8 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
-        IList<CrossCardCellData> datas = CardItemFactoryInstance.Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
+        IList<CrossCardCellData> datas = CardItemFactoryInstance.
+            Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
         subScrollController.UpdateData(datas);
 
         subScrollController.crossCardScrollViewCell = this;

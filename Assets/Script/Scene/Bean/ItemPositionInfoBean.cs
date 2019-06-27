@@ -12,9 +12,13 @@ public class ItemPositionInfoBean
     int _row = 0;
 
     /// <summary>
-    /// 行坐标
+    /// 行坐标（最大的）
     /// </summary>
     int _xposition = 0;
+    public int xposition{ set { _xposition = value; }get {  return _xposition; } }
+
+    int _xpositionMin = 0;
+    public int xPositionMin { set { _xpositionMin = value; } get { return _xpositionMin; } }
 
     /// <summary>
     /// 所处的列
@@ -22,9 +26,13 @@ public class ItemPositionInfoBean
     int _column = 0;
 
     /// <summary>
-    /// 列坐标
+    /// 列坐标(最大的)
     /// </summary>
     int _yposition = 0;
+
+    int _ypositionMin = 0;
+    public int yPositionMin { set { _ypositionMin = value; } get { return _ypositionMin; } }
+
 
     int _height = 0;
 
@@ -39,17 +47,6 @@ public class ItemPositionInfoBean
         }
     }
 
-    public int xposition
-    {
-        set
-        {
-            _xposition = value;
-        }
-        get
-        {
-            return _xposition;
-        }
-    }
 
     public int column
     {

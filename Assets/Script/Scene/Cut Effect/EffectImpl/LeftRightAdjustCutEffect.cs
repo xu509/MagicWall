@@ -11,8 +11,6 @@ public class LeftRightAdjustCutEffect : CutEffect
     private int _row;   // 总共的行数
     private int _column;    //总共的列数
 
-    private int _page;  // 页码
-
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
     private float _startingTimeWithOutDelay;
@@ -312,17 +310,8 @@ public class LeftRightAdjustCutEffect : CutEffect
 
     public override void OnStartingCompleted(){
         //  初始化表现形式
-        int _row = _manager.Row;
-        int _column = ItemsFactory.GetSceneColumn();
-        float _itemWidth = ItemsFactory.GetItemWidth();
-        float _itemHeight = ItemsFactory.GetItemHeight();
 
-        _displayBehaviorConfig.Row = _row;
-        _displayBehaviorConfig.Column = _column;
-        _displayBehaviorConfig.ItemWidth = _itemWidth;
-        _displayBehaviorConfig.ItemHeight = _itemHeight;
         _displayBehaviorConfig.SceneContentType = sceneContentType;
-        _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.Manager = _manager;

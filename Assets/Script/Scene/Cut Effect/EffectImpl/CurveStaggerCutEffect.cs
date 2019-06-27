@@ -8,17 +8,10 @@ using DG.Tweening;
 public class CurveStaggerCutEffect : CutEffect
 {
 
-    private int _page;  // 页码
-
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
     private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
-
-
-    private int _row;   // 总共的行数
-    private int _column;    //总共的列数
-
 
     //
     //  Init
@@ -55,8 +48,6 @@ public class CurveStaggerCutEffect : CutEffect
 
     #region 动画实现
     public override void Starting() {
-        Debug.Log("Do Starting");
-
         for (int i = 0; i < _agentManager.Agents.Count; i++) {
             FlockAgent agent = _agentManager.Agents[i];
             //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
@@ -96,10 +87,7 @@ public class CurveStaggerCutEffect : CutEffect
     public override void OnStartingCompleted(){
         //  初始化表现形式
 
-        _displayBehaviorConfig.Row = _row;
-        _displayBehaviorConfig.Column = _column;
         _displayBehaviorConfig.SceneContentType = sceneContentType;
-        _displayBehaviorConfig.Page = _page;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.Manager = _manager;
@@ -110,240 +98,93 @@ public class CurveStaggerCutEffect : CutEffect
     #region 企业浮动块创建    
     protected override void CreateLogo()
     {
-        _row = _manager.Row;
-        int itemWidth = _sceneUtil.GetFixedItemHeight();
-        _column = _sceneUtil.GetColumnNumberByFixedWidth(itemWidth);
-
-        float itemHeight = itemWidth;
-        float gap = _sceneUtil.GetGap();
-
-        //从左往右，从下往上
-        for (int i = 0; i < _row; i++)
-        {
-            for (int j = 0; j < _column; j++)
-            {
-                Vector2 vector2 = _sceneUtil.GetPositionOfSquareItem(Mathf.RoundToInt(itemWidth), i, j);
-                float x = vector2.x;
-                float y = vector2.y;
-
-                int middleY = _row / 2;
-                int middleX = _column / 2;
-
-                float delayX = j * 0.06f;
-                float delayY;
-
-                // 定义源位置
-                float ori_x, ori_y;
-
-                if (i < middleY)
-                {
-                    delayY = System.Math.Abs(middleY - i) * 0.3f;
-                    ori_x = (_column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2;
-                    ori_y = (_column - j - middleY + _row - 1) * (itemHeight + gap) + itemHeight / 2;
-                    //the_RectTransform.DOLocalMove(new Vector3((column + middleY - i - 1) * (itemWidth + gap) + itemWidth / 2, (column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
-                }
-                else
-                {
-                    delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    ori_x = (_column + i - middleY) * (itemWidth + gap) + itemWidth / 2;
-                    ori_y = -(_column - j - middleY) * (itemHeight + gap) + itemHeight / 2;
-                    //the_RectTransform.DOLocalMove(new Vector3((column + i - middleY) * (itemWidth + gap) + itemWidth / 2, -(column - j - middleY) * (itemHeight + gap) + itemHeight / 2, 0), dur_time - delayX + delayY).SetEase(Ease.InOutQuad).From();
-                }
-
-                //生成 agent
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, x, y, i, j, itemWidth, itemHeight,
-                    _daoService.GetEnterprise(), AgentContainerType.MainPanel);
-
-                // 装载延迟参数
-                go.DelayX = delayX;
-                go.DelayY = delayY;
-
-                //// 调整大小
-                //RectTransform the_RectTransform = go.GetComponent<RectTransform>();
-                //the_RectTransform.sizeDelta = new Vector2(itemWidth, itemWidth);
-
-                // 生成透明度动画
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
-
-                // 获取启动动画的延迟时间
-                if ((delayY - delayX) > _startDelayTime)
-                {
-                    _startDelayTime = delayY - delayX;
-                }
-
-            }
-        }
-
-        // 调整启动动画的时间
-        StartingDurTime += _startDelayTime;
+        CreateItem(DataType.env);
+      
     }
     #endregion
 
     #region 产品浮动块创建
     protected override void CreateProduct()
     {
-        // 行数固定，宽度需缩放调整
-        _displayBehaviorConfig.rowAgentsDic = new Dictionary<int, ItemPositionInfoBean>();
-        int _row = _manager.Row;
-        float itemWidth;
-        int itemHeight = _sceneUtil.GetFixedItemHeight();
-        int gap = _sceneUtil.GetGap();
-
-        float w = _manager.mainPanel.rect.width;
-
-        //从左往右，从下往上
-        for (int i = 0; i < _row; i++)
-        {
-            int position_x = 0;
-            int column = 0;
-
-            while (position_x < w) {
-
-                Product product = _daoService.GetProduct();
-                itemWidth = AppUtils.GetSpriteWidthByHeight(product.SpriteImage, itemHeight);
-
-                ItemPositionInfoBean bean;
-                if (_displayBehaviorConfig.rowAgentsDic.ContainsKey(i)) {
-                    bean = _displayBehaviorConfig.rowAgentsDic[i];
-                } else {
-                    bean = new ItemPositionInfoBean();
-                    _displayBehaviorConfig.rowAgentsDic.Add(i, bean);
-                }
-
-                // 获取X和Y
-                Vector2 position =  _sceneUtil.GetPositionOfIrregularItemByFixedHeight(bean, itemHeight, Mathf.RoundToInt(itemWidth), i);
-
-
-                float ori_x = position.x;
-                float ori_y = position.y;
-
-                int middleY = _row / 2;
-
-                float delayX = column * 0.06f;
-                float delayY;
-
-                // 定义出生位置
-                float gen_x = ori_x, gen_y = ori_y;
-
-                if (i < middleY)
-                {
-                    delayY = System.Math.Abs(middleY - i) * 0.3f;
-                    gen_x = w + (middleY - i) * 500;
-                    gen_y = w - ori_x + (_row - 1) * itemHeight;
-                }
-                else
-                {
-                    delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    gen_x = w + (i - middleY + 1) * 500;
-                    gen_y = -(w - ori_x) + 2 * itemHeight;
-                }
-
-                //生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
-                    itemWidth, itemHeight, product, AgentContainerType.MainPanel);
-
-                // 装载延迟参数
-                go.DelayX = delayX;
-                go.DelayY = delayY;
-
-
-                // 生成透明度动画
-                go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
-
-                // 获取启动动画的延迟时间
-                if ((delayY - delayX) > _startDelayTime)
-                {
-                    _startDelayTime = delayY - delayX;
-                }
-
-
-                bean.column = column;
-
-                position_x = Mathf.RoundToInt(ori_x + itemWidth / 2 + gap / 2);
-
-                bean.xposition = position_x;
-
-                column++;
-            }
-        }
-
-        // 调整启动动画的时间
-        StartingDurTime += _startDelayTime;
-
-
+        CreateItem(DataType.product);
     }
     #endregion
 
     #region 活动浮动块创建
     protected override void CreateActivity()
     {
-        // 行数固定，宽度需缩放调整
-        _displayBehaviorConfig.rowAgentsDic = new Dictionary<int, ItemPositionInfoBean>();
-        int _row = _manager.Row;
-        float itemWidth;
-        int itemHeight = _sceneUtil.GetFixedItemHeight();
-        int gap = _sceneUtil.GetGap();
+        CreateItem(DataType.activity);
+    }
+    #endregion
 
+
+    private void CreateItem(DataType dataType) {
+
+        // 固定高度
+        int _row = _manager.Row;
+        int _itemHeight = _sceneUtil.GetFixedItemHeight();
+        float gap = _sceneUtil.GetGap();
+
+        int _nearColumn = Mathf.RoundToInt(_manager.mainPanel.rect.width / (_itemHeight + gap));
         float w = _manager.mainPanel.rect.width;
 
-        //从左往右，从下往上
-        for (int i = 0; i < _row; i++)
-        {
-            int position_x = 0;
+
+        // 从上至下，生成
+        for (int row = 0; row < _row; row++) {
             int column = 0;
 
-            while (position_x < w)
+            ItemPositionInfoBean itemPositionInfoBean;
+            if (_displayBehaviorConfig.rowAgentsDic.ContainsKey(row))
             {
-                var activity = _daoService.GetActivity();
+                itemPositionInfoBean = _displayBehaviorConfig.rowAgentsDic[row];
+            }
+            else
+            {
+                itemPositionInfoBean = new ItemPositionInfoBean();
+                _displayBehaviorConfig.rowAgentsDic.Add(row, itemPositionInfoBean);
+            }
 
-                itemWidth = AppUtils.GetSpriteWidthByHeight(activity.SpriteImage, itemHeight);
+            int gen_x_position = itemPositionInfoBean.xposition;
 
-                ItemPositionInfoBean bean;
-                if (_displayBehaviorConfig.rowAgentsDic.ContainsKey(i))
-                {
-                    bean = _displayBehaviorConfig.rowAgentsDic[i];
-                }
-                else
-                {
-                    bean = new ItemPositionInfoBean();
-                    _displayBehaviorConfig.rowAgentsDic.Add(i, bean);
-                }
+            while (gen_x_position < _manager.mainPanel.rect.width)
+            {
+                // 获取数据
+                FlockData data = _daoService.GetFlockData(dataType);
+                Sprite coverSprite = data.GetCoverSprite();
+                float itemWidth = AppUtils.GetSpriteWidthByHeight(coverSprite, _itemHeight);
 
-                // 获取X和Y
-                Vector2 position = _sceneUtil.GetPositionOfIrregularItemByFixedHeight(bean, itemHeight, Mathf.RoundToInt(itemWidth), i);
-
-                float ori_x = position.x;
-                float ori_y = position.y;
+                int ori_y = Mathf.RoundToInt(_sceneUtil.GetYPositionByFixedHeight(_itemHeight,row));
+                int ori_x = Mathf.RoundToInt(gen_x_position + itemWidth / 2 + gap / 2);
 
                 int middleY = _row / 2;
+                int middleX = _nearColumn / 2;
 
                 float delayX = column * 0.06f;
                 float delayY;
 
-                // 定义出生位置
-                float gen_x = ori_x, gen_y = ori_y;
+                // 定义源位置
+                float gen_x, gen_y;
 
-                if (i < middleY)
+                if (row < middleY)
                 {
-                    delayY = System.Math.Abs(middleY - i) * 0.3f;
-                    gen_x = w + (middleY - i) * 500;
-                    gen_y = w - ori_x + (_row - 1) * itemHeight;
+                    delayY = System.Math.Abs(middleY - row) * 0.3f;
+                    gen_x = w + (middleY - row) * 500;
+                    gen_y = w - ori_x + (_row - 1) * _itemHeight;
                 }
                 else
                 {
-                    delayY = (System.Math.Abs(middleY - i) + 1) * 0.3f;
-                    gen_x = w + (i - middleY + 1) * 500;
-                    gen_y = -(w - ori_x) + 2 * itemHeight;
+                    delayY = (System.Math.Abs(middleY - row) + 1) * 0.3f;
+                    gen_x = w + (row - middleY + 1) * 500;
+                    gen_y = -(w - ori_x) + 2 * _itemHeight;
                 }
 
                 //生成 agent
-                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
-                    itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
+                FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y
+                    , row , column, itemWidth, _itemHeight, data, AgentContainerType.MainPanel);
 
                 // 装载延迟参数
                 go.DelayX = delayX;
                 go.DelayY = delayY;
-
 
                 // 生成透明度动画
                 go.GetComponentInChildren<Image>().DOFade(0, StartingDurTime - delayX + delayY).From();
@@ -354,19 +195,16 @@ public class CurveStaggerCutEffect : CutEffect
                     _startDelayTime = delayY - delayX;
                 }
 
-
-                bean.column = column;
-
-                position_x = Mathf.RoundToInt(ori_x + itemWidth / 2 + gap / 2);
-
-                bean.xposition = position_x;
+                gen_x_position = Mathf.RoundToInt(gen_x_position + itemWidth + gap / 2);
+                _displayBehaviorConfig.rowAgentsDic[row].xposition = gen_x_position;
+                _displayBehaviorConfig.rowAgentsDic[row].xPositionMin = 0;
+                _displayBehaviorConfig.rowAgentsDic[row].column = column;
 
                 column++;
             }
         }
-        // 调整启动动画的时间
+
         StartingDurTime += _startDelayTime;
     }
-    #endregion
 
 }
