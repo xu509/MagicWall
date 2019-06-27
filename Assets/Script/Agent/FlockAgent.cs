@@ -159,11 +159,20 @@ public class FlockAgent : MonoBehaviour
         _manager = manager;
 
         OriVector2 = originVector;
+
+        //  出生位置
         GenVector2 = genVector;
+        GetComponent<RectTransform>().anchoredPosition = genVector;
+
+
         x = row;
         y = column;
         _width = width;
         _height = height;
+
+        // 设置组件长宽
+        GetComponent<RectTransform>().sizeDelta = new Vector2(_width, _height);
+
         _data_img = dataImg;
         _data_iscustom = dataIsCustom;
 
@@ -584,37 +593,52 @@ public class FlockAgent : MonoBehaviour
             }
 
             GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            
-            
+
+
+            GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
+
+            GetComponent<Image>().sprite = null;
+
         }
     }
 
-    void FixedUpdate()
+
+    /// <summary>
+    /// 检查是否需要回收
+    /// </summary>
+    public bool CheckIsNeedRecycle()
     {
+        var result = false;
+
         // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
         if (_manager.Status != WallStatusEnum.Cutting)
         {
             Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
             if (position.x + (Width * 4) < 0)
             {
-                _agentManager.ClearAgent(this);
+                //_agentManager.ClearAgent(this);
+                result = true;
             }
             else if (position.x - (Width * 4) > Screen.width)
             {
-                _agentManager.ClearAgent(this);
+                //_agentManager.ClearAgent(this);
+                result = true;
 
             }
             else if (position.y + (Height * 4) < 0)
             {
-                _agentManager.ClearAgent(this);
+                //_agentManager.ClearAgent(this);
+                result = true;
 
             }
             else if (position.y - (Height * 4) > Screen.height)
             {
-                _agentManager.ClearAgent(this);
-
+                //_agentManager.ClearAgent(this);
+                result = true;
             }
         }
+
+        return result;
     }
 
 

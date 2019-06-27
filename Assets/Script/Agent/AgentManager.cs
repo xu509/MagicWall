@@ -77,6 +77,9 @@ public class AgentManager : MonoBehaviour
     //  正在操作的 agents
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
+
+
+    private bool runLock = false;
     #endregion
 
 
@@ -209,25 +212,48 @@ public class AgentManager : MonoBehaviour
 
     // 持续更新
     public void Run() {
-        if (Agents.Count > 0) {
-            foreach (FlockAgent agent in Agents) {
-                agent.updatePosition(); //检测位置并计算
-            }
-        }
+        if (!runLock) {
+            runLock = true;
+            if (Agents.Count > 0)
+            {
+                List<FlockAgent> recycleAgents = new List<FlockAgent>();
 
-        // 检测打开的个数大于8个时，关闭早的
-        if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount) {
-            // 此时得到的是CardAgent
-            CardAgent effectAgent = EffectAgent[0] as CardAgent;
-            if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND 
-                && effectAgent.CardStatus != CardStatusEnum.DESTORYED) {
-                effectAgent.DoCloseDirect();
-            }
-            //EffectAgent[0].GetCardAgent.DoCloseDirect();
-        }
+                foreach (FlockAgent agent in Agents)
+                {
+                    agent.updatePosition(); //检测位置并计算
 
+                    // 判断是否需要回收
+                    if (agent.CheckIsNeedRecycle()) {
+                        recycleAgents.Add(agent);
+                    }
+                }
+
+                foreach (FlockAgent agent in recycleAgents)
+                {
+                    ClearAgent(agent);
+                }
+            }
+
+            // 检测打开的个数大于8个时，关闭早的
+            if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount)
+            {
+                // 此时得到的是CardAgent
+                CardAgent effectAgent = EffectAgent[0] as CardAgent;
+                if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND
+                    && effectAgent.CardStatus != CardStatusEnum.DESTORYED)
+                {
+                    effectAgent.DoCloseDirect();
+                }
+                //EffectAgent[0].GetCardAgent.DoCloseDirect();
+            }
+            runLock = false;
+        }
     }
 
+    /// <summary>
+    /// 工具型方法，请勿在未判断业务逻辑时直接使用
+    /// </summary>
+    /// <param name="agent"></param>
     public void DestoryAgent(FlockAgent agent) {
         if (agent.IsCard)
         {

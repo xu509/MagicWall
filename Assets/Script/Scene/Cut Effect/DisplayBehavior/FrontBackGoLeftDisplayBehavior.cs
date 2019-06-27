@@ -35,6 +35,8 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         // 调整panel的差值
         _manager.updateOffsetOfCanvas();
 
+
+        //  检测每行的数据，当半数行都小的时候，重新开始创建一定数量
         UpdateAgents();
 
     }
@@ -57,80 +59,144 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfEnv ()
     {
-        /*
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
-
-        int offsetUnit = Mathf.CeilToInt((w * 1.0f) / 4);
-        int page = _displayBehaviorConfig.Page;
-
-        if (w + _manager.PanelOffsetX - (offsetUnit * page) > 0)
-        {
-            // 需要获得当前的 column
-            int cols_offsets = Mathf.CeilToInt(_displayBehaviorConfig.Column * 1.0f / 4);
-            int y = page * cols_offsets + 1;
-            int rows = _displayBehaviorConfig.Row;
-
-            for (int x = 1; x <= rows; x++)
-            {
-                for (int z = y; z < (y + cols_offsets); z++)
-                {
-
-                    FlockAgent agent = CreateItem(_displayBehaviorConfig.ItemsFactory, x, z); // 创建新的
-                    _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(page, agent); // 加入list
-                }
-            }
-            _displayBehaviorConfig.Page += 1;
-
-            if ((_displayBehaviorConfig.Page - 5) > 0)
-                AgentManager.Instance.ClearAgentsByList(_displayBehaviorConfig.AgentsOfPages[_displayBehaviorConfig.Page - 5]); // 清理最左侧
-        }
-        else
-        {
-
-        }
-        */
+        FillItemAgency(DataType.env);
     }
 
     private void UpdateAgentsOfActivity()
     {
-
+        FillItemAgency(DataType.activity);
     }
 
     private void UpdateAgentsOfProduct()
     {
+        FillItemAgency(DataType.product);
+    }
 
+    /// <summary>
+    ///    当条件达成时，补一列
+    /// </summary>
+    /// <param name="dataType"></param>
+    private void FillItemAgency(DataType dataType) {
+
+        int generatePositionX  = _displayBehaviorConfig.generatePositionX;
+        int generatePositionXInBack = _displayBehaviorConfig.generatePositionXInBack;
         
+
+        // 补充前排
+        if ((generatePositionX - _manager.mainPanel.rect.width) < _manager.PanelOffsetX) {
+            int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
+            int gap = _displayBehaviorConfig.sceneUtils.GetGap();
+            int generate_x_temp = 0;
+
+            // 创造一列前排
+            int column = _displayBehaviorConfig.Column;
+
+            bool isOddColumn = column % 2 == 0;
+
+            for (int i = 0; i < _manager.Row; i++)
+            {
+                //  获取行数奇数状态
+                bool isOddRow = i % 2 == 0;
+
+                if ((isOddColumn && isOddRow) || (!isOddRow && !isOddColumn))
+                {
+                    //  获取要创建的内容
+                    FlockData agent = _daoService.GetFlockData(dataType);
+                    Sprite coverSprite = agent.GetCoverSprite();
+                    float imageWidth = coverSprite.rect.width;
+                    float imageHeight = coverSprite.rect.height;
+
+                    // 得到调整后的长宽
+                    Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                        _manager.displayFactor);
+
+                    FlockAgent go;
+                    float ori_y = _displayBehaviorConfig.sceneUtils.GetYPositionByFixedHeight(itemHeight, i);
+
+                    float ori_x = generatePositionX + gap + imageSize.x / 2;
+
+                    if (ori_x + gap + imageSize.x / 2 > generate_x_temp)
+                    {
+                        generate_x_temp = Mathf.RoundToInt(ori_x + gap + imageSize.x / 2);
+                    }
+
+                    // 创建前排
+                    go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
+                        imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
+                }
+                else {
+                    continue;
+                }
+            }
+
+            // 更新 generate_x 的值
+            int generate_x = Mathf.RoundToInt(generate_x_temp);
+            _displayBehaviorConfig.generatePositionX = generate_x;
+            //_displayBehaviorConfig.generatePositionXInBack = generate_x;
+            _displayBehaviorConfig.Column = column + 1;
+        }
+
+
+
+        // 补充后排
+        if ((generatePositionXInBack - _manager.mainPanel.rect.width) < _manager.PanelBackOffsetX)
+        {
+            int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
+            int gap = _displayBehaviorConfig.sceneUtils.GetGap();
+            int generate_x_temp = 0;
+
+            // 创造一列前排
+            int column = _displayBehaviorConfig.ColumnInBack;
+
+            bool isOddColumn = column % 2 == 0;
+
+            for (int i = 0; i < _manager.Row; i++)
+            {
+                //  获取行数奇数状态
+                bool isOddRow = i % 2 == 0;
+
+                if ((isOddColumn && isOddRow) || (!isOddRow && !isOddColumn))
+                {
+                    continue;
+                }
+                else
+                {
+                    //  获取要创建的内容
+                    FlockData agent = _daoService.GetFlockData(dataType);
+                    Sprite coverSprite = agent.GetCoverSprite();
+                    float imageWidth = coverSprite.rect.width;
+                    float imageHeight = coverSprite.rect.height;
+
+                    // 得到调整后的长宽
+                    Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                        _manager.displayFactor);
+
+                    FlockAgent go;
+                    float ori_y = _displayBehaviorConfig.sceneUtils.GetYPositionByFixedHeight(itemHeight, i);
+
+                    float ori_x = generatePositionXInBack + gap + imageSize.x / 2;
+
+                    if (ori_x + gap + imageSize.x / 2 > generate_x_temp)
+                    {
+                        generate_x_temp = Mathf.RoundToInt(ori_x + gap + imageSize.x / 2);
+                    }
+
+                    // 创建前排
+                    go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
+                        imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
+                    go.UpdateImageAlpha(0.2f);
+
+                }
+            }
+
+            // 更新 generate_x 的值
+            int generate_x = Mathf.RoundToInt(generate_x_temp);
+            _displayBehaviorConfig.generatePositionXInBack = generate_x;
+            _displayBehaviorConfig.ColumnInBack = column + 1;
+        }
+
+
     }
 
-    private FlockAgent CreateItem(ItemsFactory factory, int row, int column)
-    {
-        row = row - 1;
-        column = column - 1;
-
-        Vector2 vector2 = factory.GetOriginPosition(row, column);
-        float x = vector2.x;
-        float y = vector2.y;
-
-        bool front = (row + column) % 2 == 0 ? true : false;
-        //float offsetX = (z == 0) ? 0 : -500;
-        //x = x + offsetX;
-        //生成 agent
-        FlockAgent go;
-        if (front)
-        {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), 
-                _daoService.GetEnterprise(), AgentContainerType.MainPanel);
-
-        }
-        else
-        {
-            go = factory.Generate(x, y, x, y, row, column, factory.GetItemWidth(), factory.GetItemHeight(), 
-                _daoService.GetEnterprise(), AgentContainerType.BackPanel);
-            go.GetComponent<RawImage>()?.DOFade(0.2f, 0);
-        }
-
-        return go;
-    }
 
 }

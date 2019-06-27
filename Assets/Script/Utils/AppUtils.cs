@@ -72,6 +72,7 @@ public class AppUtils
         //    h *= 0.9f;
         //    ResetTexture(new Vector2(w, h));
         //}
+        // TODO 此处随机量被固定死
         if (w >= h)
         {
             //宽固定

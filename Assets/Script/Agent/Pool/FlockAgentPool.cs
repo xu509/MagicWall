@@ -13,9 +13,6 @@ public class FlockAgentPool<T> where T:FlockAgent
     {
         _pool = new Queue<T>();
         _initTotal = initTotal;
-
-        Debug.Log("Init Flock Agent Pool : " + initTotal);
-
     }
     public static FlockAgentPool<T> GetInstance(int total)
     {

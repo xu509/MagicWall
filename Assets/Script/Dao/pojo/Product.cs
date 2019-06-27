@@ -5,7 +5,7 @@ using UnityEngine;
 //
 //  产品
 //
-public class Product : BaseData,Generator<Product>
+public class Product : FlockData,Generator<Product>
 {
     //  产品 ID
     private int pro_id;
@@ -88,5 +88,11 @@ public class Product : BaseData,Generator<Product>
         product.description = descriptions[Random.Range(0, descriptions.Length)];
 
         return product;
+    }
+
+    public override Sprite GetCoverSprite()
+    {
+        string path = MagicWallManager.FileDir + Image;
+        return SpriteResource.Instance.GetData(path);
     }
 }

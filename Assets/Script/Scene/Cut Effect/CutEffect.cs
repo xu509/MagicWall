@@ -85,6 +85,7 @@ public abstract class CutEffect : MonoBehaviour
 
         // 初始化完成后更新时间
         _startTime = Time.time;
+
     }
 
     public abstract void Starting();

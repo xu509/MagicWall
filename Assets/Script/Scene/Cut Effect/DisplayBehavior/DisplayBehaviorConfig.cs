@@ -11,10 +11,12 @@ public class DisplayBehaviorConfig
     private MagicWallManager _manager;
     private int _row;
     private int _column;    // 最右侧的列数
+    private int _columnInBack;    // 最右侧的列数
     private float _itemWidth;
     private float _itemHeight;
+    private int _generatePositionX;
+    private int _generatePositionXInBack;
     private SceneContentType _sceneContentType;
-    private Dictionary<int, List<FlockAgent>> _agentsOfPages = new Dictionary<int, List<FlockAgent>>();
     private int _page = 0;
     private ItemsFactory _itemsFactory;
     private float _displayTime;
@@ -37,6 +39,18 @@ public class DisplayBehaviorConfig
     /// 根据列数的数据字典
     /// </summary>
     public Dictionary<int, ItemPositionInfoBean> columnAgentsDic { set { _columnAgentsDic = value; } get { return _columnAgentsDic; } }
+
+    /// <summary>
+    /// 如果 agent 是从左至右生成的，则 generatePositionX 代表右侧的目标坐标
+    /// </summary>
+    public int generatePositionX { set { _generatePositionX = value; } get { return _generatePositionX; } }
+
+    /// <summary>
+    /// 如果 agent 是从左至右生成的，则 generatePositionX 代表右侧的目标坐标, 后层的模式
+    /// </summary>
+    public int generatePositionXInBack { set { _generatePositionXInBack = value; } get { return _generatePositionXInBack; } }
+
+
 
 
     public ItemsFactory ItemsFactory
@@ -65,6 +79,12 @@ public class DisplayBehaviorConfig
         get { return _column; }
     }
 
+    public int ColumnInBack
+    {
+        set { _columnInBack = value; }
+        get { return _columnInBack; }
+    }
+
     public float ItemWidth
     {
         set { _itemWidth = value; }
@@ -89,12 +109,6 @@ public class DisplayBehaviorConfig
         get { return _page; }
     }
 
-    public Dictionary<int, List<FlockAgent>> AgentsOfPages
-    {
-        set { _agentsOfPages = value; }
-        get { return _agentsOfPages; }
-    }
-
     public float DisplayTime
     {
         set { _displayTime = value; }
@@ -107,28 +121,6 @@ public class DisplayBehaviorConfig
         get { return _sceneUtils; }
     }
 
-
-
-
-
-
-
-    //
-    //  _agentsOfPages
-    //
-    public void AddFlockAgentToAgentsOfPages(int page, FlockAgent agent) {
-
-        if (_agentsOfPages.ContainsKey(page))
-        {
-            _agentsOfPages[page].Add(agent);
-        }
-        else
-        {
-            List<FlockAgent> flockAgents = new List<FlockAgent>();
-            flockAgents.Add(agent);
-            _agentsOfPages.Add(page, flockAgents);
-        }
-    }
 
 
 

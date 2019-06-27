@@ -5,7 +5,7 @@ using UnityEngine;
 //
 //  活动
 //
-public class Activity : BaseData,Generator<Activity>
+public class Activity : FlockData,Generator<Activity>
 {
     private int _id;
     public int Id { set { _id = value; } get { return _id; } }
@@ -79,5 +79,11 @@ public class Activity : BaseData,Generator<Activity>
         activity.ActivityDetails = _activityDetails;
 
         return activity;
+    }
+
+    public override Sprite GetCoverSprite()
+    {
+        string path = MagicWallManager.FileDir + Image;
+        return SpriteResource.Instance.GetData(path);
     }
 }

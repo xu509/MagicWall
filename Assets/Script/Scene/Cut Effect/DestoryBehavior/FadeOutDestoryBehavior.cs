@@ -25,7 +25,7 @@ public class FadeOutDestoryBehavior : CutEffectDestoryBehavior
         float time = Time.time - startTime;  // 当前已运行的时间;
         float a = Mathf.Lerp(1, 0, time / totalTime);
         _manager.mainPanel.GetComponent<CanvasGroup>().alpha = a;
-        _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
+        //_manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
 
     }
 }

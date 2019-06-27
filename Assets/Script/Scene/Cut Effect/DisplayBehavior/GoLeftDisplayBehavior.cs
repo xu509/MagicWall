@@ -100,76 +100,94 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgentsOfActivity()
     {
-        float itemWidth = 0;
-        float itemHeight = 250 * _manager.displayFactor;
-        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        float gap = _displayBehaviorConfig.sceneUtils.GetGap();
+        float offset = Math.Abs(_manager.PanelOffsetX);
         int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
-        if (Math.Abs(_manager.PanelOffsetX) > 0)
+
+        // 获取右侧最小的距离
+        var rowDic = _displayBehaviorConfig.rowAgentsDic;
+
+        int row = 0;    // 最短行长的行值
+        int last_x = 10000000;
+        ItemPositionInfoBean bean = new ItemPositionInfoBean();
+        foreach (KeyValuePair<int, ItemPositionInfoBean> keyValuePair in rowDic)
+        {
+            if (keyValuePair.Value.xposition < last_x)
+            {
+                last_x = keyValuePair.Value.xposition;
+                row = keyValuePair.Key;
+                bean = keyValuePair.Value;
+            }
+        }
+
+        // 超过屏幕的距离
+        float overDistense = last_x - Screen.width;
+
+        if ((overDistense - _manager.PanelOffsetX) < 0)
         {
             if (flag == false)
             {
-                foreach (KeyValuePair<int, float> pair in _manager.rowAndRights)
-                {
-                    //Debug.Log(pair.Key + "+++" + pair.Value);
-                    float x = pair.Value;
-                    for (int i = 0; i < extra; i++)
-                    {
-                        float ori_x = x;
-                        float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
+                // 该行添加内容
+                var activity = _manager.daoService.GetActivity();
 
-                        Activity activity = _manager.daoService.GetActivity();
-                        //高固定
-                        itemWidth = (float)activity.TextureImage.width / (float)activity.TextureImage.height * itemHeight;
-                        ori_x = ori_x + itemWidth / 2 + gap;
+                int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
+                int itemWidth = Mathf.RoundToInt(AppUtils.GetSpriteWidthByHeight(activity.SpriteImage, itemHeight));
 
-                        // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, 
-                            pair.Key, i, itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
-                        x = x + go.Width + gap;
-                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
-                    }
-                    x = pair.Value;
-                }
-                flag = true;
+                Vector2 position = _displayBehaviorConfig.sceneUtils.GetPositionOfIrregularItemByFixedHeight(bean, itemHeight, itemWidth, row);
+
+                // 生成 agent
+                FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(position.x, position.y, position.x, position.y
+                    , row, bean.column + 1, itemWidth, itemHeight, activity, AgentContainerType.MainPanel);
+
+
+                int position_x = Mathf.RoundToInt(position.x + itemWidth / 2 + gap / 2);
+                rowDic[row].column = bean.column + 1;
+                rowDic[row].xposition = position_x;
             }
         }
     }
 
     private void UpdateAgentsOfProduct()
     {
-        float itemWidth = 0;
-        float itemHeight = 250 * _manager.displayFactor;
-        float gap = _displayBehaviorConfig.ItemsFactory.GetSceneGap();
+        float gap = _displayBehaviorConfig.sceneUtils.GetGap();
         float offset = Math.Abs(_manager.PanelOffsetX);
         int extra = (int)(10 / 20f * _displayBehaviorConfig.DisplayTime) + 1;
 
-        if (offset > 0)
-        {
-            if (flag == false)
-            {
-                foreach (KeyValuePair<int, float> pair in _manager.rowAndRights)
-                {
-                    //Debug.Log(pair.Key + "+++" + pair.Value);
-                    float x = pair.Value;
-                    for (int i = 0; i < extra; i++)
-                    {
-                        float ori_x = x;
-                        float ori_y = pair.Key * (itemHeight + gap) + itemHeight / 2 + gap;
+        // 获取右侧最小的距离
+        var rowDic = _displayBehaviorConfig.rowAgentsDic;
 
-                        Product product = _manager.daoService.GetProduct();
-                        //高固定
-                        itemWidth = (float)product.TextureImage.width / (float)product.TextureImage.height * itemHeight;
-                        ori_x = ori_x + itemWidth / 2 + gap;
+        int row = 0;    // 最短行长的行值
+        int last_x = 10000000;
+        ItemPositionInfoBean bean = new ItemPositionInfoBean();
+        foreach (KeyValuePair<int, ItemPositionInfoBean> keyValuePair in rowDic) {
+            if (keyValuePair.Value.xposition < last_x) {
+                last_x = keyValuePair.Value.xposition;
+                row = keyValuePair.Key;
+                bean = keyValuePair.Value;
+            }
+        }
 
-                        // 生成 agent
-                        FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, pair.Key,
-                            i, itemWidth, itemHeight, product, AgentContainerType.MainPanel);
-                        x = x + go.Width + gap;
-                        //Debug.Log(go.name + " i : " + i + " y : " + y + "gap : " + gap + " go.Height : " + go.Height);
-                    }
-                    x = pair.Value;
-                }
-                flag = true;
+        // 超过屏幕的距离
+        float overDistense = last_x - Screen.width;
+
+        if ((overDistense - _manager.PanelOffsetX) < 0) {
+            if (flag == false) {
+                // 该行添加内容
+                Product product = _manager.daoService.GetProduct();
+
+                int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
+                int itemWidth = Mathf.RoundToInt(AppUtils.GetSpriteWidthByHeight(product.SpriteImage, itemHeight));
+
+                Vector2 position = _displayBehaviorConfig.sceneUtils.GetPositionOfIrregularItemByFixedHeight(bean,itemHeight,itemWidth,row);
+
+                // 生成 agent
+                FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(position.x, position.y, position.x, position.y
+                    , row, bean.column + 1, itemWidth, itemHeight, product, AgentContainerType.MainPanel);
+
+
+                int position_x = Mathf.RoundToInt(position.x + itemWidth / 2 + gap / 2); 
+                rowDic[row].column = bean.column + 1;
+                rowDic[row].xposition = position_x;
             }
         }
 

@@ -74,6 +74,8 @@ public class MagicWallManager:MonoBehaviour
 
     // 面板的差值
     float panelOffsetX = 0f;
+    float panelBackOffsetX = 0f;
+
     float panelOffsetY = 0f;
 
     AgentType theItemType;
@@ -84,9 +86,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
@@ -126,6 +128,7 @@ public class MagicWallManager:MonoBehaviour
     public RectTransform BgLogo { get { return _bg_logo; } }
     public int Row { get { return _row; } }
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
+    public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }
     public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
     public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
     public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
@@ -163,6 +166,7 @@ public class MagicWallManager:MonoBehaviour
         ResetMainPanel(); //主面板归位
 
         PanelOffsetX = 0f;   // 清理两个panel偏移量
+        PanelBackOffsetX = 0f;
         PanelOffsetY = 0f;   // 清理两个panel偏移量
 
 
@@ -262,16 +266,13 @@ public class MagicWallManager:MonoBehaviour
             PanelOffsetX = 0f;
         }
         else {
-            Vector2 v1 = mainPanel.anchoredPosition;
-            Vector2 v2 = _operationPanel.anchoredPosition;
-            float offset = (v2.x - v1.x);
-			PanelOffsetX = offset;
+            Vector2 mainPanelPosition = mainPanel.anchoredPosition;
+            Vector2 operationPanelPosition = _operationPanel.anchoredPosition;
+            Vector2 backPanelPosition = backPanel.anchoredPosition;
 
-
-			Vector2 v3 = mainPanel.anchoredPosition;
-			Vector2 v4 = _operationPanel.anchoredPosition;
-			float offsety = (v4.y - v3.y);
-			PanelOffsetY = offsety;
+            PanelOffsetX = operationPanelPosition.x - mainPanelPosition.x;
+            PanelBackOffsetX = (operationPanelPosition - backPanelPosition - mainPanelPosition).x;
+            PanelOffsetY = operationPanelPosition.y - mainPanelPosition.y;
 		}
 		//Debug.Log("OFFSET IS " + PanelOffset);
 	}

@@ -77,22 +77,9 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
-        //  获取rect引用
-        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
-
-        ////  定出生位置
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        rectTransform.anchoredPosition = postion;
-
-        // 调整agent的长与宽
-        Vector2 sizeDelta = new Vector2(width, height);
-        rectTransform.sizeDelta = sizeDelta;
-        newAgent.Width = width;
-        newAgent.Height = height;
 
         //  定面板位置
         Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.OriVector2 = ori_position;
 
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,

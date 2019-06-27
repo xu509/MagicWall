@@ -415,6 +415,8 @@ public class DaoService : Singleton<DaoService>
         return new Video().Generator();
     }
 
+    #region 设置效果与运行时间
+
     //
     //  获取config
     //
@@ -425,23 +427,27 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "40";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "40";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "40";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "40";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "40";
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
+        {
+            appConfig.Value = "30";
         }
         else
         {
@@ -449,6 +455,7 @@ public class DaoService : Singleton<DaoService>
         }
         return appConfig;
     }
+    #endregion
 
     public int GetLikesByProductDetail(int id)
     {
@@ -478,12 +485,21 @@ public class DaoService : Singleton<DaoService>
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(), new LeftRightAdjustCutEffect()
-            , new FrontBackUnfoldCutEffect() ,new StarsCutEffect() 
-            , new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
+        CutEffect[] effects = new CutEffect[] {
+            new MidDisperseCutEffect(),
+            new StarsCutEffect(),
+            new FrontBackUnfoldCutEffect(),
+            new LeftRightAdjustCutEffect(),
+            new CurveStaggerCutEffect(),
+            new UpDownAdjustCutEffect()
+        };
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
-        SceneContentType[] contentTypes = new SceneContentType[] {  SceneContentType.product, SceneContentType.env, SceneContentType.activity };
+        SceneContentType[] contentTypes = new SceneContentType[] {
+            SceneContentType.env,
+            SceneContentType.activity,
+            SceneContentType.product,
+        };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
 
@@ -635,7 +651,28 @@ public class DaoService : Singleton<DaoService>
 
         return beans;
     }
- 
+
+
+    /// <summary>
+    ///     获得浮动块数据
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public FlockData GetFlockData(DataType type) {
+        if (type == DataType.env)
+        {
+            return GetEnterprise();
+        }
+        else if (type == DataType.product)
+        {
+            return GetProduct();
+        }
+        else if (type == DataType.activity) {
+            return GetActivity();
+        }
+        return null;
+
+    }
 
 
 

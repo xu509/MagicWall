@@ -47,17 +47,14 @@ public class SceneUtils
     public int GetFixedItemWidth() {
         int gap = GetGap();
 
-        Debug.Log("_screen_width : " + _screen_width + "Gap:" + gap);
-
-
         float w =  (_screen_width - gap / 2) / _column - gap;
         return Mathf.RoundToInt(w);
     }
     #endregion
 
-    #region 当列数固定时，获取固定的宽度
+    #region 当行数固定时，获取固定的高度
     /// <summary>
-    ///    当列数固定时，获取固定的宽度
+    ///    当行数固定时，获取固定的高度
     /// </summary>
     /// <returns></returns>
     public int GetFixedItemHeight()
@@ -104,6 +101,7 @@ public class SceneUtils
     }
     #endregion
 
+    #region 根据宽度获取列数
     /// <summary>
     /// 根据宽度获取列数
     /// </summary>
@@ -113,7 +111,9 @@ public class SceneUtils
         float columnf = _screen_width / (ItemWidth + GetGap());
         return Mathf.RoundToInt(columnf);
     }
+    #endregion
 
+    #region 根据宽度获取列数
     /// <summary>
     ///     获得固定高度状态下，不规律的item的位置
     /// </summary>
@@ -121,22 +121,47 @@ public class SceneUtils
     /// <param name="fixedHeight">固定的高度</param>
     /// <param name="itemWidth">当前item的宽度</param>
     /// <returns></returns>
-    public Vector2 GetPositionOfIrregularItemByFixedHeight(ItemPositionInfoBean previousItem,int fixedHeight,int itemWidth,int row)
+    public Vector2 GetPositionOfIrregularItemByFixedHeight(ItemPositionInfoBean currentItem,int fixedHeight,int itemWidth,int row)
     {
         int gap = GetGap();
         int x;
-        if (previousItem == null)
-        {
-            // 首个
-            x = 0 + gap / 2 + itemWidth / 2;
-        }
-        else {
-            x = previousItem.xposition + gap / 2 + itemWidth / 2;
-        }
-
+ 
+        x = currentItem.xposition + gap / 2 + itemWidth / 2;
+        
         int y = row * (fixedHeight + gap) + fixedHeight / 2 + gap;
+
         return new Vector2(x, y);
 
     }
+    #endregion
 
+
+    #region 根据固定的 item 高度,行数索引，获取纵坐标
+    /// <summary>
+    ///     根据固定的 item 高度,行数索引，获取纵坐标
+    /// </summary>
+    /// <param name="itemHeight"></param>
+    /// <param name="row"></param>
+    /// <returns></returns>
+    public float GetYPositionByFixedHeight(int itemHeight,int row) {
+        int gap = GetGap();
+        float y = row * (itemHeight + gap) + itemHeight / 2 + gap;
+        return y;
+    }
+    #endregion
+
+    #region 根据固定的 item 宽度,列数索引，获取横坐标
+    /// <summary>
+    ///     根据固定的 item 宽度,列数索引，获取横坐标
+    /// </summary>
+    /// <param name="itemHeight"></param>
+    /// <param name="row"></param>
+    /// <returns></returns>
+    public float GetXPositionByFixedHeight(int itemWidth, int column)
+    {
+        int gap = GetGap();
+        float x = column * (itemWidth + gap) + itemWidth / 2 + gap;
+        return x;
+    }
+    #endregion
 }

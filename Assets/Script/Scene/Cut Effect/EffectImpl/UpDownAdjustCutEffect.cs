@@ -92,10 +92,6 @@ public class UpDownAdjustCutEffect : CutEffect
                 // agent 一定时间内从透明至无透明
                 //go.GetComponent<RawImage>().DOFade(0, StartingDurTime).From();
 
-                // 装载进 pagesAgents
-                int rowUnit = Mathf.CeilToInt(_row * 1.0f / 3);
-                _page = Mathf.CeilToInt((i + 1) * 1.0f / rowUnit);
-                _displayBehaviorConfig.AddFlockAgentToAgentsOfPages(_page, go);
             }
         }
     }

@@ -9,26 +9,26 @@ public class ItemPositionInfoBean
     /// <summary>
     /// 所处的行
     /// </summary>
-    int _row;
+    int _row = 0;
 
     /// <summary>
     /// 行坐标
     /// </summary>
-    int _xposition;
+    int _xposition = 0;
 
     /// <summary>
     /// 所处的列
     /// </summary>
-    int _column;
+    int _column = 0;
 
     /// <summary>
     /// 列坐标
     /// </summary>
-    int _yposition;
+    int _yposition = 0;
 
-    int _height;
+    int _height = 0;
 
-    int _width;
+    int _width = 0;
 
     public int row {
         set {
