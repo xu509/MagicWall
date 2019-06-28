@@ -66,6 +66,9 @@ public class MagicWallManager:MonoBehaviour
     ///     间隙系数
     /// </summary>
     [SerializeField, Range(0f, 5f)]float _gapFactor;
+
+    [SerializeField] OperateMode _operateMode;  //操作模块
+
     #endregion
 
     #region 非配置属性
@@ -88,12 +91,12 @@ public class MagicWallManager:MonoBehaviour
 
     //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
 
-    //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+    public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
     //public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";
  
@@ -124,7 +127,7 @@ public class MagicWallManager:MonoBehaviour
     public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
     public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
     public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
-    public float MovePanelFactor { get { return _movePanelFactor; } }
+    public float MovePanelFactor { get { return _movePanelFactor; }set { _movePanelFactor = value; } }
     public RectTransform BgLogo { get { return _bg_logo; } }
     public int Row { get { return _row; } }
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
@@ -182,6 +185,9 @@ public class MagicWallManager:MonoBehaviour
         // 初始化实体工厂
         _itemsFactoryAgent.Init(this);
 
+        //  初始化操作模块
+        _operateMode.Init(this);
+
         _hasInit = true;
     }
 
@@ -228,21 +234,7 @@ public class MagicWallManager:MonoBehaviour
             infoPanelAgent.Run();
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("您按下了W键");
-            _movePanelFactor = _movePanelFactor - 0.1f;
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Debug.Log("您按下了W键");
-            _movePanelFactor = _movePanelFactor + 0.1f;
-        }
-
-
-
+        _operateMode.Run();
 
     }
 
@@ -335,22 +327,6 @@ public class MagicWallManager:MonoBehaviour
 
     public void SetReset() { _reset = true; }
 
-
-    const float fpsMeasurePeriod = 0.5f;    //FPS测量间隔
-    private int m_FpsAccumulator = 0;   //帧数累计的数量
-    private float m_FpsNextPeriod = 0;  //FPS下一段的间隔
-    private int m_CurrentFps;   //当前的帧率
-    const string display = "{0} FPS";   //显示的文字
-    public int FPS;//限帧
-
-    void OnGUI()
-    {
-        GUIStyle titleStyle2 = new GUIStyle();
-        titleStyle2.normal.textColor = Color.black;
-        titleStyle2.fontSize = 60;
-
-        GUI.Label(new Rect(30, 10, 300, 300), Input.mousePosition.ToString(), titleStyle2);
-    }
 
 }
 

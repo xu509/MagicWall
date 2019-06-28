@@ -254,7 +254,6 @@ public class FlockAgent : MonoBehaviour
         }
 
 
-
         // 获取施加影响的目标物
         //  判断是否有多个影响体，如有多个，取距离最近的那个
         List<FlockAgent> transforms = _agentManager.EffectAgent;
@@ -614,24 +613,24 @@ public class FlockAgent : MonoBehaviour
         if (_manager.Status != WallStatusEnum.Cutting)
         {
             Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
-            if (position.x + (Width * 4) < 0)
+            if (position.x + (Width * 8) < 0)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
             }
-            else if (position.x - (Width * 4) > Screen.width)
-            {
-                //_agentManager.ClearAgent(this);
-                result = true;
-
-            }
-            else if (position.y + (Height * 4) < 0)
+            else if (position.x - (Width * 8) > Screen.width)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
 
             }
-            else if (position.y - (Height * 4) > Screen.height)
+            else if (position.y + (Height * 8) < 0)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+
+            }
+            else if (position.y - (Height * 8) > Screen.height)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
