@@ -82,7 +82,7 @@ public class BusinessCardAgent : MonoBehaviour
         }
 
         // 根据id获取 business card 内容
-        List<string> EnvCardsTexures = DaoService.Instance.GetEnvCards(_cardAgent.Id);
+        List<string> EnvCardsTexures = DaoService.Instance.GetEnvCards(_cardAgent.DataId);
 
         for (int i = 0; i < EnvCardsTexures.Count; i++) {
             string image = EnvCardsTexures[i];

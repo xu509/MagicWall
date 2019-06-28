@@ -54,23 +54,28 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] EaseEnum _influenceEaseEnum;
 
     /// 整体的移动速度
-    [SerializeField, Range(0f, 100f)] float _movePanelFactor = 100f;
+    [SerializeField, Range(0f, 100f)] float _movePanelFactor;
     
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
 
-    // 配置的行数
-    [SerializeField] int _row = 6;
-
     // 手写板配置项
     [SerializeField] WritePanelConfig _writePanelConfig;
 
+    /// <summary>
+    ///     间隙系数
+    /// </summary>
+    [SerializeField, Range(0f, 5f)]float _gapFactor;
     #endregion
 
     #region 非配置属性
 
+    int _row = 6;   //  列数
+
     // 面板的差值
     float panelOffsetX = 0f;
+    float panelBackOffsetX = 0f;
+
     float panelOffsetY = 0f;
 
     AgentType theItemType;
@@ -81,9 +86,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
@@ -123,6 +128,7 @@ public class MagicWallManager:MonoBehaviour
     public RectTransform BgLogo { get { return _bg_logo; } }
     public int Row { get { return _row; } }
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
+    public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }
     public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
     public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
     public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
@@ -132,9 +138,8 @@ public class MagicWallManager:MonoBehaviour
     public BackgroundManager backgroundManager { get { return _backgroundManager; } }
     public DaoService daoService { get { return _daoService; } }
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
-
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
-
+    public float GapFactor { get { return _gapFactor; } }
 
     // 获取文件地址
     #endregion
@@ -161,6 +166,7 @@ public class MagicWallManager:MonoBehaviour
         ResetMainPanel(); //主面板归位
 
         PanelOffsetX = 0f;   // 清理两个panel偏移量
+        PanelBackOffsetX = 0f;
         PanelOffsetY = 0f;   // 清理两个panel偏移量
 
 
@@ -189,7 +195,7 @@ public class MagicWallManager:MonoBehaviour
         _hasInit = false;
 
         //  帧数限制
-        Application.targetFrameRate = FPS;
+        //Application.targetFrameRate = FPS;
 
     }
 
@@ -201,7 +207,7 @@ public class MagicWallManager:MonoBehaviour
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
+    private void Update()
     {
         if (!_hasInit)
             return;
@@ -260,16 +266,13 @@ public class MagicWallManager:MonoBehaviour
             PanelOffsetX = 0f;
         }
         else {
-            Vector2 v1 = mainPanel.anchoredPosition;
-            Vector2 v2 = _operationPanel.anchoredPosition;
-            float offset = (v2.x - v1.x);
-			PanelOffsetX = offset;
+            Vector2 mainPanelPosition = mainPanel.anchoredPosition;
+            Vector2 operationPanelPosition = _operationPanel.anchoredPosition;
+            Vector2 backPanelPosition = backPanel.anchoredPosition;
 
-
-			Vector2 v3 = mainPanel.anchoredPosition;
-			Vector2 v4 = _operationPanel.anchoredPosition;
-			float offsety = (v4.y - v3.y);
-			PanelOffsetY = offsety;
+            PanelOffsetX = operationPanelPosition.x - mainPanelPosition.x;
+            PanelBackOffsetX = (operationPanelPosition - backPanelPosition - mainPanelPosition).x;
+            PanelOffsetY = operationPanelPosition.y - mainPanelPosition.y;
 		}
 		//Debug.Log("OFFSET IS " + PanelOffset);
 	}

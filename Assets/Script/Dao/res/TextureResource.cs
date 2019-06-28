@@ -12,8 +12,6 @@ public class TextureResource : Singleton<TextureResource>
     public static string Write_Pad_Texture = "WritePadTexture";   // 手写板的图片
     public static string Write_Pad_Texture_Big = "WritePadTextureBig";   // 手写板的图片大型
 
-
-
     private Dictionary<string, Texture> _resources;
 
     public void Add(string address, Texture texture) {
@@ -48,9 +46,5 @@ public class TextureResource : Singleton<TextureResource>
             return texture;
         }
     }
-
-
-
-
 
 }

@@ -10,6 +10,12 @@ public class ManagerConfig : ScriptableObject
     [Range(3, 8), Header("点开的最大数量")]
     public int SelectedItemMaxCount;
 
+    /// <summary>
+    /// 8屏时，固定为28列; 5 屏 18
+    /// </summary>
+    [Range(5, 30), Header("固定的列数")]
+    public int Column;
+
     [Range(10, 500), Header("浮动块对象池大小")]
     public int FlockPoolSize;
 

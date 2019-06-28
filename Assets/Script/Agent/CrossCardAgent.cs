@@ -55,8 +55,6 @@ public class CrossCardAgent : CardAgent
         DaoService daoService = DaoService.Instance; 
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
-        // 设置ID
-        id = enterpriseDetail.Enterprise.Ent_id;
 
         //  设置标题
         _title.text = enterpriseDetail.Enterprise.Name;
@@ -79,7 +77,7 @@ public class CrossCardAgent : CardAgent
 
         CrossCardCellData item2 = new CrossCardCellData();
         item2.crossCardAgent = this;
-        item2.EnvId = id;
+        item2.EnvId = DataId;
         item2.Likes = Likes;
         item2.Category = CrossCardCategoryEnum.INDEX;
         item2.Index = index;
@@ -93,7 +91,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.PRODUCT;
             item.crossCardAgent = this;
-            item.EnvId = id;
+            item.EnvId = DataId;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "产品";
@@ -106,7 +104,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.ACTIVITY;
             item.crossCardAgent = this;
-            item.EnvId = id;
+            item.EnvId = DataId;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "活动";
@@ -119,7 +117,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.VIDEO;
             item.crossCardAgent = this;
-            item.EnvId = id;
+            item.EnvId = DataId;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "视频";
@@ -133,7 +131,7 @@ public class CrossCardAgent : CardAgent
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.CATALOG;
             item.crossCardAgent = this;
-            item.EnvId = id;
+            item.EnvId = DataId;
             item.Likes = Likes;
             item.Index = index;
             item.Title = "CATALOG";
@@ -163,7 +161,7 @@ public class CrossCardAgent : CardAgent
         crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
 
         // 处理businesscard
-        _hasListBtn = DaoService.Instance.GetEnvCards(id).Count > 0;
+        _hasListBtn = DaoService.Instance.GetEnvCards(DataId).Count > 0;
         InitComponents(false);
 
         // 设置完成回调

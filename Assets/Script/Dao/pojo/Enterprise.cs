@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Enterprise : BaseData,Generator<Enterprise>
+public class Enterprise : FlockData,Generator<Enterprise>
 {
     #region Data Parameter
 
@@ -18,9 +18,18 @@ public class Enterprise : BaseData,Generator<Enterprise>
     // 企业的logo
     private string _logo;
     public string Logo { set { _logo = value; } get { return _logo; } }
-    
-      // 企业名字
-    private string _name;
+    public Sprite SpriteLogo
+        {
+            get
+            {
+                string path = MagicWallManager.FileDir + _logo;
+                return SpriteResource.Instance.GetData(path);
+            }
+        }
+
+
+// 企业名字
+private string _name;
     public string Name { set { _name = value; } get { return _name; } }
 
     // catalog
@@ -117,5 +126,11 @@ public class Enterprise : BaseData,Generator<Enterprise>
         env.EnvCards = _env_cards;
 
         return env;
+    }
+
+    public override Sprite GetCoverSprite()
+    {
+        string path = MagicWallManager.FileDir + _logo;
+        return SpriteResource.Instance.GetData(path);
     }
 }

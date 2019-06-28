@@ -104,6 +104,12 @@ public class BubblePool<T> where T:BubbleAgent
         _pool.Enqueue(bubbleAgent);
     }
 
+    public void Reset()
+    {
+        _pool = new Queue<T>();
+        _initTotal = 0;
+    }
+
 }
 
 public enum BubbleType {

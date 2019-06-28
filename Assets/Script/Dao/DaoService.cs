@@ -415,6 +415,8 @@ public class DaoService : Singleton<DaoService>
         return new Video().Generator();
     }
 
+    #region 设置效果与运行时间
+
     //
     //  获取config
     //
@@ -425,23 +427,27 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "15";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "15";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "15";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "15";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "15";
+            appConfig.Value = "20";
+        }
+        else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
+        {
+            appConfig.Value = "20";
         }
         else
         {
@@ -449,6 +455,7 @@ public class DaoService : Singleton<DaoService>
         }
         return appConfig;
     }
+    #endregion
 
     public int GetLikesByProductDetail(int id)
     {
@@ -475,18 +482,25 @@ public class DaoService : Singleton<DaoService>
     public List<SceneConfig> GetShowConfigs()
     {
 
-
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
-
-
         // Real 
-        CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect() ,new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
-            new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect()};
+        CutEffect[] effects = new CutEffect[] {
+            new CurveStaggerCutEffect(),
+            new UpDownAdjustCutEffect(),
+            new MidDisperseCutEffect(),
+            new StarsCutEffect(),
+            new FrontBackUnfoldCutEffect(),
+            new LeftRightAdjustCutEffect(),
+        };
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.env, SceneContentType.product, SceneContentType.activity };
-        SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
+        SceneContentType[] contentTypes = new SceneContentType[] {
+            SceneContentType.env,
+            SceneContentType.activity,
+            SceneContentType.product,
+        };
+        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
 
         for (int i = 0; i < effects.Length; i++)
@@ -505,60 +519,7 @@ public class DaoService : Singleton<DaoService>
         }
 
 
-        //SceneConfig sceneConfig = new SceneConfig();
-        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig.SceneContentType = SceneContentType.env;
-        //sceneConfigs.Add(sceneConfig);
-        //CutEffect[] effects = new CutEffect[] {new CurveStaggerCutEffect(),  new FrontBackUnfoldCutEffect(),new LeftRightAdjustCutEffect(),
-        //    new StarsCutEffect(), new MidDisperseCutEffect() , new UpDownAdjustCutEffect(),new FrontBackUnfoldCutEffect() };
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product,SceneContentType.activity, SceneContentType.env };
 
-        //for (int i = 0; i < effects.Length; i++)
-        //{
-        //    for (int j = 0; j < contentTypes.Length; j++)
-        //    {
-        //        SceneConfig sceneConfig = new SceneConfig();
-        //        sceneConfig.CutEffect = effects[i];
-        //        sceneConfig.SceneContentType = contentTypes[j];
-        //        sceneConfigs.Add(sceneConfig);
-        //    }
-        //}
-
-
-        //SceneConfig sceneConfig = new SceneConfig();
-        //sceneConfig.CutEffect = new CurveStaggerCutEffect();
-        //sceneConfig.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig);
-
-        //SceneConfig sceneConfig2 = new SceneConfig();
-        //sceneConfig2.CutEffect = new MidDisperseCutEffect();
-        //sceneConfig2.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig2);
-
-        //SceneConfig sceneConfig3 = new SceneConfig();
-        //sceneConfig3.CutEffect = new StarsCutEffect();
-        //sceneConfig3.SceneContentType = SceneContentType.activity;
-        //sceneConfigs.Add(sceneConfig3);
-
-        //SceneConfig sceneConfig4 = new SceneConfig();
-        //sceneConfig4.CutEffect = new LeftRightAdjustCutEffect();
-        //sceneConfig4.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig4);
-
-        //SceneConfig sceneConfig5 = new SceneConfig();
-        //sceneConfig5.CutEffect = new UpDownAdjustCutEffect();
-        //sceneConfig5.SceneContentType = SceneContentType.env;
-        //sceneConfigs.Add(sceneConfig5);
-
-        //SceneConfig sceneConfig6 = new SceneConfig();
-        //sceneConfig6.CutEffect = new FrontBackUnfoldCutEffect();
-        //sceneConfig6.SceneContentType = SceneContentType.activity;
-        //sceneConfigs.Add(sceneConfig6);
-
-        //SceneConfig sceneConfig7 = new SceneConfig();
-        //sceneConfig7.CutEffect = new FrontBackUnfoldCutEffect();
-        //sceneConfig7.SceneContentType = SceneContentType.product;
-        //sceneConfigs.Add(sceneConfig7);
 
         return sceneConfigs;
     }
@@ -637,7 +598,28 @@ public class DaoService : Singleton<DaoService>
 
         return beans;
     }
- 
+
+
+    /// <summary>
+    ///     获得浮动块数据
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public FlockData GetFlockData(DataType type) {
+        if (type == DataType.env)
+        {
+            return GetEnterprise();
+        }
+        else if (type == DataType.product)
+        {
+            return GetProduct();
+        }
+        else if (type == DataType.activity) {
+            return GetActivity();
+        }
+        return null;
+
+    }
 
 
 

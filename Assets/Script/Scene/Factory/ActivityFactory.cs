@@ -49,7 +49,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
         int w = (int)_manager.mainPanel.rect.width; //宽度
-        _itemHeight = (h - _gap * 7) / _row;
+        _itemHeight = 250f;
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
@@ -63,7 +63,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, 
+        float height, BaseData data, AgentContainerType agentContainerType)
     {
         width = (int)width;
         height = (int)height;
@@ -71,31 +72,18 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         Activity activity = data as Activity;
 
         //  创建 Agent
-        FlockAgent newAgent = _agentManager.GetFlockAgent();
+        FlockAgent newAgent = _agentManager.GetFlockAgent(agentContainerType);
 
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
-        //  获取rect引用
-        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
-
-        ////  定出生位置
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        rectTransform.anchoredPosition = postion;
-
-        // 调整agent的长与宽
-        Vector2 sizeDelta = new Vector2(width, height);
-        rectTransform.sizeDelta = sizeDelta;
-        newAgent.Width = width;
-        newAgent.Height = height;
 
         //  定面板位置
         Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.OriVector2 = ori_position;
 
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity);
+            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -131,6 +119,12 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #endregion
 
 
+    /// <summary>
+    /// 获取生成的位置
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
     public Vector2 GetOriginPosition(int row, int column)
     {
         //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
@@ -173,11 +167,19 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         return new Vector2(x, y);
     }
 
+    /// <summary>
+    /// 获取固定的长度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemWidth()
     {
         return _itemWidth;
     }
 
+    /// <summary>
+    /// 获取固定的高度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemHeight()
     {
         return _itemHeight;
@@ -192,15 +194,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     {
         return _gap;
     }
-
-    //public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId , bool isActive)
-    //{
-    //    CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
-    //    // 设置显示状态
-    //    cardAgent.gameObject.SetActive(isActive);
-
-    //    return cardAgent;
-    //}
 
 
 }

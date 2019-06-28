@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: CustomManagerConfig
   m_EditorClassIdentifier: 
   IsCustom: 1
+  SelectedItemMaxCount: 5
+  Column: 0
+  FlockPoolSize: 180
+  CardPoolSize: 10
   StarEffectDistance: 5000
   StarEffectDistanceTime: 4
-  SelectedItemMaxCount: 5
-  ClearBubblePoolTotal: 25
-  DimBubblePoolTotal: 25
+  ClearBubblePoolSize: 50
+  DimBubblePoolSize: 20
   ClearBubbbleCreateIntervalTime: 1
   DimBubbbleCreateIntervalTime: 2

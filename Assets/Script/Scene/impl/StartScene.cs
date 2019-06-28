@@ -154,7 +154,7 @@ public class StartScene : IScene
         {
             string logo = env.Logo;
             string address = MagicWallManager.FileDir + logo;
-            TextureResource.Instance.GetTexture(address);
+            //TextureResource.Instance.GetTexture(address);
             SpriteResource.Instance.GetData(address);
 
 
@@ -177,7 +177,7 @@ public class StartScene : IScene
         {
             string img = activity.Image;
             string address = MagicWallManager.FileDir + img;
-            TextureResource.Instance.GetTexture(address);
+            //TextureResource.Instance.GetTexture(address);
             SpriteResource.Instance.GetData(address);
 
             //activity.TextureImage = TextureResource.Instance.GetTexture(address);
@@ -188,7 +188,7 @@ public class StartScene : IScene
         {
             string img = product.Image;
             string address = MagicWallManager.FileDir + img;
-            TextureResource.Instance.GetTexture(address);
+            //TextureResource.Instance.GetTexture(address);
             SpriteResource.Instance.GetData(address);
 
             //product.TextureImage = TextureResource.Instance.GetTexture(address);

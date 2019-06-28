@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 浮动快对象池
+/// 浮动快(背后的)对象池
 /// </summary>
-public class FlockAgentPool<T> where T:FlockAgent
+public class FlockAgentInBackPool<T> where T:FlockAgent
 {
     #region 单例
-    private static FlockAgentPool<T> instance;
-    private FlockAgentPool(int initTotal)
+    private static FlockAgentInBackPool<T> instance;
+
+    private FlockAgentInBackPool(int initTotal)
     {
         _pool = new Queue<T>();
         _initTotal = initTotal;
     }
-    public static FlockAgentPool<T> GetInstance(int total)
+    public static FlockAgentInBackPool<T> GetInstance(int total)
     {
         if (instance == null)
         {
-            instance = new FlockAgentPool<T>(total);
+            instance = new FlockAgentInBackPool<T>(total);
         }
         return instance;
     }

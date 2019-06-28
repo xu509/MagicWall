@@ -16,7 +16,7 @@ public class CardItemCatalogFactory : CardItemFactory
         {
             Catalog e = catelogs[i];
             CrossCardCellData cd = new CrossCardCellData();
-            cd.Image = MagicWallManager.FileDir + "env\\" + e.Img;
+            cd.Image = MagicWallManager.FileDir + e.Img;
             cd.Description = e.Description;
 
             cd.IsImage = true;

@@ -57,7 +57,7 @@ public class ActivityDetail : Generator<ActivityDetail>
 
         string[] images = { "1-1.png","1-2.png","1-3.png","1-4.png",
                          "2-1.png","2-2.png","2-3.png","2-4.png"};
-        activityDetail._image = images[Random.Range(0, images.Length - 1)];
+        activityDetail._image = "activity\\" + images[Random.Range(0, images.Length - 1)];
 
         string[] descriptions = { "今天特别活动的视频重播即将推出。","我们的最新发布: iPhone X S 超视网膜显示屏现以两种尺寸为你演绎广阔的精彩",
             "观看Apple 最新的主题演讲视频,了解我们所发布的有关产品、服务的各项特别活动。"," 在这样的结果之下,苹果手机的这些新机型销量也非常的“感人”。"};

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -551,28 +551,14 @@ MonoBehaviour:
   _magicWallPanel: {fileID: 438711669}
   _mainPanel: {fileID: 577667532}
   _backPanel: {fileID: 2012783910}
-  _backgroundPanel: {fileID: 1569125506}
   _operationPanel: {fileID: 308642408}
-  _flockAgent: {fileID: 3679100315635514291, guid: dca75ace6c0d1e54eaa146ecda9b9789,
-    type: 3}
-  _crossCardgent: {fileID: 8137593796822784393, guid: 0005f6786f0b4884baf9fe2d95708c5b,
-    type: 3}
-  _sliceCardgent: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
-    type: 3}
-  _backgroundPrefab: {fileID: 4511088241186586016, guid: 161eda6f10cd71d41abe04646f927486,
-    type: 3}
-  _backgroundPrefab2: {fileID: 4511088241186586016, guid: 981e7a6cae9bb8840a9bf76525dc639a,
-    type: 3}
-  _searchAgentPrefab: {fileID: 0}
-  _backgroundUpDuration: 20
-  _backgroundUubbleInterval: 0.2
   _influenceDistance: 0
   _influenceMoveFactor: 0.5
   _influenceEaseEnum: 24
-  _movePanelFactor: 100
+  _movePanelFactor: 5
   _bg_logo: {fileID: 2060558020}
-  _row: 6
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
+  _gapFactor: 1
   FPS: 60
 --- !u!225 &438711673
 CanvasGroup:
@@ -1177,6 +1163,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a068627e275dd846899b236107a9dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flockAgentPrefab: {fileID: 3679100315635514291, guid: dca75ace6c0d1e54eaa146ecda9b9789,
+    type: 3}
+  _crossCardgentPrefab: {fileID: 8137593796822784393, guid: 0005f6786f0b4884baf9fe2d95708c5b,
+    type: 3}
+  _sliceCardgentPrefab: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
+    type: 3}
+  _flockContainer: {fileID: 577667532}
+  _backContainer: {fileID: 2012783910}
+  _cardContainer: {fileID: 308642408}
 --- !u!114 &1288535279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1189,6 +1184,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ea4c999e3fd934683510b3d325871d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _clearBubbleAgentPrefab: {fileID: 4444414888624938364, guid: 161eda6f10cd71d41abe04646f927486,
+    type: 3}
+  _dimBubbleAgentPrefab: {fileID: 5846501649382090687, guid: 981e7a6cae9bb8840a9bf76525dc639a,
+    type: 3}
+  _ClearBubbleMoveFactor: 1
+  _DimBubbleMoveFactor: 2
+  _bubblesBackground: {fileID: 1569125506}
 --- !u!114 &1288535280
 MonoBehaviour:
   m_ObjectHideFlags: 0

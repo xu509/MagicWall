@@ -179,6 +179,9 @@ public class BackgroundManager : MonoBehaviour
 
 
     public void Reset() {
+        hasInit = false;
+        _clearBubbleAgentPool.Reset();
+        _dimBubbleAgentPool.Reset();
         //hasInit = false;
         //for (int i = 0; i < bubbles.Count; i++) {
         //    Destroy(bubbles[i]);

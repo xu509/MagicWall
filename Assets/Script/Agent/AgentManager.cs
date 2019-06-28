@@ -30,6 +30,11 @@ public class AgentManager : MonoBehaviour
     /// </summary>
     [SerializeField] RectTransform _flockContainer;
 
+    /// <summary>
+    ///    后层的浮动块容器
+    /// </summary>
+    [SerializeField] RectTransform _backContainer;
+
 
     /// <summary>
     /// 操作卡片块容器
@@ -43,9 +48,14 @@ public class AgentManager : MonoBehaviour
     private MagicWallManager _manager;
 
     /// <summary>
-    /// 普通浮动块对象池
+    ///     普通浮动块对象池
     /// </summary>
     private FlockAgentPool<FlockAgent> _flockAgentPool;
+
+    /// <summary>
+    ///     后层的对象池
+    /// </summary>
+    private FlockAgentInBackPool<FlockAgent> _flockAgentInBackPool;
 
     /// <summary>
     /// 十字展开操作块对象池
@@ -67,6 +77,9 @@ public class AgentManager : MonoBehaviour
     //  正在操作的 agents
     List<FlockAgent> effectAgent;
     public List<FlockAgent> EffectAgent { get { return effectAgent; } }
+
+
+    private bool runLock = false;
     #endregion
 
 
@@ -100,6 +113,9 @@ public class AgentManager : MonoBehaviour
         _flockAgentPool = FlockAgentPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize);
         _flockAgentPool.Init(_flockAgentPrefab, _flockContainer);
 
+        _flockAgentInBackPool = FlockAgentInBackPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
+        _flockAgentInBackPool.Init(_flockAgentPrefab, _backContainer);
+
         _crossCardAgentPool = FlockAgentPool<CrossCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
         _crossCardAgentPool.Init(_crossCardgentPrefab as CrossCardAgent, _cardContainer);
 
@@ -115,7 +131,7 @@ public class AgentManager : MonoBehaviour
     {
         if (!agent.IsChoosing)
         {
-            _flockAgentPool.ReleaseObj(agent);
+            DestoryAgent(agent);
             _agents.Remove(agent);
         }
     }
@@ -148,9 +164,7 @@ public class AgentManager : MonoBehaviour
     //  移除效果列表中的项
     //
     public bool RemoveItemFromEffectItems(CardAgent agent) {
-
         DestoryAgent(agent);
-
         return effectAgent.Remove(agent);
     }
 
@@ -187,31 +201,59 @@ public class AgentManager : MonoBehaviour
             DestoryAgent(agent);
         }
         effectAgent = new List<FlockAgent>();
+
+        _flockAgentPool.Reset();
+        _flockAgentInBackPool.Reset();
+        _sliceCardAgentPool.Reset();
+        _crossCardAgentPool.Reset();
     }
 
 
 
     // 持续更新
     public void Run() {
-        if (Agents.Count > 0) {
-            foreach (FlockAgent agent in Agents) {
-                agent.updatePosition(); //检测位置并计算
-            }
-        }
+        if (!runLock) {
+            runLock = true;
+            if (Agents.Count > 0)
+            {
+                List<FlockAgent> recycleAgents = new List<FlockAgent>();
 
-        // 检测打开的个数大于8个时，关闭早的
-        if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount) {
-            // 此时得到的是CardAgent
-            CardAgent effectAgent = EffectAgent[0] as CardAgent;
-            if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND 
-                && effectAgent.CardStatus != CardStatusEnum.DESTORYED) {
-                effectAgent.DoCloseDirect();
-            }
-            //EffectAgent[0].GetCardAgent.DoCloseDirect();
-        }
+                foreach (FlockAgent agent in Agents)
+                {
+                    agent.updatePosition(); //检测位置并计算
 
+                    // 判断是否需要回收
+                    if (agent.CheckIsNeedRecycle()) {
+                        recycleAgents.Add(agent);
+                    }
+                }
+
+                foreach (FlockAgent agent in recycleAgents)
+                {
+                    ClearAgent(agent);
+                }
+            }
+
+            // 检测打开的个数大于8个时，关闭早的
+            if (EffectAgent.Count > _manager.managerConfig.SelectedItemMaxCount)
+            {
+                // 此时得到的是CardAgent
+                CardAgent effectAgent = EffectAgent[0] as CardAgent;
+                if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND
+                    && effectAgent.CardStatus != CardStatusEnum.DESTORYED)
+                {
+                    effectAgent.DoCloseDirect();
+                }
+                //EffectAgent[0].GetCardAgent.DoCloseDirect();
+            }
+            runLock = false;
+        }
     }
 
+    /// <summary>
+    /// 工具型方法，请勿在未判断业务逻辑时直接使用
+    /// </summary>
+    /// <param name="agent"></param>
     public void DestoryAgent(FlockAgent agent) {
         if (agent.IsCard)
         {
@@ -224,6 +266,15 @@ public class AgentManager : MonoBehaviour
                 _sliceCardAgentPool.ReleaseObj(agent as SliceCardAgent);
             }
         }
+        else {
+            if (agent.agentContainerType == AgentContainerType.MainPanel)
+            {
+                _flockAgentPool.ReleaseObj(agent);
+            }
+            else {
+                _flockAgentInBackPool.ReleaseObj(agent);
+            }
+        }
     }
 
 
@@ -231,9 +282,16 @@ public class AgentManager : MonoBehaviour
     #endregion
 
 
-    public FlockAgent GetFlockAgent() {
-        return _flockAgentPool.GetObj();
+    public FlockAgent GetFlockAgent(AgentContainerType type) {
+        if (type == AgentContainerType.MainPanel)
+        {
+            return _flockAgentPool.GetObj();
+        }
+        else {
+            return _flockAgentInBackPool.GetObj();
+        }
     }
+
 
     public CrossCardAgent GetCrossCardAgent()
     {
@@ -244,5 +302,8 @@ public class AgentManager : MonoBehaviour
     {
         return _sliceCardAgentPool.GetObj();
     }
+
+
+
 
 }
