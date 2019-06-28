@@ -29,9 +29,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _safe_distance_width;
     private float _safe_distance_height;
 
-    protected int id;
-    public int Id { set { id = value; } get { return id; } }
-
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
 
@@ -78,6 +75,44 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     #endregion
 
     #region Protected Method
+
+    /// <summary>
+    ///     初始化卡片类型浮动块数据
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="dataId"></param>
+    /// <param name="dataType"></param>
+    /// <param name="genPosition">生成位置</param>
+    /// <param name="scaleVector3">缩放比例</param>
+    /// <param name="originAgent">原关联的浮块</param>
+    public void InitCardData(MagicWallManager manager,int dataId,MWTypeEnum dataType,
+        Vector3 genPosition,Vector3 scaleVector3,FlockAgent originAgent)
+    {
+        InitBase(manager, dataId, dataType, true);
+
+        //  命名
+        if (originAgent != null)
+        {
+            name = dataType.ToString() + "(" + originAgent.name + ")";
+
+            //  添加原组件
+            OriginAgent = originAgent;
+        }
+
+        //  定出生位置
+        GetComponent<RectTransform>().anchoredPosition3D = genPosition;
+
+        //  配置scene
+        SceneIndex = _manager.SceneIndex;
+
+        GetComponent<RectTransform>().localScale = scaleVector3;
+
+        //  初始化长宽字段
+        Width = GetComponent<RectTransform>().rect.width;
+        Height = GetComponent<RectTransform>().rect.height;
+
+    }
+
 
     //
     //  Init 代理
@@ -215,13 +250,17 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
             rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
                 //  使卡片消失
-                _agentManager.RemoveItemFromEffectItems(this);
-
-                //gameObject.SetActive(false);
-                DestoryAgency();
-                //Destroy(gameObject);
 
                 OriginAgent.DoRecoverAfterChoose();
+
+
+                _agentManager.RemoveItemFromEffectItems(this);
+
+
+                //gameObject.SetActive(false);
+                //DestoryAgency();
+                //Destroy(gameObject);
+
             });
         }
         //  直接消失
@@ -267,15 +306,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
 
     #endregion
-
-
-    //
-    //  Private Methods
-    //
-
-
-
-
 
     //
     //  Call Back
@@ -433,14 +463,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             DoMove();
 
             DoUpdate();
-
         }
-        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-
         if (_doMoving)
         {
 

@@ -8,6 +8,7 @@ public abstract class CutEffect : MonoBehaviour
     protected MagicWallManager _manager;
     protected AgentManager _agentManager;
     protected DaoService _daoService;
+    protected SceneUtils _sceneUtil;
 
     //
     //  Parameter
@@ -62,6 +63,8 @@ public abstract class CutEffect : MonoBehaviour
 
         Init(_manager);
 
+        _sceneUtil = new SceneUtils(_manager);
+
 
         sceneContentType = st;
 
@@ -82,6 +85,7 @@ public abstract class CutEffect : MonoBehaviour
 
         // 初始化完成后更新时间
         _startTime = Time.time;
+
     }
 
     public abstract void Starting();

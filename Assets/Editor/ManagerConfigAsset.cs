@@ -8,4 +8,5 @@ public class ManagerConfigAsset
     {
         ScriptableObjectUtility.CreateAsset<ManagerConfig>();
     }
+
 }

@@ -7,19 +7,19 @@ using EasingUtil;
 using System;
 
 
-[RequireComponent(typeof(Collider2D))]
 public class FlockAgent : MonoBehaviour
 {
     protected MagicWallManager _manager;
-
     protected AgentManager _agentManager;
 
 
     #region Data Parameter 
-    private int _data_type;  //类型 0:env 1:prod 2:act
     private bool _data_iscustom; // 是定制的
     private string _data_img;    //背景图片
     private int _data_id; // id
+    private MWTypeEnum _type;
+    private bool _isCard;
+    private AgentContainerType _agentContainerType;
 
 
     #endregion
@@ -77,27 +77,19 @@ public class FlockAgent : MonoBehaviour
     // 能被影响
     private bool _canEffected = true;
 
-
     //  工厂 & 管理器
     ItemsFactory _itemsFactory;
-
-
-    // Tweener
-    Tweener rectTransformTweener;
-
-
-    float show_move_offset_x;
-    float show_move_offset_y;
-
 
 
     #endregion
 
     #region 引用
-    public int DataType { set { _data_type = value; } get { return _data_type; } }
     public string DataImg { set { _data_img = value; } get { return _data_img; } }
     public int DataId { set { _data_id = value; } get { return _data_id; } }
     public bool DataIsCustom { set { _data_iscustom = value; } get { return _data_iscustom; } }
+    public bool IsCard { set { _isCard = value; } get { return _isCard; } }
+    public MWTypeEnum type { set { _type = value; } get { return _type; } }
+    public AgentContainerType agentContainerType { set { _agentContainerType = value; } get { return _agentContainerType; } }
     public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
     public float DelayX { set { delayX = value; } get { return delayX; } }
     public float DelayY { set { delayY = value; } get { return delayY; } }
@@ -127,39 +119,78 @@ public class FlockAgent : MonoBehaviour
 //        nameTextComponent.text = name;
     }
 
-    //
-    //  初始化 Agent 信息
-    //      originVector : 在屏幕上显示的位置
-    //      genVector ： 出生的位置
-    //
-	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
-        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom,int dataType)
-    {
+
+    /// <summary>
+    ///     初始化基础数据
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="dataId"></param>
+    /// <param name="type"></param>
+    /// <param name="isCard"></param>
+    protected void InitBase(MagicWallManager manager,int dataId, MWTypeEnum type, bool isCard) {
         _manager = manager;
         _agentManager = _manager.agentManager;
+        _data_id = dataId;
+        _type = type;
+        _isCard = isCard;
+    }
+
+
+    /// <summary>
+    ///         初始化 Agent 信息,在生成浮动块时调用
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="originVector">在屏幕上显示的位置</param>
+    /// <param name="genVector">出生的位置</param>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="dataId"></param>
+    /// <param name="dataImg"></param>
+    /// <param name="dataIsCustom"></param>
+    /// <param name="dataType"></param>
+	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
+        int column,float width,float height,int dataId,string dataImg,bool dataIsCustom, 
+        MWTypeEnum dataType,AgentContainerType agentContainerType)
+    {
+        InitBase(manager,dataId, dataType,false);
+
+        _manager = manager;
 
         OriVector2 = originVector;
+
+        //  出生位置
         GenVector2 = genVector;
+        GetComponent<RectTransform>().anchoredPosition = genVector;
+
+
         x = row;
         y = column;
         _width = width;
         _height = height;
-        _data_id = dataId;
+
+        // 设置组件长宽
+        GetComponent<RectTransform>().sizeDelta = new Vector2(_width, _height);
+
         _data_img = dataImg;
         _data_iscustom = dataIsCustom;
-        _data_type = dataType;
+
+        // 设置显示图片
+        //GetComponent<RawImage>().texture = TextureResource.Instance.GetTexture(AppUtils.GetFullFileAddressOfImage(DataImg));
+        GetComponent<Image>().sprite = SpriteResource.Instance.GetData(AppUtils.GetFullFileAddressOfImage(DataImg));
 
         // 定义 agent 的名字
         _sceneIndex = _manager.SceneIndex;
 
         // 定义工厂
-        if (dataType == 0)
+        if (dataType == MWTypeEnum.Enterprise)
         {
             //_itemsFactory = new EnvFactory();
             _itemsFactory = _manager.itemsFactoryAgent.envFactory;
 
         }
-        else if (dataType == 1)
+        else if (dataType == MWTypeEnum.Product)
         {
 
             //_itemsFactory = new ProductFactory();
@@ -171,6 +202,8 @@ public class FlockAgent : MonoBehaviour
             _itemsFactory = _manager.itemsFactoryAgent.activityFactory;
 
         }
+
+        _agentContainerType = agentContainerType;
         //_itemsFactory.Init(_manager);
     }
 
@@ -196,10 +229,7 @@ public class FlockAgent : MonoBehaviour
             if (NeedAdjustPostion()) {
                 UpdatePositionEffect();
             }
-            
         }
-
-        
     }
 
 
@@ -240,7 +270,6 @@ public class FlockAgent : MonoBehaviour
                 continue;
             }
 
-
             Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
 
             float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
@@ -264,24 +293,19 @@ public class FlockAgent : MonoBehaviour
         }
         // 判断结束
 
-
         // 获取有效影响范围，是宽度一半以上
         float effectDistance = (w / 2) + (w / 2) * _manager.InfluenceMoveFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
-
 
         // 进入影响范围
         if (offset >= 0)
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
 
-
             // 获取offset_x;offset_y
             float offset_x = Mathf.Abs(refVector2WithOffset.x - targetVector2.x);
             float offset_y = Mathf.Abs(refVector2WithOffset.y - targetVector2.y);
-
-
 
             float m_scale = -(1f / effectDistance) * offset + 1f;
 
@@ -380,7 +404,7 @@ public class FlockAgent : MonoBehaviour
             float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
             float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y; 
 
-            if (cardGenPosition.x < w/2)
+            if (cardGenPosition.x < w / 2)
             {
                 cardGenPosition.x = w / 2;
             }
@@ -399,47 +423,9 @@ public class FlockAgent : MonoBehaviour
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
-                //// 使原组件消失
-                //gameObject.SetActive(false);
-
-                ////// 此处需要区分
-                ////_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition,this);
-                //_cardAgent.gameObject.SetActive(true);
-
-                //Vector3 to2 = new Vector3(cardGenPosition.x, cardGenPosition.y, 0);
-                //_cardAgent.GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
-
-                //Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
-
-                //_cardAgent.GetComponent<RectTransform>()
-                //    .DOScale(scaleVector3, 0.5f)
-                //    .OnUpdate(() =>
-                //        {
-                //            _cardAgent.Width = w;
-                //            _cardAgent.Height = h;
-
-                //        }).OnComplete(() => {
-                //            // 执行完成后动画
-                //            _cardAgent.DoOnCreatedCompleted();
-
-
-                //        }).SetEase(Ease.OutBack);
-
+                rect.gameObject.SetActive(false);
                 _cardAgent.GoToFront();
-
             });
-
-            //List<CardAgent> cards = _agentManager.cardAgents;
-            //cards.Add(_cardAgent);
-            //if (cards.Count > 8)
-            //{
-            //    // 会报错
-            //    cards[0].DoClose();
-            //    cards.Remove(cards[0]);
-            //}
-            //_agentManager.cardAgents = cards;
-
-
         }
     }
 
@@ -495,7 +481,6 @@ public class FlockAgent : MonoBehaviour
 
     protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
     {
-        Debug.Log("Do Destory On Complete");
 
         // 进行销毁
         if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
@@ -526,32 +511,7 @@ public class FlockAgent : MonoBehaviour
 
     }
 
-    //
-    //  获取Logo
-    //
-    public RectTransform GetLogo() {
-        Transform transform_thumb = null;
-        Transform transform_logo = null;
-        foreach(Transform child in transform){
-            if (child.name == "thumb") {
-                transform_thumb = child;
-                break;
-            }
-        }
 
-        if (transform_thumb != null) {
-            foreach (Transform child in transform_thumb)
-            {
-                if (child.name == "logo")
-                {
-                    transform_logo = child;
-                    return transform_logo.GetComponent<RectTransform>();
-                }
-            }
-        }
-        
-        return null;
-    }
 
 
     //  判断是否需要调整位置
@@ -601,9 +561,86 @@ public class FlockAgent : MonoBehaviour
         // 清除 Dotween 代理
 
         // 删除 Gameobject
-        Destroy(gameObject);
+        _agentManager.DestoryAgent(this);
+    }
+
+
+    public void UpdateImageAlpha(float alpha) {
+        Color color = GetComponent<Image>().color;
+        color.a = alpha;
+        GetComponent<Image>().color = color;
 
     }
+
+
+    /// <summary>
+    ///     重置 Agent
+    /// </summary>
+    public void Reset() {
+        if (!IsCard) {
+
+            // 透明度调整
+            //GetComponent<RawImage>().color = new Color(255, 255, 255, 255);
+            if (GetComponent<Image>().color != new Color(255, 255, 255, 255)) {
+                GetComponent<Image>().color = new Color(255, 255, 255, 255);
+            }
+            
+            // 设置 scale
+            Vector3 scale = new Vector3(1, 1, 1);
+            if (GetComponent<RectTransform>().localScale != scale)
+            {
+                GetComponent<RectTransform>().localScale = scale;
+            }
+
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+
+            GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
+
+            GetComponent<Image>().sprite = null;
+
+        }
+    }
+
+
+    /// <summary>
+    /// 检查是否需要回收
+    /// </summary>
+    public bool CheckIsNeedRecycle()
+    {
+        var result = false;
+
+        // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
+        if (_manager.Status != WallStatusEnum.Cutting)
+        {
+            Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            if (position.x + (Width * 4) < 0)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+            }
+            else if (position.x - (Width * 4) > Screen.width)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+
+            }
+            else if (position.y + (Height * 4) < 0)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+
+            }
+            else if (position.y - (Height * 4) > Screen.height)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
 
 
 }

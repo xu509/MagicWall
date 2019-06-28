@@ -5,7 +5,7 @@ using UnityEngine;
 //
 //  活动
 //
-public class Activity : BaseData,Generator<Activity>
+public class Activity : FlockData,Generator<Activity>
 {
     private int _id;
     public int Id { set { _id = value; } get { return _id; } }
@@ -30,8 +30,24 @@ public class Activity : BaseData,Generator<Activity>
     public List<ActivityDetail> ActivityDetails { set { _activityDetails = value; } get { return _activityDetails; } }
 
 
-    private Texture _texture_image;
-    public Texture TextureImage { set { _texture_image = value; } get { return _texture_image; } }
+    /// <summary>
+    /// 获取Texture Image
+    /// </summary>
+    public Texture TextureImage {
+        get {
+            string path = MagicWallManager.FileDir + Image;
+            return TextureResource.Instance.GetTexture(path);
+        }
+    }
+
+    public Sprite SpriteImage
+    {
+        get
+        {
+            string path = MagicWallManager.FileDir + Image;
+            return SpriteResource.Instance.GetData(path);
+        }
+    }
 
 
     public Activity Generator()
@@ -46,7 +62,7 @@ public class Activity : BaseData,Generator<Activity>
             images[i] = (i + 1) + ".png";
         }
 
-        activity._image = images[Random.Range(0, images.Length)];
+        activity._image = "activity\\" + images[Random.Range(0, images.Length)];
 
         string[] names = { "2018年春夏巴黎时装秀", "巴黎时装周（Paris Fashion Week）1910年，由法国时装协会主办。", "在米兰和伦敦的时装周相当保守，它们更喜欢本土的设计"};
         activity._name = names[Random.Range(0, names.Length - 1)];
@@ -63,5 +79,11 @@ public class Activity : BaseData,Generator<Activity>
         activity.ActivityDetails = _activityDetails;
 
         return activity;
+    }
+
+    public override Sprite GetCoverSprite()
+    {
+        string path = MagicWallManager.FileDir + Image;
+        return SpriteResource.Instance.GetData(path);
     }
 }

@@ -49,7 +49,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         int h = (int)_manager.mainPanel.rect.height;    // 高度
         int w = (int)_manager.mainPanel.rect.width; //宽度
-        _itemHeight = (h - _gap * 7) / _row;
+        _itemHeight = 250f;
         _itemWidth = _itemHeight;
 
         _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
@@ -63,7 +63,8 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, 
+        float height, BaseData data, AgentContainerType agentContainerType)
     {
         width = (int)width;
         height = (int)height;
@@ -71,47 +72,18 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         Activity activity = data as Activity;
 
         //  创建 Agent
-        FlockAgent newAgent = Instantiate(
-                                    _manager.flockAgent,
-                                    parent
-                                    );
+        FlockAgent newAgent = _agentManager.GetFlockAgent(agentContainerType);
+
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
-        //  获取rect引用
-        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
-
-        ////  定出生位置
-        Vector2 postion = new Vector2(gen_x, gen_y);
-        rectTransform.anchoredPosition = postion;
-
-        // 初始化 数据
-        //Enterprise env = _daoService.GetEnterprise();
-
-        //// 初始化显示图片
-        ////rectTransform.gameObject.GetComponentInChildren<RawImage>().texture = AppUtils.LoadPNG(MagicWallManager.URL_ASSET + "1.jpg");
-        ////newAgent.GetLogo().GetComponentInChildren<RawImage>().texture = env.TextureLogo;
-        //newAgent.GetComponent<RawImage>().texture = env.TextureLogo;
-
-        newAgent.GetComponent<RawImage>().texture = activity.TextureImage;
-        //Texture2D texture = activity.TextureImage as Texture2D;
-        //newAgent.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        // 调整agent的长与宽
-        Vector2 sizeDelta = new Vector2(width, height);
-        rectTransform.sizeDelta = sizeDelta;
-        newAgent.Width = width;
-        newAgent.Height = height;
 
         //  定面板位置
         Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.OriVector2 = ori_position;
 
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Ent_id, activity.Image, false, 2);
+            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -125,42 +97,16 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     {
 
         //  创建 Agent
-        SliceCardAgent sliceCardAgent = Instantiate(
-                                    _manager.sliceCardgent,
-                                    _operationPanel
-                                    ) as SliceCardAgent;
-
-        if (flockAgent != null) {
-            //  命名
-            sliceCardAgent.name = "Activity (" + flockAgent.name + ")";
-
-            //  添加原组件
-            sliceCardAgent.OriginAgent = flockAgent;
-        }
-
-
-        //  获取rect引用
-        RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
-
-        //  定出生位置
-        rectTransform.anchoredPosition3D = genPos;
+        SliceCardAgent sliceCardAgent = _agentManager.GetSliceCardAgent();
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
-        rectTransform.localScale = scaleVector3;
 
-        //  初始化内容
-        sliceCardAgent.Width = rectTransform.rect.width;
-        sliceCardAgent.Height = rectTransform.rect.height;
-
-        //  配置scene
-        sliceCardAgent.SceneIndex = _manager.SceneIndex;
-
-        // 添加管理器索引
-        sliceCardAgent.manager = _manager;
+        //  初始化卡片基础数据
+        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Activity, genPos, scaleVector3, flockAgent);
 
         //  初始化数据
-        sliceCardAgent.InitData(dataId, 1);
+        sliceCardAgent.InitSliceCard();
 
         // 添加到effect agent
         _agentManager.AddEffectItem(sliceCardAgent);
@@ -173,6 +119,12 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #endregion
 
 
+    /// <summary>
+    /// 获取生成的位置
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
     public Vector2 GetOriginPosition(int row, int column)
     {
         //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
@@ -215,11 +167,19 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         return new Vector2(x, y);
     }
 
+    /// <summary>
+    /// 获取固定的长度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemWidth()
     {
         return _itemWidth;
     }
 
+    /// <summary>
+    /// 获取固定的高度
+    /// </summary>
+    /// <returns></returns>
     public float GetItemHeight()
     {
         return _itemHeight;
@@ -234,15 +194,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     {
         return _gap;
     }
-
-    //public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId , bool isActive)
-    //{
-    //    CardAgent cardAgent = GenerateCardAgent(genPos, flockAgent);
-    //    // 设置显示状态
-    //    cardAgent.gameObject.SetActive(isActive);
-
-    //    return cardAgent;
-    //}
 
 
 }

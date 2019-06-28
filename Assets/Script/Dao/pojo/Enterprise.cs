@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Enterprise : BaseData,Generator<Enterprise>
+public class Enterprise : FlockData,Generator<Enterprise>
 {
     #region Data Parameter
 
@@ -18,9 +18,18 @@ public class Enterprise : BaseData,Generator<Enterprise>
     // 企业的logo
     private string _logo;
     public string Logo { set { _logo = value; } get { return _logo; } }
-    
-      // 企业名字
-    private string _name;
+    public Sprite SpriteLogo
+        {
+            get
+            {
+                string path = MagicWallManager.FileDir + _logo;
+                return SpriteResource.Instance.GetData(path);
+            }
+        }
+
+
+// 企业名字
+private string _name;
     public string Name { set { _name = value; } get { return _name; } }
 
     // catalog
@@ -78,7 +87,7 @@ public class Enterprise : BaseData,Generator<Enterprise>
         env._name = names[name_index];
 
         int logo_index = Random.Range(0, logos.Length);
-        env._logo = logos[logo_index];
+        env._logo = "logo\\" + logos[logo_index];
 
         env._isCustom = customs[Random.Range(0, 2)];
 
@@ -87,7 +96,7 @@ public class Enterprise : BaseData,Generator<Enterprise>
         bool hasLike = Random.Range(0, 5) > 5;
         env.likes = hasLike ? Random.Range(1, 99) : 0;
 
-        env._business_card = businessCards[Random.Range(0, businessCards.Length)];
+        env._business_card = "env\\" + businessCards[Random.Range(0, businessCards.Length)];
 
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
 
@@ -117,5 +126,11 @@ public class Enterprise : BaseData,Generator<Enterprise>
         env.EnvCards = _env_cards;
 
         return env;
+    }
+
+    public override Sprite GetCoverSprite()
+    {
+        string path = MagicWallManager.FileDir + _logo;
+        return SpriteResource.Instance.GetData(path);
     }
 }

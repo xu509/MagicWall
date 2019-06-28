@@ -9,7 +9,6 @@ using DG.Tweening;
 //
 public class SliceCardAgent : CardAgent
 {
-    private int _type; // 类型，0：产品；1：活动
 
     [SerializeField, Header("卡片 - 标题")] Text _title;
     [SerializeField, Header("卡片 - 描述")] Text _description;
@@ -21,8 +20,6 @@ public class SliceCardAgent : CardAgent
 
     private Vector2 ButtomTool_Origin_Position = new Vector2(0, 100);
     private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
-
-
 
 
     void Awake() {
@@ -40,16 +37,14 @@ public class SliceCardAgent : CardAgent
     /// </summary>
     /// <param name="id">产品ID或活动ID</param>
     /// <param name="type">类型</param>
-    public void InitData(int id,int type) {
+    public void InitSliceCard() {
 
         InitAgency();
 
-        _type = type;
-
         List<SliceCardCellData> cellDatas;
-        if (type == 0)
+        if (type == MWTypeEnum.Product)
         {
-            Product product = DaoService.Instance.GetProductDetail(id);
+            Product product = DaoService.Instance.GetProductDetail(DataId);
 
             // 获取产品标题
             _title.text = product.Name;
@@ -70,7 +65,7 @@ public class SliceCardAgent : CardAgent
         }
         else {
             // 初始化活动信息
-            Activity activity = DaoService.Instance.GetActivityDetail(id);
+            Activity activity = DaoService.Instance.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
             InitComponents(activity.Ent_id != 0);

@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: ManagerConfigFor5Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
+  SelectedItemMaxCount: 5
+  Column: 15
+  FlockPoolSize: 150
+  CardPoolSize: 8
   StarEffectDistance: 5000
   StarEffectDistanceTime: 4
-  SelectedItemMaxCount: 5
+  ClearBubblePoolSize: 40
+  DimBubblePoolSize: 40
+  ClearBubbbleCreateIntervalTime: 1
+  DimBubbbleCreateIntervalTime: 2

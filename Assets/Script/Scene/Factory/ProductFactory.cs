@@ -63,49 +63,28 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
     //  - 生成在动画前
     //  - 生成在动画后
     //
-    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column, float width, float height, BaseData data, Transform parent)
+    public FlockAgent Generate(float gen_x, float gen_y, float ori_x, float ori_y, int row, int column,
+        float width, float height, BaseData data, AgentContainerType agentContainerType)
     {
         width = (int)width;
         height = (int)height;
         Product product = data as Product;
 
         //  创建 Agent
-        FlockAgent newAgent = Instantiate(
-                                    _manager.flockAgent,
-                                    parent
-                                    );
+        FlockAgent newAgent =  _agentManager.GetFlockAgent(agentContainerType);
+
         //  命名
         newAgent.name = "Agent(" + (row + 1) + "," + (column + 1) + ")";
 
-        //  获取rect引用
-        RectTransform rectTransform = newAgent.GetComponent<RectTransform>();
-
         //  定出生位置
         Vector2 postion = new Vector2(gen_x, gen_y);
-        rectTransform.anchoredPosition = postion;
 
         //  定面板位置
         Vector2 ori_position = new Vector2(ori_x, ori_y);
-        newAgent.GenVector2 = postion;
-
-
-
-        // 调整agent的长与宽
-        Vector2 sizeDelta = new Vector2(width, height);
-        rectTransform.sizeDelta = sizeDelta;
-
-        // 初始化 数据
-        //Enterprise env = _daoService.GetEnterprise();
-
-        // 初始化显示图片
-        newAgent.GetComponent<RawImage>().texture = product.TextureImage ;
-        // 调整 collider
-        BoxCollider2D boxCollider2D = newAgent.GetComponent<BoxCollider2D>();
-        boxCollider2D.size = new Vector2(width, height);
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
-            width, height, product.Pro_id, product.Image, false, 1);
+            width, height, product.Pro_id, product.Image, false, MWTypeEnum.Product, agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -120,42 +99,17 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
     {
 
         //  创建 Agent
-        SliceCardAgent sliceCardAgent = Instantiate(
-                                    _manager.sliceCardgent,
-                                    _operationPanel
-                                    ) as SliceCardAgent;
+        SliceCardAgent sliceCardAgent = _agentManager.GetSliceCardAgent();
 
-        if (flockAgent != null) {
-            //  命名
-            sliceCardAgent.name = "Product(" + flockAgent.name + ")";
-
-            //  添加原组件
-            sliceCardAgent.OriginAgent = flockAgent;
-        }
-
-
-        //  获取rect引用
-        RectTransform rectTransform = sliceCardAgent.GetComponent<RectTransform>();
-
-        //  定出生位置
-        rectTransform.anchoredPosition3D = genPos;
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
-        rectTransform.localScale = scaleVector3;
 
-        //  初始化内容
-        sliceCardAgent.Width = rectTransform.rect.width;
-        sliceCardAgent.Height = rectTransform.rect.height;
-
-        //  配置scene
-        sliceCardAgent.SceneIndex = _manager.SceneIndex;
-
-        // 添加管理器索引
-        sliceCardAgent.manager = _manager;
+        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Product,
+            genPos, scaleVector3, flockAgent);
 
         //  初始化数据
-        sliceCardAgent.InitData(dataId,0);
+        sliceCardAgent.InitSliceCard();
 
         // 添加到effect agent
         _agentManager.AddEffectItem(sliceCardAgent);

@@ -153,8 +153,9 @@ public class StartScene : IScene
         foreach (Enterprise env in enterprises)
         {
             string logo = env.Logo;
-            string address = MagicWallManager.FileDir + "logo\\" + logo;
-            TextureResource.Instance.GetTexture(address);
+            string address = MagicWallManager.FileDir + logo;
+            //TextureResource.Instance.GetTexture(address);
+            SpriteResource.Instance.GetData(address);
 
 
             // 预加载企业卡片
@@ -166,7 +167,7 @@ public class StartScene : IScene
             List<Catalog> catalogs =  _daoService.GetCatalogs(env.Ent_id);
             for (int i = 0; i < catalogs.Count; i++)
             {
-                string category_address = MagicWallManager.FileDir + "env\\" + catalogs[i].Img;
+                string category_address = MagicWallManager.FileDir + catalogs[i].Img;
                 TextureResource.Instance.GetTexture(category_address);
             }
         }
@@ -175,16 +176,22 @@ public class StartScene : IScene
         foreach (Activity activity in activities)
         {
             string img = activity.Image;
-            string address = MagicWallManager.FileDir + "activity\\" + img;
-            activity.TextureImage = TextureResource.Instance.GetTexture(address);
+            string address = MagicWallManager.FileDir + img;
+            //TextureResource.Instance.GetTexture(address);
+            SpriteResource.Instance.GetData(address);
+
+            //activity.TextureImage = TextureResource.Instance.GetTexture(address);
         }
 
         List<Product> products = _daoService.GetProducts();
         foreach (Product product in products)
         {
             string img = product.Image;
-            string address = MagicWallManager.FileDir + "product\\" + img;
-            product.TextureImage = TextureResource.Instance.GetTexture(address);
+            string address = MagicWallManager.FileDir + img;
+            //TextureResource.Instance.GetTexture(address);
+            SpriteResource.Instance.GetData(address);
+
+            //product.TextureImage = TextureResource.Instance.GetTexture(address);
         }
 
         // 加载VIDEO
@@ -192,8 +199,9 @@ public class StartScene : IScene
         foreach (Video video in videos)
         {
             string cover = video.Cover;
-            string address = MagicWallManager.FileDir + "video\\" + cover;
+            string address = MagicWallManager.FileDir + cover;
             TextureResource.Instance.GetTexture(address);
+            //TextureResource.Instance.GetTexture(address);
 
             // TODO 处理视频的加载
         }
@@ -212,7 +220,7 @@ public class StartScene : IScene
 
                 foreach (string image in images)
                 {
-                    string address = MagicWallManager.FileDir + "custom\\" + image;
+                    string address = MagicWallManager.FileDir + image;
                     TextureResource.Instance.GetTexture(address);
 
                 }
@@ -221,12 +229,11 @@ public class StartScene : IScene
 
         // 加载其他资源
         //  - 手写板用的texture
-        Texture2D png = new Texture2D(100, 100, TextureFormat.ARGB32, false);
-        TextureResource.Instance.Add(TextureResource.Write_Pad_Texture, png);
+        Texture2D writePanelWordPanel = new Texture2D(_manager.writePanelConfig.writePanelWordRectWidth, _manager.writePanelConfig.writePanelWordRectHeight, TextureFormat.ARGB32, false);
+        TextureResource.Instance.Add(TextureResource.Write_Pad_Texture, writePanelWordPanel);
 
-        Texture2D png2 = new Texture2D(100, 100, TextureFormat.ARGB32, false);
-        TextureResource.Instance.Add(TextureResource.Write_Pad_Texture_Big, png2);
-
+        Texture2D writePanelTotalPanel = new Texture2D(_manager.writePanelConfig.writePanelTotalRectWidth, _manager.writePanelConfig.writePanelTotalRectHeight, TextureFormat.ARGB32, false);
+        TextureResource.Instance.Add(TextureResource.Write_Pad_Texture_Big, writePanelTotalPanel);
 
         _resourseIsChecked = true;
 

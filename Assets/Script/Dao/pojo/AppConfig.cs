@@ -27,6 +27,10 @@ public class AppConfig
     // 右侧前后手风琴持续时间
     public static string KEY_CutEffectDuring_FrontBackRightPullOpen = "cuteffectduring_frontbackrightpullopen";
 
+    //  前后分层效果持续时间
+    public static string KEY_CutEffectDuring_FrontBackUnfold = "cuteffectduring_frontbackunfold";
+
+
 
     // 企业 ID
     private string key;
