@@ -8,24 +8,12 @@ using UnityEngine.UI;
 /// </summary>
 public class ActivityFactory :MonoBehaviour, ItemsFactory
 {
-    private float _gap = 58;
-    private float _itemWidth;   // Item Width
-    private float _itemHeight;  // Item Height
-    private int _column;    // 列数
-
-
-    // Generate Panel
-    private RectTransform _operationPanel;
 
     // Manager
     private MagicWallManager _manager;
 
     // Agent Manager
     private AgentManager _agentManager;
-
-    // Data
-    private DaoService _daoService;
-
 
     void Awake() {
 
@@ -39,20 +27,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     public void Init(MagicWallManager manager)
     {
         _manager = manager;
-        _operationPanel = _manager.OperationPanel;
         _agentManager = _manager.agentManager;
-        _daoService = _manager.daoService;
-
-        _gap = _gap * manager.displayFactor;
-
-        int _row = _manager.Row;
-
-        int h = (int)_manager.mainPanel.rect.height;    // 高度
-        int w = (int)_manager.mainPanel.rect.width; //宽度
-        _itemHeight = 250f;
-        _itemWidth = _itemHeight;
-
-        _column = Mathf.CeilToInt(w / (_itemWidth + _gap));
     }
 
 
@@ -95,9 +70,12 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #region 生成滑动卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId, bool isActive)
     {
+        // 0.45 比例
+        float height = _manager.mainPanel.rect.height * _manager.operateCardScaleFactory;
 
         //  创建 Agent
         SliceCardAgent sliceCardAgent = _agentManager.GetSliceCardAgent();
+        sliceCardAgent.GetComponent<RectTransform>().sizeDelta = new Vector2(height, height);
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
@@ -117,83 +95,5 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         return sliceCardAgent;
     }
     #endregion
-
-
-    /// <summary>
-    /// 获取生成的位置
-    /// </summary>
-    /// <param name="row"></param>
-    /// <param name="column"></param>
-    /// <returns></returns>
-    public Vector2 GetOriginPosition(int row, int column)
-    {
-        //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
-        //float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
-
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
-
-        float itemHeight = (h - _gap * 7) / _manager.Row;
-        float itemWidth = itemHeight;
-
-
-        float x = column * (itemWidth + _gap) + itemWidth / 2 + _gap;
-        float y = row * (itemHeight + _gap) + itemHeight / 2 + _gap;
-
-        _itemWidth = itemWidth;
-        _itemHeight = itemHeight;
-
-        return new Vector2(x, y);
-    }
-
-    public Vector2 GoUpGetOriginPosition(int row, int column)
-    {
-        //float x = j * (itemWidth + gap) + itemWidth / 2 + gap;
-        //float y = i * (itemHeight + gap) + itemHeight / 2 + gap;
-
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
-
-        float itemHeight = (h - _gap * 7) / _manager.Row;
-        float itemWidth = itemHeight;
-
-
-        float x = column * (itemWidth + _gap) + itemWidth / 2 + _gap;
-        float y = h - (row * (itemHeight + _gap) + itemHeight / 2 + _gap);
-
-        _itemWidth = itemWidth;
-        _itemHeight = itemHeight;
-
-        return new Vector2(x, y);
-    }
-
-    /// <summary>
-    /// 获取固定的长度
-    /// </summary>
-    /// <returns></returns>
-    public float GetItemWidth()
-    {
-        return _itemWidth;
-    }
-
-    /// <summary>
-    /// 获取固定的高度
-    /// </summary>
-    /// <returns></returns>
-    public float GetItemHeight()
-    {
-        return _itemHeight;
-    }
-
-    public int GetSceneColumn()
-    {
-        return _column;
-    }
-
-    public float GetSceneGap()
-    {
-        return _gap;
-    }
-
 
 }

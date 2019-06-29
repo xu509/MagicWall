@@ -173,7 +173,6 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 
                     FlockAgent go;
                     float ori_y = _displayBehaviorConfig.sceneUtils.GetYPositionByFixedHeight(itemHeight, i);
-
                     float ori_x = generatePositionXInBack + gap + imageSize.x / 2;
 
                     if (ori_x + gap + imageSize.x / 2 > generate_x_temp)
@@ -184,6 +183,7 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
                     // 创建前排
                     go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
                         imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
+                    go.NextVector2 = new Vector2(ori_x, ori_y);
                     go.UpdateImageAlpha(0.2f);
 
                 }

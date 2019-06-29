@@ -117,6 +117,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
                 // 创建agent
                 FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, row, column,
                          itemwidth, itemHeight, data, AgentContainerType.MainPanel);
+                go.NextVector2 = new Vector2(ori_x, ori_y);
 
 
                 // 完成创建更新字典

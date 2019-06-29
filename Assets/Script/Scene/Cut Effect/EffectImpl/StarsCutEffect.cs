@@ -141,6 +141,7 @@ public class StarsCutEffect : CutEffect
 
                 FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, j,
                     vector2.x, vector2.y, data, AgentContainerType.MainPanel);
+                //go.NextVector2 = new Vector2(ori_x, ori_y);
 
                 // 将agent的z轴定义在后方
                 go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, _distance);

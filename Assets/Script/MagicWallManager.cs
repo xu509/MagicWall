@@ -43,8 +43,6 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] RectTransform _operationPanel;
 
 
-
-
     /// 卡片物理碰撞效果设置
     // 影响距离
     [SerializeField, Range(0f, 2f), Header("影响距离（当为1时，表示半径）")] float _influenceDistance;
@@ -69,6 +67,8 @@ public class MagicWallManager:MonoBehaviour
 
     [SerializeField] OperateMode _operateMode;  //操作模块
 
+    [SerializeField , Range(0f, 1f)] float _operateCardScaleFactory; // 操作卡片 比例：0.45
+
     #endregion
 
     #region 非配置属性
@@ -91,12 +91,12 @@ public class MagicWallManager:MonoBehaviour
 
     //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
 
-    public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+   //  public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
     //public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";
  
@@ -118,6 +118,8 @@ public class MagicWallManager:MonoBehaviour
     #region 引用
 
     public float displayFactor { get { return _displayFactor; } }
+
+    public float operateCardScaleFactory { get { return _operateCardScaleFactory; } }
 
     public ManagerConfig managerConfig { get { return _managerConfig; } }
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
@@ -213,7 +215,9 @@ public class MagicWallManager:MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    //private void Update() { 
+
+    private void FixedUpdate()
     {
         if (!_hasInit)
             return;

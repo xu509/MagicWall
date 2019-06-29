@@ -126,6 +126,28 @@ public class AppUtils
         return width / imageWidth * imageHeight;
     }
 
+    /// <summary>
+    ///     检查向量是否重合
+    /// </summary>
+    /// <returns></returns>
+    public static bool CheckVectorIsEqual(Vector2 position , Vector2 to) {
+        // 误差度设置为2个小数点
+
+        int position_x = Mathf.RoundToInt(position.x * 100);
+        int position_y = Mathf.RoundToInt(position.y * 100);
+
+        int to_x = Mathf.RoundToInt(to.x * 100);
+        int to_y = Mathf.RoundToInt(to.y * 100);
+
+        if ((position_x == to_x) && (position_y == to_y))
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
 
 }
