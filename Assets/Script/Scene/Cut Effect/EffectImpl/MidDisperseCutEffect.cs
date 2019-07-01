@@ -161,6 +161,7 @@ public class MidDisperseCutEffect : CutEffect
                 // 创建agent
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, row, j,
                          _itemWidth, itemHeigth, data, AgentContainerType.MainPanel);
+                //go.NextVector2 = new Vector2(gen_x, gen_y);
                 go.Delay = delay;
                 go.Duration = StartingDurTime + delay;
 

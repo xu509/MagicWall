@@ -310,7 +310,6 @@ GameObject:
   - component: {fileID: 438711667}
   - component: {fileID: 438711666}
   - component: {fileID: 438711671}
-  - component: {fileID: 438711670}
   - component: {fileID: 438711673}
   m_Layer: 5
   m_Name: MagicWall
@@ -402,19 +401,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &438711670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438711665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7859c410a1f483c43987b12079b5ce85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  f_UpdateInterval: 0.5
 --- !u!114 &438711671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +431,8 @@ MonoBehaviour:
   _bg_logo: {fileID: 2060558020}
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
   _gapFactor: 1
-  FPS: 60
+  _operateMode: {fileID: 1167712297}
+  _operateCardScaleFactory: 0.45
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -782,6 +769,7 @@ GameObject:
   - component: {fileID: 1167712295}
   - component: {fileID: 1167712294}
   - component: {fileID: 1167712293}
+  - component: {fileID: 1167712297}
   m_Layer: 0
   m_Name: ManagerAgent
   m_TagString: Untagged
@@ -906,6 +894,19 @@ MonoBehaviour:
   _envFactory: {fileID: 1167712294}
   _activityFactory: {fileID: 1167712295}
   _productFactory: {fileID: 1167712293}
+--- !u!114 &1167712297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167712288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307f452f33cf734ea5c5b1fa5642399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  f_UpdateInterval: 0.5
 --- !u!1 &1210669361
 GameObject:
   m_ObjectHideFlags: 0

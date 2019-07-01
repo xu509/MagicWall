@@ -181,6 +181,8 @@ public class CurveStaggerCutEffect : CutEffect
                 //生成 agent
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y
                     , row , column, itemWidth, _itemHeight, data, AgentContainerType.MainPanel);
+                //go.NextVector2 = new Vector2(gen_x, gen_y);
+
 
                 // 装载延迟参数
                 go.DelayX = delayX;

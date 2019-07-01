@@ -162,7 +162,7 @@ public class UpDownAdjustCutEffect : CutEffect
                 // 创建agent
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, row, j,
                          _itemWidth, itemHeigth, data, AgentContainerType.MainPanel);
-
+                //go.NextVector2 = new Vector2(gen_x, gen_y);
 
                 gen_y_position = Mathf.RoundToInt(gen_y_position + itemHeigth + gap);
                 _displayBehaviorConfig.columnAgentsDic[j].yposition = gen_y_position;

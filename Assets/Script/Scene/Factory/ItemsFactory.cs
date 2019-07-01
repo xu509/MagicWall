@@ -14,16 +14,4 @@ public interface ItemsFactory
 
     CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent,int dataId,bool isActive);
 
-    Vector2 GetOriginPosition(int row,int column);
-    //上下交叉效果结束向上移动，从上向下创建
-    Vector2 GoUpGetOriginPosition(int row, int column);
-
-    float GetItemWidth();
-
-    float GetItemHeight();
-
-    int GetSceneColumn();
-
-    float GetSceneGap();
-
 }
