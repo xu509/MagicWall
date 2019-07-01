@@ -432,7 +432,6 @@ MonoBehaviour:
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
   _gapFactor: 1
   _operateMode: {fileID: 1167712297}
-  _operateCardScaleFactory: 0.45
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0
