@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -619,7 +619,7 @@ MonoBehaviour:
   _bg_logo: {fileID: 2060558020}
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
   _gapFactor: 1
-  FPS: 0
+  _operateMode: {fileID: 1283365259}
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1390,6 +1390,7 @@ GameObject:
   - component: {fileID: 1283365253}
   - component: {fileID: 1283365252}
   - component: {fileID: 1283365251}
+  - component: {fileID: 1283365259}
   m_Layer: 0
   m_Name: ManagerAgent
   m_TagString: Untagged
@@ -1514,6 +1515,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1283365259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283365250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5307f452f33cf734ea5c5b1fa5642399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  f_UpdateInterval: 0.5
 --- !u!1 &1479554933
 GameObject:
   m_ObjectHideFlags: 0

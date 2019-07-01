@@ -36,6 +36,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool hasInitBusinessCard = false; // 是否已生成business card
     protected BusinessCardAgent businessCardAgent;
 
+    [SerializeField,Range(0f,3f)] float _widthFactor;  //    宽度比例，如当高度100，宽度50时，则宽度比 0.5
+    [SerializeField,Range(0f,1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
     [SerializeField] RectTransform _main_container;    //  主框体
     [SerializeField] RectTransform _scale_container;    //  缩放容器
     [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
@@ -90,6 +92,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     {
         InitBase(manager, dataId, dataType, true);
 
+        // 初始化框体长宽
+        float rectHeight = manager.mainPanel.rect.height * _heightFactor;
+        float rectWidth = rectHeight * _widthFactor;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(rectWidth, rectHeight);
+
         //  命名
         if (originAgent != null)
         {
@@ -141,14 +148,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (!_keepOpen && !_doMoving)
         {
             // 缩小一半
-            if (_cardStatus == CardStatusEnum.NORMAL)
-            {
-                if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-                {
-                    DoDestoriedForFirstStep();
-                }
-
-            }
+            //if (_cardStatus == CardStatusEnum.NORMAL)
+            //{
+            //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+            //    {
+            //        DoDestoriedForFirstStep();
+            //    }
+            //}
 
             // 第二次缩小
             if (_cardStatus == CardStatusEnum.DESTORING_STEP_FIRST)

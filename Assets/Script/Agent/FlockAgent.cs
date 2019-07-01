@@ -48,13 +48,13 @@ public class FlockAgent : MonoBehaviour
     private float _height;
 
     // 原位
-    private Vector2 oriVector2;
+    private Vector2 _oriVector2;
 
     // 生成的位置
-    private Vector2 genVector2;
+    private Vector2 _genVector2;
 
     // 下个移动的位置
-    private Vector2 nextVector2;
+    private Vector2 _nextVector2;
 
     // 是否被选中
     private bool _isChoosing = false;
@@ -68,20 +68,22 @@ public class FlockAgent : MonoBehaviour
     //
     private bool _StarsCutEffectIsPlaying = false;
 
+    /// <summary>
+    ///     flock 移动状态
+    /// </summary>
+    private AgentMoveStatus _agentMoveStatus;
+    public AgentMoveStatus agentMoveStatus { set { _agentMoveStatus = value; } get { return _agentMoveStatus; } }
 
     // 卡片代理
     CardAgent _cardAgent;
 		
-    RectTransform agentRectTransform;
-
     // 能被影响
     private bool _canEffected = true;
 
     //  工厂 & 管理器
     ItemsFactory _itemsFactory;
-
-
     #endregion
+
 
     #region 引用
     public string DataImg { set { _data_img = value; } get { return _data_img; } }
@@ -98,25 +100,21 @@ public class FlockAgent : MonoBehaviour
     public float Duration { set { duration = value; } get { return duration; } }
     public float Width { set { _width = value; } get { return _width; } }
     public float Height { set { _height = value; } get { return _height; } }
-    public Vector2 OriVector2 { set { oriVector2 = value; } get { return oriVector2; } }
-    public Vector2 GenVector2 { set { genVector2 = value; } get { return genVector2; } }
-    public Vector2 NextVector2 { set { nextVector2 = value; } get { return nextVector2; } }
+    public Vector2 OriVector2 { set { _oriVector2 = value; } get { return _oriVector2; } }
+    public Vector2 GenVector2 { set { _genVector2 = value; } get { return _genVector2; } }
+    public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
     public bool IsChoosing { set { _isChoosing = value; } get { return _isChoosing; } }
     public bool IsChanging { set { isChanging = value; } get { return isChanging; } }
     public bool IsRecovering { set { isRecovering = value; } get { return isRecovering; } }
     public bool StarsCutEffectIsPlaying { set { _StarsCutEffectIsPlaying = value; } get { return _StarsCutEffectIsPlaying; } }
     public CardAgent GetCardAgent { get { return _cardAgent; } }
     public int SceneIndex { set { _sceneIndex = value; }get { return _sceneIndex; }}
-
-    public MagicWallManager manager{set{ _manager = value; } }
     #endregion
 
 
     // Start is called before the first frame update
     void Start()
     {
-        agentRectTransform = GetComponent<RectTransform>();
-//        nameTextComponent.text = name;
     }
 
 
@@ -155,15 +153,14 @@ public class FlockAgent : MonoBehaviour
         MWTypeEnum dataType,AgentContainerType agentContainerType)
     {
         InitBase(manager,dataId, dataType,false);
-
         _manager = manager;
-
         OriVector2 = originVector;
 
         //  出生位置
         GenVector2 = genVector;
         GetComponent<RectTransform>().anchoredPosition = genVector;
 
+        _nextVector2 = genVector;
 
         x = row;
         y = column;
@@ -186,25 +183,19 @@ public class FlockAgent : MonoBehaviour
         // 定义工厂
         if (dataType == MWTypeEnum.Enterprise)
         {
-            //_itemsFactory = new EnvFactory();
             _itemsFactory = _manager.itemsFactoryAgent.envFactory;
-
         }
         else if (dataType == MWTypeEnum.Product)
         {
 
-            //_itemsFactory = new ProductFactory();
             _itemsFactory = _manager.itemsFactoryAgent.productFactory;
-
         }
         else {
-            //_itemsFactory = new ActivityFactory();
             _itemsFactory = _manager.itemsFactoryAgent.activityFactory;
 
         }
 
         _agentContainerType = agentContainerType;
-        //_itemsFactory.Init(_manager);
     }
 
     #region 更新位置
@@ -215,17 +206,19 @@ public class FlockAgent : MonoBehaviour
             return;
         }
 
+        // 如果是正在恢复的
         if (isRecovering) {
             return;
         }
 
+        // 如果是不能被影响的
         if (!CanEffected)
         {
             return;
         }
         else {
-            // 当需要判断位置时
 
+            // 当需要判断位置时
             if (NeedAdjustPostion()) {
                 UpdatePositionEffect();
             }
@@ -242,7 +235,7 @@ public class FlockAgent : MonoBehaviour
 			refVector2 = NextVector2;
 		} else{
 			//当前场景为正常展示时，参考位置为固定位置
-			refVector2 = oriVector2;
+			refVector2 = _oriVector2;
 		}
         Vector2 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
 
@@ -252,7 +245,6 @@ public class FlockAgent : MonoBehaviour
         if (m_transform == null) {
             return;
         }
-
 
 
         // 获取施加影响的目标物
@@ -318,10 +310,6 @@ public class FlockAgent : MonoBehaviour
             float move_offset_x = offset_x * ((w / 2) / effectDistance);
             move_offset_x += w / 10 * _manager.InfluenceMoveFactor;
 
-            //show_move_offset_x = move_offset_x;
-            //show_move_offset_y = move_offset_y;
-
-
             float to_y,to_x;
             if (refVector2WithOffset.y > targetVector2.y)
             {
@@ -337,12 +325,10 @@ public class FlockAgent : MonoBehaviour
 
             if (refVector2WithOffset.x > targetVector2.x)
             {
-                //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.red;
                 to_x = refVector2.x + move_offset_x;
             }
             else if (refVector2WithOffset.x < targetVector2.x)
             {
-                //m_transform.gameObject.GetComponentInChildren<Image>().color = Color.grey;
                 to_x = refVector2.x - move_offset_x;
             }
             else {
@@ -370,6 +356,8 @@ public class FlockAgent : MonoBehaviour
 		{
             Vector2 toy = new Vector2(refVector2.x, refVector2.y);
 			m_transform?.DOAnchorPos(toy, Time.deltaTime);
+
+            //Debug.Log(name + " From " + a + " ->"  + toy + " | Next : " + NextVector2);
 
             if (m_transform.localScale != Vector3.one) {
                 m_transform?.DOScale(1, Time.deltaTime);
@@ -489,8 +477,6 @@ public class FlockAgent : MonoBehaviour
 
             ca.DestoryAgency();
             ca.OriginAgent.DestoryAgency();
-            //Destroy(ca.gameObject);
-            //Destroy(ca.OriginAgent.gameObject);
 
         }
         else if (typeof(SliceCardAgent).IsAssignableFrom(agent.GetType()))
@@ -500,12 +486,8 @@ public class FlockAgent : MonoBehaviour
 
             ca.DestoryAgency();
             ca.OriginAgent.DestoryAgency();
-            //Destroy(ca.gameObject);
-            //Destroy(ca.OriginAgent.gameObject);
-
         }
         else if (typeof(FlockAgent).IsAssignableFrom(agent.GetType())) {
-            //Destroy(agent.gameObject);
             agent.DestoryAgency();
         }
 
@@ -518,14 +500,25 @@ public class FlockAgent : MonoBehaviour
     private bool NeedAdjustPostion() {
         // 当前位置与目标位置一致
         bool NoEffectAgent = _agentManager.EffectAgent.Count == 0;
-        //bool InOriginPosition = GetComponent<RectTransform>().anchoredPosition == NextVector2;
-        bool InOriginPosition = false;
+        if (!NoEffectAgent) {
+            return true;
+        }
+
+        Vector2 position = GetComponent<RectTransform>().anchoredPosition;
+        bool InOriginPosition = AppUtils.CheckVectorIsEqual(position, NextVector2);
+            
 
         // 如果没有影响的agent，并且位置没有改变，则不需要调整位置
-        if (NoEffectAgent && InOriginPosition)
+        if (InOriginPosition) {
+            _agentMoveStatus = AgentMoveStatus.Regular;
             return false;
+        }
 
+        //Debug.Log("NeedAdjustPostion : " + name + " From "
+        //    + position + " ->"
+        //    + NextVector2 + " | InOriginPosition : " + InOriginPosition );
 
+        _agentMoveStatus = AgentMoveStatus.Changing;
         return true;
     }
 
@@ -594,7 +587,6 @@ public class FlockAgent : MonoBehaviour
 
             GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-
             GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
 
             GetComponent<Image>().sprite = null;
@@ -611,27 +603,28 @@ public class FlockAgent : MonoBehaviour
         var result = false;
 
         // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
-        if (_manager.Status != WallStatusEnum.Cutting)
+        if ((_manager.Status != WallStatusEnum.Cutting) && (_agentMoveStatus == AgentMoveStatus.Regular))
         {
+
             Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
-            if (position.x + (Width * 4) < 0)
+            if (position.x + (Width * 3) < 0)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
             }
-            else if (position.x - (Width * 4) > Screen.width)
-            {
-                //_agentManager.ClearAgent(this);
-                result = true;
-
-            }
-            else if (position.y + (Height * 4) < 0)
+            else if (position.x - (Width * 3) > Screen.width)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
 
             }
-            else if (position.y - (Height * 4) > Screen.height)
+            else if (position.y + (Height * 3) < 0)
+            {
+                //_agentManager.ClearAgent(this);
+                result = true;
+
+            }
+            else if (position.y - (Height * 3) > Screen.height)
             {
                 //_agentManager.ClearAgent(this);
                 result = true;
@@ -640,10 +633,15 @@ public class FlockAgent : MonoBehaviour
 
         return result;
     }
-
-
-
 }
 
+/// <summary>
+/// 移动状态
+/// </summary>
+public enum AgentMoveStatus
+{
+    Regular, // 正常
+    Changing // 变化中
+}
 
 

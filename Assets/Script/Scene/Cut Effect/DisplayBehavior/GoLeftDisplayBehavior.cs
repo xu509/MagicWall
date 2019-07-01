@@ -122,7 +122,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
                 // 生成 agent
                 FlockAgent go = _displayBehaviorConfig.ItemsFactory.Generate(gen_x, gen_y, gen_x, gen_y
                     , row, bean.column + 1, itemWidth, itemHeight, data, AgentContainerType.MainPanel);
-
+                go.NextVector2 = new Vector2(gen_x, gen_y);
 
                 last_x = Mathf.RoundToInt(last_x + itemWidth + gap / 2 );
                 rowDic[row].column = bean.column + 1;

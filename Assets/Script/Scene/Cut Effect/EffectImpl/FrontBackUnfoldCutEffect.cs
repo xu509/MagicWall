@@ -197,6 +197,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
                         imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
                     go.UpdateImageAlpha(0.2f);
                 }
+                //go.NextVector2 = new Vector2(gen_x, gen_y);
 
                 // 装载延迟参数
                 go.DelayX = 0;

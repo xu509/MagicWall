@@ -25,12 +25,6 @@ public enum AgentType
     product // 产品
 }
 
-public enum AgentStatus
-{
-    NORMAL, // 正常
-    MOVING, // 移动中
-    CHOOSING    //已选择
-}
 
 
 public enum WallStatusEnum
