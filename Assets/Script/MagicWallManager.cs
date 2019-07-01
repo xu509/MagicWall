@@ -76,7 +76,6 @@ public class MagicWallManager:MonoBehaviour
     // 面板的差值
     float panelOffsetX = 0f;
     float panelBackOffsetX = 0f;
-
     float panelOffsetY = 0f;
 
     AgentType theItemType;
@@ -87,9 +86,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+     public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
