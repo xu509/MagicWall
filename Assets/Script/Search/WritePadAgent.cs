@@ -558,13 +558,8 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private void UpdateRawMousePosition()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(raw.GetComponent<RectTransform>().position);
-        Debug.Log("screenPos : " + screenPos);
-
-
         Vector2 rawanchorPositon = new Vector2(screenPos.x - raw.rectTransform.rect.width / 2.0f
         , screenPos.y - raw.rectTransform.rect.height / 2.0f);
-
-        Debug.Log("rawanchorPositon : " + rawanchorPositon);
 
         rawMousePosition = rawanchorPositon;
     }

@@ -183,13 +183,19 @@ public class CrossCardAgent : CardAgent
 
     void OnBarSelectionChanged(int index)
     {
-        if (index != crossCardScrollViewController.CurrentIndex) {
+        if (index != crossCardScrollViewController.CurrentIndex)
+        {
             crossCardScrollViewController.SelectCell(index);
 
             CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
             crossCardScrollBar.UpdateComponents();
         }
-       
+        else {
+            crossCardScrollBar.UpdateComponents();
+
+
+        }
+
     }
 
 
