@@ -424,8 +424,7 @@ MonoBehaviour:
   _mainPanel: {fileID: 577667532}
   _backPanel: {fileID: 2012783910}
   _operationPanel: {fileID: 308642408}
-  _influenceDistance: 0
-  _influenceMoveFactor: 0.5
+  _influenceMoveFactor: 0.95
   _influenceEaseEnum: 13
   _movePanelFactor: 3
   _bg_logo: {fileID: 2060558020}

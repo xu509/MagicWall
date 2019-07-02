@@ -44,8 +44,6 @@ public class MagicWallManager:MonoBehaviour
 
 
     /// 卡片物理碰撞效果设置
-    // 影响距离
-    [SerializeField, Range(0f, 2f), Header("影响距离（当为1时，表示半径）")] float _influenceDistance;
     // 影响移动距离系数
     [SerializeField, Range(0f, 10f)] float _influenceMoveFactor = 0.5f;
     // 卡片动画效果
@@ -88,8 +86,8 @@ public class MagicWallManager:MonoBehaviour
 
     public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
+    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
 
@@ -121,7 +119,6 @@ public class MagicWallManager:MonoBehaviour
     public RectTransform mainPanel { get { return _mainPanel; } }
     public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
     public RectTransform OperationPanel { get { return _operationPanel; } }
-    public float InfluenceDistance { get { return _influenceDistance; } }   // 影响距离
     public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
     public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
     public float MovePanelFactor { get { return _movePanelFactor; }set { _movePanelFactor = value; } }

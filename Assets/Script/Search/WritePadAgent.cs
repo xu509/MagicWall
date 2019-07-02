@@ -112,7 +112,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             FinishAddLetterData();
 
             // 开始确认
-            Debug.Log("Begin Recognize");
             _writeStatus = WriteStatus.RecognizeStart;
         }
 
@@ -124,15 +123,12 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (_writeStatus == WriteStatus.Recognizing)
         {
             // Do Recognizing
-            Debug.Log(" Do Recognizing");
-
         }
 
         if (_writeStatus == WriteStatus.RecognizeFinished)
         {
             // DO Recognize finished
             RecognizeComplete();
-            Debug.Log(" Do Recognizing finished");
             _writeStatus = WriteStatus.Init;
         }
 
@@ -551,15 +547,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 tar_y = middlePoint.y - offset_y;
             }
         }
-
-
-        if (tar_x < 0 || tar_y < 0) {
-            Debug.Log("Source : " + source + " | middlepoint : " 
-                + middlePoint + "Out : " 
-                + new Vector2(tar_x,tar_y) 
-                + " | BECAUSE : " + (tar_x < 0 ? "X" : "Y"));
-        }
-
 
         return new Vector2(tar_x, tar_y);
     }
