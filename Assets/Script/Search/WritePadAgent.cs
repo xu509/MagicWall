@@ -11,15 +11,17 @@ using System;
 public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [SerializeField] WritePanelConfig writePanelConfig;
-
-
+    [SerializeField] RawImage raw;                   //使用UGUI的RawImage显示，方便进行添加UI,将pivot设为(0.5,0.5)
+    [SerializeField] private RecogQueuer _recogQueuer;  //识别队列
+    [SerializeField] private bool enableResevalLetter = false;   //启用翻转生成坐标
+    [SerializeField] Material mat;     //给定的shader新建材质
+    [SerializeField] Texture brushTypeTexture;   //画笔纹理，半透明
+    [SerializeField] Color brushColor = Color.black;
+    [SerializeField] int num = 50;
 
     private RenderTexture texRender;   //画布
-    public Material mat;     //给定的shader新建材质
-    public Texture brushTypeTexture;   //画笔纹理，半透明
+
     private float brushScale = 0.5f;
-    public Color brushColor = Color.black;
-    public RawImage raw;                   //使用UGUI的RawImage显示，方便进行添加UI,将pivot设为(0.5,0.5)
     private float lastDistance;
     private Vector3[] PositionArray = new Vector3[3];
     private int a = 0;
@@ -27,7 +29,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private int b = 0;
     private float[] speedArray = new float[4];
     private int s = 0;
-    public int num = 50;
 
     Vector2 rawMousePosition;            //raw图片的左下角对应鼠标位置 
     float rawWidth;                               //raw图片宽度
@@ -39,14 +40,11 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private float _lastWriteTime = 0f;  //  最近的书写时间点
 
     //[SerializeField] private float _recognizeIntervalTime = 2f; // 识别周期
-    //[SerializeField] private bool enableBurrEffect = false;   //启用毛刺效果
 
-    [SerializeField] private bool enableResevalLetter = false;   //启用翻转生成坐标
 
     Action<string[]> _OnRecognizeSuccess;    //识别成功回调
     Action<string> _OnRecognizeError;    //识别失败回调
 
-    [SerializeField] private RecogQueuer _recogQueuer;  //识别队列
 
     // 灵云识别相关
     private List<short> _letterData;    //笔记数据
@@ -76,10 +74,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
 
         //raw图片鼠标位置，宽度计算
-        rawWidth = raw.rectTransform.sizeDelta.x;
-        rawHeight = raw.rectTransform.sizeDelta.y;
+        rawWidth = raw.rectTransform.rect.width;
+        rawHeight = raw.rectTransform.rect.height;
 
         _middlePoint = new Vector2(rawWidth / 2, rawHeight / 2);
+
+        Debug.Log("Raw Width : " + rawWidth);
+        Debug.Log("Raw Height : " + rawHeight);
+        Debug.Log("_middlePoint : " + _middlePoint);
 
         UpdateRawMousePosition();
 
@@ -555,8 +557,14 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private void UpdateRawMousePosition()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(raw.GetComponent<RectTransform>().position);
-        Vector2 rawanchorPositon = new Vector2(screenPos.x - raw.rectTransform.sizeDelta.x / 2.0f
-        , screenPos.y - raw.rectTransform.sizeDelta.y / 2.0f);
+        Debug.Log("screenPos : " + screenPos);
+
+
+        Vector2 rawanchorPositon = new Vector2(screenPos.x - raw.rectTransform.rect.width / 2.0f
+        , screenPos.y - raw.rectTransform.rect.height / 2.0f);
+
+        Debug.Log("rawanchorPositon : " + rawanchorPositon);
+
         rawMousePosition = rawanchorPositon;
     }
 
