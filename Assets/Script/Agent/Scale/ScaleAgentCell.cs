@@ -9,12 +9,15 @@ public class ScaleAgentCell : MonoBehaviour
 
     public ScrollRect scrollRect;
     private RectTransform imgRtf;
-    //缩放
-    Vector2 oldPos1 = Vector2.zero;
-    Vector2 oldPos2 = Vector2.zero;
+    private float originalDistance;
+    private List<Touch> touchs = new List<Touch>();
+
     //记录单指双指的变换
     private bool isSingleFinger;
-    private float originalDistance;
+
+    private Touch oldTouch1;  //上次触摸点1(手指1)
+    private Touch oldTouch2;  //上次触摸点2(手指2)
+
     public ScaleAgent scaleAgent;
     private float startScalePer;//开始缩放时比例
 
@@ -26,30 +29,40 @@ public class ScaleAgentCell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 1)
+        /*
+        for (int i=0; i<Input.touchCount; i++)
+        {
+            if (isTouchOnImage(Input.GetTouch(i).position))
+            {
+                if (!touchs.Contains(Input.GetTouch(i)))
+                {
+                    touchs.Add(Input.GetTouch(i));
+                }
+            }
+        }
+        
+        if (touchs.Count == 1)
         {
             isSingleFinger = true;
         }
-        else if (Input.touchCount > 1)
+        else if (touchs.Count > 1)
         {
             if (isSingleFinger)
             {
-                oldPos1 = Input.GetTouch(0).position;
-                oldPos2 = Input.GetTouch(1).position;
+                Vector2 oldPos1 = touchs[0].position;
+                Vector2 oldPos2 = touchs[1].position;
+                originalDistance = Vector2.Distance(oldPos1, oldPos2);
             }
-            if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved)
+            if (touchs[0].phase == TouchPhase.Moved || touchs[1].phase == TouchPhase.Moved)
             {
-                Vector2 newPos1 = Input.GetTouch(0).position;
-                Vector2 newPos2 = Input.GetTouch(1).position;
+                Vector2 newPos1 = touchs[0].position;
+                Vector2 newPos2 = touchs[1].position;
                 float newDistance = Vector2.Distance(newPos1, newPos2);
-                float oldDistance = Vector2.Distance(oldPos1, oldPos2);
-                float s = startScalePer + (newDistance - oldDistance) / oldDistance;
+                float s = startScalePer + (newDistance - originalDistance) / originalDistance / 2;
                 scaleAgent.currentScale = s;
                 scaleAgent.ResetImage();
-                oldPos1 = newPos1;
-                oldPos2 = newPos2;
             }
-            if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(1).phase == TouchPhase.Ended && isSingleFinger == false)
+            else if (touchs[0].phase == TouchPhase.Ended || touchs[1].phase == TouchPhase.Ended && isSingleFinger == false)
             {
                 if (scaleAgent.currentScale < 1)
                 {
@@ -61,73 +74,56 @@ public class ScaleAgentCell : MonoBehaviour
                     scaleAgent.currentScale = scaleAgent.maxScale;
                     scaleAgent.ResetImage();
                 }
+                touchs = new List<Touch>();
             }
             isSingleFinger = false;
 
         }
-
-    }
-
-
-
-    /*
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (!startScale)
+        */
+        if (Input.touchCount <= 1)
         {
-            scrollRect.OnBeginDrag(eventData);
             return;
         }
-        Vector2 vector2 = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            imgRtf,
-            eventData.position,
-            eventData.pressEventCamera,
-            out vector2);
-        second = vector2;
-        originalDistance = Vector2.Distance(first, second);
-        startScalePer = scaleAgent.currentScale;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-
-        if (!startScale)
+        //多点触摸, 放大缩小
+        Touch newTouch1 = Input.GetTouch(0);
+        Touch newTouch2 = Input.GetTouch(1);
+        //第2点刚开始接触屏幕, 只记录，不做处理
+        if (newTouch2.phase == TouchPhase.Began)
         {
-            scrollRect.OnDrag(eventData);
+            Vector2 oldPos1 = newTouch1.position;
+            Vector2 oldPos2 = newTouch2.position;
+            originalDistance = Vector2.Distance(oldPos1, oldPos2);
+            startScalePer = scaleAgent.currentScale;
             return;
         }
-        Vector2 vector2 = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            imgRtf,
-            eventData.position,
-            eventData.pressEventCamera,
-            out vector2);
-        second = vector2;
-        print("old:"+scaleAgent.currentScale);
-        float newDistance = Vector2.Distance(first, second);
-        float s = startScalePer + (newDistance-originalDistance) / originalDistance;
-        print("new:" + s);
+        float newDistance = Vector2.Distance(newTouch1.position, newTouch2.position);
+        float s = startScalePer + (newDistance - originalDistance) / originalDistance / 2;
+        if (s <= 1)
+        {
+            s = 1;
+        }
+        else if (s >= scaleAgent.maxScale)
+        {
+            s = scaleAgent.maxScale;
+        }
         scaleAgent.currentScale = s;
         scaleAgent.ResetImage();
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+
+    bool isTouchOnImage(Vector3 touchPosition)
     {
-        if (!startScale)
+        //return true;
+        Vector3 imgScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 leftBottom = new Vector2(imgScreenPos.x - imgRtf.sizeDelta.x * 0.5f, imgScreenPos.y - imgRtf.sizeDelta.y * 0.5f);
+        if (touchPosition.x >= leftBottom.x && touchPosition.y >= leftBottom.y && touchPosition.x <= leftBottom.x + imgRtf.sizeDelta.x && touchPosition.y <= leftBottom.y + imgRtf.sizeDelta.y)
         {
-            scrollRect.OnEndDrag(eventData);
-            return;
+            return true;
         }
-        if (scaleAgent.currentScale < 1)
+        else
         {
-            scaleAgent.currentScale = 1;
-            scaleAgent.ResetImage();
-        }   else if (scaleAgent.currentScale > scaleAgent.maxScale)
-        {
-            scaleAgent.currentScale = scaleAgent.maxScale;
-            scaleAgent.ResetImage();
+            return false;
         }
     }
-    */
+
 }
