@@ -553,6 +553,7 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         return new Vector2(tar_x, tar_y);
     }
 
+    //  获取的左下角的屏幕坐标
 
     private void UpdateRawMousePosition()
     {
@@ -709,7 +710,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         this._OnRecognizeError = action;
     }
 
-    //  获取的左下角的屏幕坐标
 
 
     IEnumerator Wait(float waitTime)
