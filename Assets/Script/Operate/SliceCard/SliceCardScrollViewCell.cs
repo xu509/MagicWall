@@ -32,6 +32,7 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
 
     [SerializeField] RectTransform videoContainer;
     [SerializeField] RawImage _video_cover;
+    [SerializeField] ButtonLikeAgent _buttonLikeAgent;
 
 
     static class AnimatorHash
@@ -77,6 +78,19 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             CanvasExtensions.SizeToParent(_cover);
             videoContainer.gameObject.SetActive(false);
 
+
+            // 调整 Like 按钮
+            if (cellData.IsProduct())
+            {
+                _likes = DaoService.Instance.GetLikesByProductDetail(_cellData.Id);
+            }
+            else
+            {
+                _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
+            }
+
+            _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
+
         }
         else {
             videoContainer.gameObject.SetActive(true);
@@ -86,11 +100,7 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             CanvasExtensions.SizeToParent(_video_cover);
 
             _cover.gameObject.SetActive(false);
-
         }
-
-
-
     }
 
     /// <summary>
@@ -250,6 +260,10 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         // TODO 数据逻辑上进行添加数值
         _likes = _likes + 1;
         _cellData.sliceCardAgent.DoUpdate();
+    }
+
+    private void OnClickLikeBtn() {
+
     }
 
 }

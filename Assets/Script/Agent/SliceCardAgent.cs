@@ -50,7 +50,10 @@ public class SliceCardAgent : CardAgent
             _title.text = product.Name;
 
             // 获取产品所属公司信息
-            InitComponents(product.Ent_id != 0);
+            //InitComponents(product.Ent_id != 0);
+
+            InitComponents(Random.Range(0, 5) > 2);
+
 
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
@@ -68,7 +71,9 @@ public class SliceCardAgent : CardAgent
             Activity activity = DaoService.Instance.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
-            InitComponents(activity.Ent_id != 0);
+            //InitComponents(activity.Ent_id != 0);
+            InitComponents(Random.Range(0, 5) > 2);
+
 
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
@@ -118,20 +123,24 @@ public class SliceCardAgent : CardAgent
         // 从透明到不透明，向下移动
         _description.text = description;
 
-        _description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
-        _description.DOFade(0, 0f);
+        //_description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
+        //_description.DOFade(0, 0f);
 
-        _description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
-        _description.DOFade(1, 0.5f);
+        //_description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
+        //_description.DOFade(1, 0.5f);
 
     }
 
     private void UpdateToolComponent() {
-        _buttomTool.GetComponent<RectTransform>().anchoredPosition = ButtomTool_Origin_Position;
-        _buttomTool.GetComponent<CanvasGroup>().DOFade(0, Time.deltaTime);
 
-        _buttomTool.GetComponent<RectTransform>().DOAnchorPos(ButtomTool_Go_Position, 0.5f);
-        _buttomTool.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+
+        //_buttomTool.GetComponent<RectTransform>().anchoredPosition = ButtomTool_Origin_Position;
+        //_buttomTool.GetComponent<CanvasGroup>().DOFade(0, Time.deltaTime);
+
+        //_buttomTool.GetComponent<RectTransform>().DOAnchorPos(ButtomTool_Go_Position, 0.5f);
+        //_buttomTool.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+
+
     }
 
 

@@ -67,8 +67,6 @@ public class MagicWallManager:MonoBehaviour
 
     [SerializeField] OperateMode _operateMode;  //操作模块
 
-    [SerializeField , Range(0f, 1f)] float _operateCardScaleFactory; // 操作卡片 比例：0.45
-
     #endregion
 
     #region 非配置属性
@@ -78,7 +76,6 @@ public class MagicWallManager:MonoBehaviour
     // 面板的差值
     float panelOffsetX = 0f;
     float panelBackOffsetX = 0f;
-
     float panelOffsetY = 0f;
 
     AgentType theItemType;
@@ -118,8 +115,6 @@ public class MagicWallManager:MonoBehaviour
     #region 引用
 
     public float displayFactor { get { return _displayFactor; } }
-
-    public float operateCardScaleFactory { get { return _operateCardScaleFactory; } }
 
     public ManagerConfig managerConfig { get { return _managerConfig; } }
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }

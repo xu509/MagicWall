@@ -48,16 +48,15 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
     [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
     [SerializeField] Animator _list_animator;    // list animator
-    [SerializeField] Button _btn_search;
-    [SerializeField] Button _btn_list;
-    [SerializeField] Button _btn_move;
-    [SerializeField] Button _btn_close;
+    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
+    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
+
 
     [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
     [SerializeField] RectTransform normalContainer; // 正常显示的框体
     [SerializeField] RectTransform videoContainer;  // video的安放框体
 
-    [SerializeField] float radius;// Circle Collider2D radius
+    [SerializeField] float radiusFactor;// Colider 半径系数
 
 
     Action OnCreatedCompletedAction; 
@@ -410,21 +409,17 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (_hasListBtn)
         {
             // 显示四组按钮
-            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-127,0);
-            _btn_list.GetComponent<RectTransform>().anchoredPosition = new Vector2(-42, 0);
-            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(42, 0);
-            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(127, 0);
 
-            _btn_list.gameObject.SetActive(true);
+
+            _tool_bottom_container.gameObject.SetActive(true);
+            _tool_bottom_three_container.gameObject.SetActive(false);
             InitEnvCard();
         }
         else {
             // 显示三个按钮
-            _btn_list.gameObject.SetActive(false);
+            _tool_bottom_container.gameObject.SetActive(false);
+            _tool_bottom_three_container.gameObject.SetActive(true);
 
-            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-80, 0);
-            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(80, 0);
         }
 
         // 不显示移动提示
@@ -463,7 +458,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
             foreach (CircleCollider2D circle in circles)
             {
-                circle.radius = radius;
+                circle.radius = radiusFactor;
             }
 
             DoMove();
