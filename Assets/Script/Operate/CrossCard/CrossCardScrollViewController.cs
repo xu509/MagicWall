@@ -131,7 +131,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     public void OnPlayVideo(CrossCardCellData cellData)
     {
         CrossCardAgent agent = _cardAgent as CrossCardAgent;
-        agent.DoVideo(cellData.VideoUrl, cellData.Description);
+        agent.DoVideo(cellData.VideoUrl, cellData.Description,cellData.Image);
     }
 
 

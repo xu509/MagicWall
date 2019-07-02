@@ -148,7 +148,7 @@ public class SliceCardScrollViewController : SliceCardBaseController<SliceCardCe
     {
         SliceCardAgent agent = _cardAgent as SliceCardAgent;
 
-        agent.DoVideo(cellData.VideoUrl, cellData.Description);
+        agent.DoVideo(cellData.VideoUrl, cellData.Description, cellData.Image);
     }
 
 

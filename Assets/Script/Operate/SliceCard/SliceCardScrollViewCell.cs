@@ -67,11 +67,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             string address;
             if (cellData.IsProduct())
             {
-                address = MagicWallManager.FileDir + "product\\detail\\" + cellData.Image;
+                address = MagicWallManager.FileDir + cellData.Image;
             }
             else
             {
-                address = MagicWallManager.FileDir + "activity\\detail\\" + cellData.Image;
+                address = MagicWallManager.FileDir  + cellData.Image;
             }
 
             _cover.texture = TextureResource.Instance.GetTexture(address);
@@ -89,12 +89,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
                 _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
             }
 
-            _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
 
         }
         else {
             videoContainer.gameObject.SetActive(true);
-            string address = MagicWallManager.FileDir + "video\\" + cellData.Image;
+            string address = MagicWallManager.FileDir + cellData.Image;
 
             _video_cover.texture = TextureResource.Instance.GetTexture(address);
             CanvasExtensions.SizeToParent(_video_cover);
@@ -146,44 +145,15 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         {
             _likes = DaoService.Instance.GetLikesByProductDetail(_cellData.Id);
         }
-        else {
+        else
+        {
             _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
         }
 
-        string likesStr;
-        bool hasLikesNumber = false;
+        _likes = 0;
 
-        if (_likes > 0)
-        {
-            hasLikesNumber = true;
-            _hasLikeNumber = true;
-        }
-        else
-        {
-            _hasLikeNumber = false;
-        }
 
-        if (_likes > 99)
-        {
-            likesStr = "99+";
-        }
-        else
-        {
-            likesStr = _likes.ToString();
-        }
-
-        if (hasLikesNumber)
-        {
-            // 已存在喜欢数时，开启相关的按钮，并赋值
-            btn_like.gameObject.SetActive(false);
-            btn_like_withnumber.gameObject.SetActive(true);
-            btn_like_withnumber.GetComponentInChildren<Text>().text = likesStr;
-        }
-        else
-        {
-            btn_like_withnumber.gameObject.SetActive(false);
-            btn_like.gameObject.SetActive(true);
-        }
+        _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
 
 
         GetComponent<RectTransform>().SetAsLastSibling();
@@ -202,15 +172,9 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             scale_tool.gameObject.SetActive(false);
         }
 
-
-        // 清除喜欢按钮
-        if (btn_like.gameObject.activeSelf)
+        if (_buttonLikeAgent.gameObject.activeSelf)
         {
-            btn_like.gameObject.SetActive(false);
-        }
-        if (btn_like_withnumber.gameObject.activeSelf)
-        {
-            btn_like_withnumber.gameObject.SetActive(false);
+            _buttonLikeAgent.gameObject.SetActive(false);
         }
     }
 

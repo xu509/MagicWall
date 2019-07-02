@@ -22,13 +22,19 @@ public class ButtonLikeAgent : MonoBehaviour
     private int _likes;
     private Action _onClickCallBack;
 
+    private Color BTN_ACTIVE_COLOR = new Color(230 / 255f, 0 / 255f, 18 / 255f);
+
+
+
     public void Init(int likes,Action onClick) {
         _onClickCallBack = onClick;
-        Refresh(likes);    }
+        Refresh(likes);
+    }
 
     public void Refresh(int likes) {
-        _likes = likes;
+        gameObject.SetActive(true);
 
+        _likes = likes;
 
         if (likes == 0)
         {
@@ -109,16 +115,34 @@ public class ButtonLikeAgent : MonoBehaviour
             _likes = _likes + 1;
 
             //  喜欢数改变
-            _textInContainer.DOText(GetLikeStr(), 1);
+            _textInContainer.DOText(GetLikeStr(), 0.5f);
 
             //  图标变红
-            _btnLikeWithNumberHeartIcon.DOColor(new Color(23,0,18), 1);
+            _btnLikeWithNumberHeartIcon.DOColor(BTN_ACTIVE_COLOR, 0.5f);
 
             _onClickCallBack.Invoke();
 
-            Debug.Log("Click Button Like Agent");
+            //Debug.Log("Click Button Like Agent");
         }
         else {
+
+            Debug.Log("DoClick No Number");
+
+            // 心图标变红，并且左移
+            _btnLikeNoNumberHeartIcon.DOColor(BTN_ACTIVE_COLOR, 0.5f);
+
+            _btnLikeNoNumberHeartIcon.GetComponent<RectTransform>().DOAnchorMax(new Vector2(0.42f, 0.75f), 0.5f);
+            _btnLikeNoNumberHeartIcon.GetComponent<RectTransform>().DOAnchorMin(new Vector2(0.15f, 0.2f), 0.5f);
+            _btnLikeNoNumberHeartIcon.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+            // 数字跳出
+            _likes = _likes + 1;
+
+            _textInNoNumberContainer.text = GetLikeStr();
+            _textInNoNumberContainer.DOFade(1, 0.5f);
+
+            //_textInNoNumberContainer.DOText(GetLikeStr(), 0.5f);
+
 
         }
     }

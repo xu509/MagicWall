@@ -7,9 +7,13 @@ using DG.Tweening;
 
 public class VideoAgent : MonoBehaviour
 {
+    [SerializeField] RectTransform _activeContainer;
+    [SerializeField] RectTransform _loadingContainer;
+    [SerializeField] Image _image;
     [SerializeField] VideoPlayer _videoPlayer;
     [SerializeField] RawImage _screen;
     [SerializeField] Text _time;
+    [SerializeField] RectTransform _progressContainer;
     [SerializeField] RectTransform _progress;
 
     [SerializeField] Text _text_description;
@@ -17,18 +21,31 @@ public class VideoAgent : MonoBehaviour
     [SerializeField] RectTransform _btn_pause;
     [SerializeField] RectTransform _btn_music_enable;
     [SerializeField] RectTransform _btn_muisc_disable;
+    [SerializeField] float widthFactorByHeight; // 宽度系数
+    [SerializeField] float heightFactorByScreen;    //高度系数
 
 
     private CardAgent _cardAgent;
 
+    private bool _isLoading = true;
     private string _address;
     private string _description;
     private bool _isPlaying = false;
     private bool _isMusicing = true;
+    private string _cover;
 
 
-    private Vector2 _progress_init = new Vector2(-487, 0);
-    private Vector2 _progress_finish = new Vector2(-15, 0);
+    //private Vector2 _progress_init = new Vector2(-487, 0);
+    //private Vector2 _progress_finish = new Vector2(-15, 0);
+
+
+
+    void Awake() {
+        float height = Screen.height * heightFactorByScreen;
+
+        float width = height * widthFactorByHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+    }
 
     public void SetAddress(string address) {
         _address = address;
@@ -45,22 +62,26 @@ public class VideoAgent : MonoBehaviour
     }
 
 
-    public void SetData(string address,string description,CardAgent cardAgent) {
+    public void SetData(string address,string description,CardAgent cardAgent,string cover) {
         SetAddress(address);
         SetCardAgent(cardAgent);
         SetDescription(description);
+
+        _cover = cover;
+
     }
 
 
 
-
-
     public void Init() {
+
+        Loading();
+
         _videoPlayer.source = VideoSource.Url;
-        _videoPlayer.url = MagicWallManager.FileDir + "video\\" + _address;
+        _videoPlayer.url = MagicWallManager.FileDir + _address;
 
         // 设置进度条
-        _progress.anchoredPosition = _progress_init;
+        Progress(0);
 
         //  设置播放错误回调
         _videoPlayer.errorReceived += ErrorReceivedCallBack;
@@ -73,48 +94,57 @@ public class VideoAgent : MonoBehaviour
 
         //  播放视频
         StartCoroutine(PlayVideo());
+        
     }
 
     void Update() {
 
-        // 播放控制按钮监控
-        if (!_isPlaying)
+        if (_isLoading)
         {
-            if (!_btn_play.gameObject.activeSelf)
-            {
-                _btn_play.gameObject.SetActive(true);
-            }
-            _btn_pause.gameObject.SetActive(false);
+            RunLoading();
         }
         else {
-            if (!_btn_pause.gameObject.activeSelf)
+            // 播放控制按钮监控
+            if (!_isPlaying)
             {
-                _btn_pause.gameObject.SetActive(true);
+                if (!_btn_play.gameObject.activeSelf)
+                {
+                    _btn_play.gameObject.SetActive(true);
+                }
+                _btn_pause.gameObject.SetActive(false);
             }
-            _btn_play.gameObject.SetActive(false);
-
-
-            UpdateTime();
-            Progress(CalculateRate());
-        }
-
-        // 音乐控制按钮监控
-        if (_isMusicing)
-        {
-            if (!_btn_muisc_disable.gameObject.activeSelf)
+            else
             {
-                _btn_muisc_disable.gameObject.SetActive(true);
-            }
-            _btn_music_enable.gameObject.SetActive(false);
-        }
-        else {
-            if (!_btn_music_enable.gameObject.activeSelf)
-            {
-                _btn_music_enable.gameObject.SetActive(true);
-            }
-            _btn_muisc_disable.gameObject.SetActive(false);
-        }
+                if (!_btn_pause.gameObject.activeSelf)
+                {
+                    _btn_pause.gameObject.SetActive(true);
+                }
+                _btn_play.gameObject.SetActive(false);
 
+
+                UpdateTime();
+                Progress(CalculateRate());
+            }
+
+            // 音乐控制按钮监控
+            if (_isMusicing)
+            {
+                if (!_btn_muisc_disable.gameObject.activeSelf)
+                {
+                    _btn_muisc_disable.gameObject.SetActive(true);
+                }
+                _btn_music_enable.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (!_btn_music_enable.gameObject.activeSelf)
+                {
+                    _btn_music_enable.gameObject.SetActive(true);
+                }
+                _btn_muisc_disable.gameObject.SetActive(false);
+            }
+        }
+    
     }
 
 
@@ -133,20 +163,15 @@ public class VideoAgent : MonoBehaviour
 
         if (_videoPlayer.isPrepared)
         {
-            _screen.texture = _videoPlayer.texture;
-
             float videow = _videoPlayer.texture.width;
             float videoh = _videoPlayer.texture.height;
-            float screenw = _screen.texture.width;
-            float screenh = _screen.texture.height;
+            //float screenw = _screen.texture.width;
+            //float screenh = _screen.texture.height;
 
-            //Debug.Log("videow : " + videow + " videoh :" + videoh + " screenw:" + screenw + " screenh:" + screenh);
-
-            RectTransform r = _screen.gameObject.GetComponent<RectTransform>();
-            r.sizeDelta = new Vector2(videow, videoh);
-
+            // 功能未处理不同屏幕尺寸下的视频
             // 得出总时长 - 秒
-            SetTotalTime();
+
+            OpenActiveContainer();
 
         }
 
@@ -224,8 +249,8 @@ public class VideoAgent : MonoBehaviour
     }
 
     private void Progress(float rate) {
-        Vector2 to = Vector2.Lerp(_progress_init, _progress_finish, rate);
-        _progress.DOAnchorPos(to, Time.deltaTime);
+        //float width =_progressContainer.rect.width;
+        _progress.GetComponent<Image>().DOFillAmount(rate, Time.deltaTime);
     }
 
     public void DoPlay() {
@@ -271,7 +296,43 @@ public class VideoAgent : MonoBehaviour
 
     private void LoopPointReachedCallBack(VideoPlayer source) {
         _isPlaying = false;
-        _progress.DOAnchorPos(_progress_init, Time.deltaTime);
+        Progress(0);
     }
+
+
+
+    private void Loading() {
+        _isLoading = true;
+        _loadingContainer.gameObject.SetActive(true);
+        _activeContainer.gameObject.SetActive(false);
+
+        _image.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + _cover);
+        _image.type = Image.Type.Filled;
+
+    }
+
+    private void OpenActiveContainer() {
+        _isLoading = false;
+        _image.DOFillAmount(1, 0.3f).OnComplete(() => {
+            _loadingContainer.gameObject.SetActive(false);
+            _activeContainer.gameObject.SetActive(true);
+
+            _screen.texture = _videoPlayer.texture;
+            SetTotalTime();
+        });
+    }
+
+    private void RunLoading() {
+        float loadNumber = _image.fillAmount + 0.01f;
+        if (loadNumber < 1)
+        {
+            _image.fillAmount = loadNumber;
+        }
+        else {
+            _image.fillAmount = 0;
+        }
+
+    }
+
 
 }
