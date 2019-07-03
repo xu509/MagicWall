@@ -63,20 +63,17 @@ public class CommonScene : IScene
 	//销毁动画已完成
 	private bool DoDestoryCompleted()
 	{
-
         if (!isDoDestoryCompleting)
         {
-
             _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
             _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
-
             isDoDestoryCompleting = true;
+
             // 清理面板
             return _manager.Clear();
         }
         else {
- 
-            return false;
+             return false;
         }
 
 	}

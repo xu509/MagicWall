@@ -10,17 +10,10 @@ using DG.Tweening;
 public class SliceCardAgent : CardAgent
 {
 
-    [SerializeField, Header("卡片 - 标题")] Text _title;
-    [SerializeField, Header("卡片 - 描述")] Text _description;
+    [SerializeField] Text _title;
+    [SerializeField] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
     [SerializeField] RectTransform _buttomTool;
-
-    private Vector2 Description_Origin_Position = Vector2.zero + new Vector2(0,20);
-    private Vector2 Description_Go_Position = Vector2.zero;
-
-    private Vector2 ButtomTool_Origin_Position = new Vector2(0, 100);
-    private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
-
 
     void Awake() {
     }
@@ -55,6 +48,8 @@ public class SliceCardAgent : CardAgent
             InitComponents(Random.Range(0, 5) > 2);
 
 
+
+
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
             for (int i = 0; i < product.ProductDetails.Count; i++)
@@ -71,8 +66,8 @@ public class SliceCardAgent : CardAgent
             Activity activity = DaoService.Instance.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
-            //InitComponents(activity.Ent_id != 0);
             InitComponents(Random.Range(0, 5) > 2);
+            InitComponents(true);
 
 
             // 获取产品详细（图片，描述）

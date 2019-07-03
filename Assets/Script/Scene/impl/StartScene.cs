@@ -160,7 +160,7 @@ public class StartScene : IScene
 
             // 预加载企业卡片
             for (int i = 0; i < env.EnvCards.Count; i++) {
-                TextureResource.Instance.GetTexture(env.EnvCards[i]);
+                TextureResource.Instance.GetTexture(MagicWallManager.FileDir + env.EnvCards[i]);
             }
 
             // 预加载 CATALOGS

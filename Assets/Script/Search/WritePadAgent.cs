@@ -79,10 +79,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
         _middlePoint = new Vector2(rawWidth / 2, rawHeight / 2);
 
-        Debug.Log("Raw Width : " + rawWidth);
-        Debug.Log("Raw Height : " + rawHeight);
-        Debug.Log("_middlePoint : " + _middlePoint);
-
         UpdateRawMousePosition();
 
         texRender = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
@@ -91,7 +87,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         DrawImage();
 
         _letterData = new List<short>();
-
     }
 
     Vector3 startPosition = Vector3.zero;

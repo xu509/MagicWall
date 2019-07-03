@@ -65,8 +65,6 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
     /// 更新 scroll bar 的左侧符号
     /// </summary>
     public void UpdateAsCurrent() {
-        Debug.Log("UpdateAsCurrent");
-
 
         // 每单个icon的宽度 ： anchors min -> max 0.1171
         // else : min - 0.3003   ,  max - 0.7058
