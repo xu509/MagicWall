@@ -4,16 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ScaleAgentCell : MonoBehaviour
+public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 
     public ScrollRect scrollRect;
     private RectTransform imgRtf;
     private float originalDistance;
-    private List<Touch> touchs = new List<Touch>();
+    private List<Touch> touchs = new List<Touch>();//当前图片的所有Touch
 
-    //记录单指双指的变换
-    private bool isSingleFinger;
+    private bool canScroll;//ScrollView是否可以移动
 
     private Touch oldTouch1;  //上次触摸点1(手指1)
     private Touch oldTouch2;  //上次触摸点2(手指2)
@@ -29,64 +28,23 @@ public class ScaleAgentCell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+        touchs = new List<Touch>();
         for (int i=0; i<Input.touchCount; i++)
         {
             if (isTouchOnImage(Input.GetTouch(i).position))
             {
-                if (!touchs.Contains(Input.GetTouch(i)))
-                {
-                    touchs.Add(Input.GetTouch(i));
-                }
+                touchs.Add(Input.GetTouch(i));
             }
         }
-        
-        if (touchs.Count == 1)
+        if (touchs.Count <= 1)
         {
-            isSingleFinger = true;
-        }
-        else if (touchs.Count > 1)
-        {
-            if (isSingleFinger)
-            {
-                Vector2 oldPos1 = touchs[0].position;
-                Vector2 oldPos2 = touchs[1].position;
-                originalDistance = Vector2.Distance(oldPos1, oldPos2);
-            }
-            if (touchs[0].phase == TouchPhase.Moved || touchs[1].phase == TouchPhase.Moved)
-            {
-                Vector2 newPos1 = touchs[0].position;
-                Vector2 newPos2 = touchs[1].position;
-                float newDistance = Vector2.Distance(newPos1, newPos2);
-                float s = startScalePer + (newDistance - originalDistance) / originalDistance / 2;
-                scaleAgent.currentScale = s;
-                scaleAgent.ResetImage();
-            }
-            else if (touchs[0].phase == TouchPhase.Ended || touchs[1].phase == TouchPhase.Ended && isSingleFinger == false)
-            {
-                if (scaleAgent.currentScale < 1)
-                {
-                    scaleAgent.currentScale = 1;
-                    scaleAgent.ResetImage();
-                }
-                else if (scaleAgent.currentScale > scaleAgent.maxScale)
-                {
-                    scaleAgent.currentScale = scaleAgent.maxScale;
-                    scaleAgent.ResetImage();
-                }
-                touchs = new List<Touch>();
-            }
-            isSingleFinger = false;
-
-        }
-        */
-        if (Input.touchCount <= 1)
-        {
+            canScroll = true;
             return;
         }
+        canScroll = false;
         //多点触摸, 放大缩小
-        Touch newTouch1 = Input.GetTouch(0);
-        Touch newTouch2 = Input.GetTouch(1);
+        Touch newTouch1 = touchs[0];
+        Touch newTouch2 = touchs[1];
         //第2点刚开始接触屏幕, 只记录，不做处理
         if (newTouch2.phase == TouchPhase.Began)
         {
@@ -113,7 +71,6 @@ public class ScaleAgentCell : MonoBehaviour
 
     bool isTouchOnImage(Vector3 touchPosition)
     {
-        //return true;
         Vector3 imgScreenPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector2 leftBottom = new Vector2(imgScreenPos.x - imgRtf.sizeDelta.x * 0.5f, imgScreenPos.y - imgRtf.sizeDelta.y * 0.5f);
         if (touchPosition.x >= leftBottom.x && touchPosition.y >= leftBottom.y && touchPosition.x <= leftBottom.x + imgRtf.sizeDelta.x && touchPosition.y <= leftBottom.y + imgRtf.sizeDelta.y)
@@ -125,5 +82,30 @@ public class ScaleAgentCell : MonoBehaviour
             return false;
         }
     }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (canScroll)
+        {
+            scrollRect.OnBeginDrag(eventData);
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (canScroll)
+        {
+            scrollRect.OnDrag(eventData);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (touchs.Count == 1)
+        {
+            scrollRect.OnEndDrag(eventData);
+        }
+    }
+
 
 }

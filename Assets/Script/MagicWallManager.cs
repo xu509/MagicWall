@@ -90,7 +90,7 @@ public class MagicWallManager:MonoBehaviour
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
 
-   //  public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+    public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
     //public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";
  
