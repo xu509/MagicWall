@@ -565,7 +565,6 @@ public class WritePadAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     }
 
     //  获取的左下角的屏幕坐标
-
     private void UpdateRawMousePosition()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(raw.GetComponent<RectTransform>().position);
