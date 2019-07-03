@@ -485,6 +485,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         Vector2 to;
         Vector2 position = eventData.position;
+        Debug.Log("Move : " + position);
 
         bool overleft = position.x < (_panel_left + _safe_distance_width);
         bool overright = position.x > (_panel_right - _safe_distance_width);
@@ -710,23 +711,19 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             if (_hasListBtn)
             {
                 _btn_move_container.GetComponent<Image>().sprite = _move_icon_active;
-                Debug.Log("1");
             }
             else {
                 _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon_active;
-                Debug.Log("2");
             }
         }
         else {
             if (_hasListBtn)
             {
                 _btn_move_container.GetComponent<Image>().sprite = _move_icon;
-                Debug.Log("3");
             }
             else
             {
                 _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon;
-                Debug.Log("4");
             }
         }
     }
