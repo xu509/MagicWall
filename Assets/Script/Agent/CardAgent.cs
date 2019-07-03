@@ -15,6 +15,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _activeSecondStageDuringTime = 2f;   //  第二段缩小的时间
     private bool _showDetail = false;   //  显示企业卡片
     private bool _doMoving = false;     //  移动
+    private bool _hasChangeSize = false;    //  大小改变的标志位
     private bool _keepOpen = false;     //  保持开启
     protected bool KeepOpen { set { _keepOpen = value; } get { return _keepOpen; } }
 
@@ -48,16 +49,16 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
     [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
     [SerializeField] Animator _list_animator;    // list animator
-    [SerializeField] Button _btn_search;
-    [SerializeField] Button _btn_list;
-    [SerializeField] Button _btn_move;
-    [SerializeField] Button _btn_close;
+    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
+    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
+    [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
+
 
     [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
     [SerializeField] RectTransform normalContainer; // 正常显示的框体
     [SerializeField] RectTransform videoContainer;  // video的安放框体
 
-    [SerializeField] float radius;// Circle Collider2D radius
+    [SerializeField] float radiusFactor;// Colider 半径系数
 
 
     Action OnCreatedCompletedAction; 
@@ -166,6 +167,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             }
         }
 
+        UpdateColliderRadius();
+
+
     }
 
     //
@@ -221,6 +225,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
              {
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
+                    _hasChangeSize = true;
                }).OnComplete(() => {
                    IsRecovering = false;
                    IsChoosing = true;
@@ -301,6 +306,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
            {
                Width = GetComponent<RectTransform>().sizeDelta.x;
                Height = GetComponent<RectTransform>().sizeDelta.y;
+               _hasChangeSize = true;
                DoUpdate();
            }).OnComplete(() => {
                CardStatus = CardStatusEnum.NORMAL;
@@ -410,21 +416,17 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (_hasListBtn)
         {
             // 显示四组按钮
-            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-127,0);
-            _btn_list.GetComponent<RectTransform>().anchoredPosition = new Vector2(-42, 0);
-            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(42, 0);
-            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(127, 0);
 
-            _btn_list.gameObject.SetActive(true);
+
+            _tool_bottom_container.gameObject.SetActive(true);
+            _tool_bottom_three_container.gameObject.SetActive(false);
             InitEnvCard();
         }
         else {
             // 显示三个按钮
-            _btn_list.gameObject.SetActive(false);
+            _tool_bottom_container.gameObject.SetActive(false);
+            _tool_bottom_three_container.gameObject.SetActive(true);
 
-            _btn_search.GetComponent<RectTransform>().anchoredPosition = new Vector2(-80, 0);
-            _btn_move.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            _btn_close.GetComponent<RectTransform>().anchoredPosition = new Vector2(80, 0);
         }
 
         // 不显示移动提示
@@ -463,11 +465,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
             foreach (CircleCollider2D circle in circles)
             {
-                circle.radius = radius;
+                circle.radius = radiusFactor;
             }
 
             DoMove();
-
             DoUpdate();
         }
     }
@@ -476,17 +477,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     {
         if (_doMoving)
         {
-
             Move(eventData);
-
             //拖拽时不碰撞
             transform.SetAsLastSibling();
-            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-            foreach (CircleCollider2D circle in circles)
-            {
-                circle.radius = 0;
-            }
-
         }
     }
 
@@ -527,7 +520,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         Vector2 to;
         Vector2 position = eventData.position;
-
 
         bool overleft = position.x < (_panel_left + _safe_distance_width);
         bool overright = position.x > (_panel_right - _safe_distance_width);
@@ -575,10 +567,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     #region 视频播放功能
 
-    public void DoVideo(string address, string description)
+    public void DoVideo(string address, string description,string cover)
     {
         //显示 video 的框框
-        OpenVideoContainer(address, description);
+        OpenVideoContainer(address, description,cover);
 
         // 隐藏平时的框框
         HideNormalContainer();
@@ -622,11 +614,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
     // 显示 Video 的窗口
-    private void OpenVideoContainer(string address, string description)
+    private void OpenVideoContainer(string address, string description,string cover)
     {
         videoContainer.gameObject.SetActive(true);
         _videoAgent = Instantiate(videoAgentPrefab, videoContainer);
-        _videoAgent.SetData(address, description, this);
+        _videoAgent.SetData(address, description, this,cover);
         _videoAgent.Init();
     }
     #endregion
@@ -685,7 +677,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     public void GoToFront() {
         RectTransform rectTransfrom = GetComponent<RectTransform>();
 
-
         gameObject.SetActive(true);
 
         Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
@@ -704,12 +695,40 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 Height = GetComponent<RectTransform>().sizeDelta.y;
 
             }).OnComplete(() => {
+                // 完成生成后，碰撞体再改变
+                _hasChangeSize = true;
+
                 // 执行完成后动画
                 DoOnCreatedCompleted();
 
-
             }).SetEase(Ease.OutBack);
     }
+
+    /// <summary>
+    ///     更新碰撞体半径
+    /// </summary>
+    private void UpdateColliderRadius() {
+        // 当打开完成后，形成碰撞体
+        // 移动过程中，不需要碰撞体
+        if (_doMoving)
+        {
+            _collider.radius = 0;
+        }
+        else {
+
+            if (_hasChangeSize) {
+                float width = GetComponent<RectTransform>().rect.width;
+                float height = GetComponent<RectTransform>().rect.width;
+                float radius = Mathf.Sqrt(width * width + height * height) / 2;
+                _collider.radius = radius;
+                _hasChangeSize = false;
+            }
+            
+        }
+
+    }
+
+
 }
 
 

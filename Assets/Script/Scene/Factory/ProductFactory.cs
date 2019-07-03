@@ -74,7 +74,6 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //  创建 Agent
         SliceCardAgent sliceCardAgent = _agentManager.GetSliceCardAgent();
 
-
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 

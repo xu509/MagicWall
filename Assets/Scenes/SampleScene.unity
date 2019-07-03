@@ -424,15 +424,13 @@ MonoBehaviour:
   _mainPanel: {fileID: 577667532}
   _backPanel: {fileID: 2012783910}
   _operationPanel: {fileID: 308642408}
-  _influenceDistance: 0
-  _influenceMoveFactor: 0.5
+  _influenceMoveFactor: 0.54
   _influenceEaseEnum: 13
   _movePanelFactor: 3
   _bg_logo: {fileID: 2060558020}
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
   _gapFactor: 1
   _operateMode: {fileID: 1167712297}
-  _operateCardScaleFactory: 0.45
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0

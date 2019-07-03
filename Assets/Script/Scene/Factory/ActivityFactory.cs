@@ -70,8 +70,6 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
     #region 生成滑动卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId, bool isActive)
     {
-        // 0.45 比例
-        float height = _manager.mainPanel.rect.height * _manager.operateCardScaleFactory;
 
         //  创建 Agent
         SliceCardAgent sliceCardAgent = _agentManager.GetSliceCardAgent();
