@@ -496,9 +496,9 @@ public class DaoService : Singleton<DaoService>
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         SceneContentType[] contentTypes = new SceneContentType[] {
+            SceneContentType.env,
             SceneContentType.activity,
             SceneContentType.product,
-            SceneContentType.env,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
