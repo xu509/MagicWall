@@ -73,8 +73,8 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         int length = _cellData.Title.Length;
         if (length == 2)
         {
-            Vector2 anchor_min = new Vector2(0.307f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.378f, 0.7058f);
+            Vector2 anchor_min = new Vector2(0.297f, 0.3003f);
+            Vector2 anchor_max = new Vector2(0.368f, 0.7058f);
 
             _signRect.anchorMax = anchor_max;
             _signRect.anchorMin = anchor_min;
@@ -83,8 +83,8 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         else if (length == 4)
         {
             //  anchors min (-0.15) | anchors max (-0.0329)
-            Vector2 anchor_min = new Vector2(0.219f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.29f, 0.7058f);
+            Vector2 anchor_min = new Vector2(0.209f, 0.3003f);
+            Vector2 anchor_max = new Vector2(0.28f, 0.7058f);
 
             _signRect.anchorMax = anchor_max;
             _signRect.anchorMin = anchor_min;
@@ -92,8 +92,8 @@ public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, Cro
         }
         else if (length == 7)
         {
-            Vector2 anchor_min = new Vector2(0.190f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.261f, 0.7058f);
+            Vector2 anchor_min = new Vector2(0.180f, 0.3003f);
+            Vector2 anchor_max = new Vector2(0.251f, 0.7058f);
 
             _signRect.anchorMax = anchor_max;
             _signRect.anchorMin = anchor_min;

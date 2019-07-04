@@ -11,7 +11,6 @@ public class SearchResultAgent : MonoBehaviour
     Action _onClickReturn;
     Action<SearchBean> _onClickSearchResultItem;
 
-    [SerializeField] float _itemHeight = 175f;
     [SerializeField] Text _title;   //  标题
     [SerializeField] RectTransform _ScrollViewItemContainer;    //  列表内容容器
     [SerializeField] SearchResultItemAgent _searchResultItemAgentPrefab;    //  搜索 item 代理
@@ -25,13 +24,29 @@ public class SearchResultAgent : MonoBehaviour
     private float _default_scrollview_height;
     private Vector2 _default_scrollview_anchorposition;
 
+    private float _gap = 10f;
+    private float _itemHeight;
+
 
     void Awake()
     {
         _resultItems = new List<SearchResultItemAgent>();
 
+        float defaultViewScrollHeight = _ScrollViewItemContainer.rect.height;
+
+        // 设置grid layout
+
+        float w = _ScrollViewItemContainer.rect.width;
+        float h = _ScrollViewItemContainer.rect.height;
+
+        GridLayoutGroup _gridLayoutGroup = _ScrollViewItemContainer.GetComponent<GridLayoutGroup>();
+        float width = (w - _gap - 10) / 2;
+        _itemHeight = (defaultViewScrollHeight - 2 * _gap) / 3;
+
+        _gridLayoutGroup.cellSize = new Vector2(width, _itemHeight);
+
         // 设置默认的滑动结果栏高度
-        _default_scrollview_height = 3 * (_itemHeight + 10);
+        _default_scrollview_height = 3 * (_itemHeight + _gap);
         _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, _default_scrollview_height);
         _default_scrollview_anchorposition = _ScrollViewItemContainer.anchoredPosition;
 
@@ -96,10 +111,14 @@ public class SearchResultAgent : MonoBehaviour
             // 此时动态高度
             float height = (_resultItems.Count / 2) * (_itemHeight + 10);
 
+            Debug.Log("Item Total : " + _resultItems.Count + " | Height : " + _itemHeight + " | Container Height : " + height);
+
             float height_offset = height - _default_scrollview_height;
             float anchor_y = _default_scrollview_anchorposition.y - height_offset;
 
-            _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height);
+            
+
+            _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height -_default_scrollview_height + _itemHeight / 2);
             _ScrollViewItemContainer.anchoredPosition = new Vector2(_default_scrollview_anchorposition.x, anchor_y);
         }
     }
