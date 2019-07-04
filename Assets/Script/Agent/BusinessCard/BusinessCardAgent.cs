@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class BusinessCardAgent : MonoBehaviour
 {
     int _index; // 当前索引，从0开始
 
     List<BusinessCardCellAgent> pool;
-    CardAgent _cardAgent;
 
     bool _doingNext = false;
     bool _doingReturn = false;
@@ -19,10 +19,14 @@ public class BusinessCardAgent : MonoBehaviour
     ///  Component
     /// </summary>
     [SerializeField] BusinessCardCellAgent _cellPrefab;
-    [SerializeField] RectTransform _content;
+    [SerializeField] RectTransform _contentContainer;
     [SerializeField] Button _btnClose;
     [SerializeField] Button _btnReturn;
     [SerializeField] Button _btnNext;
+    [SerializeField] float _heightFactor;
+
+    private Action _onHandleUpdateAction;
+    private Action _onClickCloseAction;
 
 
     void Update()
@@ -30,15 +34,31 @@ public class BusinessCardAgent : MonoBehaviour
         
     }
 
-    public void Init(CardAgent cardAgent) {
-        _cardAgent = cardAgent;
-        UpdateContents();
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="images">图片相对路径</param>
+    /// <param name="position">生成位置</param>
+    /// <param name="onHandleUpdateAction">当操作更新时的回调</param>
+    /// <param name="onClickCloseAction">当操作关闭时的回调</param>
+    public void Init(string[] images,float cardWidth,Vector2 position, Action onHandleUpdateAction, Action onClickCloseAction)
+    {
+        _onHandleUpdateAction = onHandleUpdateAction;
+        _onClickCloseAction = onClickCloseAction;
+        InitComponents(position,cardWidth);
+        UpdateContents(images);
         UpdateToolStatus();
+
     }
+
+
 
 
     public void DoClickNext()
     {
+
+        Debug.Log("DoClickNext");
+
         if (!_doingNext) {
             _doingNext = true;
 
@@ -50,12 +70,13 @@ public class BusinessCardAgent : MonoBehaviour
                 _doingNext = false;
             });
         }
-        _cardAgent.DoUpdate();
+        _onHandleUpdateAction.Invoke();
     }
 
     public void DoClickClose() {
-        _cardAgent.CloseBusinessCard();
-        _cardAgent.DoUpdate();
+        //_cardAgent.CloseBusinessCard();
+        //_cardAgent.DoUpdate();
+        _onClickCloseAction.Invoke();
     }
 
     public void DoClickReturn()
@@ -72,34 +93,30 @@ public class BusinessCardAgent : MonoBehaviour
                 _doingReturn = false;
             });
         }
-        _cardAgent.DoUpdate();
+        _onHandleUpdateAction.Invoke();
     }
 
 
-    public void UpdateContents() {
+    public void UpdateContents(string[] images) {
         if (pool == null) {
             pool = new List<BusinessCardCellAgent>();
         }
 
-        // 根据id获取 business card 内容
-        List<string> EnvCardsTexures = DaoService.Instance.GetEnvCards(_cardAgent.DataId);
 
-        for (int i = 0; i < EnvCardsTexures.Count; i++) {
-            string image = EnvCardsTexures[i];
+        for (int i = 0; i < images.Length; i++) {
 
             //创建card
             BusinessCardCellAgent businessCardCellAgent = Instantiate(
                             _cellPrefab,
-                            _content
+                            _contentContainer
                             ) as BusinessCardCellAgent;
-
             BusinessCardData businessCardData = new BusinessCardData();
             businessCardData.Index = i;
-            businessCardData.Image = TextureResource.Instance.GetTexture(image); 
+            businessCardData.address = images[i];
             businessCardCellAgent.UpdateContent(businessCardData);
-
             pool.Add(businessCardCellAgent);
         }
+
 
     }
 
@@ -140,6 +157,31 @@ public class BusinessCardAgent : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 初始化组件
+    /// </summary>
+    /// <param name="position">父组件（卡片）位置</param>
+    void InitComponents(Vector2 position,float cardWidth) {
+
+        float height = Screen.height * _heightFactor;
+        float width = height * 91 / 59;
+
+        // 看情况在左侧，或者右侧
+        float w =  position.x + cardWidth / 2 + width / 2 + 50;
+        Vector2 genposition;
+
+        if (w > Screen.width)
+        {
+            genposition = new Vector2(-(cardWidth / 2 + width / 2 + 50), 0);
+        }
+        else {
+            genposition = new Vector2(cardWidth / 2 + width / 2 + 50, 0);
+        }
+
+        GetComponent<RectTransform>().anchoredPosition = genposition;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
 

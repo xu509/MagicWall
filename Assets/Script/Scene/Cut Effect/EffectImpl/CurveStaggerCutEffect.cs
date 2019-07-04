@@ -59,12 +59,15 @@ public class CurveStaggerCutEffect : CutEffect
             //Ease.InOutQuad
             float time = Time.time - StartTime;  // 当前已运行的时间;
 
-            //agent.NextVector2 = agent_vector2;
-
             // 此时有两种特殊状态，还未移动的与已移动完成的
             if (time > run_time) {
 
-                //agent.updatePosition();
+                // 此时可能未走完动画
+                if (!agent.isCreateSuccess)
+                {
+                    agent.NextVector2 = ori_vector2;
+                    agent.isCreateSuccess = true;
+                }
                 continue;
             }
 
@@ -209,4 +212,8 @@ public class CurveStaggerCutEffect : CutEffect
         StartingDurTime += _startDelayTime;
     }
 
+    public override string GetID()
+    {
+        return "CurveStaggerCutEffect";
+    }
 }

@@ -11,15 +11,19 @@ public class BusinessCardCellAgent : MonoBehaviour
 
     private BusinessCardData _businessCardData;
 
-    private static Vector2 backVectorRight = new Vector2(792,0);
-    private static Vector2 backVectorLeft = new Vector2(-792, 0);
-
-
+    private Vector2 backVectorRight;
+    private Vector2 backVectorLeft;
 
     /// <summary>
     ///  Component
     /// </summary>
-    [SerializeField] RawImage _image;
+    [SerializeField] Image _image;
+
+    void Awake() {
+        float w = GetComponent<RectTransform>().rect.width;
+        backVectorRight = new Vector2(w, 0);
+        backVectorLeft = new Vector2(-w, 0);
+    }
 
 
     void Update()
@@ -30,7 +34,7 @@ public class BusinessCardCellAgent : MonoBehaviour
     public void UpdateContent(BusinessCardData businessCardData) {
         _businessCardData = businessCardData;
 
-        _image.texture = businessCardData.Image;
+        _image.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir +  businessCardData.address);
         _index = businessCardData.Index;
 
         if (_index > 0) {

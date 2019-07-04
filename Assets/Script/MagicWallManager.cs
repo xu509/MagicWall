@@ -84,13 +84,13 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+   // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-     //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+     public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Assets\\Files\\";
 
-    public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+   // public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
     //public static string FileDir = "E:\\MagicWall\\Assets\\Files\\";
  
@@ -303,11 +303,18 @@ public class MagicWallManager:MonoBehaviour
     private void ResetMainPanel() {
         if (managerConfig.IsCustom)
         {
-            mainPanel.anchoredPosition = new Vector2(540, 0);
-            while (mainPanel.anchoredPosition != new Vector2(540, 0))
+            // 此时为什么会偏移
+            //mainPanel.anchoredPosition = new Vector2(540, 0);
+            //while (mainPanel.anchoredPosition != new Vector2(540, 0))
+            //{
+            //    StartCoroutine(AfterFixedUpdate());
+            //}
+            mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+            while (mainPanel.anchoredPosition != Vector2.zero)
             {
                 StartCoroutine(AfterFixedUpdate());
             }
+
         }
         else
         {

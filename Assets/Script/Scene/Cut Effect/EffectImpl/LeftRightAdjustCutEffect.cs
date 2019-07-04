@@ -85,6 +85,13 @@ public class LeftRightAdjustCutEffect : CutEffect
             // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
             if (time > StartingDurTime)
             {
+                // 此时可能未走完动画
+                if (!agent.isCreateSuccess)
+                {
+                    agent.NextVector2 = ori_vector2;
+                    agent.isCreateSuccess = true;
+                }
+
                 continue;
             } else if (time <= delay_time) {
                 // 此时该 Agent 还在持续时间内
@@ -194,6 +201,8 @@ public class LeftRightAdjustCutEffect : CutEffect
 
     }
 
-
-
+    public override string GetID()
+    {
+        return "LeftRightAdjustCutEffect";
+    }
 }

@@ -75,8 +75,14 @@ public class UpDownAdjustCutEffect : CutEffect
             // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
             if (time > run_time)
             {
+                // 此时可能未走完动画
+                if (!agent.isCreateSuccess)
+                {
+                    agent.NextVector2 = ori_vector2;
+                    agent.isCreateSuccess = true;
+                }
+
                 continue;
-                //Debug.Log(agent.name);
             }
 
             float t = (Time.time - StartTime) / run_time;
@@ -171,13 +177,11 @@ public class UpDownAdjustCutEffect : CutEffect
                 _displayBehaviorConfig.columnAgentsDic[j].row = row;
                 row++;
             }
-
-            
-
         }
-
-
     }
 
-
+    public override string GetID()
+    {
+        return "UpDownAdjustCutEffect";
+    }
 }

@@ -29,7 +29,9 @@ public class FlockAgent : MonoBehaviour
     private int _sceneIndex;    //  场景的索引
 
     int x;
+    public int X { get { return x; } }
     int y;
+    public int Y { get { return y; } }
 
     private float delayX;
 
@@ -48,13 +50,13 @@ public class FlockAgent : MonoBehaviour
     private float _height;
 
     // 原位
-    private Vector2 _oriVector2;
+    [SerializeField] private Vector2 _oriVector2;
 
     // 生成的位置
     private Vector2 _genVector2;
 
     // 下个移动的位置
-    private Vector2 _nextVector2;
+    [SerializeField] private Vector2 _nextVector2;
 
     // 是否被选中
     private bool _isChoosing = false;
@@ -67,6 +69,13 @@ public class FlockAgent : MonoBehaviour
 
     //
     private bool _StarsCutEffectIsPlaying = false;
+
+    /// <summary>
+    ///     创建成功
+    /// </summary>
+    private bool _isCreateSuccess = false;
+    public bool isCreateSuccess { set { _isCreateSuccess = value; } get { return _isCreateSuccess; } }
+
 
     /// <summary>
     ///     flock 移动状态
@@ -140,8 +149,8 @@ public class FlockAgent : MonoBehaviour
     /// <param name="manager"></param>
     /// <param name="originVector">在屏幕上显示的位置</param>
     /// <param name="genVector">出生的位置</param>
-    /// <param name="row"></param>
-    /// <param name="column"></param>
+    /// <param name="row">x</param>
+    /// <param name="column">y</param>
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="dataId"></param>
@@ -389,25 +398,34 @@ public class FlockAgent : MonoBehaviour
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
 
             //靠近四周边界需要偏移
-            float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
-            float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y; 
+            float w = _cardAgent.GetComponent<RectTransform>().rect.width;
+            float h = _cardAgent.GetComponent<RectTransform>().rect.height;
 
+            // 如果点击时,出生位置在最左侧
             if (cardGenPosition.x < w / 2)
             {
                 cardGenPosition.x = w / 2;
             }
-            if (cardGenPosition.x > _manager.mainPanel.rect.width - w/2)
+
+            // 出身位置在最右侧
+            if (cardGenPosition.x > _manager.OperationPanel.rect.width - w/2)
             {
-                cardGenPosition.x = _manager.mainPanel.rect.width - w / 2;
+                cardGenPosition.x = _manager.OperationPanel.rect.width - w / 2;
             }
+
+            // 出生位置在最下侧
             if (cardGenPosition.y < h / 2)
             {
                 cardGenPosition.y = h / 2;
             }
-            if (cardGenPosition.y > _manager.mainPanel.rect.height - h / 2)
+
+            // 出生位置在最上侧
+            if (cardGenPosition.y > _manager.OperationPanel.rect.height - h / 2)
             {
-                cardGenPosition.y = _manager.mainPanel.rect.height - h / 2;
+                cardGenPosition.y = _manager.OperationPanel.rect.height - h / 2;
             }
+            _cardAgent.GetComponent<RectTransform>().anchoredPosition = cardGenPosition;
+
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
@@ -570,10 +588,15 @@ public class FlockAgent : MonoBehaviour
     ///     重置 Agent
     /// </summary>
     public void Reset() {
-        if (!IsCard) {
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
 
+        }
+
+        if (!IsCard) {
+            
             // 透明度调整
-            //GetComponent<RawImage>().color = new Color(255, 255, 255, 255);
             if (GetComponent<Image>().color != new Color(255, 255, 255, 255)) {
                 GetComponent<Image>().color = new Color(255, 255, 255, 255);
             }
@@ -586,12 +609,19 @@ public class FlockAgent : MonoBehaviour
             }
 
             GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
-            GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
+            GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
+            GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);            
 
             GetComponent<Image>().sprite = null;
+            isCreateSuccess = false;
+            StarsCutEffectIsPlaying = false;
+            CanEffected = true;
+            _oriVector2 = Vector2.zero;
+            _nextVector2 = Vector2.zero;
+
 
         }
+
     }
 
 

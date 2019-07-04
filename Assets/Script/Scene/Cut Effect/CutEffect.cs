@@ -104,5 +104,7 @@ public abstract class CutEffect : MonoBehaviour
 
     public abstract void OnStartingCompleted();
 
+    public abstract string GetID();
+
 }
 
