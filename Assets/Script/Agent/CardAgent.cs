@@ -48,17 +48,19 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
     [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
     [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
-    [SerializeField] Animator _list_animator;    // list animator
     [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
     [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
     [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
-
-
     [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
     [SerializeField] RectTransform normalContainer; // 正常显示的框体
     [SerializeField] RectTransform videoContainer;  // video的安放框体
-
     [SerializeField] float radiusFactor;// Colider 半径系数
+    [SerializeField] Sprite _move_icon_active;
+    [SerializeField] Sprite _move_icon;
+    [SerializeField] RectTransform _btn_move_container;
+    [SerializeField] RectTransform _btn_move_container_in_three;
+
+
 
 
     Action OnCreatedCompletedAction; 
@@ -263,15 +265,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 //  使卡片消失
 
                 OriginAgent.DoRecoverAfterChoose();
-
-
                 _agentManager.RemoveItemFromEffectItems(this);
-
-
-                //gameObject.SetActive(false);
-                //DestoryAgency();
-                //Destroy(gameObject);
-
             });
         }
         //  直接消失
@@ -284,10 +278,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 .OnUpdate(() => {
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
-                    //_agentManager.UpdateAgents();
                 })
                 .OnComplete(() => DoDestoryOnCompleteCallBack(this));
-
         }
 
         _cardStatus = CardStatusEnum.DESTORYED;
@@ -362,6 +354,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             _doMoving = true;
             _move_reminder_container.gameObject.SetActive(true);
             _move_mask.gameObject.SetActive(true);
+            // 调整图片
+
+
         }
         else
         {
@@ -370,6 +365,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             _move_reminder_container.gameObject.SetActive(false);
             _move_mask.gameObject.SetActive(false);
         }
+
+
+        UpdateMoveBtnPerformance();
     }
 
     // 生成缩放卡片
@@ -394,21 +392,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
 
-    // 生成企业卡片
-    private void InitEnvCard() {
-        if (!hasInitBusinessCard) {
-
-            //  创建 Agent
-            businessCardAgent = Instantiate(
-                                        _business_card_prefab,
-                                        _business_card_container
-                                        ) as BusinessCardAgent;
-            businessCardAgent.Init(this);
-
-            businessCardAgent.gameObject.SetActive(false);
-            hasInitBusinessCard = true;
-        }
-    }
 
     //  初始化组件显示的状态
     protected void InitComponents(bool hasListBtn) {
@@ -416,8 +399,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (_hasListBtn)
         {
             // 显示四组按钮
-
-
             _tool_bottom_container.gameObject.SetActive(true);
             _tool_bottom_three_container.gameObject.SetActive(false);
             InitEnvCard();
@@ -436,22 +417,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     }
 
-    public void CloseBusinessCard() {
-        TurnOffKeepOpen();
-        _list_animator.ResetTrigger("Highlighted");
-        _list_animator.SetTrigger("Normal");
-        businessCardAgent.gameObject.SetActive(false);
-        _showDetail = false;
-    }
-
-    public void OpenBusinessCard()
-    {
-        KeepOpen = true;
-        _list_animator.ResetTrigger("Normal");
-        _list_animator.SetTrigger("Highlighted");
-        businessCardAgent.gameObject.SetActive(true);
-        _showDetail = true;
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -520,6 +485,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         Vector2 to;
         Vector2 position = eventData.position;
+        Debug.Log("Move : " + position);
 
         bool overleft = position.x < (_panel_left + _safe_distance_width);
         bool overright = position.x > (_panel_right - _safe_distance_width);
@@ -540,7 +506,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             to.y = position.y;
         }
 
-        GetComponent<RectTransform>().anchoredPosition = to;
+
+
+        // 缓慢移动,1.5f 代表拖拽移动延迟
+        GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
+
+
+
+        //GetComponent<RectTransform>().anchoredPosition = to;
 
     }
 
@@ -725,9 +698,90 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             }
             
         }
-
     }
 
+    /// <summary>
+    /// 更新移动的表现形式
+    /// </summary>
+    private void UpdateMoveBtnPerformance() {
+        Debug.Log("UpdateMoveBtnPerformance");
+
+        if (_doMoving)
+        {
+            if (_hasListBtn)
+            {
+                _btn_move_container.GetComponent<Image>().sprite = _move_icon_active;
+            }
+            else {
+                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon_active;
+            }
+        }
+        else {
+            if (_hasListBtn)
+            {
+                _btn_move_container.GetComponent<Image>().sprite = _move_icon;
+            }
+            else
+            {
+                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon;
+            }
+        }
+    }
+
+    #region Business Card 相关
+
+    // 生成企业卡片
+    private void InitEnvCard()
+    {
+        if (!hasInitBusinessCard)
+        {
+
+            //  创建 Agent
+            businessCardAgent = Instantiate(
+                                        _business_card_prefab,
+                                        _business_card_container
+                                        ) as BusinessCardAgent;
+
+            List<string> address = DaoService.Instance.GetEnvCards(DataId);
+            Vector2 position = GetComponent<RectTransform>().anchoredPosition;
+            businessCardAgent.Init(address.ToArray(),GetComponent<RectTransform>().rect.width
+                , position, OnHandleBusinessUpdate, OnClickBusinessCardClose);
+
+            businessCardAgent.gameObject.SetActive(false);
+            hasInitBusinessCard = true;
+        }
+    }
+
+    public void CloseBusinessCard()
+    {
+        TurnOffKeepOpen();
+        businessCardAgent.gameObject.SetActive(false);
+        _showDetail = false;
+    }
+
+    public void OpenBusinessCard()
+    {
+        KeepOpen = true;
+        businessCardAgent.gameObject.SetActive(true);
+
+        _showDetail = true;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void OnClickBusinessCardClose()
+    {
+        CloseBusinessCard();
+    }
+
+    private void OnHandleBusinessUpdate()
+    {
+        DoUpdate();
+    }
+
+    #endregion
 
 }
 

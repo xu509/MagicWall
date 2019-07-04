@@ -16,5 +16,5 @@ MonoBehaviour:
   writePanelTotalRectHeight: 100
   writePanelWordRectWidth: 100
   writePanelWordRectHeight: 100
-  enableBurrEffect: 1
+  enableBurrEffect: 0
   recognizeIntervalTime: 2

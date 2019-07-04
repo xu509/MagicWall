@@ -112,15 +112,15 @@ private string _name;
         else if (cardType == 1)
         {
             _env_cards = new List<string>();
-            string address = MagicWallManager.FileDir + "env\\" + "env-card-1.png";
+            string address = "env\\" + "env-card-1.png";
             _env_cards.Add(address);
         }
         else
         {
             _env_cards = new List<string>();
-            _env_cards.Add(MagicWallManager.FileDir + "env\\" + "env-card-2-1.png");
-            _env_cards.Add(MagicWallManager.FileDir + "env\\" + "env-card-2-2.png");
-            _env_cards.Add(MagicWallManager.FileDir + "env\\" + "env-card-2-3.png");
+            _env_cards.Add("env\\" + "env-card-2-1.png");
+            _env_cards.Add("env\\" + "env-card-2-2.png");
+            _env_cards.Add("env\\" + "env-card-2-3.png");
         }
 
         env.EnvCards = _env_cards;

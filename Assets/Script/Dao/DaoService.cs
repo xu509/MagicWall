@@ -427,27 +427,27 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "5";
         }
         else
         {
@@ -486,18 +486,18 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
         CutEffect[] effects = new CutEffect[] {
+            new MidDisperseCutEffect(),
+            new FrontBackUnfoldCutEffect(),
+            new UpDownAdjustCutEffect(),
             new LeftRightAdjustCutEffect(),
             new CurveStaggerCutEffect(),
-            new UpDownAdjustCutEffect(),
-            new MidDisperseCutEffect(),
             new StarsCutEffect(),
-            new FrontBackUnfoldCutEffect(),
         };
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         SceneContentType[] contentTypes = new SceneContentType[] {
-            SceneContentType.env,
             SceneContentType.activity,
+            SceneContentType.env,
             SceneContentType.product,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
@@ -507,9 +507,15 @@ public class DaoService : Singleton<DaoService>
         {
             for (int j = 0; j < contentTypes.Length; j++)
             {
-
-                if ((i == 3 && j == 0) || (i == 4 && j ==0))
+                if (effects[i].GetID().Equals("StarsCutEffect") && contentTypes[j] == SceneContentType.env) {
                     continue;
+                }
+
+                if (effects[i].GetID().Equals("FrontBackUnfoldCutEffect") && contentTypes[j] == SceneContentType.env)
+                {
+                    continue;
+                }
+
 
                 SceneConfig sceneConfig = new SceneConfig();
                 sceneConfig.CutEffect = effects[i];

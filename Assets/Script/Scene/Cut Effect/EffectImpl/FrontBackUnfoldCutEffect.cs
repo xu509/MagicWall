@@ -222,5 +222,8 @@ public class FrontBackUnfoldCutEffect : CutEffect
 
     }
 
-
+    public override string GetID()
+    {
+        return "FrontBackUnfoldCutEffect";
+    }
 }

@@ -83,7 +83,7 @@ public class StarsCutEffect : CutEffect
 
             // 随机选择
             int count = _manager.agentManager.Agents.Count;
-            for (int i=0; i < 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 int index = Random.Range(0, count);
                 FlockAgent agent = _agentManager.Agents[index];
@@ -167,21 +167,27 @@ public class StarsCutEffect : CutEffect
     public void DOFadeCompleteCallback(FlockAgent agent)
     {
         RectTransform rect = agent.GetComponent<RectTransform>();
+
         agent.UpdateImageAlpha(1);
-        rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);        
         agent.StarsCutEffectIsPlaying = false;
-        agent.gameObject.SetActive(false);
 
-        //foreach (RawImage rawImage in agent.GetComponentsInChildren<RawImage>())
-        //{
-        //    rawImage.DOFade(1, 0);
-
-        //}
+        // 此时会出现场景已经切换,但是动画并未停止的问题
+        if (agent.SceneIndex == _manager.SceneIndex)
+        {
+            rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);
+            agent.gameObject.SetActive(false);
+        }
+        else {
+            //agent.Reset();
+        }
     }
 
 
-
-
     #endregion
+
+    public override string GetID()
+    {
+        return "StarsCutEffect";
+    }
 
 }
