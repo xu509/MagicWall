@@ -67,14 +67,14 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         {
             videoContainer.gameObject.SetActive(true);
             _cover.gameObject.SetActive(false);
-            _video_cover.texture = TextureResource.Instance.GetTexture(cellData.Image);
+            _video_cover.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + cellData.Image);
             CanvasExtensions.SizeToParent(_video_cover);
 
         }
         else {
             //  设置 Image
             _cover.gameObject.SetActive(true);
-            _cover.texture = TextureResource.Instance.GetTexture(cellData.Image);
+            _cover.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir +  cellData.Image);
             CanvasExtensions.SizeToParent(_cover);
 
 
@@ -89,6 +89,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public void DoPlayVideo() {
         //string url = _cellData.VideoUrl;
+
         Context.OnPlayVideo?.Invoke(_cellData);
     }
 

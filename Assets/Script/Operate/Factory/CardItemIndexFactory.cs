@@ -14,7 +14,7 @@ public class CardItemIndexFactory : CardItemFactory
         Enterprise e = DaoService.Instance.GetEnterprise();
         CrossCardCellData cd = new CrossCardCellData();
 
-        string address = MagicWallManager.FileDir  + e.Business_card;
+        string address = e.Business_card;
         cd.Image = address;
         cd.Description = e.Description;
 
