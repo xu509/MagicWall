@@ -79,9 +79,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         Init,Recovering
     }
 
-
-
-
     public CardStatusEnum CardStatus {
         set { _cardStatus = value; }
         get { return _cardStatus; }
@@ -163,7 +160,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     protected void UpdateAgency()
     {
-
         if (!_keepOpen && !_doMoving)
         {
             //缩小一半
@@ -186,31 +182,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
 
         UpdateColliderRadius();
-
-
     }
-
-    ////
-    ////  Click Button
-    ////
-    //public void DoClick() {
-    //    Debug.Log("Click");
-
-    //    DoRecover();
-
-    //}
-
-    ////
-    ////  Click Button
-    ////
-    //public void DoDrag()
-    //{
-
-    //    Debug.Log("DoDrag");
-
-    //    DoRecover();
-
-    //}
 
 
     /// <summary>
@@ -224,14 +196,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             DoRecover();
         }
     }
-
-
-
     #endregion
 
     #region Private Methods
-
-
 
     /// <summary>
     /// 销毁第一阶段
@@ -280,11 +247,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX
                 , oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
-            rect.DOAnchorPos3D(to, 1f).OnComplete(() => {
-                //  使卡片消失
-
-                OriginAgent.DoRecoverAfterChoose();
-                _agentManager.RemoveItemFromEffectItems(this);
+            rect.DOAnchorPos3D(to, 1f)
+                .OnComplete(() => {
+                    //  使卡片消失na 
+                    OriginAgent.DoRecoverAfterChoose();
+                    _agentManager.RemoveItemFromEffectItems(this);
             });
         }
         //  直接消失
