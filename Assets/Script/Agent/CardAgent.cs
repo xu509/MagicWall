@@ -265,7 +265,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
                 })
-                .OnComplete(() => DoDestoryOnCompleteCallBack(this));
+                .OnComplete(() => {
+                    _agentManager.RemoveItemFromEffectItems(this);
+                });
+
         }
 
         _cardStatus = CardStatusEnum.DESTORYED;
@@ -515,7 +518,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
 
         // 缓慢移动,1.5f 代表拖拽移动延迟
-        GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
+        GetComponent<RectTransform>().anchoredPosition = to;
+        //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
 
     }
 

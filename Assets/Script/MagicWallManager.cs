@@ -204,7 +204,7 @@ public class MagicWallManager:MonoBehaviour
     // Update is called once per frame
     //private void Update() { 
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!_hasInit)
             return;

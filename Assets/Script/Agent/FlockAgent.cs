@@ -448,6 +448,9 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
+        Debug.Log("DoRecoverAfterChoose Began: " + gameObject.name);
+
+
         IsRecovering = true;
 
         // 如果组件已不在原场景，则不进行恢复
@@ -470,7 +473,9 @@ public class FlockAgent : MonoBehaviour
 
         // 恢复原位
         Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
-        rect.DOAnchorPos3D(to, 0.3f);
+        Tweener t2 = rect.DOAnchorPos3D(to, 0.3f);
+        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
+
 
         // 放大至原大小
         Vector3 scaleVector3 = Vector3.one;
@@ -493,38 +498,16 @@ public class FlockAgent : MonoBehaviour
                IsRecovering = false;
            });
 
-        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t );
+        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
+
+
+
+        Debug.Log("DoRecoverAfterChoose : " + gameObject.name);
+
     }
 
 
     #endregion
-
-    protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
-    {
-
-        // 进行销毁
-        if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
-            _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-            CardAgent ca = agent as CardAgent;
-
-            ca.DestoryAgency();
-            ca.OriginAgent.DestoryAgency();
-
-        }
-        else if (typeof(SliceCardAgent).IsAssignableFrom(agent.GetType()))
-        {
-            _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-            CardAgent ca = agent as CardAgent;
-
-            ca.DestoryAgency();
-            ca.OriginAgent.DestoryAgency();
-        }
-        else if (typeof(FlockAgent).IsAssignableFrom(agent.GetType())) {
-            agent.DestoryAgency();
-        }
-
-    }
-
 
 
 

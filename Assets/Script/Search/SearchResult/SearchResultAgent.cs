@@ -111,13 +111,12 @@ public class SearchResultAgent : MonoBehaviour
             // 此时动态高度
             float height = (_resultItems.Count / 2) * (_itemHeight + 10);
 
-            Debug.Log("Item Total : " + _resultItems.Count + " | Height : " + _itemHeight + " | Container Height : " + height);
+            //Debug.Log("Item Total : " + _resultItems.Count + " | Height : " + _itemHeight + " | Container Height : " + height);
 
             float height_offset = height - _default_scrollview_height;
             float anchor_y = _default_scrollview_anchorposition.y - height_offset;
 
             
-
             _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height -_default_scrollview_height + _itemHeight / 2);
             _ScrollViewItemContainer.anchoredPosition = new Vector2(_default_scrollview_anchorposition.x, anchor_y);
         }
