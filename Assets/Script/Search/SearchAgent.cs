@@ -15,6 +15,7 @@ public class SearchAgent : MonoBehaviour
     Action _onClickReturn;
     Action _onClickMove;
 
+    [SerializeField , Range(0f,1f)] float _height_factor;  //高度缩放因素
     [SerializeField] WritePadAgent _writePadAgent;  // 手写板agent
     [SerializeField] RectTransform _associateWordArea; // 联想内容区域
     [SerializeField] AssociateWordAgent _associateWordPrefab; //联想字的prefab
@@ -51,6 +52,12 @@ public class SearchAgent : MonoBehaviour
 
         _writePadAgent.SetOnRecognizedSuccess(OnRecognizedSuccess);
         _writePadAgent.SetOnRecognizedError(OnRecognizedError);
+
+        // 设置控件长宽
+        float height = Screen.height * _height_factor;
+        float width = height;
+
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
 
         InitBackspaceStatus();
     }

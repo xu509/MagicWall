@@ -619,7 +619,6 @@ public class FlockAgent : MonoBehaviour
             _oriVector2 = Vector2.zero;
             _nextVector2 = Vector2.zero;
 
-
         }
 
     }
