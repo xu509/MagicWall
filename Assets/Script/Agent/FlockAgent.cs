@@ -12,6 +12,10 @@ public class FlockAgent : MonoBehaviour
     protected MagicWallManager _manager;
     protected AgentManager _agentManager;
 
+    protected FlockTweenerManager _flockTweenerManager;
+    public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
+
+
 
     #region Data Parameter 
     private bool _data_iscustom; // 是定制的
@@ -140,6 +144,9 @@ public class FlockAgent : MonoBehaviour
         _data_id = dataId;
         _type = type;
         _isCard = isCard;
+
+
+        _flockTweenerManager = new FlockTweenerManager();
     }
 
 
@@ -471,15 +478,22 @@ public class FlockAgent : MonoBehaviour
         // 在放大动画开始前，标记该组件为不被选择的
         IsChoosing = false;
 
-        GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
+
+
+        Tweener t = GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
            .OnUpdate(() =>
            {
                Width = GetComponent<RectTransform>().sizeDelta.x;
                Height = GetComponent<RectTransform>().sizeDelta.y;
-           }).OnComplete(() => {
+           }).OnComplete(() =>
+           {
+               IsRecovering = false;
+           }).OnKill(() =>
+           {
                IsRecovering = false;
            });
 
+        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t );
     }
 
 
@@ -591,8 +605,10 @@ public class FlockAgent : MonoBehaviour
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
-
         }
+
+        _flockTweenerManager.Reset();
+        _flockTweenerManager = new FlockTweenerManager();
 
         if (!IsCard) {
             
