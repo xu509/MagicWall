@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler
 {
@@ -29,6 +31,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _panel_right;
     private float _safe_distance_width;
     private float _safe_distance_height;
+    private CardRecoverStatus _cardRecoverStatus = CardRecoverStatus.Init;
+
+    /// <summary>
+    /// 第一次销毁动画的 DoTween 代理
+    /// </summary>
+    private Tweener _destory_first_scale_tweener;
+
 
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
@@ -61,9 +70,16 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] RectTransform _btn_move_container_in_three;
 
 
+    Action OnCreatedCompletedAction;
+
+    /// <summary>
+    /// 卡片恢复状态
+    /// </summary>
+    enum CardRecoverStatus {
+        Init,Recovering
+    }
 
 
-    Action OnCreatedCompletedAction; 
 
 
     public CardStatusEnum CardStatus {
@@ -150,14 +166,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         if (!_keepOpen && !_doMoving)
         {
-            // 缩小一半
-            //if (_cardStatus == CardStatusEnum.NORMAL)
-            //{
-            //    if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
-            //    {
-            //        DoDestoriedForFirstStep();
-            //    }
-            //}
+            //缩小一半
+            if (_cardStatus == CardStatusEnum.NORMAL)
+            {
+                if ((Time.time - _recentActiveTime) > _activeFirstStageDuringTime)
+                {
+                    DoDestoriedForFirstStep();
+                }
+            }
 
             // 第二次缩小
             if (_cardStatus == CardStatusEnum.DESTORING_STEP_FIRST)
@@ -174,31 +190,32 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     }
 
-    //
-    //  Click Button
-    //
-    public void DoClick() {
-        Debug.Log("Click");
+    ////
+    ////  Click Button
+    ////
+    //public void DoClick() {
+    //    Debug.Log("Click");
 
-        DoRecover();
+    //    DoRecover();
 
-    }
+    //}
 
-    //
-    //  Click Button
-    //
-    public void DoDrag()
-    {
+    ////
+    ////  Click Button
+    ////
+    //public void DoDrag()
+    //{
 
-        Debug.Log("DoDrag");
+    //    Debug.Log("DoDrag");
 
-        DoRecover();
+    //    DoRecover();
 
-    }
+    //}
 
-    //
-    //  当卡片被操作
-    //
+
+    /// <summary>
+    ///     更新开关,保持卡片被操作时不会自动关闭
+    /// </summary>
     public void DoUpdate() {
         if (CardStatus == CardStatusEnum.NORMAL) {
             _recentActiveTime = Time.time;
@@ -213,29 +230,31 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     #endregion
 
     #region Private Methods
-    //
-    //  第一步的销毁
-    //
-    private void DoDestoriedForFirstStep() {
 
+
+
+    /// <summary>
+    /// 销毁第一阶段
+    /// </summary>
+    private void DoDestoriedForFirstStep() {
         //  缩放至2倍大
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         _cardStatus = CardStatusEnum.DESTORING_STEP_FIRST;
 
-        GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
+        _destory_first_scale_tweener = GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
             .OnUpdate(() =>
              {
                     Width = GetComponent<RectTransform>().sizeDelta.x;
                     Height = GetComponent<RectTransform>().sizeDelta.y;
                     _hasChangeSize = true;
-               }).OnComplete(() => {
+             }).OnComplete(() => {
                    IsRecovering = false;
                    IsChoosing = true;
 
                    // 设置第一次缩小的点
                    _destoryFirstStageCompleteTime = Time.time;
-
-               });
+             }).OnKill(() => {
+             });
 
     }
 
@@ -290,21 +309,30 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     //
     private void DoRecover()
     {
+        if (_cardRecoverStatus == CardRecoverStatus.Init) {
+            Debug.Log("恢复动画开始");
+            _cardRecoverStatus = CardRecoverStatus.Recovering;
+            CardStatus = CardStatusEnum.NORMAL;
 
-        Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
+            // 停止销毁动画
+            _destory_first_scale_tweener.Kill();
+            Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
-        GetComponent<RectTransform>().DOScale(scaleVector3, 0.5f)
-           .OnUpdate(() =>
-           {
-               Width = GetComponent<RectTransform>().sizeDelta.x;
-               Height = GetComponent<RectTransform>().sizeDelta.y;
-               _hasChangeSize = true;
-               DoUpdate();
-           }).OnComplete(() => {
-               CardStatus = CardStatusEnum.NORMAL;
-               IsChoosing = false;
-           });
 
+            // 此时会出现卡顿现象，可能是因为之前的缩小动画并未执行完毕，所以会与此语句冲突
+            GetComponent<RectTransform>().DOScale(scaleVector3, 0.5f)
+               .OnUpdate(() =>
+               {
+                   Width = GetComponent<RectTransform>().sizeDelta.x;
+                   Height = GetComponent<RectTransform>().sizeDelta.y;
+                   _hasChangeSize = true;
+                   DoUpdate();
+               }).OnComplete(() => {
+                   IsChoosing = false;
+                   _cardRecoverStatus = CardRecoverStatus.Init;
+                   DoUpdate();
+               });
+        }
 
     }
 
@@ -485,7 +513,18 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         Vector2 to;
         Vector2 position = eventData.position;
-        Debug.Log("Move : " + position);
+
+        // 将点击的屏幕坐标转换为移动的目的坐标
+
+        //float x = Screen.width - _manager.OperationPanel
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(_manager.OperationPanel.position);
+        // 操作框体左下角屏幕坐标
+        Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
+        , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
+
+        // 获取偏移后的移动坐标
+        position = position - rawanchorPositon;
 
         bool overleft = position.x < (_panel_left + _safe_distance_width);
         bool overright = position.x > (_panel_right - _safe_distance_width);
@@ -511,12 +550,12 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         // 缓慢移动,1.5f 代表拖拽移动延迟
         GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
 
-
-
-        //GetComponent<RectTransform>().anchoredPosition = to;
-
     }
 
+    /// <summary>
+    /// Event system : 点击事件
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         DoUpdate();
@@ -704,7 +743,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     /// 更新移动的表现形式
     /// </summary>
     private void UpdateMoveBtnPerformance() {
-        Debug.Log("UpdateMoveBtnPerformance");
 
         if (_doMoving)
         {

@@ -12,8 +12,8 @@ public class SearchResultScrollBarAgent : MonoBehaviour
     [SerializeField] private RectTransform _container; //   item 的容器
     [SerializeField] private SearchResultScrollBarItemAgent _itemPrefab;
 
-    [SerializeField] private float _minItemWidth = 20f;
-    [SerializeField] private float _maxItemWidth = 50f;
+    [SerializeField, Range(0, 1f)] private float _minItemWidthFactor;
+    [SerializeField, Range(0, 1f)] private float _maxItemWidthFactor;
 
     [SerializeField] private EaseEnum _influenceEaseEnum;
 
@@ -113,12 +113,13 @@ public class SearchResultScrollBarAgent : MonoBehaviour
             = Instantiate(_itemPrefab, _container);
 
         // 设置位置
-        float y_position = 0 - index * GetGapDistance();
+        float y_position = 0 - index * GetGapDistance() * 2;
         searchResultScrollBarItemAgent.GetComponent<RectTransform>()
             .anchoredPosition = new Vector2(0,y_position);
 
         // 初始化 ScrollBarItem 数据
-        searchResultScrollBarItemAgent.Init(index,_minItemWidth);
+        searchResultScrollBarItemAgent.Init(index, _minItemWidthFactor,
+            _maxItemWidthFactor, GetGapDistance());
 
         _items.Add(searchResultScrollBarItemAgent);
 
@@ -129,10 +130,8 @@ public class SearchResultScrollBarAgent : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private float GetGapDistance() {
-
-        float height = _container.sizeDelta.y;
-
-        float result = (height - 5) / _itemNumber;
+        float height = _container.rect.height;
+        float result = height / (_itemNumber + (_itemNumber - 1));
 
         return result;
     }
@@ -174,42 +173,19 @@ public class SearchResultScrollBarAgent : MonoBehaviour
             // ...
             // offset :effectRange : width : min_width
 
-            float unitOffset = (_maxItemWidth - _minItemWidth) / effectRange;
-            float result = ((effectRange - offset) * unitOffset) / 2;
+            //float unitOffset = (_maxItemWidth - _minItemWidth) / effectRange;
+            //float result = ((effectRange - offset) * unitOffset) / 2;
+
+            float result = (-1 * offset * 1f / effectRange) + 1;
+
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(_influenceEaseEnum);
+            result = defaultEasingFunction(result);
 
             return result;
         }
     }
 
-    //private float CalculateItemAnchorX(int effectRange, int midIndex, int index)
-    //{
 
-    //    // 获取索引与 midindex的差值
-    //    int offset = Mathf.Abs(index - midIndex);
-
-    //    // 判断 Item 是否在影响范围内
-    //    if (offset > effectRange)
-    //    {
-    //        //  在影响范围外，则设置为最小宽度
-    //        return 0f;
-    //    }
-    //    else
-    //    {
-    //        //  根据插值计算出宽度
-    //        // offset : 0 ; width : max_width
-    //        // offset : 1 ; width : ..
-    //        // ...
-    //        // offset :effectRange : width : min_width
-
-    //        float unitOffset = (_maxItemWidth - _minItemWidth) / effectRange;
-    //        float result = ((effectRange - offset) * unitOffset) / 2;
-
-    //        //Func<float, float> defaultEasingFunction = EasingFunction.Get(_influenceEaseEnum);
-    //        //float k = defaultEasingFunction(result / (_maxItemWidth / effectRange));
-
-    //        return 0 - result / 2;
-    //    }
-    //}
 
 
 }

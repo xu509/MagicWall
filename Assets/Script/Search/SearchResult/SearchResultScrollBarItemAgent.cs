@@ -4,15 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+
 public class SearchResultScrollBarItemAgent : MonoBehaviour
 {
 
     private int _index;
     private float _width;   // 图片宽度
     private float _default_width;   // 默认宽度
-
+    private float _itemHeight;   // 默认宽度
+    private float _minItemWidthFactor;
+    private float _maxItemWidthFactor;
 
     [SerializeField] private Image _image;  //  图片
+
+
 
     #region 引用
     public int Index { get { return _index; } set { _index = value; } }
@@ -30,38 +35,39 @@ public class SearchResultScrollBarItemAgent : MonoBehaviour
         
     }
 
-    public void Init(int index,float _initItemWidth) {
+    public void Init(int index,float minItemWidthFactor, float maxItemWidthFactor
+        , float itemHeight) {
         _index = index;
         //_total = total;
-        _default_width = _initItemWidth;
+        _itemHeight = itemHeight;
+
+        _minItemWidthFactor = minItemWidthFactor;
+        _maxItemWidthFactor = maxItemWidthFactor;
+
+
+        GetComponent<RectTransform>().sizeDelta = new Vector2(0, itemHeight);
+
+
         SetImageWidth(0);
     }
 
 
-    public void Refresh(float widthOffset) {
-
-        if ((widthOffset + _default_width) != _width) {
-            SetImageWidth(widthOffset);
-        }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="factor"> 0 - 1</param>
+    public void Refresh(float factor) {
+        //factor;
+        SetImageWidth(factor);
 
     }
 
     private void SetImageWidth(float widthOffset) {
+        float max_x = Mathf.Lerp(_minItemWidthFactor, _maxItemWidthFactor, widthOffset);
 
-        // 只有一半进行变化
-        //_image.GetComponent<RectTransform>().sizeDelta = new Vector2(width, _image.GetComponent<RectTransform>().sizeDelta.y);
-        _width = widthOffset + _default_width;
-
-        _image.GetComponent<RectTransform>()
-            .DOSizeDelta(new Vector2(_width , _image.GetComponent<RectTransform>().sizeDelta.y), 0.2f)
-            .OnUpdate(() => {
-                // 根据宽度进行调整
-                float anchorx;
-                anchorx = (_image.GetComponent<RectTransform>().sizeDelta.x - _default_width) / 2;
-                anchorx = 0 - anchorx;
-                _image.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorx, _image.GetComponent<RectTransform>().anchoredPosition.y);
-            });
-
+        GetComponent<RectTransform>().DOAnchorMin(new Vector2(1 - max_x, 1), 0.2f);
+        GetComponent<RectTransform>().anchorMax = new Vector2(1, 1);
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(0, GetComponent<RectTransform>().anchoredPosition.y);
     }
 
 }
