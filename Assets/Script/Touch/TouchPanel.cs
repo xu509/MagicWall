@@ -5,30 +5,48 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class TouchPanel : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler
+public class TouchPanel : MonoBehaviour
 {
     [SerializeField] TouchAgent touchAgent;
     [SerializeField] RectTransform context;
+    [SerializeField] GraphicRaycaster graphicRaycaster;
+    [SerializeField] EventSystem _mEventSystem;
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
+
+
+    public void Update() {
+
+
+        var mPointerEventData = new PointerEventData(_mEventSystem);
+        var raycasterList = new List<RaycastResult>(); ;
+
+        //graphicRaycaster.Raycast(mPointerEventData, raycasterList);
+
+        //for (int i = 0; i < raycasterList.Count; i++) {
+        //    Debug.Log("Game Object Name:" + raycasterList[i].gameObject.name);
+        //}
+
+        //if (raycasterList.Count > 0) {
+        //    Debug.Log("Click  !!! ");
+        //}
+
+
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        throw new System.NotImplementedException();
+
+    public void OnClick() {
+
+        Debug.Log("On Click");
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnDrag()
     {
-        throw new System.NotImplementedException();
+
+        Debug.Log("On Drag");
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnPointerClick");
-
         Vector2 position = eventData.position;
 
         Vector2 pointerStartLocalPosition = Vector2.zero;

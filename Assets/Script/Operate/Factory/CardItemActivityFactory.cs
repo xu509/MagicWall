@@ -15,7 +15,7 @@ public class CardItemActivityFactory : CardItemFactory
             Activity e = DaoService.Instance.GetActivityDetail(id);
             CrossCardCellData cd = new CrossCardCellData();
 
-            string address = MagicWallManager.FileDir + e.Image;
+            string address = e.Image;
             cd.Image = address;
             cd.Description = e.Name;
 
