@@ -50,6 +50,8 @@ public class CrossCardAgent : CardAgent
     //
     public void InitCrossCardAgent()
     {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
         InitAgency();
 
         DaoService daoService = DaoService.Instance; 
@@ -140,17 +142,17 @@ public class CrossCardAgent : CardAgent
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
-        //  设置动画
-        //for (int i = 0; i < _cardScrollCells.Count; i++) {
-        //    CardScrollCell cardScrollCell = _cardScrollCells[i];
-        //    cardScrollCell.UpdatePosition(CalculatePostion(cardScrollCell.Index));
-        //}
+
+        sw.Start();
 
         // Updatedata
         //crossCardScrollViewController.SelectCell(0);
         crossCardScrollViewController.SetUpCardAgent(this);
         crossCardScrollViewController.UpdateData(_cellDatas);
         crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
+
+        sw.Stop();
+        Debug.Log("InitCrossCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
 
         //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
 

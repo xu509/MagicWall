@@ -105,19 +105,19 @@ public class StarsCutEffect : CutEffect
                     float fadeStartTime = animation_duration * 0.8f;
                     float fadeDurTime = animation_duration * 0.2f;
 
-                    //// 前2成时间，从透明到不透明
-                    //Tweener t3 = agent.GetComponent<Image>()
-                    //    .DOFade(1, fadeStartTime);
+                    // 前2成时间，从透明到不透明
+                    Tweener t3 = agent.GetComponent<Image>()
+                        .DOFade(1, fadeStartTime);
 
-                    //agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtStart, t3);
+                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtStart, t3);
 
 
-                    //// 后2成时间，从不透明到透明
-                    //Tweener t2 = agent.GetComponent<Image>()
-                    //    .DOFade(0, fadeDurTime)
-                    //    .SetDelay(fadeStartTime);
+                    // 后2成时间，从不透明到透明
+                    Tweener t2 = agent.GetComponent<Image>()
+                        .DOFade(0, fadeDurTime)
+                        .SetDelay(fadeStartTime);
 
-                    //agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtEnd, t2);
+                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtEnd, t2);
 
                 }
             }

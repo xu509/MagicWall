@@ -42,7 +42,7 @@ public class AppUtils
         if (File.Exists(filePath))
         {
             fileData = File.ReadAllBytes(filePath);
-            tex = new Texture2D(600, 600);
+            tex = new Texture2D(400, 400);
             bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         else

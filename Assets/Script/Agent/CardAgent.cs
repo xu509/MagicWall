@@ -667,9 +667,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
-        //float w = _cardAgent.GetComponent<RectTransform>().sizeDelta.x;
-        //float h = _cardAgent.GetComponent<RectTransform>().sizeDelta.y;
-
         GetComponent<RectTransform>()
             .DOScale(scaleVector3, 0.5f)
             .OnUpdate(() =>
