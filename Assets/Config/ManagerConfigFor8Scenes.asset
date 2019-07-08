@@ -17,8 +17,8 @@ MonoBehaviour:
   Column: 28
   FlockPoolSize: 220
   CardPoolSize: 10
-  StarEffectDistance: 5092
-  StarEffectDistanceTime: 4
+  StarEffectDistance: 5866
+  StarEffectDistanceTime: 4.86
   ClearBubblePoolSize: 100
   DimBubblePoolSize: 50
   ClearBubbbleCreateIntervalTime: 1

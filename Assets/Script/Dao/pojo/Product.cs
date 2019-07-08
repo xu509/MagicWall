@@ -95,4 +95,17 @@ public class Product : FlockData,Generator<Product>
         string path = MagicWallManager.FileDir + Image;
         return SpriteResource.Instance.GetData(path);
     }
+
+    public List<string> GetAssetAddressList()
+    {
+        List<string> list = new List<string>();
+
+        for (int i = 0; i < 121; i++)
+        {
+            string address = "product\\" + ( i + 1 ) + ".png";
+            list.Add(address);
+        }
+
+        return list;
+    }
 }

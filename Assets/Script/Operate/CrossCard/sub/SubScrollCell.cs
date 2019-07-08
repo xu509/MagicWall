@@ -31,8 +31,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     //
 
     [SerializeField] RectTransform videoContainer;
-    [SerializeField] RawImage _cover;
-    [SerializeField] RawImage _video_cover;
+    [SerializeField] Image _cover;
+    [SerializeField] Image _video_cover;
     [SerializeField] ButtonLikeAgent _buttonLikeAgent;
 
 
@@ -67,16 +67,15 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         {
             videoContainer.gameObject.SetActive(true);
             _cover.gameObject.SetActive(false);
-            _video_cover.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + cellData.Image);
+            _video_cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + cellData.Image);
             CanvasExtensions.SizeToParent(_video_cover);
 
         }
         else {
             //  设置 Image
             _cover.gameObject.SetActive(true);
-            _cover.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir +  cellData.Image);
+            _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir +  cellData.Image);
             CanvasExtensions.SizeToParent(_cover);
-
 
             // 关闭视频框
             videoContainer.gameObject.SetActive(false);
@@ -84,7 +83,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
             //RectTransform r = _image.GetComponent<RectTransform>();
             //r.sizeDelta = new Vector2(cellData.ImageTexture.width, cellData.ImageTexture.height);
         }
-
     }
 
     public void DoPlayVideo() {
@@ -113,7 +111,20 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     }
 
     public void DoScale() {
-        Context.OnScaleClicked?.Invoke(_cover.texture);
+
+        Sprite sprite = _cover.sprite;
+
+
+        var croppedTexture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+        var pixels = sprite.texture.GetPixels((int)sprite.textureRect.x,
+                                                (int)sprite.textureRect.y,
+                                                (int)sprite.textureRect.width,
+                                                (int)sprite.textureRect.height);
+        croppedTexture.SetPixels(pixels);
+        croppedTexture.Apply();
+
+
+        Context.OnScaleClicked?.Invoke(croppedTexture);
     }
 
     public override void DoUpdateDescription()
