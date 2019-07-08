@@ -22,11 +22,18 @@ public class ManagerConfig : ScriptableObject
     [Range(1, 30), Header("操作块对象池大小")]
     public int CardPoolSize;
 
-    [Range(100f, 10000f), Header("[星空效果] 最远距离")]
-    public float StarEffectDistance;
 
-    [Range(2f, 10f), Header("[星空效果] 动画时间")]
-    public float StarEffectDistanceTime;
+    [Range(0f, 500f), Header("[星空效果] 卡片数量")]
+    public int StarEffectAgentsCount;
+
+    [Range(0f, 200f), Header("[星空效果] 动画移动速度")]
+    public float StarEffectMoveFactor;
+
+    [Range(1f, 10000f), Header("[星空效果] 动画起点")]
+    public float StarEffectOriginPoint;
+
+    [Range(-5000f, 5000f), Header("[星空效果] 动画终点")]
+    public float StarEffectEndPoint;
 
     [Range(10,200),Header("[背景] 清晰的背景气球池")]
     public int ClearBubblePoolSize;
@@ -39,5 +46,18 @@ public class ManagerConfig : ScriptableObject
 
     [Range(0.1f, 5f), Header("[背景] 气球的生成间隔(模糊)")]
     public float DimBubbbleCreateIntervalTime;
+
+    [Range(0f, 5f), Header("[卡片] 最小的宽度系数（对应屏幕宽度）")]
+    public float ItemSizeMinWidthFactor;
+
+    [Range(0f, 5f), Header("[卡片] 最大的宽度系数（对应屏幕宽度）")]
+    public float ItemSizeMaxWidthFactor;
+
+    [Range(0f, 5f), Header("[卡片] 最小的高度系数（对应屏幕高度）")]
+    public float ItemSizeMinHeightFactor;
+
+    [Range(0f, 5f), Header("[卡片] 最大的高度系数（对应屏幕高度）")]
+    public float ItemSizeMaxHeightFactor;
+
 
 }

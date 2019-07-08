@@ -32,10 +32,13 @@ public class FlockAgent : MonoBehaviour
 
     private int _sceneIndex;    //  场景的索引
 
-    int x;
-    public int X { get { return x; } }
-    int y;
-    public int Y { get { return y; } }
+    float _x;
+    public float X { get { return _x; } }
+    float _y;
+    public float Y { get { return _y; } }
+    float _z;
+    public float Z { get { return _z; } set { _z = value; } }
+
 
     private float delayX;
 
@@ -54,13 +57,13 @@ public class FlockAgent : MonoBehaviour
     private float _height;
 
     // 原位
-    [SerializeField] private Vector2 _oriVector2;
+    private Vector2 _oriVector2;
 
     // 生成的位置
     private Vector2 _genVector2;
 
     // 下个移动的位置
-    [SerializeField] private Vector2 _nextVector2;
+    private Vector2 _nextVector2;
 
     // 是否被选中
     private bool _isChoosing = false;
@@ -178,8 +181,8 @@ public class FlockAgent : MonoBehaviour
 
         _nextVector2 = genVector;
 
-        x = row;
-        y = column;
+        _x = row;
+        _y = column;
         _width = width;
         _height = height;
 

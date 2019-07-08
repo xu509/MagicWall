@@ -7,15 +7,9 @@ using DG.Tweening;
 // 过场效果 3 从后往前, 星空效果
 public class StarsCutEffect : CutEffect
 {
-    private int row;
-    private int column;
-
-    private float _distance;
-
-    private float generate_agent_interval = 0.2f; // 生成的间隔
-    private float last_generate_time = 0f; // 最后生成的时间
-    private float animation_duration;//动画持续时间
-
+    private bool doStartEffect = false;
+    private DataType _dataType;
+    private List<FlockAgent> _activeAgents; //活动的 Agents 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
 
@@ -28,9 +22,10 @@ public class StarsCutEffect : CutEffect
         _manager = manager;
         _agentManager = _manager.agentManager;
         _daoService = DaoService.Instance;
+        doStartEffect = false;
 
         //  获取动画的持续时间
-        StartingDurTime = 17f;
+        StartingDurTime = 60f;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间
@@ -44,12 +39,11 @@ public class StarsCutEffect : CutEffect
         //  设置运行时间点
         HasDisplaying = false;
 
+        _activeAgents = new List<FlockAgent>();
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
 
-        _distance = _manager.managerConfig.StarEffectDistance;
-        animation_duration = _manager.managerConfig.StarEffectDistanceTime;
     }
 
     //
@@ -57,7 +51,8 @@ public class StarsCutEffect : CutEffect
     //
     protected override void CreateLogo()
     {
-        CreateAgency(DataType.env);
+        _dataType = DataType.env;
+        CreateAgency();
     }
 
     //
@@ -65,7 +60,8 @@ public class StarsCutEffect : CutEffect
     //
     protected override void CreateActivity()
     {
-        CreateAgency(DataType.activity);
+        _dataType = DataType.activity;
+        CreateAgency();
     }
 
     /// <summary>
@@ -73,128 +69,185 @@ public class StarsCutEffect : CutEffect
     /// </summary>
     protected override void CreateProduct()
     {
-        CreateAgency(DataType.product);
+        _dataType = DataType.product;
+        CreateAgency();
 
     }
 
 
     public override void Starting() {
-        if (Time.time - last_generate_time > generate_agent_interval) {
 
-            // 随机选择
-            int count = _manager.agentManager.Agents.Count;
-            for (int i = 0; i < 15; i++)
-            {
-                int index = Random.Range(0, count);
-                FlockAgent agent = _agentManager.Agents[index];
-                if (!agent.StarsCutEffectIsPlaying) {
-                    agent.StarsCutEffectIsPlaying = true;
-                    agent.gameObject.SetActive(true);
-                    agent.GetComponent<RectTransform>().SetAsFirstSibling();
-
-                    Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
-
-                    // 卡片从后方往前方进行移动，当移动了8成后，开始消失
-
-                    Tweener t = agent.GetComponent<RectTransform>().DOAnchorPos3DZ(-1500, animation_duration)
-                        .OnComplete(() => DoAnimationFinish(agent))
-                        .OnKill(() => DoAnimationFinish(agent));
-                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOAnchorPos3DZ, t);
-                    agent.UpdateImageAlpha(1);
-
-                    float fadeStartTime = animation_duration * 0.8f;
-                    float fadeDurTime = animation_duration * 0.2f;
-
-                    // 前2成时间，从透明到不透明
-                    Tweener t3 = agent.GetComponent<Image>()
-                        .DOFade(1, fadeStartTime);
-
-                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtStart, t3);
-
-
-                    // 后2成时间，从不透明到透明
-                    Tweener t2 = agent.GetComponent<Image>()
-                        .DOFade(0, fadeDurTime)
-                        .SetDelay(fadeStartTime);
-
-                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtEnd, t2);
-
-                }
-            }
-
-            last_generate_time = Time.time;
+        if (!doStartEffect) {
+            doStartEffect = true;
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(1, 1f);
         }
+
+
+        List<FlockAgent> agentsNeedClear = new List<FlockAgent>();
+
+        for (int i = 0; i < _activeAgents.Count; i++) {
+            if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.managerConfig.StarEffectEndPoint)
+            {
+                //  清理agent，
+                agentsNeedClear.Add(_activeAgents[i]);
+                //  创建新 agent
+                FlockAgent agent = CreateNewAgent(false);
+                agent.GetComponent<RectTransform>().SetAsFirstSibling();
+            }
+            else {
+                // 移动
+                Vector3 to =  new Vector3(0,0,  - (Time.deltaTime * _manager.managerConfig.StarEffectMoveFactor));
+                _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
+
+                // 更新透明度
+                UpdateAlpha(_activeAgents[i]);
+            }
+        }
+
+        for (int i = 0; i < agentsNeedClear.Count; i++) {
+            ClearAgent(agentsNeedClear[i]);
+
+        }
+
     }
 
 
 
     public override void OnStartingCompleted(){
-
         Debug.Log("OnStartingCompleted");
-
     }
 
-
-    private void CreateAgency(DataType dataType) {
-        // 获取栅格信息
-        row = _manager.Row;
-        int h = (int)_manager.mainPanel.rect.height;
-        int w = (int)_manager.mainPanel.rect.width;
-
-        int itemHeight = _sceneUtil.GetFixedItemHeight();
-        column = _sceneUtil.GetColumnNumberByFixedWidth(itemHeight);
-
-
-        //从左往右，从上往下
-        for (int j = 0; j < column; j++)
-        {
-            for (int i = 0; i < row; i++)
-            {
-                Vector2 oriVector = _sceneUtil.GetPositionOfSquareItem(itemHeight, i, j);
-
-                FlockData data = _daoService.GetFlockData(dataType);
-                Sprite logoSprite = data.GetCoverSprite();
-
-                Vector2 vector2 = AppUtils
-                   .ResetTexture(new Vector2(logoSprite.rect.width
-                   , logoSprite.rect.height), _manager.displayFactor);
-
-
-                // ori_x;ori_y
-                float ori_x, ori_y;
-                ori_x = oriVector.x;
-                ori_y = oriVector.y;
-
-                FlockAgent go = ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, j,
-                    vector2.x, vector2.y, data, AgentContainerType.MainPanel);
-                //go.NextVector2 = new Vector2(ori_x, ori_y);
-
-                // 将agent的z轴定义在后方
-                go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, _distance);
-                go.UpdateImageAlpha(0);
-                go.gameObject.SetActive(false);
-
-                // 星空效果不会被物理特效影响
-                go.CanEffected = false;
-            }
+    /// <summary>
+    ///     初始状态
+    ///         -   内容此时有进行至一半
+    /// </summary>
+    /// <param name="dataType"></param>
+    private void CreateAgency() { 
+        // 随机生成
+        for (int i = 0; i < _manager.managerConfig.StarEffectAgentsCount; i++) {
+            CreateNewAgent(true);
         }
+
+        // 设置远近关系，Z轴越小越前面
+        _activeAgents.Sort(new FlockCompare());
+        for (int i = 0; i < _activeAgents.Count; i++) {
+            int si = _activeAgents.Count - 1 - i;
+            _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
+        }
+
+        _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 0;
     }
 
-
-
-
-
-    private void DoAnimationFinish(FlockAgent agent) {
-        agent.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);
-        agent.UpdateImageAlpha(0);
-        agent.StarsCutEffectIsPlaying = false;
-        agent.gameObject.SetActive(false);
-    }
 
 
     public override string GetID()
     {
         return "StarsCutEffect";
     }
+
+
+
+    private FlockAgent CreateNewAgent(bool randomZ) {
+
+        // 获取数据
+        FlockData data = _daoService.GetFlockData(_dataType);
+
+        // 获取出生位置
+        Vector2 randomPosition = Random.insideUnitSphere;
+
+        Vector3 position;
+
+        position.x = (randomPosition.x / 2 + 0.5f) * _manager.GetScreenRect().x;
+        position.y = (randomPosition.y / 2 + 0.5f) * _manager.GetScreenRect().y;
+
+
+        // 获取长宽
+        Sprite logoSprite = data.GetCoverSprite();
+        float width = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).x;
+        float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
+
+        FlockAgent go = ItemsFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
+         width, height, data, AgentContainerType.MainPanel);
+        go.UpdateImageAlpha(0);
+
+        // 星空效果不会被物理特效影响
+        go.CanEffected = false;
+
+        // 设置Z轴
+
+        float z;
+        if (randomZ)
+        {
+            z =  Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint, Random.Range(0f, 1f));
+        }
+        else {
+            z = _manager.managerConfig.StarEffectOriginPoint;
+        }
+
+        go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
+        go.Z = z;
+        go.name = "Agent-" + Mathf.RoundToInt(go.Z);
+
+        _activeAgents.Add(go);
+
+        return go;
+    }
+
+    /// <summary>
+    ///     清理agent
+    /// </summary>
+    /// <param name="agent"></param>
+    private void ClearAgent(FlockAgent agent) {
+        // 清理出实体袋
+        _activeAgents.Remove(agent);
+        _manager.agentManager.ClearAgent(agent);
+    }
+
+
+
+    /// <summary>
+    ///     更新透明度
+    /// </summary>
+    /// <param name="agent"></param>
+    private void UpdateAlpha(FlockAgent agent) {
+        float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
+
+        // 判断Z在距离中的位置
+        float distance = Mathf.Abs(_manager.managerConfig.StarEffectOriginPoint - _manager.managerConfig.StarEffectEndPoint);
+        float offset = Mathf.Abs(z - _manager.managerConfig.StarEffectOriginPoint) / distance;
+
+        // 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
+        if (offset < 0.05)
+        {
+            float k = Mathf.Abs(offset - 0.05f);
+            float alpha = Mathf.Lerp(1, 0, k / 0.05f);
+            agent.UpdateImageAlpha(alpha);
+        }
+        else if (offset > 0.95)
+        {
+            float k = Mathf.Abs(1 - offset);
+            float alpha = Mathf.Lerp(0, 1, k / 0.05f);
+            agent.UpdateImageAlpha(alpha);
+        }
+        else {
+            agent.UpdateImageAlpha(1);
+        }
+
+    }
+
+
+
+
+    /// <summary>
+    ///     实体比较器
+    /// </summary>
+    class FlockCompare : IComparer<FlockAgent>
+    {
+        public int Compare(FlockAgent x, FlockAgent y)
+        {
+            return x.Z.CompareTo(y.Z);
+        }
+    }
+
 
 }
