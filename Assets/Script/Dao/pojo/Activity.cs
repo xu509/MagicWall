@@ -86,4 +86,17 @@ public class Activity : FlockData,Generator<Activity>
         string path = MagicWallManager.FileDir + Image;
         return SpriteResource.Instance.GetData(path);
     }
+
+    public List<string> GetAssetAddressList()
+    {
+        List<string> list = new List<string>();
+
+        for (int i = 0; i < 177; i++)
+        {
+            string address = "activity\\" + (i + 1) + ".png";
+            list.Add(address);
+        }
+
+        return list;
+    }
 }

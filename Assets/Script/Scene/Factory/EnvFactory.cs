@@ -79,14 +79,22 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 
+
+
         // 初始化数据
         crossCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
 
         // 添加到effect agent
         _agentManager.AddEffectItem(crossCardAgent);
 
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+
         // 初始化 CrossAgent 数据
         crossCardAgent.InitCrossCardAgent();
+
+        sw.Stop();
+        Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
 
         crossCardAgent.gameObject.SetActive(isActive);
 

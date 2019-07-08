@@ -392,6 +392,8 @@ public class FlockAgent : MonoBehaviour
         {
             _isChoosing = true;
 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
             //  先缩小（向后退）
             RectTransform rect = GetComponent<RectTransform>();
             Vector2 positionInMainPanel = rect.anchoredPosition;
@@ -401,8 +403,13 @@ public class FlockAgent : MonoBehaviour
             Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
+            sw.Start();
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
+            sw.Stop();
+            Debug.Log("DoChoose Time : " + sw.ElapsedMilliseconds / 1000f);
+
+
 
             //靠近四周边界需要偏移
             float w = _cardAgent.GetComponent<RectTransform>().rect.width;
@@ -437,6 +444,10 @@ public class FlockAgent : MonoBehaviour
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
                 rect.gameObject.SetActive(false);
+
+                sw.Stop();
+                Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
+
                 _cardAgent.GoToFront();
             });
         }
@@ -448,6 +459,9 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
+        Debug.Log("DoRecoverAfterChoose Began: " + gameObject.name);
+
+
         IsRecovering = true;
 
         // 如果组件已不在原场景，则不进行恢复
@@ -470,7 +484,9 @@ public class FlockAgent : MonoBehaviour
 
         // 恢复原位
         Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
-        rect.DOAnchorPos3D(to, 0.3f);
+        Tweener t2 = rect.DOAnchorPos3D(to, 0.3f);
+        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
+
 
         // 放大至原大小
         Vector3 scaleVector3 = Vector3.one;
@@ -493,38 +509,16 @@ public class FlockAgent : MonoBehaviour
                IsRecovering = false;
            });
 
-        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t );
+        _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
+
+
+
+        Debug.Log("DoRecoverAfterChoose : " + gameObject.name);
+
     }
 
 
     #endregion
-
-    protected void DoDestoryOnCompleteCallBack(FlockAgent agent)
-    {
-
-        // 进行销毁
-        if (typeof(CrossCardAgent).IsAssignableFrom(agent.GetType())) {
-            _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-            CardAgent ca = agent as CardAgent;
-
-            ca.DestoryAgency();
-            ca.OriginAgent.DestoryAgency();
-
-        }
-        else if (typeof(SliceCardAgent).IsAssignableFrom(agent.GetType()))
-        {
-            _agentManager.RemoveItemFromEffectItems(agent as CardAgent);
-            CardAgent ca = agent as CardAgent;
-
-            ca.DestoryAgency();
-            ca.OriginAgent.DestoryAgency();
-        }
-        else if (typeof(FlockAgent).IsAssignableFrom(agent.GetType())) {
-            agent.DestoryAgency();
-        }
-
-    }
-
 
 
 

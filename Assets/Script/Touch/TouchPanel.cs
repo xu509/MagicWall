@@ -9,76 +9,57 @@ public class TouchPanel : MonoBehaviour
 {
     [SerializeField] TouchAgent touchAgent;
     [SerializeField] RectTransform context;
-    [SerializeField] GraphicRaycaster graphicRaycaster;
-    [SerializeField] EventSystem _mEventSystem;
+    [SerializeField] float _createInterval;
 
-
+    private float _lastCreateTime = 0;
 
     public void Update() {
 
 
-        var mPointerEventData = new PointerEventData(_mEventSystem);
-        var raycasterList = new List<RaycastResult>(); ;
+        if (Input.touchCount > 0)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
 
-        //graphicRaycaster.Raycast(mPointerEventData, raycasterList);
+                if (Input.GetTouch(i).phase == TouchPhase.Began)
+                {
+                    Vector2 position = Input.GetTouch(i).position;
+                    CreatePoint(position);
+                }
 
-        //for (int i = 0; i < raycasterList.Count; i++) {
-        //    Debug.Log("Game Object Name:" + raycasterList[i].gameObject.name);
-        //}
+            }
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 position = Input.mousePosition;
+            CreatePoint(position);
+        }
 
-        //if (raycasterList.Count > 0) {
-        //    Debug.Log("Click  !!! ");
-        //}
+
 
 
     }
 
 
-    public void OnClick() {
-
-        Debug.Log("On Click");
-    }
-
-    public void OnDrag()
+    public void CreatePoint(Vector2 position)
     {
+        if (Time.time - _lastCreateTime > _createInterval) {
+            StartCoroutine(show(position));  //开始协程
+            _lastCreateTime = Time.time;
+        }
 
-        Debug.Log("On Drag");
+
+        
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+
+
+    IEnumerator show(Vector2 position)  //协程方法
     {
-        Vector2 position = eventData.position;
-
-        Vector2 pointerStartLocalPosition = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            GetComponent<RectTransform>(),
-            eventData.position,
-            eventData.pressEventCamera,
-            out pointerStartLocalPosition);
-
-
+        yield return new WaitForSeconds(0.2f);  //暂停协程，2秒后执行之后的操作
         TouchAgent agent = Instantiate(touchAgent, context);
-        agent.GetComponent<RectTransform>().anchoredPosition = pointerStartLocalPosition;
-
+        agent.GetComponent<RectTransform>().anchoredPosition = position;
 
     }
-
-    //public void DoClick() {
-    //    Debug.Log("OnPointerClick");
-
-    //    Vector2 position = eventData.position;
-
-    //    Vector2 pointerStartLocalPosition = Vector2.zero;
-    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(
-    //        GetComponent<RectTransform>(),
-    //        eventData.position,
-    //        eventData.pressEventCamera,
-    //        out pointerStartLocalPosition);
-
-
-    //    TouchAgent agent = Instantiate(touchAgent, context);
-    //    agent.GetComponent<RectTransform>().anchoredPosition = pointerStartLocalPosition;
-
-    //}
 
 }

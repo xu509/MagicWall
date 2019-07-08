@@ -12,7 +12,7 @@ public class StarsCutEffect : CutEffect
 
     private float _distance;
 
-    private float generate_agent_interval = 0.5f; // 生成的间隔
+    private float generate_agent_interval = 0.2f; // 生成的间隔
     private float last_generate_time = 0f; // 最后生成的时间
     private float animation_duration;//动画持续时间
 
@@ -91,21 +91,47 @@ public class StarsCutEffect : CutEffect
                     agent.StarsCutEffectIsPlaying = true;
                     agent.gameObject.SetActive(true);
                     agent.GetComponent<RectTransform>().SetAsFirstSibling();
-                    //agent.transform.SetAsLastSibling();
 
                     Vector3 to = new Vector3(agent.OriVector2.x, agent.OriVector2.y, 0);
-                    agent.GetComponent<RectTransform>().DOAnchorPos3DZ(0, animation_duration)
-                        .OnComplete(() => DOAnchorPosCompleteCallback(agent));
-                    //agent.GetComponent<Image>().DOFade(0.2f, animation_duration).From();
+
+                    // 卡片从后方往前方进行移动，当移动了8成后，开始消失
+
+                    Tweener t = agent.GetComponent<RectTransform>().DOAnchorPos3DZ(-1500, animation_duration)
+                        .OnComplete(() => DoAnimationFinish(agent))
+                        .OnKill(() => DoAnimationFinish(agent));
+                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOAnchorPos3DZ, t);
+                    agent.UpdateImageAlpha(1);
+
+                    float fadeStartTime = animation_duration * 0.8f;
+                    float fadeDurTime = animation_duration * 0.2f;
+
+                    // 前2成时间，从透明到不透明
+                    Tweener t3 = agent.GetComponent<Image>()
+                        .DOFade(1, fadeStartTime);
+
+                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtStart, t3);
+
+
+                    // 后2成时间，从不透明到透明
+                    Tweener t2 = agent.GetComponent<Image>()
+                        .DOFade(0, fadeDurTime)
+                        .SetDelay(fadeStartTime);
+
+                    agent.flockTweenerManager.Add(FlockTweenerManager.StarEffect_Starting_DOFade_AtEnd, t2);
+
                 }
-                //agent.GetComponent<RectTransform>().DOScale(new Vector3(0.5f, 0.5f, 0.5f), animation_duration).From();
             }
 
             last_generate_time = Time.time;
         }
     }
 
+
+
     public override void OnStartingCompleted(){
+
+        Debug.Log("OnStartingCompleted");
+
     }
 
 
@@ -145,6 +171,7 @@ public class StarsCutEffect : CutEffect
 
                 // 将agent的z轴定义在后方
                 go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, _distance);
+                go.UpdateImageAlpha(0);
                 go.gameObject.SetActive(false);
 
                 // 星空效果不会被物理特效影响
@@ -155,35 +182,15 @@ public class StarsCutEffect : CutEffect
 
 
 
-    #region Tween Callback
-    public void DOAnchorPosCompleteCallback(FlockAgent agent)
-    {
-        if (!agent.IsChoosing)
-        {
-            agent.GetComponent<Image>().DOFade(0, 0.5f).OnComplete(() => DOFadeCompleteCallback(agent));
-        }
-    }
 
-    public void DOFadeCompleteCallback(FlockAgent agent)
-    {
-        RectTransform rect = agent.GetComponent<RectTransform>();
 
-        agent.UpdateImageAlpha(1);
+    private void DoAnimationFinish(FlockAgent agent) {
+        agent.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);
+        agent.UpdateImageAlpha(0);
         agent.StarsCutEffectIsPlaying = false;
-
-        // 此时会出现场景已经切换,但是动画并未停止的问题
-        if (agent.SceneIndex == _manager.SceneIndex)
-        {
-            rect.anchoredPosition3D = new Vector3(agent.OriVector2.x, agent.OriVector2.y, _distance);
-            agent.gameObject.SetActive(false);
-        }
-        else {
-            //agent.Reset();
-        }
+        agent.gameObject.SetActive(false);
     }
 
-
-    #endregion
 
     public override string GetID()
     {

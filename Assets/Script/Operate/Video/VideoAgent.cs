@@ -10,6 +10,7 @@ public class VideoAgent : MonoBehaviour
     [SerializeField] RectTransform _activeContainer;
     [SerializeField] RectTransform _loadingContainer;
     [SerializeField] Image _image;
+    [SerializeField] Image _imageMask;
     [SerializeField] VideoPlayer _videoPlayer;
     [SerializeField] RawImage _screen;
     [SerializeField] Text _time;
@@ -42,7 +43,6 @@ public class VideoAgent : MonoBehaviour
 
     void Awake() {
         float height = Screen.height * heightFactorByScreen;
-
         float width = height * widthFactorByHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
@@ -68,7 +68,6 @@ public class VideoAgent : MonoBehaviour
         SetDescription(description);
 
         _cover = cover;
-
     }
 
 
@@ -175,7 +174,6 @@ public class VideoAgent : MonoBehaviour
 
         }
 
-        DoPlay();
     
     }
 
@@ -307,31 +305,41 @@ public class VideoAgent : MonoBehaviour
         _activeContainer.gameObject.SetActive(false);
 
         _image.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + _cover);
-        _image.type = Image.Type.Filled;
+        _imageMask.fillAmount = 1;
+        //_imageMask.type = Image.Type.Filled;
 
     }
 
     private void OpenActiveContainer() {
         _isLoading = false;
-        _image.DOFillAmount(1, 0.3f).OnComplete(() => {
-            _loadingContainer.gameObject.SetActive(false);
-            _activeContainer.gameObject.SetActive(true);
+        _imageMask.DOFillAmount(0, 0.3f)
+            .OnComplete(() => {
+                _activeContainer.gameObject.SetActive(true);
+                _screen.texture = _videoPlayer.texture;
 
-            _screen.texture = _videoPlayer.texture;
-            SetTotalTime();
+                _loadingContainer.GetComponent<CanvasGroup>()
+                    .DOFade(0, 0.5f)
+                    .OnComplete(() => {
+                        _loadingContainer.gameObject.SetActive(false);
+
+                        SetTotalTime();
+                        DoPlay();
+                    });
         });
     }
 
+    /// <summary>
+    /// 载入动画
+    /// </summary>
     private void RunLoading() {
-        float loadNumber = _image.fillAmount + 0.01f;
-        if (loadNumber < 1)
+        float loadNumber = _imageMask.fillAmount - 0.005f;
+        if (loadNumber > 0)
         {
-            _image.fillAmount = loadNumber;
+            _imageMask.fillAmount = loadNumber;
         }
         else {
-            _image.fillAmount = 0;
+            _imageMask.fillAmount = 1;
         }
-
     }
 
 

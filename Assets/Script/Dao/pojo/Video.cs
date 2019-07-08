@@ -20,11 +20,13 @@ public class Video : Generator<Video>
     private string _cover;
     public string Cover { set { _cover = value; } get { return _cover; } }
 
+
+    string[] covers = { "1.png", "2.png" };
+
     public Video Generator()
     {
         string[] descriptions = { "视频1", "视频2" };
         string[] addresses = { "1.mp4", "2.mp4" };
-        string[] covers = { "1.png", "2.png" };
 
         Video video = new Video();
         video._description = descriptions[0];
@@ -38,5 +40,19 @@ public class Video : Generator<Video>
 
         Video[] videos = { video, video2 };
         return videos[Random.Range(0,2)];
+    }
+
+
+    public List<string> GetAssetAddressList()
+    {
+        List<string> list = new List<string>();
+
+        for (int i = 0; i < covers.Length; i++)
+        {
+            string address = "video\\" + covers[i];
+            list.Add(address);
+        }
+
+        return list;
     }
 }

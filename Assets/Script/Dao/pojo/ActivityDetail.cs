@@ -67,4 +67,28 @@ public class ActivityDetail : Generator<ActivityDetail>
 
         return activityDetail;
     }
+
+    public List<string> GetAssetAddressList()
+    {
+        string[] listAry = {
+            "activity\\detail\\1-1.jpg",
+            "activity\\detail\\1-2.jpg",
+            "activity\\detail\\2-1.jpg",
+            "activity\\detail\\2-2.jpg",
+            "activity\\detail\\2-3.jpg",
+            "activity\\detail\\3-1.jpg",
+            "activity\\detail\\3-2.jpg",
+            "activity\\detail\\3-3.jpg",
+        };
+
+        List<string> list = new List<string>();
+
+        for (int i = 0; i < listAry.Length; i++)
+        {
+            string address = listAry[i];
+            list.Add(address);
+        }
+
+        return list;
+    }
 }

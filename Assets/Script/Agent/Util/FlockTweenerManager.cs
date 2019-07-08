@@ -14,6 +14,10 @@ public class FlockTweenerManager
     /// </summary>
     public static string CardAgent_Destory_Second_DOAnchorPos3D = "CardAgentDestorySecondDOAnchorPos3D";
     public static string FlockAgent_DoRecoverAfterChoose_DOScale = "FlockAgentDoRecoverAfterChooseDOScale";
+    public static string FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D = "FlockAgentDoRecoverAfterChooseDOAnchorPos3D";
+    public static string StarEffect_Starting_DOAnchorPos3DZ = "StarEffectStartingDOAnchorPos3DZ";
+    public static string StarEffect_Starting_DOFade_AtStart = "StarEffectStartingDOFadeAtStart";
+    public static string StarEffect_Starting_DOFade_AtEnd = "StarEffectStartingDOFadeAtEnd";
 
     private Dictionary<string, Tweener> _tweenerMap;
 

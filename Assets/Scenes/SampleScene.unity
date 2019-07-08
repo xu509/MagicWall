@@ -1029,6 +1029,7 @@ MonoBehaviour:
   touchAgent: {fileID: 7075238075229827678, guid: d00cc38f5e5ebbd4494fb9e0095375aa,
     type: 3}
   context: {fileID: 1299081791}
+  _createInterval: 0.1
 --- !u!222 &1299081795
 CanvasRenderer:
   m_ObjectHideFlags: 0

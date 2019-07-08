@@ -149,62 +149,37 @@ public class StartScene : IScene
 
         _doLoadResourse = true;
 
-        List<Enterprise> enterprises = _daoService.GetEnterprises();
-        foreach (Enterprise env in enterprises)
-        {
-            string logo = env.Logo;
-            string address = MagicWallManager.FileDir + logo;
-            //TextureResource.Instance.GetTexture(address);
-            SpriteResource.Instance.GetData(address);
+        List<string> addresses = new List<string>();
 
+        Enterprise enterprise = new Enterprise();
+        addresses.AddRange(enterprise.GetAssetAddressList());
 
-            // 预加载企业卡片
-            for (int i = 0; i < env.EnvCards.Count; i++) {
-                TextureResource.Instance.GetTexture(MagicWallManager.FileDir + env.EnvCards[i]);
-            }
+        Activity activity = new Activity();
+        addresses.AddRange(activity.GetAssetAddressList());
 
-            // 预加载 CATALOGS
-            List<Catalog> catalogs =  _daoService.GetCatalogs(env.Ent_id);
-            for (int i = 0; i < catalogs.Count; i++)
-            {
-                string category_address = MagicWallManager.FileDir + catalogs[i].Img;
-                TextureResource.Instance.GetTexture(category_address);
-            }
+        Product product = new Product();
+        addresses.AddRange(product.GetAssetAddressList());
+
+        Video video = new Video();
+        addresses.AddRange(video.GetAssetAddressList());
+
+        ActivityDetail activityDetail = new ActivityDetail();
+        addresses.AddRange(activityDetail.GetAssetAddressList());
+
+        string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+        for (int i = 0; i < imgs.Length; i++) {
+            addresses.Add("env\\" + imgs[i]);
         }
 
-        List<Activity> activities = _daoService.GetActivities();
-        foreach (Activity activity in activities)
-        {
-            string img = activity.Image;
-            string address = MagicWallManager.FileDir + img;
-            //TextureResource.Instance.GetTexture(address);
-            SpriteResource.Instance.GetData(address);
+        ProductDetail productDetail = new ProductDetail();
+        addresses.AddRange(productDetail.GetAssetAddressList());
 
-            //activity.TextureImage = TextureResource.Instance.GetTexture(address);
+
+        for (int i = 0; i < addresses.Count; i++) {
+            SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
         }
 
-        List<Product> products = _daoService.GetProducts();
-        foreach (Product product in products)
-        {
-            string img = product.Image;
-            string address = MagicWallManager.FileDir + img;
-            //TextureResource.Instance.GetTexture(address);
-            SpriteResource.Instance.GetData(address);
 
-            //product.TextureImage = TextureResource.Instance.GetTexture(address);
-        }
-
-        // 加载VIDEO
-        List<Video> videos = _daoService.GetVideos();
-        foreach (Video video in videos)
-        {
-            string cover = video.Cover;
-            string address = MagicWallManager.FileDir + cover;
-            TextureResource.Instance.GetTexture(address);
-            //TextureResource.Instance.GetTexture(address);
-
-            // TODO 处理视频的加载
-        }
 
         // 加载定制的资源
         if (_manager.managerConfig.IsCustom) {
@@ -250,11 +225,13 @@ public class StartScene : IScene
         //if (DaoService.Instance.IsCustom() && (!_manager.managerConfig.IsCustom)) {
         //    SceneManager.LoadScene("CustomScene");
         //}
-
-
-
         _configIsLoaded = true;
     }
+
+
+
+
+
 
     
 }
