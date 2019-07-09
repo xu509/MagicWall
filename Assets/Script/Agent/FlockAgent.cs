@@ -406,6 +406,20 @@ public class FlockAgent : MonoBehaviour
             Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
+
+            if (_agentContainerType == AgentContainerType.MainPanel)
+            {
+                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+            }
+            else if (_agentContainerType == AgentContainerType.BackPanel) {
+                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+
+            }
+
+            // 当产品是前后层关系时，此时会报错
+
+
+
             sw.Start();
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
@@ -462,9 +476,6 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
-        Debug.Log("DoRecoverAfterChoose Began: " + gameObject.name);
-
-
         IsRecovering = true;
 
         // 如果组件已不在原场景，则不进行恢复
@@ -513,10 +524,6 @@ public class FlockAgent : MonoBehaviour
            });
 
         _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
-
-
-
-        Debug.Log("DoRecoverAfterChoose : " + gameObject.name);
 
     }
 

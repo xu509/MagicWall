@@ -81,6 +81,8 @@ public class MagicSceneManager : MonoBehaviour
         // 背景始终运行
         _manager.backgroundManager.run();
 
+        //return;
+
         // 运行场景
         if (!_scenes[_index].Run())
         {

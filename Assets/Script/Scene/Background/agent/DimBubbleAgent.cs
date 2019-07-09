@@ -8,68 +8,18 @@ using UnityEngine.UI;
 /// </summary>
 public class DimBubbleAgent : BubbleAgent
 {
-    void Awake()
+    public override float GetMoveFactor(float minFactor, float maxFactor)
     {
-        int r = Random.Range(0, 2);
-        _width = (r == 0) ? 200 : 80;
-        //_upDuringTime += 10f;
+        float range =  _scaleFactorMax - _scaleFactorMin;
+        float k = (_scaleFactor - _scaleFactorMin) / range;
 
-        _alpha = r == 0 ? 0.8f : 0.4f;
+        float factor = Mathf.Lerp(minFactor, maxFactor, k);
+
+        return factor;
     }
 
-
-    //public void Init(float upDuringTime, MagicWallManager manager)
-    //{
-    //    _upDuringTime = upDuringTime;
-    //    _manager = manager;
-
-    //    int r = Random.Range(0, 2);
-    //    int w = (r == 0) ? 200 : 80;
-    //    _upDuringTime += 10f;
-
-    //    float alpha = r == 0 ? 0.8f : 0.4f;
-
-    //    GetComponent<RectTransform>().sizeDelta = new Vector2(w, w);
-
-    //    SetAlpha(alpha);
-
-
-    //    hasInit = true;
-    //}
-
-    // Start is called before the first frame update
-    void Start()
+    public override void Raise(float moveFactor)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void FixedUpdate()
-    {
-        DoBaseFixedUpdate();
-
-    }
-
-    protected override float SetAlpha()
-    {
-        return _alpha;
-    }
-
-
-    protected override float SetWidth()
-    {
-        return _width;
-    }
-
-    protected override Vector3 SetGenPosition()
-    {
-        float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
-        Vector3 position = new Vector3(x, -_width, 0);
-        return position;
+        transform.Translate(new Vector3(0, Time.deltaTime * moveFactor, 0));
     }
 }

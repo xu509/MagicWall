@@ -96,7 +96,7 @@ public class StartScene : IScene
         if (!_doShowLogo) {
             _doShowLogo = true;
             _manager.BgLogo.GetComponent<RawImage>()
-                .DOFade(1, 2f)
+                .DOFade(1, 1f)
                 .OnComplete(() => {
                     _doShowLogoComplete = true;
                 });
@@ -106,7 +106,7 @@ public class StartScene : IScene
             // 进行logo隐藏
             if (_resourseIsChecked && (RunTime > _DuringTime)) {
                 _manager.BgLogo.GetComponent<RawImage>()
-                    .DOFade(0, 2f)
+                    .DOFade(0, 1f)
                     .OnComplete(() => {
                         _doHideLogoComplete = true;
                     });

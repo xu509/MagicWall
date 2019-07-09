@@ -73,9 +73,9 @@ public class SceneUtils
     /// <returns></returns>
     public int GetGap()
     {
-        float df = _manager.displayFactor;
+        //float df = _manager.displayFactor;
         float gf = _manager.GapFactor;
-        float gap = _gap* gf *df;
+        float gap = _gap* gf;
 
         return Mathf.RoundToInt(gap);
     }

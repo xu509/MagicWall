@@ -447,7 +447,7 @@ public class DaoService : Singleton<DaoService>
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "30";
         }
         else
         {
@@ -486,11 +486,11 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
         CutEffect[] effects = new CutEffect[] {
+            new FrontBackUnfoldCutEffect(),
             new StarsCutEffect(),
             new CurveStaggerCutEffect(),
             new MidDisperseCutEffect(),
             new LeftRightAdjustCutEffect(),
-            new FrontBackUnfoldCutEffect(),
             new UpDownAdjustCutEffect(),
         };
 

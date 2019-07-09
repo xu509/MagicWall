@@ -21,10 +21,12 @@ MonoBehaviour:
   StarEffectMoveFactor: 15.7
   StarEffectOriginPoint: 2000
   StarEffectEndPoint: -1581
-  ClearBubblePoolSize: 100
-  DimBubblePoolSize: 50
-  ClearBubbbleCreateIntervalTime: 1
-  DimBubbbleCreateIntervalTime: 2
+  BackgroundClearBubblePoolSize: 15
+  BackgroundClearMoveMinFactor: 0.5
+  BackgroundClearMoveMaxFactor: 2
+  BackgroundDimBubblePoolSize: 10
+  BackgroundDimMoveMinFactor: 0.5
+  BackgroundDimMoveMaxFactor: 1
   ItemSizeMinWidthFactor: 0.0333
   ItemSizeMaxWidthFactor: 0.0355
   ItemSizeMinHeightFactor: 0.153888

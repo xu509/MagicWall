@@ -36,16 +36,22 @@ public class ManagerConfig : ScriptableObject
     public float StarEffectEndPoint;
 
     [Range(10,200),Header("[背景] 清晰的背景气球池")]
-    public int ClearBubblePoolSize;
-    
+    public int BackgroundClearBubblePoolSize;
+
+    [Range(0, 10f), Header("[背景] 清晰的气球最小移动速度")]
+    public float BackgroundClearMoveMinFactor;
+
+    [Range(0, 10f), Header("[背景] 清晰的气球最大移动速度")]
+    public float BackgroundClearMoveMaxFactor;
+
     [Range(10, 200), Header("[背景] 模糊的背景气球池")]
-    public int DimBubblePoolSize;
+    public int BackgroundDimBubblePoolSize;
 
-    [Range(0.1f,5f),Header("[背景] 气球的生成间隔(清晰)")]
-    public float ClearBubbbleCreateIntervalTime;
+    [Range(0, 10f), Header("[背景] 模糊的气球最小移动速度")]
+    public float BackgroundDimMoveMinFactor;
 
-    [Range(0.1f, 5f), Header("[背景] 气球的生成间隔(模糊)")]
-    public float DimBubbbleCreateIntervalTime;
+    [Range(0, 10f), Header("[背景] 模糊的气球最大移动速度")]
+    public float BackgroundDimMoveMaxFactor;
 
     [Range(0f, 5f), Header("[卡片] 最小的宽度系数（对应屏幕宽度）")]
     public float ItemSizeMinWidthFactor;

@@ -17,8 +17,6 @@ public class MagicWallManager:MonoBehaviour
     protected MagicWallManager() { }
 
     #region 可配置项
-    // 显示比例
-    [SerializeField,Range(0.1f,1f)] float _displayFactor; // 8640 * 1920
     // 场景管理器
     [SerializeField] MagicSceneManager _magicSceneManager;
     // 实体管理器
@@ -68,7 +66,6 @@ public class MagicWallManager:MonoBehaviour
     #endregion
 
     #region 非配置属性
-
     int _row = 6;   //  列数
 
     // 面板的差值
@@ -76,7 +73,6 @@ public class MagicWallManager:MonoBehaviour
     float panelBackOffsetX = 0f;
     float panelOffsetY = 0f;
 
-    AgentType theItemType;
     int _sceneIndex = 0; // 场景索引
     private IScene _currentScene; // 当前场景
     private WallStatusEnum status;
@@ -107,8 +103,6 @@ public class MagicWallManager:MonoBehaviour
 
     #region 引用
 
-    public float displayFactor { get { return _displayFactor; } }
-
     public ManagerConfig managerConfig { get { return _managerConfig; } }
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
     public RectTransform mainPanel { get { return _mainPanel; } }
@@ -122,7 +116,6 @@ public class MagicWallManager:MonoBehaviour
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
     public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }
     public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
-    public AgentType TheItemType { set { theItemType = value; } get { return theItemType; } }
     public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
     public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
     public WallStatusEnum Status { get { return status; } set { status = value; } }

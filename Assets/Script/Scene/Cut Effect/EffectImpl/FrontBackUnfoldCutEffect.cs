@@ -165,8 +165,13 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float imageHeight = coverSprite.rect.height;
 
                 // 得到调整后的长宽
-                Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
-                    _manager.displayFactor);
+                Vector2 imageSize = _sceneUtil.ResetTexture(new Vector2(imageWidth,imageHeight));
+
+                imageSize.x = (imageSize.x * 1.5f);
+                imageSize.y = (imageSize.y * 1.5f);
+
+                //Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                //    _manager.displayFactor);
 
                 FlockAgent go;
                 float ori_y = _sceneUtil.GetYPositionByFixedHeight(itemHeight, i);

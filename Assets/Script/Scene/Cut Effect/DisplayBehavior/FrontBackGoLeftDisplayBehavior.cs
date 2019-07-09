@@ -29,7 +29,8 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
         _manager.mainPanel.transform.Translate(to);
 
-        Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
+        //Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
+        Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor * 2, 0, 0);
         _manager.backPanel.transform.Translate(backTo);
 
         // 调整panel的差值
@@ -107,8 +108,10 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
                     float imageHeight = coverSprite.rect.height;
 
                     // 得到调整后的长宽
-                    Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
-                        _manager.displayFactor);
+                    Vector2 imageSize = _displayBehaviorConfig.sceneUtils.ResetTexture(new Vector2(imageWidth,imageHeight));
+
+                    imageSize.x = (imageSize.x * 1.5f);
+                    imageSize.y = (imageSize.y * 1.5f);
 
                     FlockAgent go;
                     float ori_y = _displayBehaviorConfig.sceneUtils.GetYPositionByFixedHeight(itemHeight, i);
@@ -123,6 +126,8 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
                     // 创建前排
                     go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
                         imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
+
+
                 }
                 else {
                     continue;
@@ -167,9 +172,13 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
                     float imageWidth = coverSprite.rect.width;
                     float imageHeight = coverSprite.rect.height;
 
+
                     // 得到调整后的长宽
-                    Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
-                        _manager.displayFactor);
+                    Vector2 imageSize = _displayBehaviorConfig.sceneUtils.ResetTexture(new Vector2(imageWidth, imageHeight));
+
+                    imageSize.x = (imageSize.x * 1.5f);
+                    imageSize.y = (imageSize.y * 1.5f);
+
 
                     FlockAgent go;
                     float ori_y = _displayBehaviorConfig.sceneUtils.GetYPositionByFixedHeight(itemHeight, i);
