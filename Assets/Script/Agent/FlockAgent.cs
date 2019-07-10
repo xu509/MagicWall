@@ -424,7 +424,6 @@ public class FlockAgent : MonoBehaviour
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
             sw.Stop();
-            Debug.Log("DoChoose Time : " + sw.ElapsedMilliseconds / 1000f);
 
 
 

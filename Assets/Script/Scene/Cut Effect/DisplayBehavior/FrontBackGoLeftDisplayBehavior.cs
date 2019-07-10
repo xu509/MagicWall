@@ -29,8 +29,8 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
         Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
         _manager.mainPanel.transform.Translate(to);
 
-        //Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
-        Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor * 2, 0, 0);
+        Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
+        //Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor * 2, 0, 0);
         _manager.backPanel.transform.Translate(backTo);
 
         // 调整panel的差值

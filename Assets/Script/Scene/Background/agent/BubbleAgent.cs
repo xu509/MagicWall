@@ -44,6 +44,10 @@ public abstract class BubbleAgent : MonoBehaviour
         GetComponent<RectTransform>().localScale = scaleFactor;
 
 
+        float a = Mathf.Lerp(0.4f, 1f, Random.Range(0f, 1f));
+        UpdateAlpha(a);
+
+
         gameObject.SetActive(true);
 
         hasInit = true;

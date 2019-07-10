@@ -25,7 +25,7 @@ public class StarsCutEffect : CutEffect
         doStartEffect = false;
 
         //  获取动画的持续时间
-        StartingDurTime = 60f;
+        StartingDurTime = 20f;
         DestoryDurTime = 0.5f;
 
         //  设置显示的时间

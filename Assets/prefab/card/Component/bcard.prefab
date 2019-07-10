@@ -629,7 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -662,7 +662,8 @@ MonoBehaviour:
   _btnClose: {fileID: 3565193267922664630}
   _btnReturn: {fileID: 8949973887064553479}
   _btnNext: {fileID: 6736186052792272969}
-  _heightFactor: 0.3073
+  _heightFactor: 0.30208
+  _widthFactor: 1.41379
 --- !u!1 &6704765858983157213
 GameObject:
   m_ObjectHideFlags: 0

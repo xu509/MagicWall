@@ -178,6 +178,8 @@ public class BackgroundManager : MonoBehaviour
         position = position - new Vector3(0, height, 0);
 
         bubble.Init(this, _manager, BubbleType.Clear,position);
+
+
         _bubbleAgents.Add(bubble);
     }
 

@@ -427,27 +427,27 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
-            appConfig.Value = "5";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
         {
-            appConfig.Value = "30";
+            appConfig.Value = "10";
         }
         else
         {
@@ -487,9 +487,9 @@ public class DaoService : Singleton<DaoService>
         // Real 
         CutEffect[] effects = new CutEffect[] {
             new FrontBackUnfoldCutEffect(),
-            new StarsCutEffect(),
             new CurveStaggerCutEffect(),
             new MidDisperseCutEffect(),
+            new StarsCutEffect(),
             new LeftRightAdjustCutEffect(),
             new UpDownAdjustCutEffect(),
         };

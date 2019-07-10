@@ -80,9 +80,11 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
             // 关闭视频框
             videoContainer.gameObject.SetActive(false);
 
+            
             //RectTransform r = _image.GetComponent<RectTransform>();
             //r.sizeDelta = new Vector2(cellData.ImageTexture.width, cellData.ImageTexture.height);
         }
+
     }
 
     public void DoPlayVideo() {

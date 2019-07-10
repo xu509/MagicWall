@@ -17,10 +17,10 @@ MonoBehaviour:
   Column: 28
   FlockPoolSize: 220
   CardPoolSize: 10
-  StarEffectAgentsCount: 100
-  StarEffectMoveFactor: 15.7
-  StarEffectOriginPoint: 2000
-  StarEffectEndPoint: -1581
+  StarEffectAgentsCount: 50
+  StarEffectMoveFactor: 20
+  StarEffectOriginPoint: 1000
+  StarEffectEndPoint: -2500
   BackgroundClearBubblePoolSize: 15
   BackgroundClearMoveMinFactor: 0.5
   BackgroundClearMoveMaxFactor: 2
