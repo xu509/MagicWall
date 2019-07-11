@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 //
 //   启动的场景 
@@ -95,7 +96,10 @@ public class StartScene : IScene
         // LOGO 淡入
         if (!_doShowLogo) {
             _doShowLogo = true;
-            _manager.BgLogo.GetComponent<RawImage>()
+            _manager.BgLogo.gameObject.SetActive(true);
+            _manager.BgLogo.GetComponent<Image>().sprite 
+                = Resources.Load<SpriteAtlas>("SpriteAtlas").GetSprite("background-logo");
+            _manager.BgLogo.GetComponent<Image>()
                 .DOFade(1, 1f)
                 .OnComplete(() => {
                     _doShowLogoComplete = true;
@@ -105,10 +109,11 @@ public class StartScene : IScene
         if (_doShowLogoComplete) {
             // 进行logo隐藏
             if (_resourseIsChecked && (RunTime > _DuringTime)) {
-                _manager.BgLogo.GetComponent<RawImage>()
+                _manager.BgLogo.GetComponent<Image>()
                     .DOFade(0, 1f)
                     .OnComplete(() => {
                         _doHideLogoComplete = true;
+                        _manager.BgLogo.gameObject.SetActive(false);
                     });
             }
         }

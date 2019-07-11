@@ -427,7 +427,7 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "30";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
@@ -486,19 +486,19 @@ public class DaoService : Singleton<DaoService>
 
         // Real 
         CutEffect[] effects = new CutEffect[] {
-            new FrontBackUnfoldCutEffect(),
+            //new FrontBackUnfoldCutEffect(),
             new CurveStaggerCutEffect(),
-            new MidDisperseCutEffect(),
-            new StarsCutEffect(),
-            new LeftRightAdjustCutEffect(),
-            new UpDownAdjustCutEffect(),
+            //new MidDisperseCutEffect(),
+            //new StarsCutEffect(),
+            //new LeftRightAdjustCutEffect(),
+            //new UpDownAdjustCutEffect(),
         };
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         SceneContentType[] contentTypes = new SceneContentType[] {
             SceneContentType.env,
             SceneContentType.activity,
-            SceneContentType.product,
+            //SceneContentType.product,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 

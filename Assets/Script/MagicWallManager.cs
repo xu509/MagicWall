@@ -48,7 +48,7 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] EaseEnum _influenceEaseEnum;
 
     /// 整体的移动速度
-    [SerializeField, Range(0f, 100f)] float _movePanelFactor;
+    [SerializeField, Range(0f, 300f)] float _movePanelFactor;
     
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
@@ -135,6 +135,12 @@ public class MagicWallManager:MonoBehaviour
     private bool _hasInit = false;
 
     private void Init() {
+
+        // 设置项目最高帧率（对编辑器无效）
+        Application.targetFrameRate = 60;
+
+
+
         // 初始化数据连接服务
         TheDataSource theDataSource = TheDataSource.Instance;
 

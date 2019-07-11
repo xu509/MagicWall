@@ -8,6 +8,9 @@ using UnityEngine.UI;
 /// </summary>
 public class ClearBubbleAgent : BubbleAgent
 {
+
+
+
     public override float GetMoveFactor(float minFactor, float maxFactor)
     {
         float range = _scaleFactorMax - _scaleFactorMin;

@@ -16,7 +16,6 @@ public class FlockAgent : MonoBehaviour
     public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
 
-
     #region Data Parameter 
     private bool _data_iscustom; // 是定制的
     private string _data_img;    //背景图片
@@ -654,7 +653,14 @@ public class FlockAgent : MonoBehaviour
         if ((_manager.Status != WallStatusEnum.Cutting) && (_agentMoveStatus == AgentMoveStatus.Regular))
         {
 
-            Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            //Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            Vector3 position = GetComponent<RectTransform>().transform.position;
+
+
+            
+
+            //Debug.Log("Position: " + GetComponent<RectTransform>().transform.position);
+
             if (position.x + (Width * 3) < 0)
             {
                 //_agentManager.ClearAgent(this);
@@ -678,6 +684,9 @@ public class FlockAgent : MonoBehaviour
                 result = true;
             }
         }
+
+
+
 
         return result;
     }
