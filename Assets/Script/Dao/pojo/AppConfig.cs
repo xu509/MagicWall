@@ -24,9 +24,6 @@ public class AppConfig
     // 上下校准持续时间
     public static string KEY_CutEffectDuring_UpDownAdjust = "cuteffectduring_updownadjust";
 
-    // 右侧前后手风琴持续时间
-    public static string KEY_CutEffectDuring_FrontBackRightPullOpen = "cuteffectduring_frontbackrightpullopen";
-
     //  前后分层效果持续时间
     public static string KEY_CutEffectDuring_FrontBackUnfold = "cuteffectduring_frontbackunfold";
 

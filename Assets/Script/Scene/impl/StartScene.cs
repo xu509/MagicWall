@@ -52,15 +52,16 @@ public class StartScene : IScene
 
     }
 
-    public void Init(MagicWallManager manager)
+    public void Init(SceneConfig sceneConfig, MagicWallManager manager)
     {
-        _resourseIsChecked = false;
         _manager = manager;
         _daoService = manager.daoService;
 
+        Reset();
     }
 
-    private void Init() {
+
+    private void Reset() {
         _StartTime = Time.time;
         _hasInit = true;
 
@@ -78,15 +79,15 @@ public class StartScene : IScene
 
 
 
-    public SceneContentType GetContentType()
+    public DataType GetDataType()
     {
-        return SceneContentType.none;
+        return DataType.none;
     }
 
     public bool Run()
 	{
         if (!_hasInit) {
-            Init();
+            Reset();
         }
 
         // 读取配置表
@@ -234,9 +235,4 @@ public class StartScene : IScene
     }
 
 
-
-
-
-
-    
 }

@@ -17,22 +17,15 @@ public class MagicWallManager:MonoBehaviour
     protected MagicWallManager() { }
 
     #region 可配置项
-    // 场景管理器
-    [SerializeField] MagicSceneManager _magicSceneManager;
-    // 实体管理器
-    [SerializeField] AgentManager _agentManager;
-    // 背景管理器
-    [SerializeField] BackgroundManager _backgroundManager;
 
-    [SerializeField] ItemsFactoryAgent _itemsFactoryAgent;
-
-
-    /// 配置面板
-    [SerializeField] ManagerConfig _managerConfig;
     // 定制 INFO 面板
-    [SerializeField] InfoPanelAgent infoPanelAgent;
+    [SerializeField,Header("UI")] InfoPanelAgent infoPanelAgent;
     // MagicWall 面板
     [SerializeField] RectTransform _magicWallPanel;
+    // start effect 面板
+    [SerializeField] RectTransform _StarEffectContainer;
+    // start content 面板
+    [SerializeField] RectTransform _StarEffectContent;
     // MainPanel 面板
     [SerializeField] RectTransform _mainPanel;
     // Back Panel 面板
@@ -40,28 +33,26 @@ public class MagicWallManager:MonoBehaviour
     // Operate Panle 面板 （操作面板）
     [SerializeField] RectTransform _operationPanel;
 
-
-    /// 卡片物理碰撞效果设置
-    // 影响移动距离系数
-    [SerializeField, Range(0f, 10f)] float _influenceMoveFactor = 0.5f;
-    // 卡片动画效果
-    [SerializeField] EaseEnum _influenceEaseEnum;
-
-    /// 整体的移动速度
-    [SerializeField, Range(0f, 300f)] float _movePanelFactor;
-    
     /// 背景中的图片logo
     [SerializeField] RectTransform _bg_logo; //背景图中的logo
+
+    // 场景管理器
+    [SerializeField, Header("子控制器")] MagicSceneManager _magicSceneManager;
+    // 实体管理器
+    [SerializeField] AgentManager _agentManager;
+    // 背景管理器
+    [SerializeField] BackgroundManager _backgroundManager;
+
+    [SerializeField] ItemsFactoryAgent _itemsFactoryAgent;
+
+    [SerializeField] OperateMode _operateMode;  //操作模块
+
+    /// 配置面板
+    [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
     // 手写板配置项
     [SerializeField] WritePanelConfig _writePanelConfig;
 
-    /// <summary>
-    ///     间隙系数
-    /// </summary>
-    [SerializeField, Range(0f, 5f)]float _gapFactor;
-
-    [SerializeField] OperateMode _operateMode;  //操作模块
 
     #endregion
 
@@ -105,12 +96,11 @@ public class MagicWallManager:MonoBehaviour
 
     public ManagerConfig managerConfig { get { return _managerConfig; } }
     public RectTransform magicWallPanel { get { return _magicWallPanel; } }
+    public RectTransform starEffectContainer { get { return _StarEffectContainer; } }
+    public RectTransform starEffectContent { get { return _StarEffectContent; } }
     public RectTransform mainPanel { get { return _mainPanel; } }
     public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
     public RectTransform OperationPanel { get { return _operationPanel; } }
-    public float InfluenceMoveFactor { get { return _influenceMoveFactor; } }  // 影响移动距离
-    public EaseEnum InfluenceEaseEnum { get { return _influenceEaseEnum; } }
-    public float MovePanelFactor { get { return _movePanelFactor; }set { _movePanelFactor = value; } }
     public RectTransform BgLogo { get { return _bg_logo; } }
     public int Row { get { return _row; } }
     public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
@@ -124,7 +114,6 @@ public class MagicWallManager:MonoBehaviour
     public DaoService daoService { get { return _daoService; } }
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
-    public float GapFactor { get { return _gapFactor; } }
 
     // 获取文件地址
     #endregion
@@ -232,7 +221,8 @@ public class MagicWallManager:MonoBehaviour
     public bool Clear() {
         _agentManager.ClearAgents(); //清理 agent 袋
         ResetMainPanel(); //主面板归位
-        backPanel.anchoredPosition = Vector2.zero;
+        backPanel.anchoredPosition = new Vector2(-200, 0);
+            //Vector2.zero;
         backPanel.SetAsFirstSibling();
 
         PanelOffsetX = 0f;   // 清理两个panel偏移量

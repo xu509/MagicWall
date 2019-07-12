@@ -10,7 +10,6 @@ public class StarsCutEffect : CutEffect
     private bool doStartEffect = false;
     private DataType _dataType;
     private List<FlockAgent> _activeAgents; //活动的 Agents 
-    private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
 
     //
@@ -41,8 +40,7 @@ public class StarsCutEffect : CutEffect
 
         _activeAgents = new List<FlockAgent>();
 
-        //  初始化 config
-        _displayBehaviorConfig = new DisplayBehaviorConfig();
+
 
     }
 

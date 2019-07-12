@@ -1,39 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
-//
-//  场景配置
-//
+/// <summary>
+///     场景配置信息
+/// </summary>
 public class SceneConfig
 {
-    private CutEffect _cutEffect;   //  过场效果
-    private SceneContentType _sceneContentType;     //  场景内容
+    private SceneTypeEnum _sceneType;    //过场名
+    private DataType _dataType;    //内容类型
+    private float _durtdime; // 持续时间
 
-    public SceneContentType SceneContentType
-    {
-        get
-        {
-            return _sceneContentType;
-        }
 
-        set
-        {
-            _sceneContentType = value;
-        }
-    }
-
-    public CutEffect CutEffect
-    {
-        get
-        {
-            return _cutEffect;
-        }
-
-        set
-        {
-            _cutEffect = value;
-        }
-    }
-
+    public SceneTypeEnum sceneType { set { _sceneType = value;  } get { return _sceneType;  } }
+    public DataType dataType { set { _dataType = value;  } get { return _dataType;  } }
+    public float durtime { set { _durtdime = value;  } get { return _durtdime;  } }
 }

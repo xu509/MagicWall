@@ -108,7 +108,7 @@ public class LeftRightAdjustCutEffect : CutEffect
     public override void OnStartingCompleted(){
         //  初始化表现形式
 
-        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.dataType = dataType;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.Manager = _manager;

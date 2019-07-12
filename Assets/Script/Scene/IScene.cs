@@ -9,10 +9,12 @@ public interface IScene
 	//
 	bool Run();
 
+    void Init(SceneConfig sceneConfig, MagicWallManager manager);
+
     //
     //  获取内容类型
     //
-    SceneContentType GetContentType();
+    DataType GetDataType();
 
 }
 

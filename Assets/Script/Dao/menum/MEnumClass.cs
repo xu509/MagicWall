@@ -15,16 +15,9 @@ public enum DataType
 {
     env, // 企业
     activity, // 活动
-    product // 产品
+    product, // 产品
+    none
 }
-
-public enum AgentType
-{
-    env, // 企业
-    activity, // 活动
-    product // 产品
-}
-
 
 
 public enum WallStatusEnum
@@ -33,21 +26,7 @@ public enum WallStatusEnum
     Displaying // 显示中
 }
 
-public enum SceneContentType
-{
-    env, // 企业
-    activity, // 活动
-    product, // 产品
-    none
-}
 
-public enum SceneStatus
-{
-    PREPARING, // 准备中
-    STARTTING, // 启动动画中
-    DISPLAYING, // 运行中
-    DESTORING //  销毁中
-}
 
 //
 //  卡片状态
@@ -71,3 +50,25 @@ public enum CrossCardCategoryEnum {
     CATALOG //      CATALOG
 }
 
+
+/// <summary>
+///     场景相关
+/// </summary>
+
+public enum SceneTypeEnum {
+    CurveStagger,   //曲线
+    FrontBackUnfold,    //前后
+    LeftRightAdjust,    // 左右
+    MidDisperse,    // 中外
+    Stars,  // 星空
+    UpDownAdjustCutEffect   // 上下
+}
+
+
+public enum SceneStatus
+{
+    PREPARING, // 准备中
+    STARTTING, // 启动动画中
+    DISPLAYING, // 运行中
+    DESTORING //  销毁中
+}

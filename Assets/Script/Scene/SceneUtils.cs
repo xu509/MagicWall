@@ -74,7 +74,7 @@ public class SceneUtils
     public int GetGap()
     {
         //float df = _manager.displayFactor;
-        float gf = _manager.GapFactor;
+        float gf = _manager.managerConfig.gapFactor;
         float gap = _gap* gf;
 
         return Mathf.RoundToInt(gap);

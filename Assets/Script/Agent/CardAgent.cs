@@ -25,6 +25,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private VideoAgent _videoAgent;
     private SearchAgent _searchAgent;
 
+    private Vector2 _moveStartPosition = Vector2.zero;  //移动的开始位置
+    private Vector2 _moveStartOffset = Vector2.zero;  //移动偏差量
     private float _panel_top;
     private float _panel_bottom;
     private float _panel_left;
@@ -344,29 +346,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    public void DoMove()
-    {        
-        // 移动
-        if (!_doMoving)
-        {
-            _doMoving = true;
-            _move_reminder_container.gameObject.SetActive(true);
-            _move_mask.gameObject.SetActive(true);
-            // 调整图片
-
-
-        }
-        else
-        {
-            DoUpdate();
-            _doMoving = false;
-            _move_reminder_container.gameObject.SetActive(false);
-            _move_mask.gameObject.SetActive(false);
-        }
-
-
-        UpdateMoveBtnPerformance();
-    }
 
     // 生成缩放卡片
     public void InitScaleAgent(Texture texture) {
@@ -416,35 +395,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        DoUpdate();
-    }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (_doMoving) {
-            //松手后碰撞
-            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-            foreach (CircleCollider2D circle in circles)
-            {
-                circle.radius = radiusFactor;
-            }
-
-            DoMove();
-            DoUpdate();
-        }
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (_doMoving)
-        {
-            Move(eventData);
-            //拖拽时不碰撞
-            transform.SetAsLastSibling();
-        }
-    }
 
     // 当点击缩放收回
     private void OnScaleReturn() {
@@ -477,60 +428,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
 
-    // 移动
-    private void Move(PointerEventData eventData) {
-        Vector2 nowPostion = GetComponent<RectTransform>().anchoredPosition;
-
-        Vector2 to;
-        Vector2 position = eventData.position;
-
-        // 将点击的屏幕坐标转换为移动的目的坐标
-
-        //float x = Screen.width - _manager.OperationPanel
-
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(_manager.OperationPanel.position);
-        // 操作框体左下角屏幕坐标
-        Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
-        , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
-
-        // 获取偏移后的移动坐标
-        position = position - rawanchorPositon;
-
-        bool overleft = position.x < (_panel_left + _safe_distance_width);
-        bool overright = position.x > (_panel_right - _safe_distance_width);
-        bool overtop = position.y > (_panel_top - _safe_distance_height);
-        bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
-
-        if (overleft || overright) {
-            to.x = nowPostion.x;
-        } else {
-            to.x = position.x;
-        }
-
-        if (overtop || overbottom)
-        {
-            to.y = nowPostion.y;
-        }
-        else {
-            to.y = position.y;
-        }
 
 
-
-        // 缓慢移动,1.5f 代表拖拽移动延迟
-        GetComponent<RectTransform>().anchoredPosition = to;
-        //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
-
-    }
-
-    /// <summary>
-    /// Event system : 点击事件
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        DoUpdate();
-    }
 
 
     public void TurnOffKeepOpen() {
@@ -789,6 +688,137 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     #endregion
 
+
+    #region 移动功能
+    public void DoMove()
+    {
+        // 移动
+        if (!_doMoving)
+        {
+            _doMoving = true;
+            _move_reminder_container.gameObject.SetActive(true);
+            _move_mask.gameObject.SetActive(true);
+            // 调整图片
+
+
+        }
+        else
+        {
+            DoUpdate();
+            _doMoving = false;
+            _move_reminder_container.gameObject.SetActive(false);
+            _move_mask.gameObject.SetActive(false);
+        }
+
+
+        UpdateMoveBtnPerformance();
+    }
+
+    // 移动
+    private void Move(PointerEventData eventData)
+    {
+        Vector2 nowPostion = GetComponent<RectTransform>().anchoredPosition;
+
+        Vector2 to;
+        Vector2 position = eventData.position;
+
+
+        // 将点击的屏幕坐标转换为移动的目的坐标
+
+        //float x = Screen.width - _manager.OperationPanel
+
+        //Vector3 screenPos = Camera.main.WorldToScreenPoint(_manager.OperationPanel.position);  // Camera Render - camera
+        Vector3 screenPos = _manager.OperationPanel.position;   // Camera Render - Overlay
+
+        // 操作框体左下角屏幕坐标
+        Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
+        , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
+
+        // 获取偏移后的移动坐标
+        position = position - rawanchorPositon;
+
+        bool overleft = position.x < (_panel_left + _safe_distance_width);
+        bool overright = position.x > (_panel_right - _safe_distance_width);
+        bool overtop = position.y > (_panel_top - _safe_distance_height);
+        bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
+
+        if (overleft || overright)
+        {
+            to.x = nowPostion.x;
+        }
+        else
+        {
+            to.x = position.x;
+        }
+
+        if (overtop || overbottom)
+        {
+            to.y = nowPostion.y;
+        }
+        else
+        {
+            to.y = position.y;
+        }
+
+
+        // 获取鼠标坐标与卡片坐标的偏移
+
+        // 缓慢移动,1.5f 代表拖拽移动延迟
+        GetComponent<RectTransform>().anchoredPosition = to - _moveStartOffset;
+        //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
+
+    }
+
+    #endregion
+
+
+
+
+    #region Event System
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _moveStartPosition = eventData.position;
+        _moveStartOffset = _moveStartPosition - GetComponent<RectTransform>().anchoredPosition;
+        DoUpdate();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (_doMoving)
+        {
+            //松手后碰撞
+            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
+            foreach (CircleCollider2D circle in circles)
+            {
+                circle.radius = radiusFactor;
+            }
+
+            DoMove();
+            DoUpdate();
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_doMoving)
+        {
+            Move(eventData);
+            //拖拽时不碰撞
+            transform.SetAsLastSibling();
+        }
+    }
+
+    /// <summary>
+    /// Event system : 点击事件
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _moveStartPosition = Vector2.zero;
+
+        DoUpdate();
+    }
+    #endregion
 }
 
 

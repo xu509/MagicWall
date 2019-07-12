@@ -17,8 +17,8 @@ public abstract class CutEffect : MonoBehaviour
     CutEffectDestoryBehavior destoryBehavior; //销毁时间
     ItemsFactory _itemsFactory; // 工厂
 
-    private SceneContentType _sceneContentType;
-    public SceneContentType sceneContentType { set { _sceneContentType = value; } get { return _sceneContentType; } }
+    private DataType _dataType;
+    public DataType dataType { set { _dataType = value; } get { return _dataType; } }
 
     private float _startTime;
     protected float StartTime { get { return _startTime; } }
@@ -58,7 +58,7 @@ public abstract class CutEffect : MonoBehaviour
     //
     //  Method
     //
-    public void Create(SceneContentType st) {
+    public void Create(DataType dt) {
         _daoService = DaoService.Instance;
 
         Init(_manager);
@@ -66,14 +66,14 @@ public abstract class CutEffect : MonoBehaviour
         _sceneUtil = new SceneUtils(_manager);
 
 
-        sceneContentType = st;
+        _dataType = dt;
 
-        if (sceneContentType == SceneContentType.activity)
+        if (_dataType == DataType.activity)
         {
             _itemsFactory = _manager.itemsFactoryAgent.activityFactory;
             CreateActivity();
         }
-        else if (sceneContentType == SceneContentType.env)
+        else if (_dataType == DataType.env)
         {
             _itemsFactory = _manager.itemsFactoryAgent.envFactory;
             CreateLogo();

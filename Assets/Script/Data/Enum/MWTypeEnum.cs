@@ -5,5 +5,5 @@
 
 public enum AgentContainerType
 {
-    MainPanel, BackPanel
+    MainPanel, BackPanel , StarContainer
 }

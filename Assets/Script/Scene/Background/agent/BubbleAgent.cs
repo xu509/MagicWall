@@ -11,8 +11,8 @@ public abstract class BubbleAgent : MonoBehaviour
 {
     [SerializeField] Image _image;
 
-    protected float _scaleFactorMin = 0.6f;
-    protected float _scaleFactorMax = 1f;
+    protected float _scaleFactorMin = 0.3f;
+    protected float _scaleFactorMax = 0.8f;
 
 
     protected float _scaleFactor;
@@ -59,7 +59,7 @@ public abstract class BubbleAgent : MonoBehaviour
         GetComponent<RectTransform>().localScale = scaleFactor;
 
 
-        float a = Mathf.Lerp(0.4f, 1f, Random.Range(0f, 1f));
+        float a = Mathf.Lerp(0.2f, 0.6f, Random.Range(0f, 1f));
         UpdateAlpha(a);
 
 

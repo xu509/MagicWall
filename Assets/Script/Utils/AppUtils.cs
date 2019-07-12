@@ -43,6 +43,7 @@ public class AppUtils
         {
             fileData = File.ReadAllBytes(filePath);
             tex = new Texture2D(400, 400);
+
             bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         else

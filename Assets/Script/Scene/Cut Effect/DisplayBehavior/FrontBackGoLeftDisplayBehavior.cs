@@ -26,10 +26,10 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
     public void Run()
     {
 
-        Vector3 to = new Vector3(0 - Time.deltaTime * _manager.MovePanelFactor, 0, 0);
+        Vector3 to = new Vector3(0 - Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor, 0, 0);
         _manager.mainPanel.transform.Translate(to);
 
-        Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor / 2, 0, 0);
+        Vector3 backTo = new Vector3(Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor / 2, 0, 0);
         //Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor * 2, 0, 0);
         _manager.backPanel.transform.Translate(backTo);
 
@@ -44,11 +44,11 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 
     private void UpdateAgents()
     {
-        if (_displayBehaviorConfig.SceneContentType == SceneContentType.activity)
+        if (_displayBehaviorConfig.dataType == DataType.activity)
         {
             UpdateAgentsOfActivity();
         }
-        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product)
+        else if (_displayBehaviorConfig.dataType == DataType.product)
         {
             UpdateAgentsOfProduct();
         }
@@ -189,11 +189,15 @@ public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
                         generate_x_temp = Mathf.RoundToInt(ori_x + gap + imageSize.x / 2);
                     }
 
+                    //  创建后排
+                    float width = imageSize.x * 0.6f;
+                    float height = imageSize.y * 0.6f;
+
                     // 创建前排
                     go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
-                        imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
+                        width, height, agent, AgentContainerType.BackPanel);
                     go.NextVector2 = new Vector2(ori_x, ori_y);
-                    go.UpdateImageAlpha(0.2f);
+                    //go.UpdateImageAlpha(0.2f);
 
                 }
             }

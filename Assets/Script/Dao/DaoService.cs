@@ -427,7 +427,7 @@ public class DaoService : Singleton<DaoService>
 
         if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
         {
-            appConfig.Value = "30";
+            appConfig.Value = "10";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
         {
@@ -439,7 +439,7 @@ public class DaoService : Singleton<DaoService>
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "10";
+            appConfig.Value = "20";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {
@@ -454,6 +454,46 @@ public class DaoService : Singleton<DaoService>
 
         }
         return appConfig;
+    }
+
+    /// <summary>
+    ///     获取场景持续时间
+    /// </summary>
+    /// <param name="sceneTypeEnum"></param>
+    /// <returns></returns>
+    public float GetSceneDurTime(SceneTypeEnum sceneTypeEnum)
+    {
+        string key = "";
+
+        if (sceneTypeEnum == SceneTypeEnum.CurveStagger)
+        {
+            key = AppConfig.KEY_CutEffectDuring_CurveStagger;
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.FrontBackUnfold)
+        {
+            key = AppConfig.KEY_CutEffectDuring_FrontBackUnfold;
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.LeftRightAdjust)
+        {
+            key = AppConfig.KEY_CutEffectDuring_LeftRightAdjust;
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.MidDisperse)
+        {
+            key = AppConfig.KEY_CutEffectDuring_MidDisperseAdjust;
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.Stars)
+        {
+            key = AppConfig.KEY_CutEffectDuring_Stars;
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.UpDownAdjustCutEffect)
+        {
+            key = AppConfig.KEY_CutEffectDuring_UpDownAdjust;
+        }
+
+        string durTime = GetConfigByKey(key).Value;
+        float d = AppUtils.ConvertToFloat(durTime);
+
+        return d;
     }
     #endregion
 
@@ -485,47 +525,57 @@ public class DaoService : Singleton<DaoService>
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         // Real 
-        CutEffect[] effects = new CutEffect[] {
-            //new FrontBackUnfoldCutEffect(),
-            new CurveStaggerCutEffect(),
-            //new MidDisperseCutEffect(),
-            //new StarsCutEffect(),
-            //new LeftRightAdjustCutEffect(),
-            //new UpDownAdjustCutEffect(),
+        //CutEffect[] effects = new CutEffect[] {
+        //    //new FrontBackUnfoldCutEffect(),
+        //    new CurveStaggerCutEffect(),
+        //    new MidDisperseCutEffect(),
+        //    new StarsCutEffect(),
+        //    //new LeftRightAdjustCutEffect(),
+        //    //new UpDownAdjustCutEffect(),
+        //};
+
+        SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
+        {
+            SceneTypeEnum.FrontBackUnfold,
+            SceneTypeEnum.CurveStagger,
+            SceneTypeEnum.Stars,
+            SceneTypeEnum.MidDisperse,
+            SceneTypeEnum.LeftRightAdjust,
+            SceneTypeEnum.UpDownAdjustCutEffect,
         };
 
+
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
-        SceneContentType[] contentTypes = new SceneContentType[] {
-            SceneContentType.env,
-            SceneContentType.activity,
-            //SceneContentType.product,
+        DataType[] dataTypes = new DataType[] {
+            DataType.env,
+            DataType.activity,
+            DataType.product,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
-
-        for (int i = 0; i < effects.Length; i++)
+        for (int i = 0; i < sceneTypes.Length; i++)
         {
-            for (int j = 0; j < contentTypes.Length; j++)
+            for (int j = 0; j < dataTypes.Length; j++)
             {
-                if (effects[i].GetID().Equals("StarsCutEffect") && contentTypes[j] == SceneContentType.env) {
+                SceneConfig sceneConfig = new SceneConfig();
+
+                if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env) {
                     continue;
                 }
 
-                if (effects[i].GetID().Equals("FrontBackUnfoldCutEffect") && contentTypes[j] == SceneContentType.env)
+                if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
                 {
                     continue;
                 }
 
+                sceneConfig.sceneType = sceneTypes[i];
+                sceneConfig.dataType = dataTypes[j];
 
-                SceneConfig sceneConfig = new SceneConfig();
-                sceneConfig.CutEffect = effects[i];
-                sceneConfig.SceneContentType = contentTypes[j];
+                // 设置场景时间
+                sceneConfig.durtime = GetSceneDurTime(sceneTypes[i]);
                 sceneConfigs.Add(sceneConfig);
             }
         }
-
-
-
 
         return sceneConfigs;
     }

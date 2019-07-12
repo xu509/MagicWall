@@ -16,7 +16,7 @@ public class DisplayBehaviorConfig
     private float _itemHeight;
     private int _generatePositionX;
     private int _generatePositionXInBack;
-    private SceneContentType _sceneContentType;
+    private DataType _dataType;
     private int _page = 0;
     private ItemsFactory _itemsFactory;
     private float _displayTime;
@@ -97,10 +97,10 @@ public class DisplayBehaviorConfig
         get { return _itemHeight; }
     }
 
-    public SceneContentType SceneContentType
+    public DataType dataType
     {
-        set { _sceneContentType = value; }
-        get { return _sceneContentType; }
+        set { _dataType = value; }
+        get { return _dataType; }
     }
 
     public int Page

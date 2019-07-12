@@ -304,7 +304,7 @@ public class FlockAgent : MonoBehaviour
         // 判断结束
 
         // 获取有效影响范围，是宽度一半以上
-        float effectDistance = (w / 2) + (w / 2) * _manager.InfluenceMoveFactor;
+        float effectDistance = (w / 2) + (w / 2) * _manager.managerConfig.InfluenceMoveFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
 
@@ -323,10 +323,10 @@ public class FlockAgent : MonoBehaviour
             //  上下移动的偏差值
             //
             float move_offset_y = offset_y * ((h / 2) / effectDistance);
-            move_offset_y += h / 10 * _manager.InfluenceMoveFactor;
+            move_offset_y += h / 10 * _manager.managerConfig.InfluenceMoveFactor;
 
             float move_offset_x = offset_x * ((w / 2) / effectDistance);
-            move_offset_x += w / 10 * _manager.InfluenceMoveFactor;
+            move_offset_x += w / 10 * _manager.managerConfig.InfluenceMoveFactor;
 
             float to_y,to_x;
             if (refVector2WithOffset.y > targetVector2.y)
@@ -361,7 +361,7 @@ public class FlockAgent : MonoBehaviour
             //float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
 
             // 获取缓动方法
-            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.InfluenceEaseEnum);
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.managerConfig.InfluenceEaseEnum);
             float k = defaultEasingFunction(offset / effectDistance);
 
             m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
@@ -461,7 +461,6 @@ public class FlockAgent : MonoBehaviour
                 rect.gameObject.SetActive(false);
 
                 sw.Stop();
-                Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
                 _cardAgent.GoToFront();
             });

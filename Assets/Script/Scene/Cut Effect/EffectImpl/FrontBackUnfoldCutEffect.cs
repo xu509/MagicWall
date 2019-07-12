@@ -119,7 +119,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     {
         //  初始化表现形式
 
-        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.dataType = dataType;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.Manager = _manager;
@@ -198,9 +198,16 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 else
                 {
                     //  创建后排
+                    float width = imageSize.x * 0.6f;
+                    float height = imageSize.y * 0.6f;
+
+                    //go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
+                    //    imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
+
                     go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
-                        imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
-                    go.UpdateImageAlpha(0.2f);
+                        width, height, agent, AgentContainerType.BackPanel);
+
+                        
                 }
                 //go.NextVector2 = new Vector2(gen_x, gen_y);
 
