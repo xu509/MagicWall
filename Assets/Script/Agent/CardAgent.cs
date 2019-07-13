@@ -40,6 +40,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     /// </summary>
     private Tweener _destory_first_scale_tweener;
 
+    private float radiusFactor;// Colider 半径系数
+
 
     protected CardStatusEnum _cardStatus;   // 状态   
     protected FlockAgent _originAgent;  // 原组件
@@ -48,28 +50,33 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool hasInitBusinessCard = false; // 是否已生成business card
     protected BusinessCardAgent businessCardAgent;
 
-    [SerializeField,Range(0f,3f)] float _widthFactor;  //    宽度比例，如当高度100，宽度50时，则宽度比 0.5
     [SerializeField,Range(0f,1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
-    [SerializeField] RectTransform _main_container;    //  主框体
-    [SerializeField] RectTransform _scale_container;    //  缩放容器
+    [SerializeField,Header("UI")] RectTransform _main_container;    //  主框体
+    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
+    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
+    [SerializeField] RectTransform normalContainer; // 正常显示的框体
+
+
+    [SerializeField,Header("Scale")] RectTransform _scale_container;    //  缩放容器
     [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
     [SerializeField] RectTransform _searchContainer;    //  搜索容器
     [SerializeField] SearchAgent _searchAgentPrefab;    //  搜索 prefab
-    [SerializeField] RectTransform _move_mask; // 移动蒙板
+
+    [SerializeField,Header("Move")] RectTransform _move_mask; // 移动蒙板
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
-    [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
-    [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
-    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
-    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
-    [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
-    [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
-    [SerializeField] RectTransform normalContainer; // 正常显示的框体
-    [SerializeField] RectTransform videoContainer;  // video的安放框体
-    [SerializeField] float radiusFactor;// Colider 半径系数
     [SerializeField] Sprite _move_icon_active;
     [SerializeField] Sprite _move_icon;
     [SerializeField] RectTransform _btn_move_container;
     [SerializeField] RectTransform _btn_move_container_in_three;
+
+    [SerializeField , Header("Business Card")] RectTransform _business_card_container;    // 企业卡片容器
+    [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
+
+    [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
+    [SerializeField,Header("Video")] VideoAgent videoAgentPrefab;   // Video Agent prefab
+    [SerializeField] RectTransform videoContainer;  // video的安放框体
+    
+
 
 
     Action OnCreatedCompletedAction;
@@ -112,8 +119,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         // 初始化框体长宽
         float rectHeight = manager.mainPanel.rect.height * _heightFactor;
-        float rectWidth = rectHeight * _widthFactor;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(rectWidth, rectHeight);
+        GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
 
         //  命名
         if (originAgent != null)
@@ -695,6 +701,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         // 移动
         if (!_doMoving)
         {
+            DoUpdate();
+
             _doMoving = true;
             _move_reminder_container.gameObject.SetActive(true);
             _move_mask.gameObject.SetActive(true);
@@ -741,10 +749,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         bool overright = position.x > (_panel_right - _safe_distance_width);
         bool overtop = position.y > (_panel_top - _safe_distance_height);
         bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
+        bool isOver = false;
 
         if (overleft || overright)
         {
             to.x = nowPostion.x;
+
+            isOver = true;
         }
         else
         {
@@ -754,6 +765,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (overtop || overbottom)
         {
             to.y = nowPostion.y;
+
+            isOver = true;
         }
         else
         {
@@ -763,8 +776,14 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         // 获取鼠标坐标与卡片坐标的偏移
 
-        // 缓慢移动,1.5f 代表拖拽移动延迟
-        GetComponent<RectTransform>().anchoredPosition = to - _moveStartOffset;
+        if (isOver)
+        {
+            GetComponent<RectTransform>().anchoredPosition = to;
+        }
+        else {
+            GetComponent<RectTransform>().anchoredPosition = to - _moveStartOffset;
+        }
+
         //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
 
     }
@@ -786,14 +805,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     {
         if (_doMoving)
         {
-            //松手后碰撞
-            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-            foreach (CircleCollider2D circle in circles)
-            {
-                circle.radius = radiusFactor;
-            }
-
             DoMove();
+
+            _hasChangeSize = true;
+
             DoUpdate();
         }
     }

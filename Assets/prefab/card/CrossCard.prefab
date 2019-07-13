@@ -1124,9 +1124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f899d054115ff847b5b4819fb4f3d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _widthFactor: 1
   _heightFactor: 0.4505
   _main_container: {fileID: 1447688283106226908}
+  _tool_bottom_container: {fileID: 1702068175313341596}
+  _tool_bottom_three_container: {fileID: 67662024630146740}
+  normalContainer: {fileID: 1447688283106226908}
   _scale_container: {fileID: 7815403916149075529}
   _scale_prefab: {fileID: 6213000439451327046, guid: b8c3ca9fcb08737488e1bb246165abfd,
     type: 3}
@@ -1135,21 +1137,17 @@ MonoBehaviour:
     type: 3}
   _move_mask: {fileID: 1512656875974767015}
   _move_reminder_container: {fileID: 1522878203291084882}
-  _business_card_container: {fileID: 1828188039968476737}
-  _business_card_prefab: {fileID: 3672699697995520192, guid: 302fae957c069604d93516240c3347cd,
-    type: 3}
-  _tool_bottom_container: {fileID: 1702068175313341596}
-  _tool_bottom_three_container: {fileID: 67662024630146740}
-  _collider: {fileID: 8460821126293772283}
-  videoAgentPrefab: {fileID: 1076230158778565772, guid: e73674838b71df241b1532ceb5a4b677,
-    type: 3}
-  normalContainer: {fileID: 1447688283106226908}
-  videoContainer: {fileID: 1865509593052167301}
-  radiusFactor: 0
   _move_icon_active: {fileID: 21300000, guid: d59acd9a86d12514ebd0399a6b5b46a7, type: 3}
   _move_icon: {fileID: 21300000, guid: 6066f3c8470f9b248a1c505c7fc76186, type: 3}
   _btn_move_container: {fileID: 4454292223893472148}
   _btn_move_container_in_three: {fileID: 7097238312486766091}
+  _business_card_container: {fileID: 1828188039968476737}
+  _business_card_prefab: {fileID: 3672699697995520192, guid: 302fae957c069604d93516240c3347cd,
+    type: 3}
+  _collider: {fileID: 8460821126293772283}
+  videoAgentPrefab: {fileID: 1076230158778565772, guid: e73674838b71df241b1532ceb5a4b677,
+    type: 3}
+  videoContainer: {fileID: 1865509593052167301}
   _title: {fileID: 4231419099656867917}
   _description: {fileID: 7536231062420814249}
   crossCardScrollViewController: {fileID: 6388220598021548340}
@@ -1164,7 +1162,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 2247757197020260754}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a86bc6bffe6a0eb4abf5a83b23e00104, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1183,11 +1181,11 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3a0c0d97e019cb54aa7b7a42ba9fa0dd, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -2328,7 +2326,7 @@ MonoBehaviour:
     m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3653005478019490594}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -2383,6 +2381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7543289434758531802}
+  - component: {fileID: 3885154025202343991}
   m_Layer: 11
   m_Name: Content
   m_TagString: Untagged
@@ -2409,6 +2408,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &3885154025202343991
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875947736944557553}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7413354123420238992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2568,7 +2579,7 @@ MonoBehaviour:
     m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 5197933357806493759}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:

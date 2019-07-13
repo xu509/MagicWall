@@ -536,8 +536,8 @@ public class DaoService : Singleton<DaoService>
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            SceneTypeEnum.FrontBackUnfold,
             SceneTypeEnum.CurveStagger,
+            SceneTypeEnum.FrontBackUnfold,
             SceneTypeEnum.Stars,
             SceneTypeEnum.MidDisperse,
             SceneTypeEnum.LeftRightAdjust,

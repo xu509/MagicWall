@@ -457,6 +457,7 @@ GameObject:
   - component: {fileID: 5463534574190590278}
   - component: {fileID: 2356641710744020391}
   - component: {fileID: 3232653906405163820}
+  - component: {fileID: 447576637649953334}
   m_Layer: 5
   m_Name: CrossCardScrollViewCellItem
   m_TagString: Untagged
@@ -526,7 +527,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 0
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &3232653906405163820
 MonoBehaviour:
@@ -547,6 +548,20 @@ MonoBehaviour:
   _cover: {fileID: 6637553661733701214}
   _video_cover: {fileID: 2086811869972044802}
   _buttonLikeAgent: {fileID: 3118850661165122564}
+--- !u!114 &447576637649953334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104021846296284657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1.5
 --- !u!1 &3508132961006266202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1115,7 @@ GameObject:
   - component: {fileID: 7660787093410292841}
   - component: {fileID: 396943201431732140}
   - component: {fileID: 8454168163813034124}
+  - component: {fileID: 206038365870680008}
   m_Layer: 5
   m_Name: Cover
   m_TagString: Untagged
@@ -1147,6 +1163,18 @@ MonoBehaviour:
   m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &206038365870680008
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285418679814544059}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6312356315387813863
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,6 +1589,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83bb9d70d83f736478ff25b2aa42b6a5, type: 3}
+--- !u!224 &5345477588941817474 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6678792133954136265, guid: 83bb9d70d83f736478ff25b2aa42b6a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1621618593096674891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3118850661165122564 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4452168468490316367, guid: 83bb9d70d83f736478ff25b2aa42b6a5,
@@ -1573,9 +1607,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3027e8575b3e2ea4d9ab4ab8eb6174f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &5345477588941817474 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6678792133954136265, guid: 83bb9d70d83f736478ff25b2aa42b6a5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1621618593096674891}
-  m_PrefabAsset: {fileID: 0}

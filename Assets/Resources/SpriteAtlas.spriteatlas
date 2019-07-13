@@ -58,13 +58,15 @@ SpriteAtlas:
     - {fileID: 21300000, guid: 62b1ef94695b3524abac4850acc454d8, type: 3}
     - {fileID: 21300000, guid: ad3669500e118d64ba353eb043ed4ccb, type: 3}
     - {fileID: 21300000, guid: d363bec3f78996f4c903d33afa99b887, type: 3}
-    totalSpriteSurfaceArea: 3554421
+    - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
+    totalSpriteSurfaceArea: 3594421
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: ad3669500e118d64ba353eb043ed4ccb, type: 3}
   - {fileID: 21300000, guid: 8f9aa960cefb7d8488c5a0a873d34c55, type: 3}
   - {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676, type: 3}
+  - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
   - {fileID: 21300000, guid: 2028939134523294fa20d98976fbccf9, type: 3}
   - {fileID: 21300000, guid: d406db122e2ee7141b486d122d5b4d31, type: 3}
   - {fileID: 21300000, guid: c7ddb5e2cacf3f849b653d64a41ee8d4, type: 3}
@@ -83,6 +85,7 @@ SpriteAtlas:
   - remind-card-move-top
   - background-bubble-dim
   - background-logo
+  - cursor-mouse-point
   - background-bubble-clear
   - card-cross-background
   - btn-search

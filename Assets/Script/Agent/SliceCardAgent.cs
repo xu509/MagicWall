@@ -10,7 +10,7 @@ using DG.Tweening;
 public class SliceCardAgent : CardAgent
 {
 
-    [SerializeField] Text _title;
+    [SerializeField , Header("SliceCardAgent UI")] Text _title;
     [SerializeField] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
     [SerializeField] RectTransform _buttomTool;
