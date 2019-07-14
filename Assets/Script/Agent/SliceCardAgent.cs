@@ -47,9 +47,6 @@ public class SliceCardAgent : CardAgent
 
             InitComponents(Random.Range(0, 5) > 2);
 
-
-
-
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
             for (int i = 0; i < product.ProductDetails.Count; i++)
@@ -90,6 +87,8 @@ public class SliceCardAgent : CardAgent
 
 
         SetOnCreatedCompleted(OnCreatedCompleted);
+
+        isPrepared = true;
 
     }
 

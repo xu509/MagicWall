@@ -96,8 +96,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         crossCardAgent.gameObject.SetActive(isActive);
 
-        Debug.Log("crossCardAgent is prepared");
-
         return crossCardAgent;
     }
     #endregion

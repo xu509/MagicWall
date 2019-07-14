@@ -207,7 +207,6 @@ public class Scroller : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
             return;
         }
         else {
-            Debug.Log("IS prepared");
         }
 
         

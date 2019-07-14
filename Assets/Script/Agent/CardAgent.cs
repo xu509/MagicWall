@@ -38,6 +38,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private bool _isPhysicsMoving = false;
     public bool isPhysicsMoving { set { _isPhysicsMoving = value; } get { return _isPhysicsMoving; } }
 
+    private bool _isPrepared = false;
+    public bool isPrepared { set { _isPrepared = value; }  get { return _isPrepared; } }
+
     /// <summary>
     /// 第一次销毁动画的 DoTween 代理
     /// </summary>
@@ -69,11 +72,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     [SerializeField,Header("Move")] RectTransform _move_mask; // 移动蒙板
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
-    [SerializeField] Sprite _move_icon_active;
-    [SerializeField] Sprite _move_icon;
     [SerializeField] RectTransform _btn_move_container;
     [SerializeField] RectTransform _btn_move_container_in_three;
     [SerializeField] MoveButtonComponent _moveBtnComponent;
+    [SerializeField] MoveButtonComponent _moveBtnComponentInThree;
+
 
     [SerializeField , Header("Business Card")] RectTransform _business_card_container;    // 企业卡片容器
     [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
@@ -632,32 +635,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    /// <summary>
-    /// 更新移动的表现形式
-    /// </summary>
-    private void UpdateMoveBtnPerformance() {
-
-        if (_doMoving)
-        {
-            if (_hasListBtn)
-            {
-                _btn_move_container.GetComponent<Image>().sprite = _move_icon_active;
-            }
-            else {
-                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon_active;
-            }
-        }
-        else {
-            if (_hasListBtn)
-            {
-                _btn_move_container.GetComponent<Image>().sprite = _move_icon;
-            }
-            else
-            {
-                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon;
-            }
-        }
-    }
 
     #region Business Card 相关
 

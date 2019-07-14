@@ -69,10 +69,7 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
 
         UpdateComponents();
 
-        scroller.isPrepared = true;
-        Debug.Log("is prepared");
-       
-
+        scroller.isPrepared = true;       
     }
 
     //

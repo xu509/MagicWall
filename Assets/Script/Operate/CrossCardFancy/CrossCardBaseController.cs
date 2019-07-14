@@ -173,7 +173,7 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
     }
 
     /// <summary>
-    ///     TODO 此处需要优化的
+    ///     TODO 点击卡片耗时过多，需要优化
     /// </summary>
     /// <param name="index"></param>
     /// <param name="cell"></param>
@@ -181,10 +181,10 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
     IEnumerator DoIt(int index, CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell)
     {
         cell.Index = index;
-        yield return null;
-
         cell.SetVisible(true);
         cell.UpdateContent(ItemsSource[index]);
+        yield return null;
+
     }
 
 

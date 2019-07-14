@@ -172,6 +172,9 @@ public class CrossCardAgent : CardAgent
 
         // 设置完成回调
         SetOnCreatedCompleted(OnCreatedCompleted);
+
+        isPrepared = true;
+
     }
 
     void OnSelectionChanged(int index)
