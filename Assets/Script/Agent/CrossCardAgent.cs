@@ -149,10 +149,14 @@ public class CrossCardAgent : CardAgent
         //crossCardScrollViewController.SelectCell(0);
         crossCardScrollViewController.SetUpCardAgent(this);
         crossCardScrollViewController.UpdateData(_cellDatas);
-        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
 
         sw.Stop();
-        Debug.Log("InitCrossCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
+        Debug.Log("Cross Card Agent Time : " + sw.ElapsedMilliseconds / 1000f);
+
+
+        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
+
+
 
         //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
 

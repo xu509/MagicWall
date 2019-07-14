@@ -548,8 +548,8 @@ public class DaoService : Singleton<DaoService>
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         DataType[] dataTypes = new DataType[] {
             DataType.env,
-            DataType.activity,
-            DataType.product,
+            //DataType.activity,
+            //DataType.product,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
@@ -644,7 +644,7 @@ public class DaoService : Singleton<DaoService>
     public List<SearchBean> Search(string keys) {
         Debug.Log("搜索KEYS ：" + keys);
 
-        int count = 0;
+        int count =  Random.Range(0,5) > 2 ? 0 : Random.Range(5, 20);
 
         List<SearchBean> beans = new List<SearchBean>();
         for(int i = 0; i < count; i++)

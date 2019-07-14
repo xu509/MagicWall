@@ -116,10 +116,10 @@ RectTransform:
   m_Father: {fileID: 680480626588561159}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.63064, y: 0}
-  m_AnchorMax: {x: 0.7, y: 1}
+  m_AnchorMin: {x: 0.58064, y: 0}
+  m_AnchorMax: {x: 0.65, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -0.051911592, y: 0}
+  m_SizeDelta: {x: -0.051875293, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4168327986244213312
 CanvasRenderer:
@@ -284,7 +284,7 @@ RectTransform:
   m_AnchorMin: {x: 0.46532, y: 0}
   m_AnchorMax: {x: 0.53468, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -0.051911592, y: 0}
+  m_SizeDelta: {x: -0.05192685, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7289955285383527910
 CanvasRenderer:
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 4448697247416911871}
   - component: {fileID: 8097033347311897639}
   - component: {fileID: 1808422756791339275}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: SliceCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,6 +519,7 @@ MonoBehaviour:
   videoAgentPrefab: {fileID: 1076230158778565772, guid: e73674838b71df241b1532ceb5a4b677,
     type: 3}
   videoContainer: {fileID: 7944950381405223464}
+  _physicesEffectFactor: 200
   _title: {fileID: 771340144239110582}
   _description: {fileID: 3946797811664477073}
   _scrollController: {fileID: 2706152829991389513}
@@ -533,7 +534,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -629,7 +630,6 @@ GameObject:
   - component: {fileID: 4420600137632416015}
   - component: {fileID: 5322000441995652114}
   - component: {fileID: 1995415273674067486}
-  - component: {fileID: 1417780483487954509}
   - component: {fileID: 8196515618396649561}
   m_Layer: 5
   m_Name: btn-close
@@ -712,7 +712,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -750,25 +750,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!95 &1417780483487954509
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2603628880459322479}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a92a43f8fbf811140a475487f2807fca, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &8196515618396649561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,8 +796,8 @@ RectTransform:
   m_Father: {fileID: 511508763543045258}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.1}
-  m_AnchorMax: {x: 0.9, y: 0.9}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -841,8 +822,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.53333336}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0.72156864}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -926,10 +907,10 @@ RectTransform:
   m_Father: {fileID: 680480626588561159}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3, y: 0}
-  m_AnchorMax: {x: 0.36936, y: 1}
+  m_AnchorMin: {x: 0.35, y: 0}
+  m_AnchorMax: {x: 0.41936, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -0.051885813, y: 0}
+  m_SizeDelta: {x: -0.05192685, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &488130845296640345
 CanvasRenderer:
@@ -986,7 +967,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1764,7 +1745,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1848,8 +1829,8 @@ RectTransform:
   m_Father: {fileID: 511508763543045258}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: -0.1, y: -0.1}
+  m_AnchorMax: {x: 1.1, y: 1.1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1923,8 +1904,8 @@ RectTransform:
   m_Father: {fileID: 5680126866508557221}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.1387}
-  m_AnchorMax: {x: 1, y: 0.208}
+  m_AnchorMin: {x: 0, y: 0.1087}
+  m_AnchorMax: {x: 1, y: 0.178}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2647,8 +2628,8 @@ RectTransform:
   m_Father: {fileID: 5680126866508557221}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.1387}
-  m_AnchorMax: {x: 1, y: 0.208}
+  m_AnchorMin: {x: 0, y: 0.1087}
+  m_AnchorMax: {x: 1, y: 0.178}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

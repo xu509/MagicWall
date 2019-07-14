@@ -114,7 +114,12 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
     }
 
     public string GetCurrentDescription() {
-        CrossCardCellData data = GetCell(_currentIndex).GetData();
-        return data.Description;
+
+        Debug.Log("_currentIndex : " + _currentIndex);
+
+        string str = "";
+
+        str = GetCell(_currentIndex)?.GetData().Description;
+        return str;
     }
 }

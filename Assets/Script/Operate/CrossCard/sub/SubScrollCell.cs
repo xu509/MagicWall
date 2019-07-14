@@ -57,6 +57,10 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     public override void UpdateContent(CrossCardCellData cellData)
     {
 
+        System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+        sw2.Start();
+
+
         _cellData = cellData;
         _index = cellData.Index;
         _title = cellData.Title;
@@ -79,11 +83,11 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
             // 关闭视频框
             videoContainer.gameObject.SetActive(false);
-
-            
-            //RectTransform r = _image.GetComponent<RectTransform>();
-            //r.sizeDelta = new Vector2(cellData.ImageTexture.width, cellData.ImageTexture.height);
         }
+
+        sw2.Stop();
+        Debug.Log("[" + gameObject.name + "] Time : " + sw2.ElapsedMilliseconds / 1000f);
+
 
     }
 

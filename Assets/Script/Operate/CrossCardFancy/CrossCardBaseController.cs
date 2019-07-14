@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -77,6 +78,9 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
 
     void UpdatePosition(float position, bool forceRefresh)
     {
+
+
+
         currentPosition = position;
 
         var p = position - scrollOffset / cellSpacing;
@@ -89,6 +93,8 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         }
 
         UpdateCells(firstPosition, firstIndex, forceRefresh);
+
+
     }
 
 
@@ -103,7 +109,9 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
         {
             throw new MissingComponentException(nameof(cellContainer));
         }
-            
+
+
+
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
         for (var i = 0; i < addCount; i++)
         {
@@ -118,15 +126,15 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
             cell.SetVisible(false);
             cell.InitData();
             pool.Add(cell);
-
-            CrossCardBaseCell<CrossCardCellData,CrossCardScrollViewContext> cell2 = GetCell(i);
-
         }
-        
+
+
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
     {
+
+        
         for (var i = 0; i < pool.Count; i++)
         {
             var index = firstIndex + i;
@@ -144,17 +152,42 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
                 continue;
             }
 
+            // 这里耗时
+
+            //StartCoroutine()
+
             if (forceRefresh || cell.Index != index || !cell.IsVisible)
             {
-                cell.Index = index;
-                cell.SetVisible(true);
-                cell.UpdateContent(ItemsSource[index]);
+
+                StartCoroutine(DoIt(index,cell));
+
+                //cell.Index = index;
+                //cell.SetVisible(true);
+                //cell.UpdateContent(ItemsSource[index]);
             }
 
             cell.UpdatePosition(position);
+
         }
-        
+
     }
+
+    /// <summary>
+    ///     TODO 此处需要优化的
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cell"></param>
+    /// <returns></returns>
+    IEnumerator DoIt(int index, CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell)
+    {
+        cell.Index = index;
+        yield return null;
+
+        cell.SetVisible(true);
+        cell.UpdateContent(ItemsSource[index]);
+    }
+
+
 
     int CircularIndex(int i, int size) {
         if (size < 1)

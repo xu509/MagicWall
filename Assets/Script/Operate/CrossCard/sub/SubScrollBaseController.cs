@@ -17,6 +17,9 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
     public SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
     {
+        if (pool.Count == 0) {
+            return null;
+        }
 
         if (index == pool.Count)
         {

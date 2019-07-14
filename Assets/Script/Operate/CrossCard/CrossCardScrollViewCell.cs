@@ -46,6 +46,13 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
+        // 非常耗时， 每个都耗时
+
+
+
+        System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+        sw2.Start();
+
         //_crossCardAgent = crossCardAgent;
 
         _cellData = cellData;
@@ -70,6 +77,9 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         // 隐藏组件
         ClearComponentStatus();
+
+        sw2.Stop();
+        //Debug.Log("[" + gameObject.name + "] cross cell : " + sw2.ElapsedMilliseconds / 1000f);
     }
 
     /// <summary>
