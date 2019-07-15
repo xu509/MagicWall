@@ -461,12 +461,12 @@ public class FlockAgent : MonoBehaviour
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
 
-                sw.Stop();
+                rect.gameObject.SetActive(false);
+                _cardAgent.GoToFront();
 
-                if (_cardAgent.isPrepared) {
-                    rect.gameObject.SetActive(false);
-                    _cardAgent.GoToFront();
-                }
+                //if (_cardAgent.isPrepared) {
+
+                //}
                 
             });
         }

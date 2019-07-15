@@ -46,7 +46,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
-        // 非常耗时， 每个都耗时
+        // TODO 非常耗时， 每个都耗时
 
 
 
@@ -64,7 +64,13 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         IList<CrossCardCellData> datas = CardItemFactoryInstance.
             Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
+
+
+        System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();
+        sw3.Start();
         subScrollController.UpdateData(datas);
+        sw3.Stop();
+        Debug.Log("- [" + _title + "] cell 分耗时: " + sw3.ElapsedMilliseconds / 1000f);
 
         subScrollController.crossCardScrollViewCell = this;
 
@@ -79,7 +85,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         ClearComponentStatus();
 
         sw2.Stop();
-        //Debug.Log("[" + gameObject.name + "] cross cell : " + sw2.ElapsedMilliseconds / 1000f);
+        Debug.Log("[" + _title + "] cell 总耗时: " + sw2.ElapsedMilliseconds / 1000f);
     }
 
     /// <summary>

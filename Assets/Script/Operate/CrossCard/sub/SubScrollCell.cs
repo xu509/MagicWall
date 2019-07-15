@@ -86,7 +86,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         }
 
         sw2.Stop();
-        Debug.Log("[" + gameObject.name + "] Time : " + sw2.ElapsedMilliseconds / 1000f);
+        Debug.Log("[" + _title  + "] Sub Cell Time : " + sw2.ElapsedMilliseconds / 1000f);
 
 
     }

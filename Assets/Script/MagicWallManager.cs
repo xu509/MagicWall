@@ -67,15 +67,17 @@ public class MagicWallManager:MonoBehaviour
     int _sceneIndex = 0; // 场景索引
     private IScene _currentScene; // 当前场景
     private WallStatusEnum status;
+    private bool _isLimitFps = false;
+    public bool isLimitFps { set { _isLimitFps = value; } get { return _isLimitFps; } }
     bool _reset = false;    // 重置标志
 
     // 配置选项
 
    // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-     public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
-   // public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+   public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
  
 
     #endregion
@@ -127,7 +129,7 @@ public class MagicWallManager:MonoBehaviour
 
         // 设置项目最高帧率（对编辑器无效）
         Application.targetFrameRate = 60;
-
+        _isLimitFps = true;
 
 
         // 初始化数据连接服务
@@ -177,8 +179,6 @@ public class MagicWallManager:MonoBehaviour
     {
         _hasInit = false;
 
-        //  帧数限制
-        //Application.targetFrameRate = FPS;
 
     }
 
