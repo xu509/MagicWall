@@ -72,3 +72,8 @@ public enum SceneStatus
     DISPLAYING, // 运行中
     DESTORING //  销毁中
 }
+
+public enum CustomImageType
+{
+    LEFT1, LEFT2, RIGHT
+}

@@ -400,14 +400,6 @@ public class DaoService : Singleton<DaoService>
         return pdArra[Random.Range(0, pdArra.Length)];
     }
 
-    public List<Video> GetVideos()
-    {
-
-        List<Video> videos = new List<Video>();
-        videos.Add(GetVideoDetail());
-        videos.Add(GetVideoDetail());
-        return videos;
-    }
 
     public Video GetVideoDetail()
     {
@@ -591,9 +583,6 @@ public class DaoService : Singleton<DaoService>
 
 
 
-   public enum CustomImageType{
-        LEFT1,LEFT2,RIGHT
-    }
 
     //
     //  TODO 获取定制屏所配置的图片
