@@ -62,15 +62,21 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
-        IList<CrossCardCellData> datas = CardItemFactoryInstance.
-            Instance.Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
+        Debug.Log("[Category]" + cellData.Category);
+        Debug.Log("cellData == null : " + (cellData == null));
+        Debug.Log("cellData.magicWallManager == null : " + (cellData.magicWallManager == null));
+        Debug.Log("cellData.magicWallManager.cardItemFactoryInstance == null : " + (cellData.magicWallManager.cardItemFactoryInstance == null));
+        Debug.Log("[Category End]");
+
+        IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
+            .Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
 
 
         System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();
         sw3.Start();
         subScrollController.UpdateData(datas);
         sw3.Stop();
-        Debug.Log("- [" + _title + "] cell 分耗时: " + sw3.ElapsedMilliseconds / 1000f);
+        // Debug.Log("- [" + _title + "] cell 分耗时: " + sw3.ElapsedMilliseconds / 1000f);
 
         subScrollController.crossCardScrollViewCell = this;
 
@@ -85,7 +91,7 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         ClearComponentStatus();
 
         sw2.Stop();
-        Debug.Log("[" + _title + "] cell 总耗时: " + sw2.ElapsedMilliseconds / 1000f);
+        // Debug.Log("[" + _title + "] cell 总耗时: " + sw2.ElapsedMilliseconds / 1000f);
     }
 
     /// <summary>

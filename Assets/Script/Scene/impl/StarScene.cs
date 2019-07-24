@@ -9,7 +9,7 @@ using DG.Tweening;
 public class StarScene : IScene
 {
     private MagicWallManager _manager;
-    private DaoService _daoService;
+    private IDaoService _daoService;
     private float _durtime; // 持续时间
     private DataType _dataType; //  场景内容类型
     private ItemsFactory _itemFactory;  // 工厂

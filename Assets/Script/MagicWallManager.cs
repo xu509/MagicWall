@@ -53,6 +53,15 @@ public class MagicWallManager:MonoBehaviour
     // 手写板配置项
     [SerializeField] WritePanelConfig _writePanelConfig;
 
+    [SerializeField] CardItemFactoryInstance _cardItemFactoryInstance;
+
+
+    [SerializeField,Header("Data Service")] MockDaoService _mockDaoService;
+    [SerializeField] DaoService _realDaoService;
+
+
+    [SerializeField,Header("Mock")] bool _isMock;
+
 
     #endregion
 
@@ -84,7 +93,7 @@ public class MagicWallManager:MonoBehaviour
 
     #region Private Parameter - Data
     // 数据管理器
-    DaoService _daoService;
+    IDaoService _daoService;
 
     //从下往上 列与底
     public Dictionary<int, float> columnAndBottoms;
@@ -113,9 +122,10 @@ public class MagicWallManager:MonoBehaviour
     public WallStatusEnum Status { get { return status; } set { status = value; } }
     public AgentManager agentManager { get { return _agentManager; } }
     public BackgroundManager backgroundManager { get { return _backgroundManager; } }
-    public DaoService daoService { get { return _daoService; } }
+    public IDaoService daoService { get { return _daoService; } }
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
+    public CardItemFactoryInstance cardItemFactoryInstance { get { return _cardItemFactoryInstance; } }
 
     // 获取文件地址
     #endregion
@@ -136,7 +146,17 @@ public class MagicWallManager:MonoBehaviour
         TheDataSource theDataSource = TheDataSource.Instance;
 
         // 初始化数据服务
-        _daoService = DaoService.Instance;
+        if (_isMock)
+        {
+            //_daoService = DaoService.Instance;
+            _daoService = _mockDaoService;
+        }
+        else {
+            _daoService = _realDaoService;
+            _realDaoService.Init();
+        }
+
+
 
         // 初始化监听服务
         udpServer = UdpServer.Instance;
@@ -166,6 +186,9 @@ public class MagicWallManager:MonoBehaviour
 
         //  初始化操作模块
         _operateMode.Init(this);
+
+        //  初始化卡片工厂
+        _cardItemFactoryInstance.Init(this);
 
         _hasInit = true;
     }

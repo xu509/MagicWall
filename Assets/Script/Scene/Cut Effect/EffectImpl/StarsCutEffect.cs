@@ -20,7 +20,7 @@ public class StarsCutEffect : CutEffect
         //  初始化 manager
         _manager = manager;
         _agentManager = _manager.agentManager;
-        _daoService = DaoService.Instance;
+        _daoService = manager.daoService;
         doStartEffect = false;
 
         //  获取动画的持续时间

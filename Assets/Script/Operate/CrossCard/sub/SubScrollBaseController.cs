@@ -140,7 +140,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         }
 
         sw3.Stop();
-        Debug.Log("[ResizePool] 耗时: " + sw3.ElapsedMilliseconds / 1000f + "Add Content - " + addCount);
+        //Debug.Log("[ResizePool] 耗时: " + sw3.ElapsedMilliseconds / 1000f + "Add Content - " + addCount);
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
@@ -176,7 +176,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         }
 
         sw2.Stop();
-        Debug.Log("[BASE]  : "  + sw2.ElapsedMilliseconds / 1000f);
+        // Debug.Log("[BASE]  : "  + sw2.ElapsedMilliseconds / 1000f);
 
     }
 

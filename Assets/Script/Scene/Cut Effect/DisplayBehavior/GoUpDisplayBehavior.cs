@@ -10,7 +10,7 @@ using System;
 public class GoUpDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
-    private DaoService _daoService;
+    private IDaoService _daoService;
     private DisplayBehaviorConfig _displayBehaviorConfig;
 
     private bool flag = false;

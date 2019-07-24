@@ -4,11 +4,43 @@
 /// </summary>
 public interface IDaoService
 {
+
+    #region 企业
+
     /// <summary>
     ///     获取企业
     /// </summary>
     /// <returns></returns>
     List<Enterprise> GetEnterprises();
+
+    Enterprise GetEnterprisesById(int id);
+
+    /// <summary>
+    ///     获得企业详细信息
+    /// </summary>
+    /// <returns></returns>
+    EnterpriseDetail GetEnterprisesDetail();
+
+    /// <summary>
+    ///     获取喜欢数
+    /// </summary>
+    /// <returns></returns>
+    int GetLikes(int id, CrossCardCategoryEnum category);
+
+    /// <summary>
+    ///     获得企业卡片
+    /// </summary>
+    /// <returns></returns>
+    List<string> GetEnvCards(int id);
+
+    /// <summary>
+    ///     获取企业的 Catalog 集
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    List<Catalog> GetCatalogs(int id);
+
+    #endregion
 
     /// <summary>
     ///     获取活动
@@ -50,6 +82,12 @@ public interface IDaoService
     /// <returns></returns>
     List<ProductDetail> GetProductDetails(int pro_id);
 
+
+    int GetLikesByProductDetail(int id);
+
+    int GetLikesByActivityDetail(int id);
+
+
     /// <summary>
     ///     获取浮块数据
     /// </summary>
@@ -64,12 +102,7 @@ public interface IDaoService
     /// <returns></returns>
     List<SearchBean> Search(string keys);
 
-    /// <summary>
-    ///     获取定制图片
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    List<string> GetCustomImage(CustomImageType type);
+
 
     /// <summary>
     ///     获取显示配置
@@ -89,4 +122,21 @@ public interface IDaoService
     /// </summary>
     /// <returns></returns>
     Video GetVideoDetail();
+
+    #region 定制屏相关
+    /// <summary>
+    /// 获取当前屏信息
+    /// </summary>
+    /// <returns></returns>
+    bool IsCustom();
+
+    /// <summary>
+    ///     获取定制图片
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    List<string> GetCustomImage(CustomImageType type);
+    #endregion
+
+
 }

@@ -42,7 +42,7 @@ public class StartScene : IScene
     }
 
 
-    private DaoService _daoService;
+    private IDaoService _daoService;
     private MagicWallManager _manager;
 
     //
@@ -192,11 +192,11 @@ public class StartScene : IScene
             // TODO 
             Debug.Log("加载定制资源");
 
-            DaoService.CustomImageType[] types = { DaoService.CustomImageType.LEFT1,
-                DaoService.CustomImageType.LEFT2,
-                DaoService.CustomImageType.RIGHT };
+            CustomImageType[] types = {CustomImageType.LEFT1,
+                CustomImageType.LEFT2,
+                CustomImageType.RIGHT };
 
-            foreach (DaoService.CustomImageType customImageType in types) {
+            foreach (CustomImageType customImageType in types) {
                 List<string> images = _daoService.GetCustomImage(customImageType);
 
                 foreach (string image in images)

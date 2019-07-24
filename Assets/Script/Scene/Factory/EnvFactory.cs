@@ -92,7 +92,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         crossCardAgent.InitCrossCardAgent();
 
         sw.Stop();
-        Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
+        // Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
 
         crossCardAgent.gameObject.SetActive(isActive);
 

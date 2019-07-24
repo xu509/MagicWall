@@ -24,24 +24,27 @@ public class InfoPanelAgent : MonoBehaviour
     private float _panelWidth;
     private float _panelHeight;
 
-
+    /// <summary>
+    ///  TODO 定制页还未注入 Dao Service
+    /// </summary>
+    IDaoService _dataService;
 
     // Start is called before the first frame update
     void Start()
     {
         // 初始化最左侧图片
-        _leftImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.LEFT1);
+        _leftImages = _dataService.GetCustomImage(CustomImageType.LEFT1);
 
         //AdjustLayout();
 
         SetLeftImages();
 
         // 初始化中间图片
-        _middleImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.LEFT2);
+        _middleImages = _dataService.GetCustomImage(CustomImageType.LEFT2);
         SetMiddleImages();
 
         // 初始化右侧图片
-        _rightImages = DaoService.Instance.GetCustomImage(DaoService.CustomImageType.RIGHT);
+        _rightImages = _dataService.GetCustomImage(CustomImageType.RIGHT);
         if(_rightImages.Count > 0)
             SetRightImages();
 

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class FrontBackGoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
-    private DaoService _daoService;
+    private IDaoService _daoService;
     private DisplayBehaviorConfig _displayBehaviorConfig;
 
     //

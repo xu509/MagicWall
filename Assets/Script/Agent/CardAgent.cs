@@ -650,7 +650,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                                         _business_card_container
                                         ) as BusinessCardAgent;
 
-            List<string> address = DaoService.Instance.GetEnvCards(DataId);
+            List<string> address = _manager.daoService.GetEnvCards(DataId);
             Vector2 position = GetComponent<RectTransform>().anchoredPosition;
             businessCardAgent.Init(address.ToArray(),GetComponent<RectTransform>().rect.width
                 , position, OnHandleBusinessUpdate, OnClickBusinessCardClose);

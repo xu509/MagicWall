@@ -20,7 +20,7 @@ public class UpDownAdjustCutEffect : CutEffect
     {
         _manager = manager;
         _agentManager = manager.agentManager;
-        _daoService = DaoService.Instance;
+        _daoService = manager.daoService;
 
 
         //  获取持续时间

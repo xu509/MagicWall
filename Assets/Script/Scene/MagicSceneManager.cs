@@ -51,7 +51,7 @@ public class MagicSceneManager : MonoBehaviour
         _scenes.Add(startScene);
 
         // - 加载普通场景
-        List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
+        List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++)
         {
             IScene scene;

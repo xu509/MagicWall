@@ -10,7 +10,7 @@ using System;
 public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
-    private DaoService _daoService;
+    private IDaoService _daoService;
 
     private DisplayBehaviorConfig _displayBehaviorConfig;
     private bool flag = false;
@@ -22,7 +22,7 @@ public class GoLeftDisplayBehavior : CutEffectDisplayBehavior
     {
         _displayBehaviorConfig = displayBehaviorConfig;
         _manager = _displayBehaviorConfig.Manager;
-        _daoService = DaoService.Instance;
+        _daoService = _manager.daoService;
 
         flag = false;   
     }

@@ -9,12 +9,17 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MainManager : MonoBehaviour
 {
+    /// <summary>
+    /// TODO 主服务还未注入数据
+    /// </summary>
+    IDaoService daoService;
+
     // Start is called before the first frame update
     void Start()
     {
         // 加载配置表
 
-        bool isCustom = DaoService.Instance.IsCustom();
+        bool isCustom = daoService.IsCustom();
 
         if (isCustom)
         {
