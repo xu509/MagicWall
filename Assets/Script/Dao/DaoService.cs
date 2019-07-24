@@ -1,4 +1,6 @@
 ﻿
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -105,7 +107,31 @@ public class DaoService : MonoBehaviour, IDaoService
 
     public List<SceneConfig> GetShowConfigs()
     {
-        throw new System.NotImplementedException();
+        List<SceneConfig> sceneConfigs = new List<SceneConfig>();
+        MySqlCommand mysqlcommand = new MySqlCommand("select * from config;", TheDataSource.mySqlConnection);
+        MySqlDataReader reader = mysqlcommand.ExecuteReader();
+        try
+        {
+            while (reader.Read())
+            {
+                if (reader.HasRows)
+                {
+                    //reader.getstring(0)/getint(0).....
+                    Debug.Log("读取config成功");
+                }
+            }
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("failed to select");
+
+        }
+        finally
+        {
+            reader.Close();
+        }
+
+        return sceneConfigs;
     }
 
     public Video GetVideoDetail()
