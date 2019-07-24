@@ -38,6 +38,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     bool _hasLikeNumber = false;
 
+    MagicWallManager _manager;
+
 
     static class AnimatorHash
     {
@@ -56,6 +58,12 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     public override void UpdateContent(CrossCardCellData cellData)
     {
+
+        _manager = cellData.magicWallManager;
+
+        System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+        sw2.Start();
+
 
         _cellData = cellData;
         _index = cellData.Index;
@@ -79,10 +87,12 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
             // 关闭视频框
             videoContainer.gameObject.SetActive(false);
-
-            //RectTransform r = _image.GetComponent<RectTransform>();
-            //r.sizeDelta = new Vector2(cellData.ImageTexture.width, cellData.ImageTexture.height);
         }
+
+        sw2.Stop();
+        //Debug.Log("[" + _title  + "] Sub Cell Time : " + sw2.ElapsedMilliseconds / 1000f);
+
+
     }
 
     public void DoPlayVideo() {
@@ -148,7 +158,8 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
 
         // 调整 Like 按钮
-        _likes = DaoService.Instance.GetLikes(_cellData.Id, _cellData.Category);
+        //_manager.daoService.
+        _likes = _manager.daoService.GetLikes(_cellData.Id, _cellData.Category);
 
         // 设置喜欢
         _buttonLikeAgent.Init(_likes, OnClickLike);

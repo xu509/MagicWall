@@ -8,7 +8,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 
-public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler
+public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler,MoveSubject
 {
     #region Parameter
     private float _recentActiveTime = 0f;   //  最近次被操作的时间点
@@ -25,6 +25,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private VideoAgent _videoAgent;
     private SearchAgent _searchAgent;
 
+    private Vector2 _moveStartPosition = Vector2.zero;  //移动的开始位置
+    private Vector2 _moveStartOffset = Vector2.zero;  //移动偏差量
     private float _panel_top;
     private float _panel_bottom;
     private float _panel_left;
@@ -33,10 +35,20 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _safe_distance_height;
     private CardRecoverStatus _cardRecoverStatus = CardRecoverStatus.Init;
 
+    private bool _isPhysicsMoving = false;
+    public bool isPhysicsMoving { set { _isPhysicsMoving = value; } get { return _isPhysicsMoving; } }
+
+    private bool _isPrepared = false;
+    public bool isPrepared { set { _isPrepared = value; }  get { return _isPrepared; } }
+
     /// <summary>
     /// 第一次销毁动画的 DoTween 代理
     /// </summary>
     private Tweener _destory_first_scale_tweener;
+
+    private float radiusFactor;// Colider 半径系数
+
+    private List<MoveBtnObserver> _moveBtnObservers;    // 移动按钮的观察者
 
 
     protected CardStatusEnum _cardStatus;   // 状态   
@@ -46,28 +58,35 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool hasInitBusinessCard = false; // 是否已生成business card
     protected BusinessCardAgent businessCardAgent;
 
-    [SerializeField,Range(0f,3f)] float _widthFactor;  //    宽度比例，如当高度100，宽度50时，则宽度比 0.5
     [SerializeField,Range(0f,1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
-    [SerializeField] RectTransform _main_container;    //  主框体
-    [SerializeField] RectTransform _scale_container;    //  缩放容器
+    [SerializeField,Header("UI")] RectTransform _main_container;    //  主框体
+    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
+    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
+    [SerializeField] RectTransform normalContainer; // 正常显示的框体
+
+
+    [SerializeField,Header("Scale")] RectTransform _scale_container;    //  缩放容器
     [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
     [SerializeField] RectTransform _searchContainer;    //  搜索容器
     [SerializeField] SearchAgent _searchAgentPrefab;    //  搜索 prefab
-    [SerializeField] RectTransform _move_mask; // 移动蒙板
+
+    [SerializeField,Header("Move")] RectTransform _move_mask; // 移动蒙板
     [SerializeField] RectTransform _move_reminder_container; // 移动提醒容器
-    [SerializeField] RectTransform _business_card_container;    // 企业卡片容器
-    [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
-    [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
-    [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
-    [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
-    [SerializeField] VideoAgent videoAgentPrefab;   // Video Agent prefab
-    [SerializeField] RectTransform normalContainer; // 正常显示的框体
-    [SerializeField] RectTransform videoContainer;  // video的安放框体
-    [SerializeField] float radiusFactor;// Colider 半径系数
-    [SerializeField] Sprite _move_icon_active;
-    [SerializeField] Sprite _move_icon;
     [SerializeField] RectTransform _btn_move_container;
     [SerializeField] RectTransform _btn_move_container_in_three;
+    [SerializeField] MoveButtonComponent _moveBtnComponent;
+    [SerializeField] MoveButtonComponent _moveBtnComponentInThree;
+
+
+    [SerializeField , Header("Business Card")] RectTransform _business_card_container;    // 企业卡片容器
+    [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
+
+    [SerializeField] CircleCollider2D _collider;    // 圆形碰撞体
+    [SerializeField,Header("Video")] VideoAgent videoAgentPrefab;   // Video Agent prefab
+    [SerializeField] RectTransform videoContainer;  // video的安放框体
+
+    [SerializeField, Header("Physics"), Range(0, 500)] int _physicesEffectFactor;
+
 
 
     Action OnCreatedCompletedAction;
@@ -110,8 +129,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         // 初始化框体长宽
         float rectHeight = manager.mainPanel.rect.height * _heightFactor;
-        float rectWidth = rectHeight * _widthFactor;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(rectWidth, rectHeight);
+        GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
 
         //  命名
         if (originAgent != null)
@@ -133,6 +151,11 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         //  初始化长宽字段
         Width = GetComponent<RectTransform>().rect.width;
         Height = GetComponent<RectTransform>().rect.height;
+
+        // 初始化移动组件
+        _moveBtnObservers = new List<MoveBtnObserver>();
+
+        _moveBtnComponent.Init(DoMove, this);
 
     }
 
@@ -204,7 +227,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     /// 销毁第一阶段
     /// </summary>
     private void DoDestoriedForFirstStep() {
-        //  缩放至2倍大
+        //  缩放
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         _cardStatus = CardStatusEnum.DESTORING_STEP_FIRST;
 
@@ -240,19 +263,27 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
             RectTransform rect = GetComponent<RectTransform>();
 
             //  移到后方、缩小、透明
-            rect.DOScale(0.2f, 1f);
+            Tweener t = rect.DOScale(0.2f, 1f)
+                .OnStart(() => {
+                            // 关闭碰撞框
+                            rect.GetComponent<CircleCollider2D>().radius = 0;
+                         });
+            _flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
 
             //  获取位置
             FlockAgent oriAgent = _originAgent;
             Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX
                 , oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
-            rect.DOAnchorPos3D(to, 1f)
+            Tweener t2 = rect.DOAnchorPos3D(to, 1f)
                 .OnComplete(() => {
                     //  使卡片消失na 
                     OriginAgent.DoRecoverAfterChoose();
                     _agentManager.RemoveItemFromEffectItems(this);
             });
+            _flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin, t2);
+
+
         }
         //  直接消失
         else
@@ -344,29 +375,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    public void DoMove()
-    {        
-        // 移动
-        if (!_doMoving)
-        {
-            _doMoving = true;
-            _move_reminder_container.gameObject.SetActive(true);
-            _move_mask.gameObject.SetActive(true);
-            // 调整图片
-
-
-        }
-        else
-        {
-            DoUpdate();
-            _doMoving = false;
-            _move_reminder_container.gameObject.SetActive(false);
-            _move_mask.gameObject.SetActive(false);
-        }
-
-
-        UpdateMoveBtnPerformance();
-    }
 
     // 生成缩放卡片
     public void InitScaleAgent(Texture texture) {
@@ -416,35 +424,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        DoUpdate();
-    }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (_doMoving) {
-            //松手后碰撞
-            CircleCollider2D[] circles = FindObjectsOfType<CircleCollider2D>();
-            foreach (CircleCollider2D circle in circles)
-            {
-                circle.radius = radiusFactor;
-            }
-
-            DoMove();
-            DoUpdate();
-        }
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (_doMoving)
-        {
-            Move(eventData);
-            //拖拽时不碰撞
-            transform.SetAsLastSibling();
-        }
-    }
 
     // 当点击缩放收回
     private void OnScaleReturn() {
@@ -477,60 +457,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
 
-    // 移动
-    private void Move(PointerEventData eventData) {
-        Vector2 nowPostion = GetComponent<RectTransform>().anchoredPosition;
-
-        Vector2 to;
-        Vector2 position = eventData.position;
-
-        // 将点击的屏幕坐标转换为移动的目的坐标
-
-        //float x = Screen.width - _manager.OperationPanel
-
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(_manager.OperationPanel.position);
-        // 操作框体左下角屏幕坐标
-        Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
-        , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
-
-        // 获取偏移后的移动坐标
-        position = position - rawanchorPositon;
-
-        bool overleft = position.x < (_panel_left + _safe_distance_width);
-        bool overright = position.x > (_panel_right - _safe_distance_width);
-        bool overtop = position.y > (_panel_top - _safe_distance_height);
-        bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
-
-        if (overleft || overright) {
-            to.x = nowPostion.x;
-        } else {
-            to.x = position.x;
-        }
-
-        if (overtop || overbottom)
-        {
-            to.y = nowPostion.y;
-        }
-        else {
-            to.y = position.y;
-        }
 
 
-
-        // 缓慢移动,1.5f 代表拖拽移动延迟
-        GetComponent<RectTransform>().anchoredPosition = to;
-        //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
-
-    }
-
-    /// <summary>
-    /// Event system : 点击事件
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        DoUpdate();
-    }
 
 
     public void TurnOffKeepOpen() {
@@ -707,32 +635,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    /// <summary>
-    /// 更新移动的表现形式
-    /// </summary>
-    private void UpdateMoveBtnPerformance() {
-
-        if (_doMoving)
-        {
-            if (_hasListBtn)
-            {
-                _btn_move_container.GetComponent<Image>().sprite = _move_icon_active;
-            }
-            else {
-                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon_active;
-            }
-        }
-        else {
-            if (_hasListBtn)
-            {
-                _btn_move_container.GetComponent<Image>().sprite = _move_icon;
-            }
-            else
-            {
-                _btn_move_container_in_three.GetComponent<Image>().sprite = _move_icon;
-            }
-        }
-    }
 
     #region Business Card 相关
 
@@ -748,7 +650,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                                         _business_card_container
                                         ) as BusinessCardAgent;
 
-            List<string> address = DaoService.Instance.GetEnvCards(DataId);
+            List<string> address = _manager.daoService.GetEnvCards(DataId);
             Vector2 position = GetComponent<RectTransform>().anchoredPosition;
             businessCardAgent.Init(address.ToArray(),GetComponent<RectTransform>().rect.width
                 , position, OnHandleBusinessUpdate, OnClickBusinessCardClose);
@@ -789,6 +691,246 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     #endregion
 
+
+    #region 移动功能
+    public void DoMove()
+    {
+        // 移动
+        if (!_doMoving)
+        {
+            DoUpdate();
+
+            _doMoving = true;
+            _move_reminder_container.gameObject.SetActive(true);
+            _move_mask.gameObject.SetActive(true);
+            // 调整图片
+
+
+        }
+        else
+        {
+            DoUpdate();
+            _doMoving = false;
+            _move_reminder_container.gameObject.SetActive(false);
+            _move_mask.gameObject.SetActive(false);
+        }
+
+        NotifyObserver();
+
+        //UpdateMoveBtnPerformance();
+    }
+
+    // 移动
+    private void Move(PointerEventData eventData)
+    {
+        Vector2 nowPostion = GetComponent<RectTransform>().anchoredPosition;
+
+        Vector2 to;
+        Vector2 position = eventData.position;
+
+
+        // 将点击的屏幕坐标转换为移动的目的坐标
+
+        //float x = Screen.width - _manager.OperationPanel
+
+        //Vector3 screenPos = Camera.main.WorldToScreenPoint(_manager.OperationPanel.position);  // Camera Render - camera
+        Vector3 screenPos = _manager.OperationPanel.position;   // Camera Render - Overlay
+
+        // 操作框体左下角屏幕坐标
+        Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
+        , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
+
+        // 获取偏移后的移动坐标
+        position = position - rawanchorPositon;
+
+        bool overleft = position.x < (_panel_left + _safe_distance_width);
+        bool overright = position.x > (_panel_right - _safe_distance_width);
+        bool overtop = position.y > (_panel_top - _safe_distance_height);
+        bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
+        bool isOver = false;
+
+        if (overleft || overright)
+        {
+            to.x = nowPostion.x;
+
+            isOver = true;
+        }
+        else
+        {
+            to.x = position.x;
+        }
+
+        if (overtop || overbottom)
+        {
+            to.y = nowPostion.y;
+
+            isOver = true;
+        }
+        else
+        {
+            to.y = position.y;
+        }
+
+
+        // 获取鼠标坐标与卡片坐标的偏移
+
+        if (isOver)
+        {
+            GetComponent<RectTransform>().anchoredPosition = to;
+        }
+        else {
+            GetComponent<RectTransform>().anchoredPosition = to - _moveStartOffset;
+        }
+
+        //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
+
+    }
+
+    #endregion
+
+
+
+
+    #region Event System
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _moveStartPosition = eventData.position;
+        _moveStartOffset = _moveStartPosition - GetComponent<RectTransform>().anchoredPosition;
+        DoUpdate();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (_doMoving)
+        {
+            DoMove();
+
+            _hasChangeSize = true;
+
+            DoUpdate();
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_doMoving)
+        {
+            Move(eventData);
+            //拖拽时不碰撞
+            transform.SetAsLastSibling();
+        }
+    }
+
+    /// <summary>
+    /// Event system : 点击事件
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _moveStartPosition = Vector2.zero;
+
+        DoUpdate();
+
+        GetComponent<Rigidbody2D>().WakeUp();
+    }
+    #endregion
+
+
+    // 新打开的卡片会挤开已有的卡片
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        ToDoMoved(col);
+
+    }
+    // 当持续在触发范围内发生时调用
+    void OnTriggerStay2D(Collider2D other)
+    {
+        ToDoMoved(other);
+    }
+
+
+    // 离开触发范围会调用一次
+    void OnTriggerExit2D(Collider2D other)
+    {
+        List<Collider2D> results = new List<Collider2D>();
+        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D(), results);
+
+        if (results.Count == 0) {
+            _isPhysicsMoving = false;
+            GetComponent<Rigidbody2D>().Sleep();
+        }
+
+    }
+
+
+    private void ToDoMoved(Collider2D other)
+    {
+        if (other.gameObject.layer == 5)
+        {
+            GetComponent<Rigidbody2D>().WakeUp();
+
+            CardAgent _refCardAgent = other.gameObject.GetComponent<CardAgent>();
+
+            if (IsDoMoved(_refCardAgent))
+            {
+                MoveInvoker(_refCardAgent);
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 判断是否是本 card 进行移动
+    /// </summary>
+    /// <param name="cardAgent"></param>
+    /// <returns></returns>
+    private bool IsDoMoved(CardAgent cardAgent) {
+        int this_index = _agentManager.EffectAgent.IndexOf(this);
+        int effect_index = _agentManager.EffectAgent.IndexOf(cardAgent);
+
+        if (this_index < effect_index)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private void MoveInvoker(CardAgent refCardAgent)
+    {
+        if (!_isPhysicsMoving) {
+            _isPhysicsMoving = true;
+
+            // 获取相对的位置
+            Vector2 selfPosition = GetComponent<RectTransform>().anchoredPosition;
+            Vector2 refPosition = refCardAgent.GetComponent<RectTransform>().anchoredPosition;
+            Vector2 to = (selfPosition - refPosition).normalized;
+
+            Vector2 to2 = to * 100 * _physicesEffectFactor;
+
+            GetComponent<Rigidbody2D>().AddForce(to2);
+        }
+    }
+
+    public void AddObserver(MoveBtnObserver observer)
+    {
+        _moveBtnObservers.Add(observer);
+    }
+
+    public void RemoveObserver(MoveBtnObserver observer)
+    {
+        _moveBtnObservers?.Remove(observer);
+    }
+
+    public void NotifyObserver()
+    {
+        for (int i = 0; i < _moveBtnObservers.Count; i++) {
+            _moveBtnObservers[i].Update();
+        }
+
+    }
 }
 
 

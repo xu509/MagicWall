@@ -10,7 +10,7 @@ using DG.Tweening;
 public class SliceCardAgent : CardAgent
 {
 
-    [SerializeField] Text _title;
+    [SerializeField , Header("SliceCardAgent UI")] Text _title;
     [SerializeField] Text _description;
     [SerializeField] SliceCardScrollViewController _scrollController;
     [SerializeField] RectTransform _buttomTool;
@@ -37,7 +37,7 @@ public class SliceCardAgent : CardAgent
         List<SliceCardCellData> cellDatas;
         if (type == MWTypeEnum.Product)
         {
-            Product product = DaoService.Instance.GetProductDetail(DataId);
+            Product product = _manager.daoService.GetProductDetail(DataId);
 
             // 获取产品标题
             _title.text = product.Name;
@@ -47,9 +47,6 @@ public class SliceCardAgent : CardAgent
 
             InitComponents(Random.Range(0, 5) > 2);
 
-
-
-
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
             for (int i = 0; i < product.ProductDetails.Count; i++)
@@ -57,13 +54,14 @@ public class SliceCardAgent : CardAgent
                 SliceCardCellData cellData = new SliceCardCellData();
                 cellData.Type = 0;
                 cellData.sliceCardAgent = this;
+                cellData.magicWallManager = _manager;
                 cellData.LoadProductDetail(product.ProductDetails[i]);
                 cellDatas.Add(cellData);
             }
         }
         else {
             // 初始化活动信息
-            Activity activity = DaoService.Instance.GetActivityDetail(DataId);
+            Activity activity = _manager.daoService.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
             InitComponents(Random.Range(0, 5) > 2);
@@ -77,6 +75,7 @@ public class SliceCardAgent : CardAgent
                 SliceCardCellData cellData = new SliceCardCellData();
                 cellData.Type = 0;
                 cellData.sliceCardAgent = this;
+                cellData.magicWallManager = _manager;
                 cellData.LoadActivityDetail(activity.ActivityDetails[i]);
                 cellDatas.Add(cellData);
             }
@@ -90,6 +89,8 @@ public class SliceCardAgent : CardAgent
 
 
         SetOnCreatedCompleted(OnCreatedCompleted);
+
+        isPrepared = true;
 
     }
 

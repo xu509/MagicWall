@@ -37,14 +37,28 @@ public class OperateMode : MonoBehaviour
         // 减速
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _manager.MovePanelFactor = _manager.MovePanelFactor - 0.1f;
+            _manager.managerConfig.MainPanelMoveFactor = _manager.managerConfig.MainPanelMoveFactor - 1;
         }
 
         // 加速
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _manager.MovePanelFactor = _manager.MovePanelFactor + 0.1f;
+            _manager.managerConfig.MainPanelMoveFactor = _manager.managerConfig.MainPanelMoveFactor + 1;
         }
+
+        // 限制帧率
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (_manager.isLimitFps)
+            {
+                Application.targetFrameRate = -1;
+            }
+            else {
+                Application.targetFrameRate = 60;
+            }
+            _manager.isLimitFps = !_manager.isLimitFps;
+        }
+
 
         ++i_Frames;
 
@@ -79,7 +93,10 @@ public class OperateMode : MonoBehaviour
             gStyle.fontSize = 100;
             float width = Screen.width / 3;
             float w = Screen.width - (width + 50);
-            GUI.Label(new Rect(w, 20, width, width), "FPS:" + f_Fps.ToString("f2"), gStyle);
+
+            string showFpsStr = "FPS:" + f_Fps.ToString("f2") + (_manager.isLimitFps ? "（限制帧率）" : "" );
+
+            GUI.Label(new Rect(w, 20, width, width), showFpsStr, gStyle);
 
 
 
@@ -89,7 +106,7 @@ public class OperateMode : MonoBehaviour
             moveTextStyle.normal.textColor = Color.black;
             moveTextStyle.fontSize = 60;
 
-            string moveStr = "当前移动速率： " + _manager.MovePanelFactor;
+            string moveStr = "当前移动速率： " + _manager.managerConfig.MainPanelMoveFactor;
 
             GUI.Label(new Rect(30, 90, 300, 300), moveStr, moveTextStyle);
 

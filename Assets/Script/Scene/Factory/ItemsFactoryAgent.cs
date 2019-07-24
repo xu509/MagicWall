@@ -23,11 +23,29 @@ public class ItemsFactoryAgent : MonoBehaviour
     }
 
 
-
     public EnvFactory envFactory{get { return _envFactory; } }
 
     public ActivityFactory activityFactory { get { return _activityFactory; } }
 
     public ProductFactory productFactory { get { return _productFactory; } }
+
+    public ItemsFactory GetItemsFactoryByContentType(DataType type) {
+        if (type == DataType.activity)
+        {
+            return _activityFactory;
+        }
+        else if (type == DataType.env)
+        {
+            return _envFactory;
+        }
+        else if (type == DataType.product)
+        {
+            return _productFactory;
+        }
+        return null;
+
+    }
+
+
 
 }

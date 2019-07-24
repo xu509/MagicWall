@@ -13,7 +13,7 @@ public class AgentManager : MonoBehaviour
     /// <summary>
     ///     普通浮动块
     /// </summary>
-    [SerializeField] FlockAgent _flockAgentPrefab;
+    [SerializeField , Header("Prefab")] FlockAgent _flockAgentPrefab;
     
     /// <summary>
     ///     十字浮动块
@@ -28,12 +28,17 @@ public class AgentManager : MonoBehaviour
     /// <summary>
     /// 普通浮动块容器
     /// </summary>
-    [SerializeField] RectTransform _flockContainer;
+    [SerializeField , Header("Container")] RectTransform _flockContainer;
 
     /// <summary>
     ///    后层的浮动块容器
     /// </summary>
     [SerializeField] RectTransform _backContainer;
+
+    /// <summary>
+    ///    后层的浮动块容器
+    /// </summary>
+    [SerializeField] RectTransform _starContainer;
 
 
     /// <summary>
@@ -56,6 +61,11 @@ public class AgentManager : MonoBehaviour
     ///     后层的对象池
     /// </summary>
     private FlockAgentInBackPool<FlockAgent> _flockAgentInBackPool;
+
+    /// <summary>
+    ///     Star的对象池
+    /// </summary>
+    private FlockAgentInStarPool<FlockAgent> _flockAgentInStarPool;
 
     /// <summary>
     /// 十字展开操作块对象池
@@ -115,6 +125,9 @@ public class AgentManager : MonoBehaviour
 
         _flockAgentInBackPool = FlockAgentInBackPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
         _flockAgentInBackPool.Init(_flockAgentPrefab, _backContainer);
+
+        _flockAgentInStarPool = FlockAgentInStarPool<FlockAgent>.GetInstance(_manager.managerConfig.StarEffectAgentsCount);
+        _flockAgentInStarPool.Init(_flockAgentPrefab, _starContainer);
 
         _crossCardAgentPool = FlockAgentPool<CrossCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
         _crossCardAgentPool.Init(_crossCardgentPrefab as CrossCardAgent, _cardContainer);
@@ -277,8 +290,11 @@ public class AgentManager : MonoBehaviour
             {
                 _flockAgentPool.ReleaseObj(agent);
             }
-            else {
+            else if (agent.agentContainerType == AgentContainerType.BackPanel) {
                 _flockAgentInBackPool.ReleaseObj(agent);
+            }
+            else {
+                _flockAgentInStarPool.ReleaseObj(agent);
             }
         }
     }
@@ -293,8 +309,12 @@ public class AgentManager : MonoBehaviour
         {
             return _flockAgentPool.GetObj();
         }
-        else {
+        else if (type == AgentContainerType.BackPanel) {
             return _flockAgentInBackPool.GetObj();
+        }
+        else
+        {
+            return _flockAgentInStarPool.GetObj();
         }
     }
 

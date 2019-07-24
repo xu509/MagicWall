@@ -16,7 +16,6 @@ public class FlockAgent : MonoBehaviour
     public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
 
-
     #region Data Parameter 
     private bool _data_iscustom; // 是定制的
     private string _data_img;    //背景图片
@@ -32,10 +31,13 @@ public class FlockAgent : MonoBehaviour
 
     private int _sceneIndex;    //  场景的索引
 
-    int x;
-    public int X { get { return x; } }
-    int y;
-    public int Y { get { return y; } }
+    float _x;
+    public float X { get { return _x; } }
+    float _y;
+    public float Y { get { return _y; } }
+    float _z;
+    public float Z { get { return _z; } set { _z = value; } }
+
 
     private float delayX;
 
@@ -54,13 +56,13 @@ public class FlockAgent : MonoBehaviour
     private float _height;
 
     // 原位
-    [SerializeField] private Vector2 _oriVector2;
+    private Vector2 _oriVector2;
 
     // 生成的位置
     private Vector2 _genVector2;
 
     // 下个移动的位置
-    [SerializeField] private Vector2 _nextVector2;
+    private Vector2 _nextVector2;
 
     // 是否被选中
     private bool _isChoosing = false;
@@ -178,8 +180,8 @@ public class FlockAgent : MonoBehaviour
 
         _nextVector2 = genVector;
 
-        x = row;
-        y = column;
+        _x = row;
+        _y = column;
         _width = width;
         _height = height;
 
@@ -302,7 +304,7 @@ public class FlockAgent : MonoBehaviour
         // 判断结束
 
         // 获取有效影响范围，是宽度一半以上
-        float effectDistance = (w / 2) + (w / 2) * _manager.InfluenceMoveFactor;
+        float effectDistance = (w / 2) + (w / 2) * _manager.managerConfig.InfluenceMoveFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
 
@@ -321,10 +323,10 @@ public class FlockAgent : MonoBehaviour
             //  上下移动的偏差值
             //
             float move_offset_y = offset_y * ((h / 2) / effectDistance);
-            move_offset_y += h / 10 * _manager.InfluenceMoveFactor;
+            move_offset_y += h / 10 * _manager.managerConfig.InfluenceMoveFactor;
 
             float move_offset_x = offset_x * ((w / 2) / effectDistance);
-            move_offset_x += w / 10 * _manager.InfluenceMoveFactor;
+            move_offset_x += w / 10 * _manager.managerConfig.InfluenceMoveFactor;
 
             float to_y,to_x;
             if (refVector2WithOffset.y > targetVector2.y)
@@ -359,7 +361,7 @@ public class FlockAgent : MonoBehaviour
             //float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
 
             // 获取缓动方法
-            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.InfluenceEaseEnum);
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.managerConfig.InfluenceEaseEnum);
             float k = defaultEasingFunction(offset / effectDistance);
 
             m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
@@ -403,11 +405,26 @@ public class FlockAgent : MonoBehaviour
             Vector3 to = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y, 200);
             Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
 
+
+            if (_agentContainerType == AgentContainerType.MainPanel)
+            {
+                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+            }
+            else if (_agentContainerType == AgentContainerType.BackPanel) {
+                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+
+            }
+
+            // 当产品是前后层关系时，此时会报错
+
+
+
             sw.Start();
+
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
+
             sw.Stop();
-            Debug.Log("DoChoose Time : " + sw.ElapsedMilliseconds / 1000f);
 
 
 
@@ -443,12 +460,14 @@ public class FlockAgent : MonoBehaviour
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
+
                 rect.gameObject.SetActive(false);
-
-                sw.Stop();
-                Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
-
                 _cardAgent.GoToFront();
+
+                //if (_cardAgent.isPrepared) {
+
+                //}
+                
             });
         }
     }
@@ -459,9 +478,6 @@ public class FlockAgent : MonoBehaviour
 
     public void DoRecoverAfterChoose()
     {
-        Debug.Log("DoRecoverAfterChoose Began: " + gameObject.name);
-
-
         IsRecovering = true;
 
         // 如果组件已不在原场景，则不进行恢复
@@ -510,10 +526,6 @@ public class FlockAgent : MonoBehaviour
            });
 
         _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
-
-
-
-        Debug.Log("DoRecoverAfterChoose : " + gameObject.name);
 
     }
 
@@ -645,7 +657,14 @@ public class FlockAgent : MonoBehaviour
         if ((_manager.Status != WallStatusEnum.Cutting) && (_agentMoveStatus == AgentMoveStatus.Regular))
         {
 
-            Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            //Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
+            Vector3 position = GetComponent<RectTransform>().transform.position;
+
+
+            
+
+            //Debug.Log("Position: " + GetComponent<RectTransform>().transform.position);
+
             if (position.x + (Width * 3) < 0)
             {
                 //_agentManager.ClearAgent(this);
@@ -669,6 +688,9 @@ public class FlockAgent : MonoBehaviour
                 result = true;
             }
         }
+
+
+
 
         return result;
     }

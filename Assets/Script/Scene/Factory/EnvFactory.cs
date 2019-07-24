@@ -73,8 +73,6 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         //  创建 Agent
         CrossCardAgent crossCardAgent = _agentManager.GetCrossCardAgent();
             
-        //  获取rect引用
-        RectTransform rectTransform = crossCardAgent.GetComponent<RectTransform>();
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
@@ -94,7 +92,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         crossCardAgent.InitCrossCardAgent();
 
         sw.Stop();
-        Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
+        // Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
 
         crossCardAgent.gameObject.SetActive(isActive);
 

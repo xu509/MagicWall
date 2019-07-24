@@ -34,33 +34,23 @@ public class TheDataSource : Singleton<TheDataSource>
     //  初始化信息
     //
     public void InitData() {
-        Enterprise env = new Enterprise();
-
-        //  从数据库中获取数据
-        List<Enterprise> enterprises = new List<Enterprise>();
-        for (int i = 0; i < 100; i++) {
-            enterprises.Add(env.Generator());
-        }
-
-        _datas.Enterprises = enterprises;
-
-        //  将数据持久化
-        //SaveItems();
+        
+        // 初始化MySql链接，提供MySql接口
 
     }
 
 
-    //
-    //  持久化数据
-    //
-    private void SaveItems() {
-        // open a new xml file
-        XmlSerializer serializer = new XmlSerializer(typeof(ItemDataBase));
-        FileStream stream = new FileStream(Application.dataPath + "/StreamingFiles/data.xml", FileMode.Create);
-        serializer.Serialize(stream, _datas);
-        stream.Close();
+    ////
+    ////  持久化数据
+    ////
+    //private void SaveItems() {
+    //    // open a new xml file
+    //    XmlSerializer serializer = new XmlSerializer(typeof(ItemDataBase));
+    //    FileStream stream = new FileStream(Application.dataPath + "/StreamingFiles/data.xml", FileMode.Create);
+    //    serializer.Serialize(stream, _datas);
+    //    stream.Close();
 
-    }
+    //}
 
     
 }

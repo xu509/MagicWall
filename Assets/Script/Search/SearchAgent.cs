@@ -26,6 +26,11 @@ public class SearchAgent : MonoBehaviour
     [SerializeField] RectTransform _searchResultContainer;   //  搜索结果的容器
     [SerializeField] RectTransform _searchAgentContainer;   //  搜索代理的容器
 
+    [SerializeField, Header("Move")] Sprite _sprite_move_active;
+    [SerializeField] MoveButtonComponent _moveBtnComponent;
+    [SerializeField] Sprite _sprite_move;
+    [SerializeField] RectTransform _move_rect;
+
 
     private string _searchWord; //  搜索词
     private SearchResultAgent _searchResultAgent;    //  搜索结果索引
@@ -33,7 +38,12 @@ public class SearchAgent : MonoBehaviour
     private FlockAgent _flockAgent; //  原浮块索引
     private CardAgent _cardAgent;   //  原卡片索引
 
+    private bool _doMoving = false;
+
+
+
     private int sessionId; //该会话
+
 
 
 
@@ -66,6 +76,10 @@ public class SearchAgent : MonoBehaviour
         _manager = manager;
         _cardAgent = cardAgent;
         _flockAgent = cardAgent.OriginAgent;
+
+
+        _moveBtnComponent.Init(DoMove, cardAgent);
+
     }
 
     // Update is called once per frame
@@ -121,7 +135,7 @@ public class SearchAgent : MonoBehaviour
         // 增加联想的内容
 
         RectTransform item = Instantiate(_associateWordMessagePrefab, _associateWordArea);
-        item.GetComponent<Text>().text = message;
+        item.GetComponentInChildren<Text>().text = message;
     }
 
 
@@ -258,7 +272,7 @@ public class SearchAgent : MonoBehaviour
         CloseSearchAgentContainer(false);
 
         //  获取查询词，进行搜索，得到 SearchBean 列表
-        List<SearchBean> searchBeans = DaoService.Instance.Search(_searchWord);
+        List<SearchBean> searchBeans = _manager.daoService.Search(_searchWord);
 
         //  生成搜索结果控件，并进行初始化
         if (_searchResultAgent == null)
@@ -271,7 +285,7 @@ public class SearchAgent : MonoBehaviour
         }
 
         //  搜索结果控件进行加载数据
-        _searchResultAgent.InitData(searchBeans, _searchWord,_manager);
+        _searchResultAgent.InitData(searchBeans, _searchWord,_manager,_cardAgent);
 
 
         //  装载事件代理
@@ -289,9 +303,22 @@ public class SearchAgent : MonoBehaviour
         _onClickReturn.Invoke();
     }
 
-    //  点击移动
+    /// <summary>
+    /// 搜索功能
+    /// </summary>
     public void DoMove()
     {
+        //if (!_doMoving)
+        //{
+        //    _move_rect.GetComponent<Image>().sprite = _sprite_move_active;
+        //}
+        //else {
+        //    _move_rect.GetComponent<Image>().sprite = _sprite_move;
+
+        //}
+
+        //_doMoving = !_doMoving;
+
         _onClickMove.Invoke();
     }
 

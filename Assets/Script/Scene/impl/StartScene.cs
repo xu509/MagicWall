@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 //
 //   启动的场景 
@@ -41,7 +42,7 @@ public class StartScene : IScene
     }
 
 
-    private DaoService _daoService;
+    private IDaoService _daoService;
     private MagicWallManager _manager;
 
     //
@@ -51,15 +52,16 @@ public class StartScene : IScene
 
     }
 
-    public void Init(MagicWallManager manager)
+    public void Init(SceneConfig sceneConfig, MagicWallManager manager)
     {
-        _resourseIsChecked = false;
         _manager = manager;
         _daoService = manager.daoService;
 
+        Reset();
     }
 
-    private void Init() {
+
+    private void Reset() {
         _StartTime = Time.time;
         _hasInit = true;
 
@@ -77,15 +79,15 @@ public class StartScene : IScene
 
 
 
-    public SceneContentType GetContentType()
+    public DataType GetDataType()
     {
-        return SceneContentType.none;
+        return DataType.none;
     }
 
     public bool Run()
 	{
         if (!_hasInit) {
-            Init();
+            Reset();
         }
 
         // 读取配置表
@@ -95,8 +97,11 @@ public class StartScene : IScene
         // LOGO 淡入
         if (!_doShowLogo) {
             _doShowLogo = true;
-            _manager.BgLogo.GetComponent<RawImage>()
-                .DOFade(1, 2f)
+            _manager.BgLogo.gameObject.SetActive(true);
+            _manager.BgLogo.GetComponent<Image>().sprite 
+                = Resources.Load<SpriteAtlas>("SpriteAtlas").GetSprite("background-logo");
+            _manager.BgLogo.GetComponent<Image>()
+                .DOFade(1, 1f)
                 .OnComplete(() => {
                     _doShowLogoComplete = true;
                 });
@@ -105,10 +110,11 @@ public class StartScene : IScene
         if (_doShowLogoComplete) {
             // 进行logo隐藏
             if (_resourseIsChecked && (RunTime > _DuringTime)) {
-                _manager.BgLogo.GetComponent<RawImage>()
-                    .DOFade(0, 2f)
+                _manager.BgLogo.GetComponent<Image>()
+                    .DOFade(0, 1f)
                     .OnComplete(() => {
                         _doHideLogoComplete = true;
+                        _manager.BgLogo.gameObject.SetActive(false);
                     });
             }
         }
@@ -186,11 +192,11 @@ public class StartScene : IScene
             // TODO 
             Debug.Log("加载定制资源");
 
-            DaoService.CustomImageType[] types = { DaoService.CustomImageType.LEFT1,
-                DaoService.CustomImageType.LEFT2,
-                DaoService.CustomImageType.RIGHT };
+            CustomImageType[] types = {CustomImageType.LEFT1,
+                CustomImageType.LEFT2,
+                CustomImageType.RIGHT };
 
-            foreach (DaoService.CustomImageType customImageType in types) {
+            foreach (CustomImageType customImageType in types) {
                 List<string> images = _daoService.GetCustomImage(customImageType);
 
                 foreach (string image in images)
@@ -229,9 +235,4 @@ public class StartScene : IScene
     }
 
 
-
-
-
-
-    
 }

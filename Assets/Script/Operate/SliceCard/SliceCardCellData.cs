@@ -16,12 +16,15 @@ public class SliceCardCellData
     string _description; // 描述
     string _videoUrl; // 视频地址
     bool _isImage; // 是图片
+    MagicWallManager _manager;
 
     public SliceCardAgent sliceCardAgent { set { _sliceCardAgent = value; } get { return _sliceCardAgent; } }
 
     public int Id { set { _id = value; } get { return _id; } }
 
     public int Type { set { _type = value; } get { return _type; } }
+
+    public MagicWallManager magicWallManager { set { _manager = value; } get { return _manager; } }
 
 
     public int Index { set { _index = value; } get { return _index; } }
@@ -52,7 +55,7 @@ public class SliceCardCellData
 
         _id = productDetail.Id;
         _description = productDetail.Description;
-        _likes = DaoService.Instance.GetLikesByProductDetail(_id);
+        _likes = _manager.daoService.GetLikesByProductDetail(_id);
         _image = productDetail.Image;
         _type = 0;
         _isImage = productDetail.IsImage();
@@ -68,7 +71,7 @@ public class SliceCardCellData
         _id = activityDetail.Id;
         _isImage = activityDetail.IsImage();
         _description = activityDetail.Description;
-        _likes = DaoService.Instance.GetLikesByActivityDetail(_id);
+        _likes = _manager.daoService.GetLikesByActivityDetail(_id);
         _image = activityDetail.Image;
         _type = 1;
 

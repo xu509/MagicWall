@@ -9,7 +9,7 @@ public class SceneUtils
 {
     private float _gap = 58;
 
-    MagicWallManager _manager;
+    private MagicWallManager _manager;
 
     /// <summary>
     ///     固定的行数
@@ -73,9 +73,9 @@ public class SceneUtils
     /// <returns></returns>
     public int GetGap()
     {
-        float df = _manager.displayFactor;
-        float gf = _manager.GapFactor;
-        float gap = _gap* gf *df;
+        //float df = _manager.displayFactor;
+        float gf = _manager.managerConfig.gapFactor;
+        float gap = _gap* gf;
 
         return Mathf.RoundToInt(gap);
     }
@@ -135,7 +135,6 @@ public class SceneUtils
     }
     #endregion
 
-
     #region 根据固定的 item 高度,行数索引，获取纵坐标
     /// <summary>
     ///     根据固定的 item 高度,行数索引，获取纵坐标
@@ -164,4 +163,43 @@ public class SceneUtils
         return x;
     }
     #endregion
+
+
+    /// <summary>
+    ///     随机设置图片大小，用于前后分层效果与星空效果
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="displayFactor"></param>
+    /// <returns></returns>
+    public Vector2 ResetTexture(Vector2 originVector2)
+    {
+        //图片宽高
+        float w = originVector2.x;
+        float h = originVector2.y;
+        //组件宽高
+        float width;
+        float height;
+
+        if (w >= h)
+        {
+            float minW = _manager.managerConfig.ItemSizeMinWidthFactor * _manager.GetScreenRect().x;
+            float maxW = _manager.managerConfig.ItemSizeMaxWidthFactor * _manager.GetScreenRect().x;
+
+            //宽固定
+            width = Random.Range(minW, maxW);
+            height = h / w * width;
+        }
+        else
+        {
+            float minH = _manager.managerConfig.ItemSizeMinHeightFactor * _manager.GetScreenRect().y;
+            float maxH = _manager.managerConfig.ItemSizeMaxHeightFactor * _manager.GetScreenRect().y;
+
+            //高固定
+            height = Random.Range(minH, maxH);
+            width = w / h * height;
+        }
+        width = (int)width;
+        height = (int)height;
+        return new Vector2(width, height);
+    }
 }

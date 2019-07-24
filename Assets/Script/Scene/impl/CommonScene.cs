@@ -21,7 +21,7 @@ public class CommonScene : IScene
     private CutEffect _theCutEffect;
 
     //  使用的类型
-    private SceneContentType _sceneContentType;
+    private DataType _dataType;
 
     //  场景开始的时间
     private float _startTime;
@@ -85,26 +85,26 @@ public class CommonScene : IScene
 	//
 	private void DoCreating()
 	{
-        _theCutEffect.Create(_sceneContentType);
+        _theCutEffect.Create(_dataType);
 
         isDoDestoryCompleting = false;
     }
 
 
-	//
-	//	Export Methods
-	//
+    //
+    //	Export Methods
+    //
 
-	//	配置
-	public void DoConfig(SceneConfig sceneConfig,MagicWallManager manager)
-	{
+
+    public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+    {
         _manager = manager;
 
-        _theCutEffect = sceneConfig.CutEffect; // 设置过场效果
+        _theCutEffect = GetCutEffect(sceneConfig.sceneType); // 设置过场效果
         _theCutEffect.Init(_manager);
-        _sceneContentType = sceneConfig.SceneContentType; // 设置类型
-
+        _dataType = sceneConfig.dataType; // 设置类型
     }
+
 
 	//  运行
 	public bool Run()
@@ -188,9 +188,41 @@ public class CommonScene : IScene
 		return true;
 	}
 
-    public SceneContentType GetContentType()
+    public DataType GetDataType()
     {
-        return _sceneContentType;
+        return _dataType;
     }
+
+
+
+    /// <summary>
+    ///     获取过场
+    /// </summary>
+    /// <param name="sceneTypeEnum"></param>
+    /// <returns></returns>
+    private CutEffect GetCutEffect(SceneTypeEnum sceneTypeEnum) {
+        if (sceneTypeEnum == SceneTypeEnum.CurveStagger)
+        {
+            return new CurveStaggerCutEffect();
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.FrontBackUnfold)
+        {
+            return new FrontBackUnfoldCutEffect();
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.LeftRightAdjust)
+        {
+            return new LeftRightAdjustCutEffect();
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.MidDisperse)
+        {
+            return new MidDisperseCutEffect();
+        }
+        else if (sceneTypeEnum == SceneTypeEnum.UpDownAdjustCutEffect) {
+            return new UpDownAdjustCutEffect();
+        }
+
+        return null;
+    }
+
 
 }

@@ -23,7 +23,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
         //  初始化 manager
         _manager = manager;
         _agentManager = manager.agentManager;
-        _daoService = DaoService.Instance;
+        _daoService = manager.daoService;
 
         //  获取持续时间
         StartingDurTime = 1.5f;
@@ -119,7 +119,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     {
         //  初始化表现形式
 
-        _displayBehaviorConfig.SceneContentType = sceneContentType;
+        _displayBehaviorConfig.dataType = dataType;
         _displayBehaviorConfig.ItemsFactory = ItemsFactory;
         _displayBehaviorConfig.DisplayTime = DisplayDurTime;
         _displayBehaviorConfig.Manager = _manager;
@@ -165,8 +165,13 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 float imageHeight = coverSprite.rect.height;
 
                 // 得到调整后的长宽
-                Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
-                    _manager.displayFactor);
+                Vector2 imageSize = _sceneUtil.ResetTexture(new Vector2(imageWidth,imageHeight));
+
+                imageSize.x = (imageSize.x * 1.5f);
+                imageSize.y = (imageSize.y * 1.5f);
+
+                //Vector2 imageSize = AppUtils.ResetTexture(new Vector2(imageWidth, imageHeight),
+                //    _manager.displayFactor);
 
                 FlockAgent go;
                 float ori_y = _sceneUtil.GetYPositionByFixedHeight(itemHeight, i);
@@ -193,9 +198,16 @@ public class FrontBackUnfoldCutEffect : CutEffect
                 else
                 {
                     //  创建后排
+                    float width = imageSize.x * 0.6f;
+                    float height = imageSize.y * 0.6f;
+
+                    //go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
+                    //    imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
+
                     go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, i, column,
-                        imageSize.x, imageSize.y, agent, AgentContainerType.BackPanel);
-                    go.UpdateImageAlpha(0.2f);
+                        width, height, agent, AgentContainerType.BackPanel);
+
+                        
                 }
                 //go.NextVector2 = new Vector2(gen_x, gen_y);
 

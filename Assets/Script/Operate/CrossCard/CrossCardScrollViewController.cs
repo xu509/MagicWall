@@ -61,10 +61,15 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
     {
         // 此时数据传递
         _items = items;
+
+
         UpdateContents(items);
+
         scroller.SetTotalCount(items.Count);
 
         UpdateComponents();
+
+        scroller.isPrepared = true;       
     }
 
     //

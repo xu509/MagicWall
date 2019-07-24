@@ -54,7 +54,7 @@ public class CrossCardAgent : CardAgent
 
         InitAgency();
 
-        DaoService daoService = DaoService.Instance; 
+        IDaoService daoService = _manager.daoService;
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
 
 
@@ -97,6 +97,7 @@ public class CrossCardAgent : CardAgent
             item.Likes = Likes;
             item.Index = index;
             item.Title = "产品";
+            item.magicWallManager = _manager;
             _cellDatas.Add(item);
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
@@ -110,6 +111,7 @@ public class CrossCardAgent : CardAgent
             item.Likes = Likes;
             item.Index = index;
             item.Title = "活动";
+            item.magicWallManager = _manager;
             _cellDatas.Add(item);
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
@@ -123,7 +125,10 @@ public class CrossCardAgent : CardAgent
             item.Likes = Likes;
             item.Index = index;
             item.Title = "视频";
+            item.magicWallManager = _manager;
             _cellDatas.Add(item);
+
+
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
@@ -137,6 +142,7 @@ public class CrossCardAgent : CardAgent
             item.Likes = Likes;
             item.Index = index;
             item.Title = "CATALOG";
+            item.magicWallManager = _manager;
             _cellDatas.Add(item);
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
@@ -149,10 +155,14 @@ public class CrossCardAgent : CardAgent
         //crossCardScrollViewController.SelectCell(0);
         crossCardScrollViewController.SetUpCardAgent(this);
         crossCardScrollViewController.UpdateData(_cellDatas);
-        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
 
         sw.Stop();
-        Debug.Log("InitCrossCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
+        //Debug.Log("Cross Card Agent Time : " + sw.ElapsedMilliseconds / 1000f);
+
+
+        crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
+
+
 
         //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
 
@@ -163,11 +173,14 @@ public class CrossCardAgent : CardAgent
         crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
 
         // 处理businesscard
-        _hasListBtn = DaoService.Instance.GetEnvCards(DataId).Count > 0;
+        _hasListBtn = _manager.daoService.GetEnvCards(DataId).Count > 0;
         InitComponents(false);
 
         // 设置完成回调
         SetOnCreatedCompleted(OnCreatedCompleted);
+
+        isPrepared = true;
+
     }
 
     void OnSelectionChanged(int index)

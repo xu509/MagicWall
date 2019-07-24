@@ -31,6 +31,10 @@ public class MagicSceneManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 初始化场景状态
+    /// </summary>
+    /// <param name="manager"></param>
     public void Init(MagicWallManager manager) {
         _manager = manager;
 
@@ -43,16 +47,23 @@ public class MagicSceneManager : MonoBehaviour
         //  加载场景
         // - 加载开始场景
         StartScene startScene = new StartScene();
-        startScene.Init(manager);
+        startScene.Init(null,manager);
         _scenes.Add(startScene);
 
         // - 加载普通场景
-        List<SceneConfig> sceneConfigs = DaoService.Instance.GetShowConfigs();
+        List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++)
         {
-            CommonScene commonScene = new CommonScene();
-            commonScene.DoConfig(sceneConfigs[i],_manager);
-            _scenes.Add(commonScene);
+            IScene scene;
+            if (sceneConfigs[i].sceneType == SceneTypeEnum.Stars)
+            {
+                scene = new StarScene();
+            }
+            else {
+                scene = new CommonScene();
+            }
+            scene.Init(sceneConfigs[i],_manager);
+            _scenes.Add(scene);
         }
 
         // 初始化管理器标志
@@ -80,6 +91,8 @@ public class MagicSceneManager : MonoBehaviour
 
         // 背景始终运行
         _manager.backgroundManager.run();
+
+        //return;
 
         // 运行场景
         if (!_scenes[_index].Run())

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2023887377428806986}
   - component: {fileID: 5146627753414930391}
+  - component: {fileID: 8909354820870984784}
   m_Layer: 12
   m_Name: Context
   m_TagString: Untagged
@@ -44,6 +45,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145217855714136617}
   m_CullTransparentMesh: 0
+--- !u!225 &8909354820870984784
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145217855714136617}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5413590619543713705
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,6 +68,7 @@ GameObject:
   - component: {fileID: 107710451360277412}
   - component: {fileID: 6740400010425785694}
   - component: {fileID: 2739835007242551090}
+  - component: {fileID: 2350316540824492491}
   m_Layer: 12
   m_Name: ScrollViewer
   m_TagString: Untagged
@@ -124,6 +138,18 @@ MonoBehaviour:
   scroller: {fileID: 6740400010425785694}
   cellPrefab: {fileID: 3104021846296284657, guid: b2c87845ea251c54a948956f58b22037,
     type: 3}
+--- !u!225 &2350316540824492491
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413590619543713705}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6899294134729377403
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +188,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 2823.7537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6006003118130991910
 CanvasRenderer:

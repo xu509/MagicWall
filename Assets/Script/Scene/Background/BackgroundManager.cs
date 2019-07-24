@@ -14,20 +14,6 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] DimBubbleAgent _dimBubbleAgentPrefab;
 
     /// <summary>
-    ///     清晰的球移动速度
-    /// </summary>
-    [SerializeField, Range(0.1f, 50f)] float _ClearBubbleMoveFactor;
-    public float ClearBubbleMoveFactor { get { return _ClearBubbleMoveFactor; } }
-
-
-    /// <summary>
-    ///     模糊的球移动速度
-    /// </summary>
-    [SerializeField, Range(0.1f, 50f)] float _DimBubbleMoveFactor;
-    public float DimBubbleMoveFactor { get { return _DimBubbleMoveFactor; } }
-
-
-    /// <summary>
     /// 对象池 : 清晰的球
     /// </summary>
     BubblePool<ClearBubbleAgent> _clearBubbleAgentPool;
@@ -40,18 +26,15 @@ public class BackgroundManager : MonoBehaviour
     BubblePool<DimBubbleAgent> _dimBubbleAgentPool;
     public BubblePool<DimBubbleAgent> DimBubbleAgentPool { get { return _dimBubbleAgentPool; } }
 
-
-    MagicWallManager _manager;
-      
-
     [SerializeField] private RectTransform _bubblesBackground;
 
-    private float last_create_clear_time = 0f;
-
-    private float last_create_dim_time = 0f;
-
+    MagicWallManager _manager;
+    private List<BubbleAgent> _bubbleAgents;
 
     private bool hasInit = false;
+    private bool _doBeforeRun = false;
+
+
 
     //
     // Awake instead of Constructor
@@ -64,23 +47,21 @@ public class BackgroundManager : MonoBehaviour
     public void Init(MagicWallManager manager) {
         _manager = manager;
 
-        _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.ClearBubblePoolSize);
-
-        _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.DimBubblePoolSize);
-
-        last_create_clear_time = 0.0f;
-        last_create_dim_time = 0.0f;
+        _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundClearBubblePoolSize);
+        _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundDimBubblePoolSize);
 
         //  初始化对象池
         PrepareData();
 
         hasInit = true;
+        _doBeforeRun = false;
+        _bubbleAgents = new List<BubbleAgent>();
     }
 
     /// <summary>
     /// 气球池初始化
     /// </summary>
-    public void PrepareData() {
+    private void PrepareData() {
         _clearBubbleAgentPool.Init(_clearBubbleAgentPrefab, _bubblesBackground);
         _dimBubbleAgentPool.Init(_dimBubbleAgentPrefab, _bubblesBackground);
     }
@@ -98,95 +79,128 @@ public class BackgroundManager : MonoBehaviour
         if (!hasInit)
             return;
 
-        if ((Time.time - last_create_clear_time) > _manager.managerConfig.ClearBubbbleCreateIntervalTime) {
-            CreateClearBubble();
-            last_create_clear_time = Time.time;
+        DoBeforeRun();
+
+        if (!_doBeforeRun)
+            return;
+
+        for (int i = 0; i < _bubbleAgents.Count; i++) {
+
+            BubbleAgent bubbleAgent = _bubbleAgents[i];
+
+            //  如果气球已需要销毁
+            if (_bubbleAgents[i].IsOverTop())
+            {
+                float k = Random.Range(0f,1f);
+                float position_x = Mathf.Lerp(0, Screen.width,k);
+
+                // 清理
+                if (_bubbleAgents[i].bubbleType == BubbleType.Clear)
+                {
+                    _clearBubbleAgentPool.ReleaseObj(_bubbleAgents[i] as ClearBubbleAgent);
+                    _bubbleAgents.Remove(_bubbleAgents[i]);
+                    CreateClearBubble(new Vector3(position_x,0));
+                }
+                else
+                {
+                    _dimBubbleAgentPool.ReleaseObj(_bubbleAgents[i] as DimBubbleAgent);
+                    _bubbleAgents.Remove(_bubbleAgents[i]);
+                    CreateDimBubble(new Vector3(position_x, 0));
+                }
+            }
+            else {
+                float minf, maxf;
+                if (bubbleAgent.bubbleType == BubbleType.Clear) {
+                    minf = _manager.managerConfig.BackgroundClearMoveMinFactor;
+                    maxf = _manager.managerConfig.BackgroundClearMoveMaxFactor;
+                } else {
+                    minf = _manager.managerConfig.BackgroundDimMoveMinFactor;
+                    maxf = _manager.managerConfig.BackgroundDimMoveMaxFactor;
+                }
+
+                float moveFactor = bubbleAgent.GetMoveFactor(minf, maxf);
+                _bubbleAgents[i].Raise(moveFactor);
+            }
+
         }
 
-        if ((Time.time - last_create_dim_time) > _manager.managerConfig.DimBubbbleCreateIntervalTime)
-        {
-            CreateDimBubble();
-            last_create_dim_time = Time.time;
-        }
+
+
 
     }
 
-    ////创建气泡
-    //void CreateBubble()
-    //{
-    //    BubbleAgent bubble;
-    //    float random = Random.Range(0, 2);
-    //    int w = 0;
-    //    float alpha = 1;
-    //    float duration = _backgroundUpDuration;
-    //    BubbleType bubbleType;
-    //    if (random == 0)
-    //    {
-    //        //实球
-    //        bubble = _clearBubbleAgentPool.GetObj();
-    //        w = Random.Range(400, 80);
-    //        alpha = w / (400f+100f);
-    //        //print(w);
-    //        duration -= alpha * 5;
-    //        bubbleType = BubbleType.Clear;
-    //    }
-    //    else
-    //    {
-    //        //虚球
-    //        bubble = _dimBubbleAgentPool.GetObj();
-    //        int r = Random.Range(0, 2);
-    //        w = (r == 0) ? 200 : 80;
-    //        duration += 10f;
-    //        alpha = r == 0 ? 0.8f : 0.4f;
-    //        bubbleType = BubbleType.Dim;
-    //    }
-    //    RectTransform rectTransform = bubble.GetComponent<RectTransform>();
-    //    rectTransform.sizeDelta = new Vector2(w, w);
 
-    //    float x = Random.Range(-100, (int)_manager.mainPanel.rect.width);
+    private void DoBeforeRun() {
+        if (!_doBeforeRun) {
 
-    //    bubble.GetComponent<RawImage>().DOFade(alpha, 0);
-    //    rectTransform.anchoredPosition3D = new Vector3(x, -w, 0);
-    //    rectTransform.DOLocalMoveY(2000, duration)
-    //        .OnComplete(() => BubbleMoveComplete(bubble, bubbleType));
+            for (int i = 0; i < _manager.managerConfig.BackgroundClearBubblePoolSize; i++) {
+                Vector3 position = Random.insideUnitSphere;
 
-    //    //bubbles.Add(bubble);
-    //}
+                float x = (position.x + 1f) / 2f;
+                float y = (position.y + 1f) / 2f;
+                float z = (position.z + 1f) / 2f;
 
-    void CreateClearBubble() {
+                x = Mathf.Lerp(0, Screen.width, x);
+                y = Mathf.Lerp(0, Screen.height, y);
+                //y = Mathf.Lerp(0, Screen.height, y);
+
+                y = y - Screen.height;
+
+                CreateClearBubble(new Vector3(x, y, z));
+            }
+
+
+            for (int i = 0; i < _manager.managerConfig.BackgroundDimBubblePoolSize; i++)
+            {
+                Vector3 position = Random.insideUnitSphere;
+
+                float x = (position.x + 1f) / 2f;
+                float y = (position.y + 1f) / 2f;
+                float z = (position.z + 1f) / 2f;
+
+                x = Mathf.Lerp(0, Screen.width, x);
+                y = Mathf.Lerp(0, Screen.height, y);
+
+                y = y - Screen.height;
+
+                CreateDimBubble(new Vector3(x, y, z));
+            }
+
+            _doBeforeRun = true;
+        }
+    }
+
+
+    void CreateClearBubble(Vector3 position) {
         BubbleAgent bubble = _clearBubbleAgentPool.GetObj();
-        bubble.Init(this, _manager, BubbleType.Clear);
+
+        float height = bubble.GetComponent<RectTransform>().rect.height;
+        position = position - new Vector3(0, height, 0);
+
+        bubble.Init(this, _manager, BubbleType.Clear,position);
+
+
+        _bubbleAgents.Add(bubble);
     }
 
-    void CreateDimBubble()
+    void CreateDimBubble(Vector3 position)
     {
         BubbleAgent bubble = _dimBubbleAgentPool.GetObj();
-        bubble.Init(this, _manager, BubbleType.Dim);
+
+        float height = bubble.GetComponent<RectTransform>().rect.height;
+        position = position - new Vector3(0, height, 0);
+
+        bubble.Init(this, _manager, BubbleType.Dim, position);
+        bubble.GetComponent<RectTransform>().SetAsFirstSibling();
+        _bubbleAgents.Add(bubble);
     }
 
-
-    //气泡上升结束后销毁
-    void BubbleMoveComplete(BubbleAgent bubble,BubbleType type)
-    {
-        if (type == BubbleType.Clear)
-        {
-            _clearBubbleAgentPool.ReleaseObj(bubble as ClearBubbleAgent);
-        }
-        else {
-            _dimBubbleAgentPool.ReleaseObj(bubble as DimBubbleAgent);
-        }
-    }
 
 
     public void Reset() {
         hasInit = false;
         _clearBubbleAgentPool.Reset();
         _dimBubbleAgentPool.Reset();
-        //hasInit = false;
-        //for (int i = 0; i < bubbles.Count; i++) {
-        //    Destroy(bubbles[i]);
-        //}
-        //Init(_manager);
     }
 
 

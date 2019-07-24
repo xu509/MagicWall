@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 /// <summary>
@@ -10,20 +11,23 @@ public abstract class BubbleAgent : MonoBehaviour
 {
     [SerializeField] Image _image;
 
+    protected float _scaleFactorMin = 0.3f;
+    protected float _scaleFactorMax = 0.8f;
+
+
+    protected float _scaleFactor;
+    public float scaleFactor { set { _scaleFactor = value;  } get { return _scaleFactor; } }
+
     private bool hasInit = false;
-    private BubbleType _bubbleType;
+    private BubbleType _bubbleType; //  气球类型
+    public BubbleType bubbleType{ get { return _bubbleType; } }
     protected float screenHeight;
 
     protected MagicWallManager _manager;
     protected BackgroundManager _backgroundManager;
 
-    protected float _moveFactor;    //  移动速度
-    protected float _alpha;  //  透明度
-    protected float _width;  //  宽度
-    protected Vector3 _genAnchorPosition;  //  出生位置
 
-
-    public void Init(BackgroundManager backgroundManager, MagicWallManager manager,BubbleType bubbleType)
+    public void Init(BackgroundManager backgroundManager, MagicWallManager manager,BubbleType bubbleType,Vector3 position)
     {
         
         _manager = manager;
@@ -31,80 +35,38 @@ public abstract class BubbleAgent : MonoBehaviour
         _bubbleType = bubbleType;
         screenHeight = manager.magicWallPanel.rect.height;
 
-        DoSet();
+        // 设置位置
+        GetComponent<RectTransform>().anchoredPosition3D = position;
 
-        // 此时宽度 80 - 400 / 80 - 200
+        // 设置图片
+        SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas");
 
-        // TODO 分布均匀
+        if (bubbleType == BubbleType.Clear)
+        {
+            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+        }
+        else {
+            _image.sprite = spriteAtlas.GetSprite("background-bubble-dim");
 
-        GetComponent<RectTransform>().sizeDelta = new Vector2(_width, _width);
+        }
 
-        UpdateAlpha(_alpha);
-                
-        GetComponent<RectTransform>().anchoredPosition3D = _genAnchorPosition;
+
+
+        //  生成随机大小 0.6 - 1
+        float s = Mathf.Lerp(_scaleFactorMin, _scaleFactorMax, Random.Range(0f, 1f));
+        _scaleFactor = s;
+        Vector3 scaleFactor = new Vector3(s, s, s);
+        GetComponent<RectTransform>().localScale = scaleFactor;
+
+
+        float a = Mathf.Lerp(0.2f, 0.6f, Random.Range(0f, 1f));
+        UpdateAlpha(a);
+
 
         gameObject.SetActive(true);
 
         hasInit = true;
     }
-
-    protected void DoBaseFixedUpdate()
-    {
-        //在 _upDuringTime 的时间内，气球从底部走到顶部
-
-        if (IsOverTop())
-        {
-            if (_bubbleType == BubbleType.Clear)
-            {
-                _backgroundManager.ClearBubbleAgentPool.ReleaseObj(this as ClearBubbleAgent);
-            }
-            else {
-                _backgroundManager.DimBubbleAgentPool.ReleaseObj(this as DimBubbleAgent);
-            }
-        }
-        else {
-            if (_bubbleType == BubbleType.Clear)
-            {
-                // 大球移动速度超过小球
-                // r:0 -> width:80 ; r:1 -> width:400
-                // (width - 80 ) / 320 = r;
-                float factor = Mathf.Lerp(_backgroundManager.ClearBubbleMoveFactor / 3
-                    , _backgroundManager.ClearBubbleMoveFactor
-                    , (_width - 80) / 320);
-                transform.Translate(0, Time.deltaTime * factor, 0);
-            }
-            else
-            {
-                // 80 - 200
-                float factor = Mathf.Lerp(_backgroundManager.ClearBubbleMoveFactor / 3
-                    , _backgroundManager.ClearBubbleMoveFactor
-                    , (_width - 80) / 120);
-                transform.Translate(0, Time.deltaTime * factor, 0);
-            }
-        }
-    }
-
-    void DoSet() { 
-        _width = SetWidth();
-        _alpha = SetAlpha();
-        _genAnchorPosition = SetGenPosition();
-    }
-
-    /// <summary>
-    ///     设置透明度
-    /// </summary>
-    protected abstract float SetAlpha();
-
-    /// <summary>
-    ///     设置长 / 宽
-    /// </summary>
-    protected abstract float SetWidth();
-
-    /// <summary>
-    ///     设置长 / 宽
-    /// </summary>
-    protected abstract Vector3 SetGenPosition();
-
 
 
     /// <summary>
@@ -113,15 +75,31 @@ public abstract class BubbleAgent : MonoBehaviour
     /// <param name="alpha"></param>
     void UpdateAlpha(float alpha)
     {
+        //Color c = GetComponent<RawImage>().color;
         Color c = GetComponent<Image>().color;
         c.a = alpha;
-        GetComponent<Image>().color = c;
+        GetComponent<Image>().color = c;   
+        //GetComponent<RawImage>().color = c;
     }
 
 
-    private bool IsOverTop() {
+    public bool IsOverTop() {
         float y_max = _manager.magicWallPanel.rect.yMax;
         return GetComponent<RectTransform>().anchoredPosition.y > (y_max * 2);
     }
+
+    /// <summary>
+    /// 上升
+    /// </summary>
+    /// <param name="moveFactor"></param>
+    public abstract void Raise(float moveFactor);
+
+
+    /// <summary>
+    /// 获取移动因素
+    /// </summary>
+    /// <returns></returns>
+    public abstract float GetMoveFactor(float minFactor,float maxFactor);
+
 
 }

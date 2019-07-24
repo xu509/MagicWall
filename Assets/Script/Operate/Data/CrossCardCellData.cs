@@ -18,6 +18,7 @@ public class CrossCardCellData
     CrossCardCategoryEnum _category;    //  类别
     Texture _imageTexture;
     List<CrossCardCellData> _datas;//二级内容
+    MagicWallManager _manager;
 
     public CrossCardAgent crossCardAgent { set { _crossCardAgent = value; } get { return _crossCardAgent; } }
 
@@ -46,6 +47,8 @@ public class CrossCardCellData
     public Texture ImageTexture { set { _imageTexture = value; } get { return _imageTexture; } }
 
     public List<CrossCardCellData> Datas { set { _datas = value; } get { return _datas; } }
+
+    public MagicWallManager magicWallManager { set { _manager = value; } get { return _manager; } }
 
     public override string ToString() {
         string str = "";

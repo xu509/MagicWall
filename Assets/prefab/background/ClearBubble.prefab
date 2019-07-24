@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4511088241186586017}
   - component: {fileID: 4511088241186586023}
   - component: {fileID: 4444414888624938364}
-  - component: {fileID: 6296689145797979153}
+  - component: {fileID: 5386443142208470447}
   m_Layer: 5
   m_Name: ClearBubble
   m_TagString: Untagged
@@ -58,8 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91cd3aa71c33d14b8a5d02f1956d5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 0}
---- !u!114 &6296689145797979153
+  _image: {fileID: 5386443142208470447}
+--- !u!114 &5386443142208470447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,13 +73,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 2798da8c8b47a8f44932b442064bfb43, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

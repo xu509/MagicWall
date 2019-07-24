@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class CardItemVideoFactory : CardItemFactory
 {
+    MagicWallManager _manager;
+
+    public CardItemVideoFactory(MagicWallManager manager)
+    {
+        _manager = manager;
+    }
+
     //
     //  生存公司卡片
     //
@@ -13,7 +20,7 @@ public class CardItemVideoFactory : CardItemFactory
 
         for (int i = 0; i < 2; i++)
         {
-            Video e = DaoService.Instance.GetVideoDetail();
+            Video e = _manager.daoService.GetVideoDetail();
             CrossCardCellData cd = new CrossCardCellData();
             cd.IsImage = false;
             cd.Description = e.Description;
@@ -21,6 +28,7 @@ public class CardItemVideoFactory : CardItemFactory
             cd.Category = CrossCardCategoryEnum.VIDEO;
             cd.crossCardAgent = cardAgent as CrossCardAgent;
             cd.VideoUrl = e.Address;
+            cd.magicWallManager = _manager;
 
             // 设置video的封面
             string address = e.Cover;

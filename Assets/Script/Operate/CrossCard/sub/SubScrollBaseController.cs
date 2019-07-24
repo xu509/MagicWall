@@ -17,6 +17,9 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
     public SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
     {
+        if (pool.Count == 0) {
+            return null;
+        }
 
         if (index == pool.Count)
         {
@@ -105,6 +108,10 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
     void ResizePool(float firstPosition)
     {
+        System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();
+        sw3.Start();
+
+
         if (CellPrefab == null)
         {
             throw new NullReferenceException(nameof(CellPrefab));
@@ -131,10 +138,16 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
             pool.Add(cell);
         }
+
+        sw3.Stop();
+        //Debug.Log("[ResizePool] 耗时: " + sw3.ElapsedMilliseconds / 1000f + "Add Content - " + addCount);
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
     {
+        System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+        sw2.Start();
+
         for (var i = 0; i < pool.Count; i++)
         {
             var index = firstIndex + i;
@@ -161,7 +174,10 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
             cell.UpdatePosition(position);
         }
-        
+
+        sw2.Stop();
+        // Debug.Log("[BASE]  : "  + sw2.ElapsedMilliseconds / 1000f);
+
     }
 
     int CircularIndex(int i, int size) {

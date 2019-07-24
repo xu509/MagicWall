@@ -24,6 +24,7 @@ public class BusinessCardAgent : MonoBehaviour
     [SerializeField] Button _btnReturn;
     [SerializeField] Button _btnNext;
     [SerializeField] float _heightFactor;
+    [SerializeField] float _widthFactor;
 
     private Action _onHandleUpdateAction;
     private Action _onClickCloseAction;
@@ -166,7 +167,7 @@ public class BusinessCardAgent : MonoBehaviour
     void InitComponents(Vector2 position,float cardWidth) {
 
         float height = Screen.height * _heightFactor;
-        float width = height * 91 / 59;
+        float width = height * _widthFactor;
 
         // 看情况在左侧，或者右侧
         float w =  position.x + cardWidth / 2 + width / 2 + 50;

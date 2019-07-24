@@ -17,16 +17,24 @@ public class SearchResultAgent : MonoBehaviour
     [SerializeField] SearchResultScrollBarAgent _searchResultScrollBarAgent; // 滚动条代理
     [SerializeField] RectTransform _noResultContainer;
 
+    [SerializeField, Header("Move")] Sprite _sprite_move_active;
+    [SerializeField] Sprite _sprite_move;
+    [SerializeField] RectTransform _move_rect;
+    [SerializeField] MoveButtonComponent _moveBtnComponent;
+
 
     private List<SearchResultItemAgent> _resultItems;   //结果 items
     private ItemsFactory _itemsFactory;   //  实体生成器
     private MagicWallManager _manager;
+    private CardAgent _cardAgent;
 
     private float _default_scrollview_height;
     private Vector2 _default_scrollview_anchorposition;
 
     private float _gap = 10f;
     private float _itemHeight;
+
+    private bool _doMoving = false;
 
 
     void Awake()
@@ -74,10 +82,12 @@ public class SearchResultAgent : MonoBehaviour
     /// <summary>
     /// 初始化数据
     /// </summary>
-    public void InitData(List<SearchBean> searchBeans,string title,MagicWallManager manager) {
+    public void InitData(List<SearchBean> searchBeans,string title,MagicWallManager manager,CardAgent cardAgent) {
         _title.text = title;
         _manager = manager;
+        _cardAgent = cardAgent;
 
+        _moveBtnComponent.Init(DoMove, _cardAgent);
 
         int count = searchBeans.Count;
 
@@ -137,7 +147,19 @@ public class SearchResultAgent : MonoBehaviour
 
 
     public void DoMove() {
-        Debug.Log("DoMove");
+
+        if (!_doMoving)
+        {
+            _move_rect.GetComponent<Image>().sprite = _sprite_move_active;
+        }
+        else
+        {
+            _move_rect.GetComponent<Image>().sprite = _sprite_move;
+
+        }
+
+        _doMoving = !_doMoving;
+
         _onClickMove.Invoke();
     }
 

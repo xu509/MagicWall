@@ -13,6 +13,10 @@ public class FlockTweenerManager
     ///     卡片 —— 完全删除 —— 移动至后方动画
     /// </summary>
     public static string CardAgent_Destory_Second_DOAnchorPos3D = "CardAgentDestorySecondDOAnchorPos3D";
+
+    public static string CardAgent_Destory_Second_DOScale_IsOrigin = "CardAgentDestorySecondDOScaleIsOrigin";
+    public static string CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin = "CardAgentDestorySecondDOAnchorPos3DIsOrigin";
+
     public static string FlockAgent_DoRecoverAfterChoose_DOScale = "FlockAgentDoRecoverAfterChooseDOScale";
     public static string FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D = "FlockAgentDoRecoverAfterChooseDOAnchorPos3D";
     public static string StarEffect_Starting_DOAnchorPos3DZ = "StarEffectStartingDOAnchorPos3DZ";

@@ -20,6 +20,9 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     [SerializeField] SliceCardCellData _cellData; //  cellData
     int _likes;
 
+
+    private MagicWallManager _manager;
+
     public SliceCardCellData cellData { set { _cellData = value; } get { return _cellData; } }
 
     [SerializeField] RawImage _cover;
@@ -53,6 +56,8 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     {
         SetupData(cellData);
 
+        _manager = cellData.magicWallManager;
+
         _cellData = cellData;
         _index = cellData.Index;
 
@@ -82,11 +87,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             // 调整 Like 按钮
             if (cellData.IsProduct())
             {
-                _likes = DaoService.Instance.GetLikesByProductDetail(_cellData.Id);
+                _likes = _manager.daoService.GetLikesByProductDetail(_cellData.Id);
             }
             else
             {
-                _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
+                _likes = _manager.daoService.GetLikesByActivityDetail(_cellData.Id);
             }
 
 
@@ -143,11 +148,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         // 调整 Like 按钮
         if (cellData.IsProduct())
         {
-            _likes = DaoService.Instance.GetLikesByProductDetail(_cellData.Id);
+            _likes = _manager.daoService.GetLikesByProductDetail(_cellData.Id);
         }
         else
         {
-            _likes = DaoService.Instance.GetLikesByActivityDetail(_cellData.Id);
+            _likes = _manager.daoService.GetLikesByActivityDetail(_cellData.Id);
         }
 
         _likes = 0;

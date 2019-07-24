@@ -61,7 +61,7 @@ public class CutEffectFactory : Singleton<CutEffectFactory>
     //
     //	根据场景类型获取过场
     //
-    public CutEffect GetByScenes(SceneContentType type)
+    public CutEffect GetByScenes(DataType type)
     {
         int count = cutEffects.Count;
         if (count == 0)

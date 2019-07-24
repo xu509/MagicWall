@@ -43,6 +43,7 @@ public class AppUtils
         {
             fileData = File.ReadAllBytes(filePath);
             tex = new Texture2D(400, 400);
+
             bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         else
@@ -52,43 +53,6 @@ public class AppUtils
         return tex;
     }
 
-    /// <summary>
-    ///     随机设置图片大小，用于前后分层效果与星空效果
-    /// </summary>
-    /// <param name="size"></param>
-    /// <param name="displayFactor"></param>
-    /// <returns></returns>
-    public static Vector2 ResetTexture(Vector2 size,float displayFactor)
-    {
-        //图片宽高
-        float w = size.x;
-        float h = size.y;
-        //组件宽高
-        float width;
-        float height;
-        //if (w > 600 || h > 400)
-        //{
-        //    w *= 0.9f;
-        //    h *= 0.9f;
-        //    ResetTexture(new Vector2(w, h));
-        //}
-        // TODO 此处随机量被固定死
-        if (w >= h)
-        {
-            //宽固定
-            width = Random.Range(300 * displayFactor, 500 * displayFactor);
-            height = h / w * width;
-        }
-        else
-        {
-            //高固定
-            height = Random.Range(200 * displayFactor, 400 * displayFactor);
-            width = w / h * height;
-        }
-        width = (int)width;
-        height = (int)height;
-        return new Vector2(width, height);
-    }
 
 
     /// <summary>

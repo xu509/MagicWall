@@ -10,7 +10,7 @@ using System;
 public class GoDownDisplayBehavior : CutEffectDisplayBehavior
 {
     private MagicWallManager _manager;
-    private DaoService _daoService;
+    private IDaoService _daoService;
 
     private DisplayBehaviorConfig _displayBehaviorConfig;
     private bool flag = false;
@@ -30,7 +30,7 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
     public void Run()
 	 {
 	    // 面板向下移动
-        Vector3 to = new Vector3(0,0 - Time.deltaTime * _manager.MovePanelFactor, 0);
+        Vector3 to = new Vector3(0,0 - Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor, 0);
         _manager.mainPanel.transform.Translate(to);
 
         // 调整panel的差值
@@ -40,10 +40,10 @@ public class GoDownDisplayBehavior : CutEffectDisplayBehavior
     }
 
     private void UpdateAgents() {
-        if (_displayBehaviorConfig.SceneContentType == SceneContentType.activity){
+        if (_displayBehaviorConfig.dataType == DataType.activity){
             UpdateAgentsOfActivity();
         }
-        else if (_displayBehaviorConfig.SceneContentType == SceneContentType.product) {
+        else if (_displayBehaviorConfig.dataType == DataType.product) {
             UpdateAgentsOfProduct();
         }
         else
