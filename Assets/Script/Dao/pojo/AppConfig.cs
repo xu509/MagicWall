@@ -8,6 +8,7 @@ using UnityEngine;
 public class AppConfig
 {
     public static string KEY_THEME_ID = "theme_id";
+    public static string KEY_SHOW_CONFIG = "show_config";
 
     // 曲线交错持续时间
     public static string KEY_CutEffectDuring_CurveStagger = "cuteffectduring_curvestagger";

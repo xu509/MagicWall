@@ -78,14 +78,14 @@ public class TheDataSource : Singleton<TheDataSource>
     }
 
 
-    public DataSet SelectWhere(string tableName, string[] items, string[] col, string[] operation, string[] values)
+    public static DataSet SelectWhere(string tableName, string[] items, string[] col, string[] operation, string[] values)
     {
 
         if (col.Length != operation.Length || operation.Length != values.Length)
         {
             throw new Exception("输入不正确：" + "col.Length != operation.Length != values.Length");
         }
-        string query = "SELECT " + items[0];
+        string query = "SELECT" + items[0];
         for (int i = 1; i < items.Length; ++i)
         {
             query += ", " + items[i];
@@ -95,11 +95,17 @@ public class TheDataSource : Singleton<TheDataSource>
         {
             query += " AND " + col[i] + operation[i] + "'" + values[0] + "' ";
         }
-        return QuerySet(query);
+        return GetDataSet(query);
     }
 
-    public static DataSet QuerySet(string sqlString)
+    /// <summary>
+    /// 执行sql语句，获取DataSet
+    /// </summary>
+    /// <param name="sqlString"></param>
+    /// <returns></returns>
+    public static DataSet GetDataSet(string sqlString)
     {
+        //Debug.Log("SQL： " + sqlString);
         if (mySqlConnection.State == ConnectionState.Open)
         {
             DataSet ds = new DataSet();
