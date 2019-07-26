@@ -258,7 +258,7 @@ public class DaoService : MonoBehaviour, IDaoService
     public Product GetProductDetail(int pro_id)
     {
         Product product = new Product();
-        DataSet dataSet = TheDataSource.GetDataSet("select * from activity where pro_id='" + pro_id + "'");
+        DataSet dataSet = TheDataSource.GetDataSet("select * from product where pro_id='" + pro_id + "'");
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
