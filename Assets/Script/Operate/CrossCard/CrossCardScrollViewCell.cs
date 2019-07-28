@@ -62,12 +62,6 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
 
         gameObject.name = "CrossCardScrollCell" + cellData.Index;
 
-        Debug.Log("[Category]" + cellData.Category);
-        Debug.Log("cellData == null : " + (cellData == null));
-        Debug.Log("cellData.magicWallManager == null : " + (cellData.magicWallManager == null));
-        Debug.Log("cellData.magicWallManager.cardItemFactoryInstance == null : " + (cellData.magicWallManager.cardItemFactoryInstance == null));
-        Debug.Log("[Category End]");
-
         IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
             .Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
 

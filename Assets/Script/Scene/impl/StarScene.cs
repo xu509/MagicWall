@@ -112,7 +112,7 @@ public class StarScene : IScene
 
 
     private void DoPrepare() {
-        Debug.Log("Do Prepare");
+        //Debug.Log("Do Prepare");
         _startTime = Time.time;
 
 
@@ -182,7 +182,7 @@ public class StarScene : IScene
 
     private void DoEnd()
     {
-        Debug.Log("Do End");
+        //Debug.Log("Do End");
 
 
         // 淡出

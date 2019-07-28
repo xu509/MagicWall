@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 过场效果
-public abstract class CutEffect : MonoBehaviour
+public abstract class CutEffect 
 {
     protected MagicWallManager _manager;
     protected AgentManager _agentManager;

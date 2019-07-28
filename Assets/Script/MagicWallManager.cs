@@ -60,7 +60,7 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField] DaoService _realDaoService;
 
 
-    [SerializeField,Header("Mock")] bool _isMock;
+    [SerializeField,Header("Mock")] bool _isMockData;
 
 
     #endregion
@@ -82,9 +82,9 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+   // public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
    //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
  
@@ -146,7 +146,7 @@ public class MagicWallManager:MonoBehaviour
         TheDataSource theDataSource = TheDataSource.Instance;
 
         // 初始化数据服务
-        if (_isMock)
+        if (_isMockData)
         {
             //_daoService = DaoService.Instance;
             _daoService = _mockDaoService;
