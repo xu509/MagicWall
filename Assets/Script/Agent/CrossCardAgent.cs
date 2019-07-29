@@ -85,6 +85,7 @@ public class CrossCardAgent : CardAgent
         item2.Index = index;
         item2.Title = "公司名片";
         item2.Description = enterpriseDetail.Enterprise.Description;
+        item2.magicWallManager = _manager;
         index++; 
         _cellDatas.Add(item2);
         //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));

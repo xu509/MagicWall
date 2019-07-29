@@ -44,6 +44,9 @@ public class TheDataSource : Singleton<TheDataSource>
     void Awake() {
         //_datas = new ItemDataBase();
 
+
+        //MySqlCommand
+
         InitData();
     }
 

@@ -82,11 +82,9 @@ public class FrontBackUnfoldCutEffect : CutEffect
         for (int i = 0; i < _agentManager.Agents.Count; i++)
         {
             FlockAgent agent = _agentManager.Agents[i];
-            //Vector2 agent_vector2 = agent.GetComponent<RectTransform> ().anchoredPosition;
             Vector2 agent_vector2 = agent.GenVector2;
             Vector2 ori_vector2 = agent.OriVector2;
 
-            //agent.NextVector2 = agent_vector2;
 
             float run_time = (_startingTimeWithOutDelay - agent.DelayX + agent.DelayY) - _timeBetweenStartAndDisplay; // 动画运行的总时间
 
