@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class DaoUtil
 {
     /// <summary>
-    /// 
+    ///     根据Json字符串，获取物流实例
     /// </summary>
     /// <param name="jsonstr"></param>
-    /// <returns></returns>
-    public object ConvertMaterialJson(string jsonstr) {
+    /// <returns>ary： List<MWMaterial> / obj ： MWMaterial</returns>
+    public static object ConvertMaterialJson(string jsonstr) {
         // 如果含有 '[',']'标志，则解析为数组
         bool isArray = false;
 
@@ -28,16 +30,21 @@ public class DaoUtil
 
     }
 
-    public List<MWMaterial> ConvertMaterialAry(string jsonstr) {
+    private static List<MWMaterial> ConvertMaterialAry(string jsonstr) {
+        jsonstr = jsonstr.Replace("[","");
+        jsonstr = jsonstr.Replace("]","");
+        string[] datas = Regex.Split(jsonstr, "},{", RegexOptions.IgnoreCase);
 
-
-
-
-
-        return null;
+        List<MWMaterial> mWMaterials = new List<MWMaterial>();
+        if (datas.Length > 0) {
+            for (int i = 0; i < datas.Length; i++) {
+                mWMaterials.Add(ConvertMaterialObject(datas[i]));
+            }
+        }
+        return mWMaterials;
     }
 
-    public MWMaterial ConvertMaterialObject(string jsonstr)
+    private static MWMaterial ConvertMaterialObject(string jsonstr)
     {
         MWMaterial mWMaterial = new MWMaterial();
         return mWMaterial.ConvertJSONToObject(jsonstr);
