@@ -7,6 +7,7 @@ using System.IO;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System;
+using LitJson;
 //
 //  数据源
 //
@@ -31,6 +32,19 @@ public class TheDataSource : Singleton<TheDataSource>
     ////用户密码
     //private string password = "artvoi";
 
+    private string _tempData = "[{type:'video',path:'/uploads/test.mp4',description:'文字描述1',cover:'/uploads/20190704/4a3d48f0e4123e3b2a3ae7132037315f.png'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述2',cover:'/uploads/20190704/4ebb6627a34d6bb18712b146217359a2.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述3',cover:'/uploads/20190704/26bb2fc075103c1fc59280a11730359f.png'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述4',cover:'/uploads/20190704/28e7a9879a442fc1923245224e23c1ea.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述5',cover:'/uploads/20190704/606f376c596cc97f132ce54a897ad064.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述6',cover:'/uploads/20190704/116fcec5f6e1c9c3ec617a80295ffa1c.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述7',cover:'/uploads/20190704/9203df4ef4c8e2dd227ae02361f864e8.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述8',cover:'/uploads/20190704/9595e33759f9c248112781bbc7291f13.jpg'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述9',cover:'/uploads/20190704/5331447e01d5441fab9712ed823c996e.png'}," +
+        "{type:'video',path:'/uploads/test.mp4',description:'文字描述10',cover:'/uploads/20190704/b6be8f64a52b8b09d5549f2f3537bd66.jpg'}]";
+
+
+
 
     string sql = "Database=iq360_cloud_wall;Server=192.168.1.100;Uid=root;Password=artvoi;pooling=false;CharSet=utf8;port=3306";
     //
@@ -43,6 +57,23 @@ public class TheDataSource : Singleton<TheDataSource>
     //
     void Awake() {
         //_datas = new ItemDataBase();
+
+
+        //JsonData data = JsonMapper.ToObject(_tempData);
+
+        string _t = "{type:'video',path:'/uploads/test.mp4',description:'文字描述1',cover:'/uploads/20190704/4a3d48f0e4123e3b2a3ae7132037315f.png'}";
+
+        
+
+
+
+        MWMaterial m = new MWMaterial();
+        m.ConvertJSONToObject(_t);
+
+
+        //Debug.Log(data.ToString());
+
+
 
 
         //MySqlCommand
