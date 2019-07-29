@@ -44,16 +44,15 @@ public class MWMaterial
             str = str.Replace("cover", "'cover'");
         }
 
-        Debug.Log("STR : " + str);
-
 
         JsonData data = JsonMapper.ToObject(str);
+        MWMaterial mWMaterial = new MWMaterial();
+        mWMaterial.type = (string)data["type"];
+        mWMaterial.path = (string)data["path"];
+        mWMaterial.description = (string)data["description"];
+        mWMaterial.cover = (string)data["cover"];
 
-        Debug.Log("data : " + data);
-
-
-
-        return null;
+        return mWMaterial;
     }
 
 }
