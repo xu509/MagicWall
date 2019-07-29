@@ -276,6 +276,8 @@ public class VideoAgent : MonoBehaviour
 
     public void DoClose()
     {
+        Debug.Log("DO CLOSE");
+
         _cardAgent?.DoCloseVideoContainer();
     }
 

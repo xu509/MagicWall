@@ -65,10 +65,10 @@ public class TheDataSource : Singleton<TheDataSource>
 
         List<MWMaterial> items = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(_tempData);
 
-        foreach (MWMaterial mWMaterial in items) {
-            Debug.Log("mWMaterial : " + mWMaterial.ToString());
+        //foreach (MWMaterial mWMaterial in items) {
+        //    Debug.Log("mWMaterial : " + mWMaterial.ToString());
             
-        }
+        //}
 
 
 
