@@ -12,7 +12,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private float originalDistance;
     private List<Touch> touchs = new List<Touch>();//当前图片的所有Touch
 
-    private bool canScroll;//ScrollView是否可以移动
+    private bool canScroll;//ScrollView是否可以移动（缩放时不能移动）
 
     private Touch oldTouch1;  //上次触摸点1(手指1)
     private Touch oldTouch2;  //上次触摸点2(手指2)
@@ -101,6 +101,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        
         if (touchs.Count == 1)
         {
             scrollRect.OnEndDrag(eventData);
