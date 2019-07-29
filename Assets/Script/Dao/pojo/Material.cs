@@ -25,6 +25,7 @@ public class MWMaterial
 
     public MWMaterial ConvertJSONToObject(string str) {
 
+        //Debug.Log(str);
         if (str.Contains("type")) {
             str = str.Replace("type", "'type'");
         }
@@ -44,16 +45,18 @@ public class MWMaterial
             str = str.Replace("cover", "'cover'");
         }
 
-        //检查左右括号
-        if (str.IndexOf('{') < 0) {
-            str = '{' + str;
+        if (str.IndexOf("}") < 0) {
+            str = str + "}";
         }
 
-        if (str.IndexOf('}') < 0)
+        if (str.IndexOf("{") < 0)
         {
-            str = str + '}';
+            str = "{" + str;
         }
 
+
+        //Debug.Log("After Convert");
+        //Debug.Log(str);
 
         JsonData data = JsonMapper.ToObject(str);
         MWMaterial mWMaterial = new MWMaterial();
@@ -63,33 +66,6 @@ public class MWMaterial
         mWMaterial.cover = (string)data["cover"];
 
         return mWMaterial;
-    }
-
-    public override string ToString()
-    {
-        string str = "";
-
-        if (type != null) {
-            str += "[type] = " + type + " "; 
-        }
-
-        if (_path != null)
-        {
-            str += "[path] = " + _path + " ";
-        }
-
-        if (description != null)
-        {
-            str += "[description] = " + description + " ";
-        }
-
-        if (_cover != null)
-        {
-            str += "[cover] = " + _cover + " ";
-        }
-
-
-        return str;
     }
 
 }

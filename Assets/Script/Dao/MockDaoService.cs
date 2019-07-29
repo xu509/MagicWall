@@ -663,7 +663,6 @@ public class MockDaoService : MonoBehaviour, IDaoService
             return GetActivity();
         }
         return null;
-
     }
 
     public Enterprise GetEnterprisesById(int id)

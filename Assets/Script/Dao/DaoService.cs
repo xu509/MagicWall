@@ -32,14 +32,15 @@ public class DaoService : MonoBehaviour, IDaoService
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
-            foreach(DataRow row in table.Rows)
+            foreach (DataRow row in table.Rows)
             {
                 Activity activity = new Activity();
-                activity.Id = (int)row[0];
-                activity.Ent_id = (int)row[1];
+                activity.Id = Convert.ToInt16(row[0]);
+                activity.Ent_id = Convert.ToInt16(row[1]);
                 activity.Name = row[7].ToString();
                 activity.Image = row[8].ToString();
                 activity.ActivityDetails = GetActivityDetails(activity.Id);
+                activities.Add(activity);
             }
         }
         return activities;
@@ -47,13 +48,14 @@ public class DaoService : MonoBehaviour, IDaoService
 
     public Activity GetActivityDetail(int act_id)
     {
+        //Debug.Log("act_id:" + act_id);
         Activity activity = new Activity();
         DataSet dataSet = TheDataSource.GetDataSet("select * from activity where act_id=" + act_id);
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
-            activity.Id = (int)table.Rows[0][0];
-            activity.Ent_id = (int)table.Rows[0][1];
+            activity.Id = Convert.ToInt16(table.Rows[0][0]);
+            activity.Ent_id = Convert.ToInt16(table.Rows[0][1]);
             activity.Name = table.Rows[0][7].ToString();
             activity.Image = table.Rows[0][8].ToString();
             activity.ActivityDetails = GetActivityDetails(act_id);
@@ -64,29 +66,35 @@ public class DaoService : MonoBehaviour, IDaoService
     public List<ActivityDetail> GetActivityDetails(int act_id)
     {
         List<ActivityDetail> activityDetails = new List<ActivityDetail>();
-        DataSet dataSet = TheDataSource.GetDataSet("select * from activity where act_id=" + act_id);
+        DataSet dataSet = TheDataSource.GetDataSet("select * from activity where act_id='" + act_id + "'");
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
-            JsonData detailsData = JsonMapper.ToObject(table.Rows[0][10].ToString());
-            for (int i = 0; i < detailsData.Count; i++)
+
+            string material = table.Rows[0][10].ToString();
+            List<MWMaterial> mWMaterials = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(material);
+
+            for (int i = 0; i < mWMaterials.Count; i++)
             {
+                MWMaterial data = mWMaterials[i];
                 //Debug.Log(data[i]["cuteffect_id"]);
                 ActivityDetail activityDetail = new ActivityDetail();
-                int type = detailsData[i]["type"].ToString() == "video" ? 1 : 0;
-                activityDetail.Type = type;
-                if (type == 0)
+                if (data.type == "video")
                 {
-                    activityDetail.Image = detailsData[i]["path"].ToString();
+                    activityDetail.Type = 1;
+                    activityDetail.Image = data.cover;
+                    activityDetail.VideoUrl = data.path;
                 }
-                else if (type == 1)
+                else if (data.type == "image")
                 {
-                    activityDetail.VideoUrl = detailsData[i]["path"].ToString();
+                    activityDetail.Type = 0;
+                    activityDetail.Image = data.path;
                 }
-                activityDetail.Description = detailsData[i]["description"].ToString();
+                activityDetail.Description = data.description;
                 activityDetails.Add(activityDetail);
             }
         }
+
         return activityDetails;
     }
 
@@ -148,9 +156,9 @@ public class DaoService : MonoBehaviour, IDaoService
             foreach (DataRow row in table.Rows)
             {
                 Enterprise enterprise = new Enterprise();
-                enterprise.Ent_id = (int)row[0];
+                enterprise.Ent_id = Convert.ToInt16(row[0]);
                 enterprise.Name = row[7].ToString();
-                bool isCustom = (int)row[16] == 0 ? true : false;
+                bool isCustom = Convert.ToInt16(row[16]) == 0 ? true : false;
                 enterprise.IsCustom = isCustom;
                 if (isCustom)
                 {
@@ -177,9 +185,9 @@ public class DaoService : MonoBehaviour, IDaoService
             DataTable table = dataSet.Tables[0];
             if (table.Rows.Count > 0)
             {
-                enterprise.Ent_id = (int)table.Rows[0][0];
+                enterprise.Ent_id = Convert.ToInt16(table.Rows[0][0]);
                 enterprise.Name = table.Rows[0][7].ToString();
-                bool isCustom = (int)table.Rows[0][16] == 0 ? true : false;
+                bool isCustom = Convert.ToInt16(table.Rows[0][16]) == 0 ? true : false;
                 enterprise.IsCustom = isCustom;
                 if (isCustom)
                 {
@@ -201,6 +209,38 @@ public class DaoService : MonoBehaviour, IDaoService
     {
         EnterpriseDetail enterpriseDetail = new EnterpriseDetail();
 
+        Enterprise enterprise = new Enterprise();
+        enterpriseDetail.Enterprise = enterprise.Generator();
+
+        Product product = new Product();
+        List<Product> _products = new List<Product>();
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        _products.Add(product.Generator());
+        enterpriseDetail.products = _products;
+
+        Catalog catalog = new Catalog();
+        List<Catalog> _catalogs = new List<Catalog>();
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        _catalogs.Add(catalog.Generator());
+        enterpriseDetail.catalog = _catalogs;
+
+        Activity activity = new Activity();
+        List<Activity> _activities = new List<Activity>();
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        _activities.Add(activity.Generator());
+        enterpriseDetail.activities = _activities;
+
+        Video video = new Video();
+        List<Video> _videos = new List<Video>();
+        _videos.Add(video.Generator());
+        //_videos.Add(video.Generator());
+        enterpriseDetail.videos = _videos;
 
         return enterpriseDetail;
     }
@@ -208,17 +248,21 @@ public class DaoService : MonoBehaviour, IDaoService
     public List<string> GetEnvCards(int id)
     {
         List<string> envCards = new List<string>();
-        DataSet dataSet = TheDataSource.GetDataSet("select image_card from company where com_id='" + id + "'");
+        DataSet dataSet = TheDataSource.GetDataSet("select b.image_card from activity a,company b where a.com_id=b.com_id and a.act_id=" + id);
         DataTable table = dataSet.Tables[0];
         if (table.Rows.Count > 0)
         {
             //查到结果
-            //Debug.Log(table.Rows[0][0].ToString());
+            Debug.Log(table.Rows[0][0].ToString());
             JsonData data = JsonMapper.ToObject(table.Rows[0][0].ToString());
             for (int i = 0; i < data.Count; i++)
             {
                 envCards.Add(data[i].ToString());   
             }
+        }
+        foreach (string s in envCards)
+        {
+            Debug.Log(s);
         }
         return envCards;
     }
@@ -227,43 +271,70 @@ public class DaoService : MonoBehaviour, IDaoService
     {
         if (type == DataType.env)
         {
-            return new Enterprise();
+            return GetEnterprise();
         }
         else if (type == DataType.product)
         {
-            return new Product();
+            return GetProduct();
         }
         else if (type == DataType.activity)
         {
-            return new Activity();
+            return GetActivity();
         }
         return null;
     }
 
+        //
+    //  获取首页企业
+    //
+    public Enterprise GetEnterprise()
+    {
+        List<Enterprise> enterprises = GetEnterprises();
+        int index = UnityEngine.Random.Range(0, enterprises.Count-1);
+        return enterprises[index];
+    }
+
+    public Product GetProduct()
+    {
+        List<Product> products = GetProducts();
+        int index = UnityEngine.Random.Range(0, products.Count-1);
+        return products[index];
+    }
+
+    public Activity GetActivity()
+    {        
+
+        List<Activity> activities = GetActivities();
+        int index = UnityEngine.Random.Range(0, activities.Count-1);
+
+        //Debug.Log("Get activity : " + activities[index].Id);
+        return activities[index];
+    }
+
     public int GetLikes(int id, CrossCardCategoryEnum category)
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
 
     public int GetLikesByActivityDetail(int id)
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
 
     public int GetLikesByProductDetail(int id)
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
 
     public Product GetProductDetail(int pro_id)
     {
         Product product = new Product();
-        DataSet dataSet = TheDataSource.GetDataSet("select * from product where pro_id='" + pro_id + "'");
+        DataSet dataSet = TheDataSource.GetDataSet("select * from product where prod_id=" + pro_id);
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
-            product.Pro_id = (int)table.Rows[0][0];
-            product.Ent_id = (int)table.Rows[0][1];
+            product.Pro_id = Convert.ToInt16(table.Rows[0][0]);
+            product.Ent_id = Convert.ToInt16(table.Rows[0][1]);
             product.Name = table.Rows[0][7].ToString();
             product.Image = table.Rows[0][8].ToString();
             product.ProductDetails = GetProductDetails(pro_id);
@@ -274,26 +345,32 @@ public class DaoService : MonoBehaviour, IDaoService
     public List<ProductDetail> GetProductDetails(int pro_id)
     {
         List<ProductDetail> productDetails = new List<ProductDetail>();
-        DataSet dataSet = TheDataSource.GetDataSet("select * from product where pro_id='" + pro_id + "'");
+        DataSet dataSet = TheDataSource.GetDataSet("select * from product where prod_id=" + pro_id);
         if (dataSet != null)
         {
             DataTable table = dataSet.Tables[0];
-            JsonData detailsData = JsonMapper.ToObject(table.Rows[0][10].ToString());
-            for (int i = 0; i < detailsData.Count; i++)
+
+            string material = table.Rows[0][13].ToString();
+            List<MWMaterial> mWMaterials = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(material);
+
+            for (int i = 0; i < mWMaterials.Count; i++)
             {
+                MWMaterial data = mWMaterials[i];
                 //Debug.Log(data[i]["cuteffect_id"]);
                 ProductDetail productDetail = new ProductDetail();
-                int type = detailsData[i]["type"].ToString() == "video" ? 1 : 0;
-                productDetail.Type = type;
-                if (type == 0)
+
+                if (data.type == "video")
                 {
-                    productDetail.Image = detailsData[i]["path"].ToString();
+                    productDetail.Type = 1;
+                    productDetail.Image = data.cover;
+                    productDetail.VideoUrl = data.path;
                 }
-                else if (type == 1)
+                else if (data.type == "image")
                 {
-                    productDetail.VideoUrl = detailsData[i]["path"].ToString();
+                    productDetail.Type = 0;
+                    productDetail.Image = data.path;
                 }
-                productDetail.Description = detailsData[i]["description"].ToString();
+                productDetail.Description = data.description;
                 productDetails.Add(productDetail);
             }
         }
@@ -311,8 +388,8 @@ public class DaoService : MonoBehaviour, IDaoService
             foreach (DataRow row in table.Rows)
             {
                 Product product = new Product();
-                product.Pro_id = (int)row[0];
-                product.Ent_id = (int)row[1];
+                product.Pro_id = Convert.ToInt16(row[0]);
+                product.Ent_id = Convert.ToInt16(row[1]);
                 product.Name = row[7].ToString();
                 product.Image = row[8].ToString();
                 products.Add(product);
@@ -328,11 +405,11 @@ public class DaoService : MonoBehaviour, IDaoService
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
             SceneTypeEnum.CurveStagger,
+            SceneTypeEnum.FrontBackUnfold,
             SceneTypeEnum.LeftRightAdjust,
             SceneTypeEnum.MidDisperse,
             SceneTypeEnum.Stars,
             SceneTypeEnum.UpDownAdjustCutEffect,
-            SceneTypeEnum.FrontBackUnfold          
         };
         DataType[] dataTypes = new DataType[] {
             DataType.env,
@@ -353,9 +430,9 @@ public class DaoService : MonoBehaviour, IDaoService
                     SceneConfig sceneConfig = new SceneConfig();
                     sceneConfig.sceneType = sceneTypes[int.Parse(data[i]["cuteffect_id"].ToString())-1];
                     sceneConfig.dataType = dataTypes[int.Parse(data[i]["contcom_type"].ToString()) - 1];
-                    Debug.Log("sceneType:+" + sceneConfig.sceneType + "dataType:" + sceneConfig.dataType);
                     // 设置场景时间
                     sceneConfig.durtime = GetSceneDurTime(sceneTypes[i]);
+                    Debug.Log("sceneType:" + sceneConfig.sceneType + "---dataType:" + sceneConfig.dataType + "---durtime:" + sceneConfig.durtime);
                     sceneConfigs.Add(sceneConfig);
                 }
             }

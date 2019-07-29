@@ -422,6 +422,8 @@ public class FlockAgent : MonoBehaviour
             sw.Start();
 
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
+            //Debug.Log("dianji :" + _data_id);
+
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
 
             sw.Stop();

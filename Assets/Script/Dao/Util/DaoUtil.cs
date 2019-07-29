@@ -11,6 +11,11 @@ public class DaoUtil
     /// <param name="jsonstr"></param>
     /// <returns>ary： List<MWMaterial> / obj ： MWMaterial</returns>
     public static object ConvertMaterialJson(string jsonstr) {
+        if (jsonstr == null)
+            return null;
+
+
+
         // 如果含有 '[',']'标志，则解析为数组
         bool isArray = false;
 
