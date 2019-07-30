@@ -116,7 +116,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
     //
     //  获取企业的详细信息
     //
-    public EnterpriseDetail GetEnterprisesDetail()
+    public EnterpriseDetail GetEnterprisesDetail(int com_id)
     {
         //  基础数据（企业名，企业简介，企业点赞数）
         //  企业名片数据
@@ -400,13 +400,6 @@ public class MockDaoService : MonoBehaviour, IDaoService
         return pdArra[Random.Range(0, pdArra.Length)];
     }
 
-
-    public Video GetVideoDetail()
-    {
-        // todo
-        return new Video().Generator();
-    }
-
     #region 设置效果与运行时间
 
     //
@@ -530,9 +523,9 @@ public class MockDaoService : MonoBehaviour, IDaoService
         {
             SceneTypeEnum.CurveStagger,
             SceneTypeEnum.FrontBackUnfold,
-            SceneTypeEnum.Stars,
-            SceneTypeEnum.MidDisperse,
             SceneTypeEnum.LeftRightAdjust,
+            SceneTypeEnum.MidDisperse,
+            SceneTypeEnum.Stars,
             SceneTypeEnum.UpDownAdjustCutEffect,
         };
 
@@ -668,5 +661,40 @@ public class MockDaoService : MonoBehaviour, IDaoService
     public Enterprise GetEnterprisesById(int id)
     {
         return GetEnterprise();
+    }
+
+    public Video GetVideoDetail(int envId, int index)
+    {
+        return new Video().Generator();
+    }
+
+    public List<Video> GetVideosByEnvId(int envId)
+    {
+        return GetEnterprisesDetail(envId).videos;
+
+    }
+
+    public List<Activity> GetActivitiesByEnvId(int envid)
+    {
+        var activities = new List<Activity>();
+        for (int i = 0; i < 5; i++)
+        {
+            Activity e = GetActivityDetail(i);
+            activities.Add(e);
+        }
+
+        return activities;
+    }
+
+    public List<Product> GetProductsByEnvId(int envid)
+    {
+        var products = new List<Product>();
+        for (int i = 0; i < 5; i++)
+        {
+            Product e = GetProductDetail(i);
+            products.Add(e);
+        }
+
+        return products;
     }
 }

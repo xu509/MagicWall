@@ -62,6 +62,8 @@ public class MagicWallManager:MonoBehaviour
 
     [SerializeField,Header("Mock")] bool _isMockData;
 
+    public bool IsMockData { get { return _isMockData; } }
+
 
     #endregion
 

@@ -2485,6 +2485,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: btn-move
       objectReference: {fileID: 0}
+    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: _moveSubject
+      value: 
+      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2622,6 +2627,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: btn-move
       objectReference: {fileID: 0}
+    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: _moveSubject
+      value: 
+      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x

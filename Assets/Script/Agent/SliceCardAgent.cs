@@ -40,12 +40,11 @@ public class SliceCardAgent : CardAgent
             Product product = _manager.daoService.GetProductDetail(DataId);
 
             // 获取产品标题
+
             _title.text = product.Name;
 
             // 获取产品所属公司信息
-            //InitComponents(product.Ent_id != 0);
-
-            InitComponents(Random.Range(0, 5) > 2);
+            InitComponents(_manager.daoService.GetEnvCards(product.Ent_id).Count > 0);
 
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
@@ -64,9 +63,7 @@ public class SliceCardAgent : CardAgent
             Activity activity = _manager.daoService.GetActivityDetail(DataId);
 
             // 获取产品所属公司信息
-            InitComponents(Random.Range(0, 5) > 2);
-            InitComponents(true);
-
+            InitComponents(_manager.daoService.GetEnvCards(activity.Ent_id).Count > 0);
 
             // 获取产品详细（图片，描述）
             cellDatas = new List<SliceCardCellData>();
@@ -87,11 +84,9 @@ public class SliceCardAgent : CardAgent
         _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
         _scrollController.SetOnScrollerOperated(OnOperationAction);
 
-
         SetOnCreatedCompleted(OnCreatedCompleted);
 
         isPrepared = true;
-
     }
 
 

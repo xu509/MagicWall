@@ -42,7 +42,6 @@ public class SpriteResource : Singleton<SpriteResource>
         }
         else
         {
-            //Debug.Log("GetData : " + address);
             Texture2D texture = AppUtils.LoadPNGToTexture2D(address);
             Sprite sprite = Sprite.Create(texture,new Rect(0,0,texture.width,texture.height), Vector2.zero);
             Add(address, sprite);

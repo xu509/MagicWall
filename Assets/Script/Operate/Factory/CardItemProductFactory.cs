@@ -18,11 +18,13 @@ public class CardItemProductFactory : CardItemFactory
     //
     public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
     {
+        var products = _manager.daoService.GetProductsByEnvId(id);
+
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < products.Count; i++)
         {
-            Product e = _manager.daoService.GetProductDetail(id);
+            Product e = products[i];
             CrossCardCellData cd = new CrossCardCellData();
 
             string address = e.Image;
