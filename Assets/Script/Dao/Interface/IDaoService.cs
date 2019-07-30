@@ -19,7 +19,7 @@ public interface IDaoService
     ///     获得企业详细信息
     /// </summary>
     /// <returns></returns>
-    EnterpriseDetail GetEnterprisesDetail();
+    EnterpriseDetail GetEnterprisesDetail(int com_id);
 
     /// <summary>
     ///     获取喜欢数
@@ -30,6 +30,7 @@ public interface IDaoService
     /// <summary>
     ///     获得企业卡片
     /// </summary>
+    /// <param name="id">env_id</param>
     /// <returns></returns>
     List<string> GetEnvCards(int id);
 
@@ -47,6 +48,13 @@ public interface IDaoService
     /// </summary>
     /// <returns></returns>
     List<Activity> GetActivities();
+
+    /// <summary>
+    ///     根据公司ID获取活动列表
+    /// </summary>
+    /// <param name="envid"></param>
+    /// <returns></returns>
+    List<Activity> GetActivitiesByEnvId(int envid);
 
     /// <summary>
     ///     获取活动
@@ -67,6 +75,13 @@ public interface IDaoService
     /// </summary>
     /// <returns></returns>
     List<Product> GetProducts();
+
+    /// <summary>
+    ///     根据公司ID获取产品列表
+    /// </summary>
+    /// <param name="envid"></param>
+    /// <returns></returns>
+    List<Product> GetProductsByEnvId(int envid);
 
     /// <summary>
     ///     获取产品详细
@@ -121,7 +136,14 @@ public interface IDaoService
     ///     获取视频详细
     /// </summary>
     /// <returns></returns>
-    Video GetVideoDetail();
+    Video GetVideoDetail(int envId,int index);
+
+
+    /// <summary>
+    ///     获取视频列表
+    /// </summary>
+    /// <returns></returns>
+    List<Video> GetVideosByEnvId(int envId);
 
     #region 定制屏相关
     /// <summary>

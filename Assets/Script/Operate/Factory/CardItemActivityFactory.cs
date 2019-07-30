@@ -16,10 +16,11 @@ public class CardItemActivityFactory : CardItemFactory
     //
     public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
     {
+        var activities = _manager.daoService.GetActivitiesByEnvId(id);
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        for (int i = 0; i < 5; i++) {
-            Activity e = _manager.daoService.GetActivityDetail(id);
+        for (int i = 0; i < activities.Count; i++) {
+            Activity e = activities[i];
             CrossCardCellData cd = new CrossCardCellData();
             cd.magicWallManager = _manager;
 

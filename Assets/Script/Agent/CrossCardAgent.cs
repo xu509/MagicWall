@@ -55,7 +55,7 @@ public class CrossCardAgent : CardAgent
         InitAgency();
 
         IDaoService daoService = _manager.daoService;
-        EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail();
+        EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(DataId);
 
 
         //  设置标题

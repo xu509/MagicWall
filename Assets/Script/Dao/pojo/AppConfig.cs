@@ -26,7 +26,7 @@ public class AppConfig
     public static string KEY_CutEffectDuring_UpDownAdjust = "cuteffectduring_updownadjust";
 
     //  前后分层效果持续时间
-    public static string KEY_CutEffectDuring_FrontBackUnfold = "cuteffectduring_frontbackunfold";
+    public static string KEY_CutEffectDuring_FrontBackUnfold = "cuteffectduring_frontbackrightpullopen";
 
 
 

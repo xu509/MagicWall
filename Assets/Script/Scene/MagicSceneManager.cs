@@ -36,6 +36,10 @@ public class MagicSceneManager : MonoBehaviour
     /// </summary>
     /// <param name="manager"></param>
     public void Init(MagicWallManager manager) {
+
+        System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+        sw2.Start();
+
         _manager = manager;
 
         //  初始化场景列表
@@ -54,6 +58,8 @@ public class MagicSceneManager : MonoBehaviour
         List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++)
         {
+            Debug.Log(sceneConfigs[i].ToString());
+
             IScene scene;
             if (sceneConfigs[i].sceneType == SceneTypeEnum.Stars)
             {
@@ -62,9 +68,13 @@ public class MagicSceneManager : MonoBehaviour
             else {
                 scene = new CommonScene();
             }
+
             scene.Init(sceneConfigs[i],_manager);
             _scenes.Add(scene);
         }
+
+        sw2.Stop();
+        //Debug.Log(" Scene init : " + sw2.ElapsedMilliseconds / 1000f);
 
         // 初始化管理器标志
         _manager.CurrentScene = _scenes[0];

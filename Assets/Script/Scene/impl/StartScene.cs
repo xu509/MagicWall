@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
 //
@@ -155,58 +153,16 @@ public class StartScene : IScene
 
         _doLoadResourse = true;
 
-        List<string> addresses = new List<string>();
-
-        Enterprise enterprise = new Enterprise();
-        addresses.AddRange(enterprise.GetAssetAddressList());
-
-        Activity activity = new Activity();
-        addresses.AddRange(activity.GetAssetAddressList());
-
-        Product product = new Product();
-        addresses.AddRange(product.GetAssetAddressList());
-
-        Video video = new Video();
-        addresses.AddRange(video.GetAssetAddressList());
-
-        ActivityDetail activityDetail = new ActivityDetail();
-        addresses.AddRange(activityDetail.GetAssetAddressList());
-
-        string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
-        for (int i = 0; i < imgs.Length; i++) {
-            addresses.Add("env\\" + imgs[i]);
+        if (_manager.IsMockData)
+        {
+            DoLoadMock();
         }
-
-        ProductDetail productDetail = new ProductDetail();
-        addresses.AddRange(productDetail.GetAssetAddressList());
-
-
-        for (int i = 0; i < addresses.Count; i++) {
-            SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+        else {
+            DoLoad();
         }
 
 
 
-        // 加载定制的资源
-        if (_manager.managerConfig.IsCustom) {
-            // TODO 
-            Debug.Log("加载定制资源");
-
-            CustomImageType[] types = {CustomImageType.LEFT1,
-                CustomImageType.LEFT2,
-                CustomImageType.RIGHT };
-
-            foreach (CustomImageType customImageType in types) {
-                List<string> images = _daoService.GetCustomImage(customImageType);
-
-                foreach (string image in images)
-                {
-                    string address = MagicWallManager.FileDir + image;
-                    TextureResource.Instance.GetTexture(address);
-
-                }
-            }
-        }
 
         // 加载其他资源
         //  - 手写板用的texture
@@ -234,5 +190,162 @@ public class StartScene : IScene
         _configIsLoaded = true;
     }
 
+
+
+
+    // Do Load
+
+    private void DoLoadMock() {
+        List<string> addresses = new List<string>();
+
+        Enterprise enterprise = new Enterprise();
+        addresses.AddRange(enterprise.GetAssetAddressList());
+
+        Activity activity = new Activity();
+        addresses.AddRange(activity.GetAssetAddressList());
+
+        Product product = new Product();
+        addresses.AddRange(product.GetAssetAddressList());
+
+        Video video = new Video();
+        addresses.AddRange(video.GetAssetAddressList());
+
+        ActivityDetail activityDetail = new ActivityDetail();
+        addresses.AddRange(activityDetail.GetAssetAddressList());
+
+        string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+        for (int i = 0; i < imgs.Length; i++)
+        {
+            addresses.Add("env\\" + imgs[i]);
+        }
+
+        ProductDetail productDetail = new ProductDetail();
+        addresses.AddRange(productDetail.GetAssetAddressList());
+
+
+        for (int i = 0; i < addresses.Count; i++)
+        {
+            SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+        }
+
+
+
+        // 加载定制的资源
+        if (_manager.managerConfig.IsCustom)
+        {
+            // TODO 
+            Debug.Log("加载定制资源");
+
+            CustomImageType[] types = {CustomImageType.LEFT1,
+                CustomImageType.LEFT2,
+                CustomImageType.RIGHT };
+
+            foreach (CustomImageType customImageType in types)
+            {
+                List<string> images = _daoService.GetCustomImage(customImageType);
+
+                foreach (string image in images)
+                {
+                    string address = MagicWallManager.FileDir + image;
+                    TextureResource.Instance.GetTexture(address);
+
+                }
+            }
+        }
+    }
+
+    private void DoLoad()
+    {
+        List<string> addresses = new List<string>();
+
+        List<Enterprise> enterprises = _daoService.GetEnterprises();
+        foreach (Enterprise env in enterprises) {
+            addresses.Add(env.Logo);
+
+            // 产品详细
+            var productDetails = _daoService.GetProductsByEnvId(env.Ent_id);
+            foreach (var pd in productDetails) {
+                addresses.Add(pd.Image);
+            }
+
+            // 活动详细
+            var ads = _daoService.GetActivitiesByEnvId(env.Ent_id);
+            foreach (var ad in ads)
+            {
+                addresses.Add(ad.Image);
+            }
+
+            // catalog 详细
+            var cs = _daoService.GetCatalogs(env.Ent_id);
+            foreach (var c in cs)
+            {
+                addresses.Add(c.Img);
+            }
+
+            // 视频封面
+            var vs = _daoService.GetVideosByEnvId(env.Ent_id);
+            foreach (var v in vs)
+            {
+                addresses.Add(v.Cover);
+            }
+
+            // 企业卡片
+            var es = _daoService.GetEnvCards(env.Ent_id);
+            foreach (var e in es)
+            {
+                addresses.Add(e);
+            }
+
+        }
+
+        var activities = _daoService.GetActivities();
+        foreach (var act in activities)
+        {
+            addresses.Add(act.Image);
+
+            // video
+            
+        }
+
+        var products = _daoService.GetProducts();
+        foreach (var prod in products)
+        {
+            addresses.Add(prod.Image);
+            //TODO
+        }
+
+
+
+
+        for (int i = 0; i < addresses.Count; i++)
+        {
+            SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+        }
+
+
+
+        // 加载定制的资源
+        if (_manager.managerConfig.IsCustom)
+        {
+            // TODO 
+            Debug.Log("加载定制资源");
+
+            CustomImageType[] types = {CustomImageType.LEFT1,
+                CustomImageType.LEFT2,
+                CustomImageType.RIGHT };
+
+            foreach (CustomImageType customImageType in types)
+            {
+                List<string> images = _daoService.GetCustomImage(customImageType);
+
+                foreach (string image in images)
+                {
+                    string address = MagicWallManager.FileDir + image;
+                    TextureResource.Instance.GetTexture(address);
+
+                }
+            }
+        }
+    }
 
 }

@@ -18,9 +18,13 @@ public class CardItemVideoFactory : CardItemFactory
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        for (int i = 0; i < 2; i++)
+        // 根据公司ID 获取视频列表
+        List<Video> videos = _manager.daoService.GetVideosByEnvId(id);
+
+
+        for (int i = 0; i < videos.Count; i++)
         {
-            Video e = _manager.daoService.GetVideoDetail();
+            Video e = videos[i];
             CrossCardCellData cd = new CrossCardCellData();
             cd.IsImage = false;
             cd.Description = e.Description;

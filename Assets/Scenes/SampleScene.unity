@@ -522,7 +522,7 @@ MonoBehaviour:
   _cardItemFactoryInstance: {fileID: 1167712300}
   _mockDaoService: {fileID: 1167712299}
   _realDaoService: {fileID: 1167712298}
-  _isMockData: 1
+  _isMockData: 0
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0

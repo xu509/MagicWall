@@ -63,7 +63,7 @@ public class TheDataSource : Singleton<TheDataSource>
 
         //string _t = "{type:'video',path:'/uploads/test.mp4',description:'文字描述1',cover:'/uploads/20190704/4a3d48f0e4123e3b2a3ae7132037315f.png'}";
 
-        List<MWMaterial> items = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(_tempData);
+        //List<MWMaterial> items = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(_tempData);
 
         //foreach (MWMaterial mWMaterial in items) {
         //    Debug.Log("mWMaterial : " + mWMaterial.ToString());
