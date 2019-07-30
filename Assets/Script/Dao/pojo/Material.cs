@@ -24,25 +24,34 @@ public class MWMaterial
     public string cover { set { _cover = value; } get { return _cover; } }
 
     public MWMaterial ConvertJSONToObject(string str) {
+        bool hasType = false;
+        bool hasPath = false;
+        bool hasDescription = false;
+        bool hasCover = false;
+        
 
         //Debug.Log(str);
         if (str.Contains("type")) {
             str = str.Replace("type", "'type'");
+            hasType = true;
         }
 
         if (str.Contains("path"))
         {
             str = str.Replace("path", "'path'");
+            hasPath = true;
         }
 
         if (str.Contains("description"))
         {
             str = str.Replace("description", "'description'");
+            hasDescription = true;
         }
 
         if (str.Contains("cover"))
         {
             str = str.Replace("cover", "'cover'");
+            hasCover = true;
         }
 
         if (str.IndexOf("}") < 0) {
@@ -60,11 +69,20 @@ public class MWMaterial
 
         JsonData data = JsonMapper.ToObject(str);
         MWMaterial mWMaterial = new MWMaterial();
-        mWMaterial.type = (string)data["type"];
-        mWMaterial.path = (string)data["path"];
-        mWMaterial.description = (string)data["description"];
-        mWMaterial.cover = (string)data["cover"];
 
+        if (hasType) {
+            mWMaterial.type = (string)data["type"];
+        }
+        if (hasPath) {
+            mWMaterial.path = (string)data["path"];
+        }
+        if (hasDescription) {
+            mWMaterial.description = (string)data["description"];
+        }
+        if (hasCover) {
+            mWMaterial.cover = (string)data["cover"];
+        }
+        
         return mWMaterial;
     }
 
