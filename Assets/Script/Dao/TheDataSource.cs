@@ -1,35 +1,40 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System;
-using LitJson;
+
 //
 //  数据源
 //
 public class TheDataSource : Singleton<TheDataSource>
 {
+    private bool _showLog = true;
 
 
     public MySqlConnection mySqlConnection;
-    ////数据库名称
-    //public string database = "iq360_cloud_wall";
-    ////数据库IP
-    //private string host = "192.168.1.100";
-    ////端口
-    //private string port = "3306";
-    ////用户名
-    //private string username = "root";
-    ////用户密码
-    //private string password = "artvoi";
+
+    /// <summary>
+    ///  公司测试环境
+    /// </summary>
+    //private static string _sqlStr = "Database=iq360_cloud_wall;"
+    //            + "Server=192.168.1.100"
+    //            + ";Uid=root;"
+    //            + "pooling=false;"
+    //            + "Password=artvoi; pooling=false;CharSet=utf8"
+    //            + ";port=3306";
+
+    // 家
+    private static string _sqlStr = "Database=MagicWall;"
+            + "Server=116.85.26.230"
+            + ";Uid=root;"
+            + "pooling=false;"
+            + "Password=; pooling=false;CharSet=utf8"
+            + ";port=3306";
 
 
 
-    string _connectStr = "Database=iq360_cloud_wall;Server=192.168.1.100;Uid=root;Password=artvoi;pooling=false;CharSet=utf8;port=3306";
     //
     //  Construct
     //
@@ -39,25 +44,6 @@ public class TheDataSource : Singleton<TheDataSource>
     //  Awake
     //
     void Awake() {
-        //_datas = new ItemDataBase();
-
-
-        //JsonData data = JsonMapper.ToObject(_tempData);
-
-        //string _t = "{type:'video',path:'/uploads/test.mp4',description:'文字描述1',cover:'/uploads/20190704/4a3d48f0e4123e3b2a3ae7132037315f.png'}";
-
-        //List<MWMaterial> items = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(_tempData);
-
-        //foreach (MWMaterial mWMaterial in items) {
-        //    Debug.Log("mWMaterial : " + mWMaterial.ToString());
-            
-        //}
-
-
-
-
-
-        //MySqlCommand
 
         InitData();
     }
@@ -67,13 +53,12 @@ public class TheDataSource : Singleton<TheDataSource>
     //
     public void InitData() {
 
-        // 初始化MySql链接，提供MySql接口
-
         // CONNECT
         try
         {
+
             if (mySqlConnection == null || mySqlConnection.State != ConnectionState.Open) {
-                mySqlConnection = new MySqlConnection(_connectStr);
+                mySqlConnection = new MySqlConnection(_sqlStr);
                 mySqlConnection.Open();
             }
         }   
@@ -82,55 +67,6 @@ public class TheDataSource : Singleton<TheDataSource>
             throw new Exception("服务器连接失败：" + e.Message.ToString());
         }
     }
-
-
-    //public static DataSet SelectWhere(string tableName, string[] items, string[] col, string[] operation, string[] values)
-    //{
-
-    //    if (col.Length != operation.Length || operation.Length != values.Length)
-    //    {
-    //        throw new Exception("输入不正确：" + "col.Length != operation.Length != values.Length");
-    //    }
-    //    string query = "SELECT" + items[0];
-    //    for (int i = 1; i < items.Length; ++i)
-    //    {
-    //        query += ", " + items[i];
-    //    }
-    //    query += " FROM " + tableName + " WHERE " + col[0] + operation[0] + "'" + values[0] + "' ";
-    //    for (int i = 1; i < col.Length; ++i)
-    //    {
-    //        query += " AND " + col[i] + operation[i] + "'" + values[0] + "' ";
-    //    }
-    //    return GetDataSet(query);
-    //}
-
-    /// <summary>
-    /// 执行sql语句，获取DataSet
-    /// </summary>
-    /// <param name="sqlString"></param>
-    /// <returns></returns>
-    //public DataSet GetDataSet(string sqlString)
-    //{
-    //    //Debug.Log("SQL： " + sqlString);
-    //    if (mySqlConnection.State == ConnectionState.Open)
-    //    {
-    //        DataSet ds = new DataSet();
-    //        try
-    //        {
-    //            MySqlDataAdapter da = new MySqlDataAdapter(sqlString, mySqlConnection);
-    //            da.Fill(ds);
-    //        }
-    //        catch (Exception ee)
-    //        {
-    //            throw new Exception("SQL:" + sqlString + "/n" + ee.Message.ToString());
-    //        }
-    //        finally
-    //        {
-    //        }
-    //        return ds;
-    //    }
-    //    return null;
-    //}
 
 
     /// <summary>
@@ -156,10 +92,10 @@ public class TheDataSource : Singleton<TheDataSource>
         {
             if (mySqlConnection == null || mySqlConnection.State != ConnectionState.Open)
             {
-                mySqlConnection = new MySqlConnection(_connectStr);
+                mySqlConnection = new MySqlConnection(_sqlStr);
                 mySqlConnection.Open();
             }
-            Debug.Log("服务器连接成功");
+            //Debug.Log("服务器连接成功");
         }
         catch (Exception e)
         {
@@ -176,6 +112,9 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <returns></returns>
     public Dictionary<string,object> SelectOne(string sql) {
         Dictionary<string, object> result = null;
+        if (_showLog) {
+            Debug.Log("sql : " + sql);
+        }
 
         try
         {
@@ -194,7 +133,7 @@ public class TheDataSource : Singleton<TheDataSource>
                     result = new Dictionary<string, object>();
                     for (int i = 0; i < table.Columns.Count; i++)
                     {
-                        result.Add(table.Columns[i].ColumnName, table.Columns[i].ToString());
+                        result.Add(table.Columns[i].ColumnName, table.Rows[0][i].ToString());
                     }
                     return result;
                 }
@@ -224,6 +163,11 @@ public class TheDataSource : Singleton<TheDataSource>
     public List<Dictionary<string, object>> SelectList(string sql)
     {
         List<Dictionary<string, object>> result = null;
+
+        if (_showLog)
+        {
+            Debug.Log("sql : " + sql);
+        }
 
         try
         {

@@ -658,7 +658,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
         return null;
     }
 
-    public Enterprise GetEnterprisesById(int id)
+    public Enterprise GetEnterpriseById(int id)
     {
         return GetEnterprise();
     }

@@ -19,7 +19,7 @@ public interface IDaoService
     /// <returns></returns>
     List<Enterprise> GetEnterprises();
 
-    Enterprise GetEnterprisesById(int id);
+    Enterprise GetEnterpriseById(int id);
 
     /// <summary>
     ///     获得企业详细信息

@@ -13,6 +13,9 @@ public class GlobalData : MonoBehaviour
 
     public void Init(MagicWallManager manager) {
         _manager = manager;
+        var config = _manager.daoService.GetConfig();
+        SetMWConfig(config);
+
     }
 
     /// <summary>
