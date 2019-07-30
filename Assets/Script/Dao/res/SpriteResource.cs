@@ -49,8 +49,4 @@ public class SpriteResource : Singleton<SpriteResource>
         }
     }
 
-
-
-
-
 }

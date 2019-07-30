@@ -4,6 +4,12 @@
 /// </summary>
 public interface IDaoService
 {
+    /// <summary>
+    ///     初始化数据
+    /// </summary>
+    /// <returns></returns>
+    void InitData();
+
 
     #region 企业
 
@@ -159,6 +165,8 @@ public interface IDaoService
     /// <returns></returns>
     List<string> GetCustomImage(CustomImageType type);
     #endregion
+
+    MWConfig GetConfig();
 
 
 }

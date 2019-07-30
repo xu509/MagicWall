@@ -697,4 +697,15 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         return products;
     }
+
+    public MWConfig GetConfig()
+    {
+        Debug.Log("Mock Config");
+        return new MWConfig();
+    }
+
+    public void InitData()
+    {
+        throw new System.NotImplementedException();
+    }
 }

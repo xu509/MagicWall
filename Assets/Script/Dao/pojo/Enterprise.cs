@@ -18,18 +18,9 @@ public class Enterprise : FlockData,Generator<Enterprise>
     // 企业的logo
     private string _logo;
     public string Logo { set { _logo = value; } get { return _logo; } }
-    public Sprite SpriteLogo
-        {
-            get
-            {
-                string path = MagicWallManager.FileDir + _logo;
-                return SpriteResource.Instance.GetData(path);
-            }
-        }
 
-
-// 企业名字
-private string _name;
+    // 企业名字
+    private string _name;
     public string Name { set { _name = value; } get { return _name; } }
 
     // catalog
@@ -51,6 +42,16 @@ private string _name;
     private List<string> _env_cards;
     public List<string> EnvCards { set { _env_cards = value; } get { return _env_cards; } }
 
+
+
+    public Sprite SpriteLogo
+    {
+        get
+        {
+            string path = MagicWallManager.FileDir + _logo;
+            return SpriteResource.Instance.GetData(path);
+        }
+    }
 
     #endregion
 

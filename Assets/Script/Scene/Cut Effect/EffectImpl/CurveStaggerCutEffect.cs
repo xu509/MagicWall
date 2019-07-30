@@ -18,6 +18,8 @@ public class CurveStaggerCutEffect : CutEffect
     //
     public override void Init(MagicWallManager manager)
     {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
 
         //  初始化 manager
         _manager = manager;
@@ -42,6 +44,10 @@ public class CurveStaggerCutEffect : CutEffect
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
+
+        sw.Stop();
+        //    打印内容
+        //Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
     }
 
