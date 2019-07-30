@@ -72,6 +72,9 @@ using UnityEngine;
             }
 
             var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+
+            //Debug.Log("Add COunt : " + addCount);
+
             for (var i = 0; i < addCount; i++)
             {
                 var cell = Instantiate(CellPrefab, cellContainer).GetComponent<FancyScrollViewCell<TItemData, TContext>>();

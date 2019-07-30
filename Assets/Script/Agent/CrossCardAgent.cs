@@ -17,6 +17,8 @@ public class CrossCardAgent : CardAgent
     bool _isNormalModel = true;
 
 
+    private int _scrollItemNumber;  // 滚动插件，滑动块个数
+
     bool _hasCard = true; // 企业名片
     bool _hasCatalog; // Catalog
     bool _hasProduct; // 产品
@@ -54,6 +56,8 @@ public class CrossCardAgent : CardAgent
 
         InitAgency();
 
+        _scrollItemNumber = 0;
+
         IDaoService daoService = _manager.daoService;
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(DataId);
 
@@ -88,9 +92,12 @@ public class CrossCardAgent : CardAgent
         item2.magicWallManager = _manager;
         index++; 
         _cellDatas.Add(item2);
+
+        _scrollItemNumber++;
         //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
 
         if (_hasProduct) {
+            //Debug.Log("_hasProduct");
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.PRODUCT;
             item.crossCardAgent = this;
@@ -100,11 +107,14 @@ public class CrossCardAgent : CardAgent
             item.Title = "产品";
             item.magicWallManager = _manager;
             _cellDatas.Add(item);
+            _scrollItemNumber++;
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
         if (_hasActivity)
         {
+            //Debug.Log("_hasActivity");
+
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.ACTIVITY;
             item.crossCardAgent = this;
@@ -114,11 +124,14 @@ public class CrossCardAgent : CardAgent
             item.Title = "活动";
             item.magicWallManager = _manager;
             _cellDatas.Add(item);
+            _scrollItemNumber++;
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasVideo) {
+            //Debug.Log("_hasVideo");
+
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.VIDEO;
             item.crossCardAgent = this;
@@ -129,13 +142,15 @@ public class CrossCardAgent : CardAgent
             item.magicWallManager = _manager;
             _cellDatas.Add(item);
 
-
+            _scrollItemNumber++;
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
 
         if (_hasCatalog)
         {
+            //Debug.Log("_hasCatalog");
+
             CrossCardCellData item = new CrossCardCellData();
             item.Category = CrossCardCategoryEnum.CATALOG;
             item.crossCardAgent = this;
@@ -145,6 +160,8 @@ public class CrossCardAgent : CardAgent
             item.Title = "CATALOG";
             item.magicWallManager = _manager;
             _cellDatas.Add(item);
+
+            _scrollItemNumber++;
             index++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
         }
@@ -249,14 +266,15 @@ public class CrossCardAgent : CardAgent
     //  上一张
     //
     public void DoUp() {
+        Debug.Log(crossCardScrollViewController.Pool.Count);
         int index = crossCardScrollViewController.CurrentIndex;
-
         // 获取上一个 index
         int up_index = index - 1;
         if (index == 0) {
-            up_index = crossCardScrollViewController.Pool.Count - 1;
+            up_index = _scrollItemNumber - 1;
         }
-
+        //Debug.Log("PoolCount:"+ crossCardScrollViewController.Pool.Count + "---up_index:" + up_index);
+   
         crossCardScrollViewController.SelectCell(up_index);
 
         DoUpdate();
@@ -271,7 +289,7 @@ public class CrossCardAgent : CardAgent
 
         // 获取上一个 index
         int down_index = index + 1;
-        if (down_index == crossCardScrollViewController.Pool.Count)
+        if (down_index == _scrollItemNumber)
         {
             down_index = 0;
         }
