@@ -110,9 +110,8 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
             throw new MissingComponentException(nameof(cellContainer));
         }
 
-
-
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+
         for (var i = 0; i < addCount; i++)
         {
             var cell = Instantiate(CellPrefab, cellContainer).GetComponent<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();
@@ -127,8 +126,6 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
             cell.InitData();
             pool.Add(cell);
         }
-
-
     }
 
     void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)

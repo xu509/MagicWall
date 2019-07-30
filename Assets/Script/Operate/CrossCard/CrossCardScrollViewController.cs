@@ -85,12 +85,12 @@ public class CrossCardScrollViewController : CrossCardBaseController<CrossCardCe
         _cardAgent.InitScaleAgent(texture);
     }
 
-
-
     public void SelectCell(int index)
     {
+        //Debug.Log(index + "---" + ItemsSource.Count + "---" + Context.SelectedIndex);
         if (index < 0 || index >= ItemsSource.Count || index == Context.SelectedIndex)
         {
+            Debug.Log(111111);
             return;
         }
 

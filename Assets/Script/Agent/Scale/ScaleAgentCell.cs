@@ -33,6 +33,7 @@ public class ScaleAgentCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         {
             if (isTouchOnImage(Input.GetTouch(i).position))
             {
+                Debug.Log(111111111);
                 touchs.Add(Input.GetTouch(i));
             }
         }
