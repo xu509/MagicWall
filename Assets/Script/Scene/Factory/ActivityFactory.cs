@@ -58,7 +58,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Ent_id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
+            width, height, activity.Id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
