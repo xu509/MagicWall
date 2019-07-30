@@ -58,7 +58,7 @@ public class MagicSceneManager : MonoBehaviour
         List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
         for (int i = 0; i < sceneConfigs.Count; i++)
         {
-            Debug.Log(sceneConfigs[i].ToString());
+            //Debug.Log(sceneConfigs[i].ToString());
 
             IScene scene;
             if (sceneConfigs[i].sceneType == SceneTypeEnum.Stars)

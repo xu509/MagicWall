@@ -264,57 +264,51 @@ public class StartScene : IScene
 
             // 产品详细
             var productDetails = _daoService.GetProductsByEnvId(env.Ent_id);
-            foreach (var pd in productDetails) {
-                addresses.Add(pd.Image);
+            for (int i = 0; i < productDetails.Count; i++) {
+                addresses.Add(productDetails[i].Image);
             }
 
             // 活动详细
             var ads = _daoService.GetActivitiesByEnvId(env.Ent_id);
-            foreach (var ad in ads)
+            for (int i = 0; i < ads.Count; i++)
             {
-                addresses.Add(ad.Image);
+                addresses.Add(ads[i].Image);
             }
 
             // catalog 详细
             var cs = _daoService.GetCatalogs(env.Ent_id);
-            foreach (var c in cs)
+            for (int i = 0; i < cs.Count; i++)
             {
-                addresses.Add(c.Img);
+                addresses.Add(cs[i].Img);
             }
 
             // 视频封面
             var vs = _daoService.GetVideosByEnvId(env.Ent_id);
-            foreach (var v in vs)
+            for (int i = 0; i < vs.Count; i++)
             {
-                addresses.Add(v.Cover);
+                addresses.Add(vs[i].Cover);
             }
 
             // 企业卡片
             var es = _daoService.GetEnvCards(env.Ent_id);
-            foreach (var e in es)
+            for (int i = 0; i < es.Count; i++)
             {
-                addresses.Add(e);
+                addresses.Add(es[i]);
             }
 
         }
 
-        var activities = _daoService.GetActivities();
-        foreach (var act in activities)
+        var activities = _daoService.GetActivities();  
+        for (int i = 0; i < activities.Count; i++)
         {
-            addresses.Add(act.Image);
-
-            // video
-            
+            addresses.Add(activities[i].Image);
         }
 
         var products = _daoService.GetProducts();
-        foreach (var prod in products)
+        for (int i = 0; i < products.Count; i++)
         {
-            addresses.Add(prod.Image);
-            //TODO
+            addresses.Add(products[i].Image);
         }
-
-
 
 
         for (int i = 0; i < addresses.Count; i++)
