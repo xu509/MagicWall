@@ -266,7 +266,6 @@ public class CrossCardAgent : CardAgent
     //  上一张
     //
     public void DoUp() {
-        Debug.Log(crossCardScrollViewController.Pool.Count);
         int index = crossCardScrollViewController.CurrentIndex;
         // 获取上一个 index
         int up_index = index - 1;

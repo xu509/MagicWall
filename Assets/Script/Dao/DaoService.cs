@@ -104,9 +104,13 @@ public class DaoService : MonoBehaviour, IDaoService
         //Debug.Log("GetEnvCards：" + id);
         List<string> envCards = new List<string>();
 
-        string sql = "select image_card from company where com_id=" + id + " and status = 1";
+        string sql = "select * from company where com_id=" + id + " and status = 1";
 
         var row = _theDataSource.SelectOne(sql);
+        if (row == null)
+        {
+            return envCards;
+        }
         JsonData data = JsonMapper.ToObject(row["image_card"].ToString());
         for (int i = 0; i < data.Count; i++)
         {
@@ -395,7 +399,6 @@ public class DaoService : MonoBehaviour, IDaoService
         List<SceneConfig> sceneConfigs = new List<SceneConfig>();
 
         string showConfigStr = _manager.globalData.GetConfig().ShowConfig;
-
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
             SceneTypeEnum.CurveStagger,
@@ -414,6 +417,7 @@ public class DaoService : MonoBehaviour, IDaoService
 
 
         JsonData data = JsonMapper.ToObject(DaoUtil.ConvertShowConfigStr(showConfigStr));
+
         for (int i = 0; i < data.Count; i++)
         {
             //Debug.Log(data[i]["cuteffect_id"]);
