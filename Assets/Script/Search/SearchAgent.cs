@@ -244,7 +244,9 @@ public class SearchAgent : MonoBehaviour
     #endregion
 
     #region Search Result 代理功能
-    // Search Result 点击回退的功能
+    /// <summary>
+    ///     点击搜索结果控件的回退功能
+    /// </summary>
     private void OnClickSearchResultReturnBtn() {
 
         // 关闭新打开的结果窗口

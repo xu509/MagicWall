@@ -12,7 +12,8 @@ public class SearchResultAgent : MonoBehaviour
     Action<SearchBean> _onClickSearchResultItem;
 
     [SerializeField] Text _title;   //  标题
-    [SerializeField] RectTransform _ScrollViewItemContainer;    //  列表内容容器
+    [SerializeField,Header("Scroll View")] RectTransform _ScrollViewItemContainer;    //  列表内容容器
+    [SerializeField] ScrollRect _scrollRect;    //  _scrollRect
     [SerializeField] SearchResultItemAgent _searchResultItemAgentPrefab;    //  搜索 item 代理
     [SerializeField] SearchResultScrollBarAgent _searchResultScrollBarAgent; // 滚动条代理
     [SerializeField] RectTransform _noResultContainer;
@@ -39,7 +40,7 @@ public class SearchResultAgent : MonoBehaviour
 
     void Awake()
     {
-        Reset();
+        //Reset();
 
     }
 
@@ -55,6 +56,9 @@ public class SearchResultAgent : MonoBehaviour
         float w = _ScrollViewItemContainer.rect.width;
         float h = _ScrollViewItemContainer.rect.height;
 
+        Debug.Log("defaultViewScrollHeight : " + defaultViewScrollHeight);
+
+
         GridLayoutGroup _gridLayoutGroup = _ScrollViewItemContainer.GetComponent<GridLayoutGroup>();
         float width = (w - _gap - 10) / 2;
         _itemHeight = (defaultViewScrollHeight - 2 * _gap) / 3;
@@ -65,6 +69,11 @@ public class SearchResultAgent : MonoBehaviour
         _default_scrollview_height = 3 * (_itemHeight + _gap);
         _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, _default_scrollview_height);
         _default_scrollview_anchorposition = _ScrollViewItemContainer.anchoredPosition;
+
+
+        
+        //_scrollRect.
+
 
     }
 
@@ -124,6 +133,9 @@ public class SearchResultAgent : MonoBehaviour
             _searchResultScrollBarAgent.Init();
         }
 
+
+
+
     }
 
     #region 事件
@@ -143,7 +155,8 @@ public class SearchResultAgent : MonoBehaviour
     }
 
     private void SetContentSize() {
-        if (_resultItems.Count > 6) { 
+        if (_resultItems.Count > 6)
+        {
             // 此时动态高度
             float height = (_resultItems.Count / 2) * (_itemHeight + 10);
 
@@ -152,9 +165,14 @@ public class SearchResultAgent : MonoBehaviour
             float height_offset = height - _default_scrollview_height;
             float anchor_y = _default_scrollview_anchorposition.y - height_offset;
 
-            
-            _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height -_default_scrollview_height + _itemHeight / 2);
+
+            _ScrollViewItemContainer.sizeDelta = new Vector2(_ScrollViewItemContainer.sizeDelta.x, height - _default_scrollview_height + _itemHeight / 2);
             _ScrollViewItemContainer.anchoredPosition = new Vector2(_default_scrollview_anchorposition.x, anchor_y);
+        }
+        else {
+            
+            //
+
         }
     }
 
@@ -210,7 +228,6 @@ public class SearchResultAgent : MonoBehaviour
 
 
     #endregion
-
 
     #region 事件代理装载
     public void SetOnClickMoveBtn(Action action) {
