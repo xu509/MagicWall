@@ -41,6 +41,7 @@ public class DaoService : MonoBehaviour, IDaoService
         _activityIndex = 0;
         _productIndex = 0;
 
+
         //// 初始化显示的数据
         //_enterprises = GetEnterprises();
         //_activities = GetActivities();
@@ -641,4 +642,61 @@ public class DaoService : MonoBehaviour, IDaoService
 
     }
 
+    
+    public int GetLikes(string path)
+    {
+        var likes = _theDataSource.GetLikeDataBase();
+        int r = 0;
+
+        for (int i = 0; i < likes.list.Count; i++) {
+            var like = likes.list[i];
+            if (like.Path == path) {
+                r = like.Number;
+                break;
+            }
+        }
+
+        return r;
+    }
+
+    public bool UpdateLikes(string path)
+    {
+        try
+        {
+            var likes = _theDataSource.GetLikeDataBase();
+
+            bool hasPath = false;
+
+            for (int i = 0; i < likes.list.Count; i++)
+            {
+                var like = likes.list[i];
+                if (like.Path == path)
+                {
+                    hasPath = true;
+                    like.Number = like.Number + 1;
+                    break;
+                }
+            }
+
+            if (!hasPath)
+            {
+                var like = new Like();
+                like.Path = path;
+                like.Number = 1;
+                likes.list.Add(like);
+            }
+
+
+            _theDataSource.SaveLikes();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+        finally {
+            return false;
+        }
+
+    }
 }
