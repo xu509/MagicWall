@@ -4,6 +4,12 @@
 /// </summary>
 public interface IDaoService
 {
+    /// <summary>
+    ///     初始化数据
+    /// </summary>
+    /// <returns></returns>
+    void InitData();
+
 
     #region 企业
 
@@ -13,7 +19,7 @@ public interface IDaoService
     /// <returns></returns>
     List<Enterprise> GetEnterprises();
 
-    Enterprise GetEnterprisesById(int id);
+    Enterprise GetEnterpriseById(int id);
 
     /// <summary>
     ///     获得企业详细信息
@@ -159,6 +165,8 @@ public interface IDaoService
     /// <returns></returns>
     List<string> GetCustomImage(CustomImageType type);
     #endregion
+
+    MWConfig GetConfig();
 
 
 }

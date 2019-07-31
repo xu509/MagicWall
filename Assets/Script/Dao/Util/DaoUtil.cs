@@ -15,7 +15,6 @@ public class DaoUtil
             return null;
 
 
-
         // 如果含有 '[',']'标志，则解析为数组
         bool isArray = false;
 
@@ -31,8 +30,6 @@ public class DaoUtil
             return ConvertMaterialObject(jsonstr);
 
         }
-
-
     }
 
     private static List<MWMaterial> ConvertMaterialAry(string jsonstr) {
@@ -53,6 +50,41 @@ public class DaoUtil
     {
         MWMaterial mWMaterial = new MWMaterial();
         return mWMaterial.ConvertJSONToObject(jsonstr);
+    }
+
+    /// <summary>
+    ///  调整 Show Config 数组
+    /// </summary>
+    /// <param name="jsonstr"></param>
+    /// <returns></returns>
+    public static string ConvertShowConfigStr(string jsonstr) {
+
+        if (jsonstr.Contains("cuteffect_id") && (!jsonstr.Contains("'cuteffect_id'")))
+        {
+            jsonstr = jsonstr.Replace("cuteffect_id", "'cuteffect_id'");
+        }
+
+        if (jsonstr.Contains("contcom_type") && (!jsonstr.Contains("'contcom_type'")))
+        {
+            jsonstr = jsonstr.Replace("contcom_type", "'contcom_type'");
+        }
+
+        if (jsonstr.Contains("ordering") && (!jsonstr.Contains("'ordering'")))
+        {
+            jsonstr = jsonstr.Replace("ordering", "'ordering'");
+        }
+
+        if (!jsonstr.Contains("[")) {
+            jsonstr = "[" + jsonstr;
+        }
+
+        if (!jsonstr.Contains("]"))
+        {
+            jsonstr = jsonstr + "]"; 
+        }
+
+
+        return jsonstr;
     }
 
 }

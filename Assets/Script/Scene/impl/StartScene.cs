@@ -33,6 +33,10 @@ public class StartScene : IScene
     private float _DuringTime = 3f;
     private float _StartTime = 0f;
 
+
+    private static bool LOG = true;
+
+
     float RunTime {
         get {
             return Time.time - _StartTime;
@@ -84,6 +88,9 @@ public class StartScene : IScene
 
     public bool Run()
 	{
+        //DoDebug("Start Scene Is Start!");
+
+
         if (!_hasInit) {
             Reset();
         }
@@ -119,6 +126,9 @@ public class StartScene : IScene
 
         if (_doHideLogoComplete) {
             _hasInit = false;
+
+            //DoDebug("Start Scene Is End!");
+
             return false;
         }
 
@@ -162,8 +172,6 @@ public class StartScene : IScene
         }
 
 
-
-
         // 加载其他资源
         //  - 手写板用的texture
         Texture2D writePanelWordPanel = new Texture2D(_manager.writePanelConfig.writePanelWordRectWidth, _manager.writePanelConfig.writePanelWordRectHeight, TextureFormat.ARGB32, false);
@@ -182,6 +190,13 @@ public class StartScene : IScene
             return;
         }
 
+
+        // 设置配置表
+
+        MWConfig _config =  _daoService.GetConfig();
+        _manager.globalData.SetMWConfig(_config);
+
+
         _doLoadConfig = true;
 
         //if (DaoService.Instance.IsCustom() && (!_manager.managerConfig.IsCustom)) {
@@ -196,6 +211,8 @@ public class StartScene : IScene
     // Do Load
 
     private void DoLoadMock() {
+
+
         List<string> addresses = new List<string>();
 
         Enterprise enterprise = new Enterprise();
@@ -234,7 +251,6 @@ public class StartScene : IScene
         if (_manager.managerConfig.IsCustom)
         {
             // TODO 
-            Debug.Log("加载定制资源");
 
             CustomImageType[] types = {CustomImageType.LEFT1,
                 CustomImageType.LEFT2,
@@ -254,8 +270,13 @@ public class StartScene : IScene
         }
     }
 
+    /// <summary>
+    ///     加载数据
+    /// </summary>
     private void DoLoad()
     {
+        _daoService.InitData();
+
         List<string> addresses = new List<string>();
 
         List<Enterprise> enterprises = _daoService.GetEnterprises();
@@ -322,7 +343,6 @@ public class StartScene : IScene
         if (_manager.managerConfig.IsCustom)
         {
             // TODO 
-            Debug.Log("加载定制资源");
 
             CustomImageType[] types = {CustomImageType.LEFT1,
                 CustomImageType.LEFT2,
@@ -339,6 +359,15 @@ public class StartScene : IScene
 
                 }
             }
+        }
+    }
+
+
+
+
+    private void DoDebug(string message) {
+        if (LOG) {
+            Debug.Log(message);
         }
     }
 

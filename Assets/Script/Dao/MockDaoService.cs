@@ -658,7 +658,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
         return null;
     }
 
-    public Enterprise GetEnterprisesById(int id)
+    public Enterprise GetEnterpriseById(int id)
     {
         return GetEnterprise();
     }
@@ -696,5 +696,16 @@ public class MockDaoService : MonoBehaviour, IDaoService
         }
 
         return products;
+    }
+
+    public MWConfig GetConfig()
+    {
+        Debug.Log("Mock Config");
+        return new MWConfig();
+    }
+
+    public void InitData()
+    {
+        throw new System.NotImplementedException();
     }
 }

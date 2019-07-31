@@ -19,7 +19,7 @@ public class CardItemIndexFactory : CardItemFactory
     {
         List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        Enterprise e = _manager.daoService.GetEnterprisesById(id);
+        Enterprise e = _manager.daoService.GetEnterpriseById(id);
         CrossCardCellData cd = new CrossCardCellData();
 
         string address = e.Business_card;

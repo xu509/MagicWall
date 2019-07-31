@@ -59,10 +59,10 @@ public class MagicWallManager:MonoBehaviour
     [SerializeField,Header("Data Service")] MockDaoService _mockDaoService;
     [SerializeField] DaoService _realDaoService;
 
+    [SerializeField, Header("Global Data")] GlobalData _globalData;
 
     [SerializeField,Header("Mock")] bool _isMockData;
 
-    public bool IsMockData { get { return _isMockData; } }
 
 
     #endregion
@@ -129,6 +129,10 @@ public class MagicWallManager:MonoBehaviour
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
     public CardItemFactoryInstance cardItemFactoryInstance { get { return _cardItemFactoryInstance; } }
 
+    public bool IsMockData { get { return _isMockData; } }
+    public GlobalData globalData { get { return _globalData; } }
+
+
     // 获取文件地址
     #endregion
 
@@ -155,10 +159,11 @@ public class MagicWallManager:MonoBehaviour
         }
         else {
             _daoService = _realDaoService;
-            _realDaoService.Init();
+            _realDaoService.Init(this);
         }
 
-
+        // 初始化 Global Data
+        _globalData.Init(this);
 
         // 初始化监听服务
         udpServer = UdpServer.Instance;
