@@ -4,6 +4,8 @@ using UnityEngine;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System;
+using System.Xml.Serialization;
+using System.IO;
 
 //
 //  数据源
@@ -18,22 +20,23 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <summary>
     ///  公司测试环境
     /// </summary>
-    //private static string _sqlStr = "Database=iq360_cloud_wall;"
-    //            + "Server=192.168.1.100"
-    //            + ";Uid=root;"
-    //            + "pooling=false;"
-    //            + "Password=artvoi; pooling=false;CharSet=utf8"
-    //            + ";port=3306";
+    private static string _sqlStr = "Database=iq360_cloud_wall;"
+                + "Server=192.168.1.100"
+                + ";Uid=root;"
+                + "pooling=false;"
+                + "Password=artvoi; pooling=false;CharSet=utf8"
+                + ";port=3306";
 
     // 家
-    private static string _sqlStr = "Database=MagicWall;"
-            + "Server=116.85.26.230"
-            + ";Uid=root;"
-            + "pooling=false;"
-            + "Password=; pooling=false;CharSet=utf8"
-            + ";port=3306";
+    //private static string _sqlStr = "Database=MagicWall;"
+    //        + "Server=116.85.26.230"
+    //        + ";Uid=root;"
+    //        + "pooling=false;"
+    //        + "Password=; pooling=false;CharSet=utf8"
+    //        + ";port=3306";
 
 
+    private LikeDataBase _likeDataBase;
 
     //
     //  Construct
@@ -48,19 +51,18 @@ public class TheDataSource : Singleton<TheDataSource>
         InitData();
     }
 
-    //
-    //  初始化信息
-    //
+    /// <summary>
+    ///     初始化数据库连接 / xml 连接
+    /// </summary>
     public void InitData() {
 
         // CONNECT
         try
         {
+            // 查找XML，如果不存在就新建
+            LoadLikes();
 
-            if (mySqlConnection == null || mySqlConnection.State != ConnectionState.Open) {
-                mySqlConnection = new MySqlConnection(_sqlStr);
-                mySqlConnection.Open();
-            }
+
         }   
         catch (Exception e)
         {
@@ -127,8 +129,12 @@ public class TheDataSource : Singleton<TheDataSource>
                 da.Fill(ds);
 
                 DataTable table = ds.Tables[0];
-
-                if (table.Rows.Count == 1)
+                if (table.Rows.Count == 0)
+                {
+                    Debug.Log("查询无结果：" + sql);
+                    return result;
+                }
+                else if (table.Rows.Count == 1)
                 {
                     result = new Dictionary<string, object>();
                     for (int i = 0; i < table.Columns.Count; i++)
@@ -207,6 +213,45 @@ public class TheDataSource : Singleton<TheDataSource>
 
 
 
+
+    public void SaveLikes()
+    {
+        // open a new xml file
+        XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
+        FileStream stream = new FileStream(Application.dataPath + "/MagicWallAsset/like_data.xml", FileMode.Create);
+        serializer.Serialize(stream, _likeDataBase);
+        stream.Close();
+    }
+
+    // load function
+    private void LoadLikes()
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
+        FileStream stream = new FileStream(Application.dataPath + "/MagicWallAsset/like_data.xml", FileMode.Open);
+        _likeDataBase = serializer.Deserialize(stream) as LikeDataBase;
+        stream.Close();
+    }
+
+    public LikeDataBase GetLikeDataBase() {
+        if (_likeDataBase == null) {
+            LoadLikes();
+        }
+        return _likeDataBase;
+    }
+
+
+}
+
+
+[System.Serializable]
+public class LikeDataBase
+{
+
+    //通过注解设置的字段会在XML根路径上使用
+    [XmlArray("likes")]
+    public List<Like> _list = new List<Like>();
+
+    public List<Like> list { get { return _list; } }
 
 
 }

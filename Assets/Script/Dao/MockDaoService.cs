@@ -708,4 +708,14 @@ public class MockDaoService : MonoBehaviour, IDaoService
     {
         throw new System.NotImplementedException();
     }
+
+    public int GetLikes(string path)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool UpdateLikes(string path)
+    {
+        throw new System.NotImplementedException();
+    }
 }

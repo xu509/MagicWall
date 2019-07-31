@@ -168,5 +168,14 @@ public interface IDaoService
 
     MWConfig GetConfig();
 
+    /// <summary>
+    ///    根据图片地址获取喜欢数
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    int GetLikes(string path);
+
+    bool UpdateLikes(string path);
+
 
 }
