@@ -61,6 +61,11 @@ public class MagicWallManager:MonoBehaviour
 
     [SerializeField, Header("Global Data")] GlobalData _globalData;
 
+
+    [SerializeField] int _randomFactor = 1;
+    public int RandomFactor{ get { return _randomFactor; } }
+
+
     [SerializeField,Header("Mock")] bool _isMockData;
 
 

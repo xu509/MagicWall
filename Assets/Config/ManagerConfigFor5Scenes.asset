@@ -14,12 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCustom: 0
   SelectedItemMaxCount: 5
+  gapFactor: 0
   Column: 15
   FlockPoolSize: 150
   CardPoolSize: 8
-  StarEffectDistance: 5000
-  StarEffectDistanceTime: 4
-  ClearBubblePoolSize: 40
-  DimBubblePoolSize: 40
-  ClearBubbbleCreateIntervalTime: 1
-  DimBubbbleCreateIntervalTime: 2
+  MainPanelMoveFactor: 0
+  StarEffectAgentsCount: 0
+  StarEffectMoveFactor: 0
+  StarEffectOriginPoint: 0
+  StarEffectEndPoint: 0
+  BackgroundClearBubblePoolSize: 0
+  BackgroundClearMoveMinFactor: 0
+  BackgroundClearMoveMaxFactor: 0
+  BackgroundDimBubblePoolSize: 0
+  BackgroundDimMoveMinFactor: 0
+  BackgroundDimMoveMaxFactor: 0
+  ItemSizeMinWidthFactor: 0
+  ItemSizeMaxWidthFactor: 0
+  ItemSizeMinHeightFactor: 0
+  ItemSizeMaxHeightFactor: 0
+  InfluenceMoveFactor: 0
+  InfluenceEaseEnum: 0

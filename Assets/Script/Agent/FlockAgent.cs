@@ -13,6 +13,9 @@ public class FlockAgent : MonoBehaviour
     protected AgentManager _agentManager;
 
     protected FlockTweenerManager _flockTweenerManager;
+
+    private IFlockAgentMoveBehavior _flockAgentMoveBehavior;
+
     public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
 
@@ -130,6 +133,8 @@ public class FlockAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // _flockAgentMoveBehavior = new FlockAgentCommonMoveBehavior();
+        _flockAgentMoveBehavior = new FlockAgentMoveBehavior2();
     }
 
 
@@ -313,58 +318,19 @@ public class FlockAgent : MonoBehaviour
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
 
-            // 获取offset_x;offset_y
-            float offset_x = Mathf.Abs(refVector2WithOffset.x - targetVector2.x);
-            float offset_y = Mathf.Abs(refVector2WithOffset.y - targetVector2.y);
 
-            float m_scale = -(1f / effectDistance) * offset + 1f;
+            /// 受影响浮块具体实现
+            Vector2 to = _flockAgentMoveBehavior.CalculatePosition(refVector2, refVector2WithOffset, targetVector2, distance, 
+                effectDistance, w, h, _manager, _manager.managerConfig.InfluenceEaseEnum);
 
-            //
-            //  上下移动的偏差值
-            //
-            float move_offset_y = offset_y * ((h / 2) / effectDistance);
-            move_offset_y += h / 10 * _manager.managerConfig.InfluenceMoveFactor;
 
-            float move_offset_x = offset_x * ((w / 2) / effectDistance);
-            move_offset_x += w / 10 * _manager.managerConfig.InfluenceMoveFactor;
-
-            float to_y,to_x;
-            if (refVector2WithOffset.y > targetVector2.y)
-            {
-                to_y = refVector2.y + move_offset_y;
-            }
-            else if (refVector2WithOffset.y < targetVector2.y)
-            {
-                to_y = refVector2.y - move_offset_y;
-            }
-            else {
-                to_y = refVector2.y;
-            }
-
-            if (refVector2WithOffset.x > targetVector2.x)
-            {
-                to_x = refVector2.x + move_offset_x;
-            }
-            else if (refVector2WithOffset.x < targetVector2.x)
-            {
-                to_x = refVector2.x - move_offset_x;
-            }
-            else {
-                to_x = refVector2.x;
-            }
-
-            Vector2 to = new Vector2(to_x, to_y); //目标位置
-
-            // offset：影响距离  /  effectDistance： 最大影响距离
-
-            //float overshootOrAmplitude = 3f;
-            //float k = (offset = offset / effectDistance - 1f) * offset * ((overshootOrAmplitude + 1f) * offset + overshootOrAmplitude) + 1f;
 
             // 获取缓动方法
             Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.managerConfig.InfluenceEaseEnum);
             float k = defaultEasingFunction(offset / effectDistance);
 
-            m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+            //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+            m_transform?.DOAnchorPos(to, Time.deltaTime);
             m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
             
 			IsChanging = true;

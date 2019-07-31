@@ -523,7 +523,7 @@ MonoBehaviour:
   _mockDaoService: {fileID: 1167712299}
   _realDaoService: {fileID: 1167712298}
   _globalData: {fileID: 1167712301}
-  _isMockData: 0
+  _isMockData: 1
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0
