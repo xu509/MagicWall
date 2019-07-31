@@ -78,7 +78,6 @@ public class MWConfig
     public int ThemeId { get => _themeId; set => _themeId = value; }
 
 
-
     public override string ToString()
     {
         string str;
