@@ -55,7 +55,7 @@ public class SliceCardCellData
 
         _id = productDetail.Id;
         _description = productDetail.Description;
-        _likes = _manager.daoService.GetLikesByProductDetail(_id);
+        _likes = _manager.daoService.GetLikes(productDetail.Image);
         _image = productDetail.Image;
         _type = 0;
         _isImage = productDetail.IsImage();
@@ -71,7 +71,7 @@ public class SliceCardCellData
         _id = activityDetail.Id;
         _isImage = activityDetail.IsImage();
         _description = activityDetail.Description;
-        _likes = _manager.daoService.GetLikesByActivityDetail(_id);
+        _likes = _manager.daoService.GetLikes(activityDetail.Image);
         _image = activityDetail.Image;
         _type = 1;
 
