@@ -39,6 +39,13 @@ public class SearchResultAgent : MonoBehaviour
 
     void Awake()
     {
+        Reset();
+
+    }
+
+    private void Reset() {
+
+
         _resultItems = new List<SearchResultItemAgent>();
 
         float defaultViewScrollHeight = _ScrollViewItemContainer.rect.height;
@@ -60,6 +67,10 @@ public class SearchResultAgent : MonoBehaviour
         _default_scrollview_anchorposition = _ScrollViewItemContainer.anchoredPosition;
 
     }
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -83,6 +94,8 @@ public class SearchResultAgent : MonoBehaviour
     /// 初始化数据
     /// </summary>
     public void InitData(List<SearchBean> searchBeans,string title,MagicWallManager manager,CardAgent cardAgent) {
+        Reset();
+
         _title.text = title;
         _manager = manager;
         _cardAgent = cardAgent;

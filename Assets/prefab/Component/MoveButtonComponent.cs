@@ -29,6 +29,9 @@ public class MoveButtonComponent : MonoBehaviour,MoveBtnObserver
 
 
     public void Init(Action doClickAction , CardAgent cardAgent) {
+        Debug.Log("Init");
+
+
         _DoClickAction = doClickAction;
         _moveSubject = cardAgent;
 

@@ -155,8 +155,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         // 初始化移动组件
         _moveBtnObservers = new List<MoveBtnObserver>();
 
-        _moveBtnComponent.Init(DoMove, this);
-
+        _moveBtnComponent?.Init(DoMove, this);
+        _moveBtnComponentInThree?.Init(DoMove, this);
     }
 
 

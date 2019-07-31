@@ -87,11 +87,11 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
             // 调整 Like 按钮
             if (cellData.IsProduct())
             {
-                _likes = _manager.daoService.GetLikesByProductDetail(_cellData.Id);
+                _likes = _manager.daoService.GetLikes(_cellData.Image);
             }
             else
             {
-                _likes = _manager.daoService.GetLikesByActivityDetail(_cellData.Id);
+                _likes = _manager.daoService.GetLikes(_cellData.Image);
             }
 
 
@@ -148,14 +148,12 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
         // 调整 Like 按钮
         if (cellData.IsProduct())
         {
-            _likes = _manager.daoService.GetLikesByProductDetail(_cellData.Id);
+            _likes = _manager.daoService.GetLikes(_cellData.Image);
         }
         else
         {
-            _likes = _manager.daoService.GetLikesByActivityDetail(_cellData.Id);
+            _likes = _manager.daoService.GetLikes(_cellData.Image);
         }
-
-        _likes = 0;
 
 
         _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
@@ -232,7 +230,8 @@ public class SliceCardScrollViewCell : SliceCardBaseCell<SliceCardCellData, Slic
     }
 
     private void OnClickLikeBtn() {
-
+        Debug.Log("On Click Like");
+        _manager.daoService.UpdateLikes(_cellData.Image);
     }
 
 }

@@ -180,11 +180,15 @@ public class SearchAgent : MonoBehaviour
     /// 关闭搜索结果的容器
     /// </summary>
     private void CloseSearchResultContainer(bool doDestory) {
+
+        Debug.Log("关闭搜索结果的容器");
+
         _searchResultContainer.gameObject.SetActive(false);
 
         if (doDestory)
         {
-            Destroy(_searchResultContainer.gameObject);
+            Destroy(_searchResultAgent.gameObject);
+            _searchResultAgent = null;
         }
     }
 
@@ -203,6 +207,9 @@ public class SearchAgent : MonoBehaviour
 
         if (doDestory)
         {
+            Debug.Log("删除容器");
+
+            //_searchResultAgent = null;
             Destroy(_searchAgentContainer.gameObject);
         }
     }
@@ -241,7 +248,7 @@ public class SearchAgent : MonoBehaviour
     private void OnClickSearchResultReturnBtn() {
 
         // 关闭新打开的结果窗口
-        CloseSearchResultContainer(false);
+        CloseSearchResultContainer(true);
 
         //  打开原来的Search窗口
         OpenSearchAgentContainer();
@@ -255,7 +262,6 @@ public class SearchAgent : MonoBehaviour
 
     #endregion
 
-    #region 可外部调用方法
 
     // 退格功能
     public void DoBackspace() {
@@ -265,6 +271,9 @@ public class SearchAgent : MonoBehaviour
 
         InitBackspaceStatus();
     }
+
+
+    #region 点击搜索
 
     // 搜索功能
     public void DoSearch()
@@ -277,6 +286,8 @@ public class SearchAgent : MonoBehaviour
         //  生成搜索结果控件，并进行初始化
         if (_searchResultAgent == null)
         {
+            Debug.Log("_searchResultAgent == null");
+
             _searchResultAgent = Instantiate(_searchResultAgentPrefab, _searchResultContainer) as SearchResultAgent;
             _searchResultAgent.Init();
         }

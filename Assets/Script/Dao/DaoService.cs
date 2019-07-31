@@ -526,7 +526,31 @@ public class DaoService : MonoBehaviour, IDaoService
 
     public List<SearchBean> Search(string keys)
     {
-        throw new System.NotImplementedException();
+        List<SearchBean> searchBeans = new List<SearchBean>();
+        string sql = string.Format("select a.act_id as id,a.image, 1 as 'type' from activity a where name like '%{0}%' UNION all select b.com_id as id,b.logo as image, 2 as 'type' from company b where name like '%{0}%' UNION all select c.prod_id as id,c.image, 3 as 'type' from product c where name like '%{0}%'", keys);
+        var rows = _theDataSource.SelectList(sql);
+
+        for (int i = 0; i < rows.Count; i++)
+        {
+            var row = rows[i];
+            SearchBean searchBean = new SearchBean();
+            searchBean.id = Convert.ToInt16(row["id"]);
+            searchBean.cover = row["image"].ToString();
+            int type = Convert.ToInt16(row["type"]);
+            if (type == 1)
+            {
+                searchBean.type = MWTypeEnum.Activity;
+            }   else if (type == 2)
+            {
+                searchBean.type = MWTypeEnum.Enterprise;
+            }   else if (type == 3)
+            {
+                searchBean.type = MWTypeEnum.Product;
+            }
+            searchBeans.Add(searchBean);
+        }
+
+        return searchBeans;
     }
 
     public List<Activity> GetActivitiesByEnvId(int envid)
@@ -668,6 +692,7 @@ public class DaoService : MonoBehaviour, IDaoService
 
     public bool UpdateLikes(string path)
     {
+        //Debug.Log("更新喜欢数:" + path);
         try
         {
             var likes = _theDataSource.GetLikeDataBase();

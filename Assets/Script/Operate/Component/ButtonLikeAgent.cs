@@ -120,7 +120,6 @@ public class ButtonLikeAgent : MonoBehaviour
             //  图标变红
             _btnLikeWithNumberHeartIcon.DOColor(BTN_ACTIVE_COLOR, 0.5f);
 
-            _onClickCallBack.Invoke();
 
             //Debug.Log("Click Button Like Agent");
         }
@@ -145,6 +144,8 @@ public class ButtonLikeAgent : MonoBehaviour
 
 
         }
+        _onClickCallBack.Invoke();
+
     }
 
 
