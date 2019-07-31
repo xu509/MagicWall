@@ -31,6 +31,11 @@ public abstract class CrossCardBaseController<CrossCardCellData, CrossCardScroll
             return pool[0];
         }
 
+        if (index > 5)
+        {
+            return pool[index % 5];
+        }
+
         return pool[index];
     }
 

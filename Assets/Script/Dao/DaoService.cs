@@ -75,6 +75,7 @@ public class DaoService : MonoBehaviour, IDaoService
         enterprise.IsCustom = isCustom;
         enterprise.Logo = row["logo"].ToString();
         
+        //enterprise.Description = row["description"].ToString();
         enterprise.Description = row["description"].ToString();
         enterprise.Business_card = row["image_namecard"].ToString();
         enterprise.EnvCards = GetEnvCards(enterprise.Ent_id);
@@ -84,7 +85,6 @@ public class DaoService : MonoBehaviour, IDaoService
 
     public EnterpriseDetail GetEnterprisesDetail(int com_id)
     {
-        Debug.Log("GetEnterprisesDetail：" + com_id);
         EnterpriseDetail enterpriseDetail = new EnterpriseDetail();
 
         enterpriseDetail.Enterprise = GetEnterpriseById(com_id);
@@ -194,7 +194,7 @@ public class DaoService : MonoBehaviour, IDaoService
         var row = _theDataSource.SelectOne(sql);
         string catalogStr = row["catalog"].ToString();
 
-        Debug.Log("id : " + id + " catalogStr : " + catalogStr);
+        //Debug.Log("id : " + id + " catalogStr : " + catalogStr);
 
         JsonData data = JsonMapper.ToObject(catalogStr);
         for (int i = 0; i < data.Count; i++)
