@@ -208,19 +208,26 @@ public class DaoService : MonoBehaviour, IDaoService
         return catalogs;
     }
 
+    /// <summary>
+    ///     根据 Config Key 获取配置信息，此时 Global Data 已经初始化
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public AppConfig GetConfigByKey(string key)
     {
         AppConfig appConfig = new AppConfig();
 
-        List<ProductDetail> productDetails = new List<ProductDetail>();
+        var config = _manager.globalData.GetConfig();
 
-        string sql = "select value from config c where c.key='" + key + "'";
-        var row = _theDataSource.SelectOne(sql);
+        appConfig = appConfig.GetConfigByMWConfig(config,key);
 
-        if (row != null)
-        {
-            appConfig.Value = row["value"].ToString();
-        }
+        //string sql = "select value from config c where c.key='" + key + "'";
+        //var row = _theDataSource.SelectOne(sql);
+
+        //if (row != null)
+        //{
+        //    appConfig.Value = row["value"].ToString();
+        //}
         return appConfig;
     }
 
@@ -695,8 +702,9 @@ public class DaoService : MonoBehaviour, IDaoService
             Debug.LogError(ex.Message);
         }
         finally {
-            return false;
+            
         }
 
+        return false;
     }
 }

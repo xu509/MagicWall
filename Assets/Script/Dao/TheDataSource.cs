@@ -60,12 +60,24 @@ public class TheDataSource : Singleton<TheDataSource>
         try
         {
             // 查找XML，如果不存在就新建
-            LoadLikes();
+            string path = Application.dataPath + "/MagicWallAsset/";
+            string filename = "like_data.xml";
+            string p = path + filename;
 
+            bool isCreate = AppUtils.CreateFileIfNotExist(path, filename);
+            if (isCreate) {
+                _likeDataBase = new LikeDataBase();
+                SaveLikes();
+            }
+
+            LoadLikes();
 
         }   
         catch (Exception e)
         {
+            Debug.LogError(e.StackTrace);
+            Debug.LogError(e.Message);
+
             throw new Exception("服务器连接失败：" + e.Message.ToString());
         }
     }
@@ -216,9 +228,14 @@ public class TheDataSource : Singleton<TheDataSource>
 
     public void SaveLikes()
     {
+        Debug.Log("Do Save");
+
         // open a new xml file
         XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
-        FileStream stream = new FileStream(Application.dataPath + "/MagicWallAsset/like_data.xml", FileMode.Create);
+
+        string path = Application.dataPath + "/MagicWallAsset/like_data.xml";
+
+        FileStream stream = new FileStream(path, FileMode.Create);
         serializer.Serialize(stream, _likeDataBase);
         stream.Close();
     }
@@ -226,6 +243,9 @@ public class TheDataSource : Singleton<TheDataSource>
     // load function
     private void LoadLikes()
     {
+        Debug.Log("Do Load");
+
+
         XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
         FileStream stream = new FileStream(Application.dataPath + "/MagicWallAsset/like_data.xml", FileMode.Open);
         _likeDataBase = serializer.Deserialize(stream) as LikeDataBase;

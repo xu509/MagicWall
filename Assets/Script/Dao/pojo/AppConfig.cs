@@ -37,6 +37,60 @@ public class AppConfig
     // 企业的logo
     private string value;
     public string Value { set { this.value = value; } get { return value; } }
+
+    public AppConfig GetConfigByMWConfig(MWConfig mwConfig,string key) {
+        AppConfig appConfig = new AppConfig();
+
+        if (key == KEY_THEME_ID) {
+            appConfig.key = key;
+            appConfig.value = mwConfig.ThemeId.ToString();
+        }
+
+        if (key == KEY_SHOW_CONFIG)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.ShowConfig.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_CurveStagger)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringCurvestagger.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_LeftRightAdjust)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringLeftRightAdjust.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_MidDisperseAdjust)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringMidDisperse.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_Stars)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringStars.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_UpDownAdjust)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringUpDownAdjust.ToString();
+        }
+
+        if (key == KEY_CutEffectDuring_FrontBackUnfold)
+        {
+            appConfig.key = key;
+            appConfig.value = mwConfig.CutEffectDuringFrontBackRightPullOpen.ToString();
+        }
+
+        return appConfig;
+    }
+
     
 }
 

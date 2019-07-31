@@ -113,5 +113,30 @@ public class AppUtils
     }
 
 
+    public static bool CreateFileIfNotExist(string path,string filename) {
+        bool isCreate = false;
+
+
+        string p = path + filename;
+
+        Debug.Log("p : " + p);
+
+
+        if (!File.Exists(@p)) {
+            Debug.Log("CreateFileIfNotExist : " + p);
+            DirectoryInfo di = Directory.CreateDirectory(path);
+
+            
+            isCreate = true;
+
+            FileStream fs = File.Create(p);
+            fs.Close();
+
+
+        }
+
+        return isCreate;
+    }
+
 
 }
