@@ -7,7 +7,7 @@ using UnityEngine;
 public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
 {
     public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance,
-        float width, float height, MagicWallManager manager, EaseEnum InfluenceEaseEnum)
+        float width, float height, MagicWallManager manager)
     {
         if (distance > effectDistance)
         {
@@ -22,10 +22,10 @@ public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
             //  上下移动的偏差值
             //
             float move_offset_y = offset_y * ((height / 2) / effectDistance);
-            move_offset_y += height / 10 * manager.managerConfig.InfluenceMoveFactor;
+            move_offset_y += height / 10 * manager.flockBehaviorConfig.CommonEffectInfluenceFactor;
 
             float move_offset_x = offset_x * ((width / 2) / effectDistance);
-            move_offset_x += width / 10 * manager.managerConfig.InfluenceMoveFactor;
+            move_offset_x += width / 10 * manager.flockBehaviorConfig.CommonEffectInfluenceFactor;
 
             float to_y, to_x;
             if (positionWithOffset.y > targetPosition.y)
@@ -56,7 +56,7 @@ public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
 
             Vector2 to = new Vector2(to_x, to_y); //目标位置
 
-            Func<float, float> defaultEasingFunction = EasingFunction.Get(InfluenceEaseEnum);
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(manager.flockBehaviorConfig.CommonEaseEnum);
             float k = defaultEasingFunction((effectDistance - distance) / effectDistance);
 
             Vector2 r = Vector2.Lerp(position, to, k);

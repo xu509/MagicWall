@@ -102,7 +102,6 @@ public class FlockAgent : MonoBehaviour
     ItemsFactory _itemsFactory;
     #endregion
 
-
     #region 引用
     public string DataImg { set { _data_img = value; } get { return _data_img; } }
     public int DataId { set { _data_id = value; } get { return _data_id; } }
@@ -129,13 +128,14 @@ public class FlockAgent : MonoBehaviour
     public int SceneIndex { set { _sceneIndex = value; }get { return _sceneIndex; }}
     #endregion
 
-
     // Start is called before the first frame update
+
+    #region 生命周期 - start
     void Start()
     {
         // _flockAgentMoveBehavior = new FlockAgentCommonMoveBehavior();
-        _flockAgentMoveBehavior = new FlockAgentMoveBehavior2();
     }
+    #endregion
 
 
     /// <summary>
@@ -219,6 +219,7 @@ public class FlockAgent : MonoBehaviour
         }
 
         _agentContainerType = agentContainerType;
+
     }
 
     #region 更新位置
@@ -309,7 +310,7 @@ public class FlockAgent : MonoBehaviour
         // 判断结束
 
         // 获取有效影响范围，是宽度一半以上
-        float effectDistance = (w / 2) + (w / 2) * _manager.managerConfig.InfluenceMoveFactor;
+        float effectDistance = (w / 2) + (w / 2) * _manager.flockBehaviorConfig.InfluenceMoveFactor;
         // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
         float offset = effectDistance - distance;
 
@@ -318,15 +319,21 @@ public class FlockAgent : MonoBehaviour
 		{
             targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
 
+            _flockAgentMoveBehavior = _manager.moveBehaviourFactory
+                .GetMoveBehavior(_manager.flockBehaviorConfig.MoveBehaviourType);
+
+            //_flockAgentMoveBehavior = _manager.moveBehaviourType
+
 
             /// 受影响浮块具体实现
-            Vector2 to = _flockAgentMoveBehavior.CalculatePosition(refVector2, refVector2WithOffset, targetVector2, distance, 
-                effectDistance, w, h, _manager, _manager.managerConfig.InfluenceEaseEnum);
+            Vector2 to = _flockAgentMoveBehavior.CalculatePosition(refVector2, refVector2WithOffset,
+                targetVector2, distance, 
+                effectDistance, w, h, _manager);
 
 
 
             // 获取缓动方法
-            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.managerConfig.InfluenceEaseEnum);
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
             float k = defaultEasingFunction(offset / effectDistance);
 
             //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);

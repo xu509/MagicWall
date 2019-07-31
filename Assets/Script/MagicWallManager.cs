@@ -9,7 +9,7 @@ using EasingUtil;
 //
 //  入口类
 //
-public class MagicWallManager:MonoBehaviour
+public class MagicWallManager : MonoBehaviour
 {
     //
     //  Single
@@ -19,7 +19,7 @@ public class MagicWallManager:MonoBehaviour
     #region 可配置项
 
     // 定制 INFO 面板
-    [SerializeField,Header("UI")] InfoPanelAgent infoPanelAgent;
+    [SerializeField, Header("UI")] InfoPanelAgent infoPanelAgent;
     // MagicWall 面板
     [SerializeField] RectTransform _magicWallPanel;
     // start effect 面板
@@ -55,18 +55,15 @@ public class MagicWallManager:MonoBehaviour
 
     [SerializeField] CardItemFactoryInstance _cardItemFactoryInstance;
 
-
-    [SerializeField,Header("Data Service")] MockDaoService _mockDaoService;
+    [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
     [SerializeField] DaoService _realDaoService;
 
     [SerializeField, Header("Global Data")] GlobalData _globalData;
 
+    [SerializeField, Header("Flock Move Behavior")] FlockBehaviorConfig _flockBehaviorConfig;
+    [SerializeField] MoveBehaviourFactory _moveBehaviourFactory;
 
-    [SerializeField] int _randomFactor = 1;
-    public int RandomFactor{ get { return _randomFactor; } }
-
-
-    [SerializeField,Header("Mock")] bool _isMockData;
+    [SerializeField, Header("Mock")] bool _isMockData;
 
 
 
@@ -89,12 +86,12 @@ public class MagicWallManager:MonoBehaviour
 
     // 配置选项
 
-   public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
-   //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
- 
+    //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+
 
     #endregion
 
@@ -133,7 +130,8 @@ public class MagicWallManager:MonoBehaviour
     public ItemsFactoryAgent itemsFactoryAgent { get { return _itemsFactoryAgent; } }
     public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
     public CardItemFactoryInstance cardItemFactoryInstance { get { return _cardItemFactoryInstance; } }
-
+    public FlockBehaviorConfig flockBehaviorConfig { get { return _flockBehaviorConfig; } }
+    public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; }}
     public bool IsMockData { get { return _isMockData; } }
     public GlobalData globalData { get { return _globalData; } }
 
