@@ -23,6 +23,13 @@ public class SearchResultAgent : MonoBehaviour
     [SerializeField] RectTransform _move_rect;
     [SerializeField] MoveButtonComponent _moveBtnComponent;
 
+    // 提示功能相关
+    [SerializeField, Header("Question")] RectTransform _questionContainer;
+    [SerializeField] QuestionAgent _questionPrefab;
+    private bool _showQuestion;
+    private QuestionAgent _questionAgent;
+    // 提示功能相关 结束
+
 
     private List<SearchResultItemAgent> _resultItems;   //结果 items
     private ItemsFactory _itemsFactory;   //  实体生成器
@@ -242,6 +249,30 @@ public class SearchResultAgent : MonoBehaviour
         _onClickSearchResultItem = action;
     }
 
+
+    #endregion
+
+
+    #region 提示内容
+    public void DoQuestion()
+    {
+        if (_showQuestion)
+        {
+            _questionAgent?.CloseReminder();
+        }
+        else
+        {
+            _questionAgent = Instantiate(_questionPrefab, _questionContainer);
+            _questionAgent.Init(OnQuestionClose);
+            _questionAgent.ShowReminder(QuestionTypeEnum.SearchResultPanel);
+            _showQuestion = true;
+        }
+    }
+
+    private void OnQuestionClose()
+    {
+        _showQuestion = false;
+    }
 
     #endregion
 }

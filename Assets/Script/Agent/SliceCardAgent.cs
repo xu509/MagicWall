@@ -34,6 +34,9 @@ public class SliceCardAgent : CardAgent
 
         InitAgency();
 
+        _questionTypeEnum = QuestionTypeEnum.SliceCard;
+
+
         List<SliceCardCellData> cellDatas;
         if (type == MWTypeEnum.Product)
         {

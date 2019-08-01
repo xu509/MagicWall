@@ -35,6 +35,12 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     private float _safe_distance_height;
     private CardRecoverStatus _cardRecoverStatus = CardRecoverStatus.Init;
 
+    // 提示
+    protected QuestionTypeEnum _questionTypeEnum;   // 提示组件所需的提示类型
+    private bool _showQuestion = false;
+    private QuestionAgent _questionAgent;   
+
+
     private bool _isPhysicsMoving = false;
     public bool isPhysicsMoving { set { _isPhysicsMoving = value; } get { return _isPhysicsMoving; } }
 
@@ -58,6 +64,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     protected bool hasInitBusinessCard = false; // 是否已生成business card
     protected BusinessCardAgent businessCardAgent;
 
+    
+
+
     [SerializeField,Range(0f,1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
     [SerializeField,Header("UI")] RectTransform _main_container;    //  主框体
     [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
@@ -77,6 +86,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] MoveButtonComponent _moveBtnComponent;
     [SerializeField] MoveButtonComponent _moveBtnComponentInThree;
 
+    [SerializeField, Header("Question")] RectTransform _question_container;
+    [SerializeField] QuestionAgent _questionAgentPrefab;
 
     [SerializeField , Header("Business Card")] RectTransform _business_card_container;    // 企业卡片容器
     [SerializeField] BusinessCardAgent _business_card_prefab;    // 企业卡片 control
@@ -110,6 +121,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     }
 
     #endregion
+
+
+    private void DoCardReset()
+    {
+        _showQuestion = false;
+    }
+
 
     #region Protected Method
 
@@ -176,6 +194,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _safe_distance_height = GetComponent<RectTransform>().rect.height / 3;
 
         _agentManager = _manager.agentManager;
+
+        DoCardReset();
     }
 
     //
@@ -231,7 +251,6 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         if (_doMoving) {
             DoMove();
         }
-
 
 
         //  缩放
@@ -419,8 +438,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         }
         else {
             // 显示三个按钮
-            _tool_bottom_container.gameObject.SetActive(false);
-            _tool_bottom_three_container.gameObject.SetActive(true);
+            _tool_bottom_container?.gameObject.SetActive(false);
+            _tool_bottom_three_container?.gameObject.SetActive(true);
 
         }
 
@@ -815,6 +834,31 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         //GetComponent<RectTransform>().DOAnchorPos(to, 1.5f);
 
+    }
+
+    #endregion
+
+
+    #region 提示内容
+    public void DoQuestion() {
+        if (_showQuestion)
+        {
+            _questionAgent?.CloseReminder();
+            _showQuestion = false;
+        }
+        else {
+            _questionAgent = Instantiate(_questionAgentPrefab, _question_container);
+            _questionAgent.Init(OnQuestionClose);
+            _questionAgent.ShowReminder(_questionTypeEnum);
+            _showQuestion = true;
+
+            TurnOnKeepOpen();
+        }
+    }
+
+    private void OnQuestionClose() {
+        TurnOffKeepOpen();
+        _showQuestion = false;
     }
 
     #endregion

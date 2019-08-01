@@ -55,6 +55,7 @@ public class CrossCardAgent : CardAgent
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
         InitAgency();
+        _questionTypeEnum = QuestionTypeEnum.CrossCard;
 
         _scrollItemNumber = 0;
 

@@ -31,6 +31,13 @@ public class SearchAgent : MonoBehaviour
     [SerializeField] Sprite _sprite_move;
     [SerializeField] RectTransform _move_rect;
 
+    // 提示功能相关
+    [SerializeField,Header("Question")] RectTransform _questionContainer;
+    [SerializeField] QuestionAgent _questionPrefab;
+    private bool _showQuestion;
+    private QuestionAgent _questionAgent;
+    // 提示功能相关 结束
+
 
     private string _searchWord; //  搜索词
     private SearchResultAgent _searchResultAgent;    //  搜索结果索引
@@ -375,6 +382,31 @@ public class SearchAgent : MonoBehaviour
     private void UpdateSearchWord() {
         _searchText.text = _searchWord;
     }
+
+
+
+    #region 提示内容
+    public void DoQuestion()
+    {
+        if (_showQuestion)
+        {
+            _questionAgent?.CloseReminder();
+        }
+        else
+        {
+            _questionAgent = Instantiate(_questionPrefab, _questionContainer);
+            _questionAgent.Init(OnQuestionClose);
+            _questionAgent.ShowReminder(QuestionTypeEnum.SearchPanel);
+            _showQuestion = true;
+        }
+    }
+
+    private void OnQuestionClose()
+    {
+        _showQuestion = false;
+    }
+
+    #endregion
 
 
 
