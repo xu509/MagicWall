@@ -1,5 +1,15 @@
 <?xml version="1.0"?>
 <LikeDataBase xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <likes />
-  <list />
+  <likes>
+    <Like>
+      <Number>3</Number>
+      <Path>/uploads/20190628/68db38072813af1a9c0f94e8db5562a8.jpg</Path>
+    </Like>
+  </likes>
+  <list>
+    <Like>
+      <Number>3</Number>
+      <Path>/uploads/20190628/68db38072813af1a9c0f94e8db5562a8.jpg</Path>
+    </Like>
+  </list>
 </LikeDataBase>

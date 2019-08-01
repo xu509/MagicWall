@@ -22,10 +22,10 @@ public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
             //  上下移动的偏差值
             //
             float move_offset_y = offset_y * ((height / 2) / effectDistance);
-            move_offset_y += height / 10 * manager.flockBehaviorConfig.CommonEffectInfluenceFactor;
+            move_offset_y += height / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
 
             float move_offset_x = offset_x * ((width / 2) / effectDistance);
-            move_offset_x += width / 10 * manager.flockBehaviorConfig.CommonEffectInfluenceFactor;
+            move_offset_x += width / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
 
             float to_y, to_x;
             if (positionWithOffset.y > targetPosition.y)
@@ -62,6 +62,31 @@ public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
             Vector2 r = Vector2.Lerp(position, to, k);
 
             return r;
+        }
+    }
+
+    public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition,
+        float distance, float effectDistance, float width, float height, MagicWallManager manager)
+    {
+        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.CommonScaleEaseEnum);
+
+        Vector2 panelOffset = positionWithOffset - position;
+
+        float offset = effectDistance - distance;
+
+        if (distance > effectDistance)
+        {
+            return 1f;
+        }
+        else
+        {
+            float maxScale = 1f;
+            float minScale = 0.1f;
+
+            float k = offset / effectDistance;
+
+            float s = Mathf.Lerp(maxScale, minScale, easeFun(k));
+            return s;
         }
     }
 }

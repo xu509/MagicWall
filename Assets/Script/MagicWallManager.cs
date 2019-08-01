@@ -47,6 +47,8 @@ public class MagicWallManager : MonoBehaviour
 
     [SerializeField] OperateMode _operateMode;  //操作模块
 
+    [SerializeField] Camera _starCamera;    // 星空camera
+
     /// 配置面板
     [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
@@ -135,6 +137,8 @@ public class MagicWallManager : MonoBehaviour
     public bool IsMockData { get { return _isMockData; } }
     public GlobalData globalData { get { return _globalData; } }
     public CutEffectConfig cutEffectConfig { get { return _cutEffectConfig; } }
+
+    public Camera starCamera { get { return _starCamera; } }
 
 
     // 获取文件地址

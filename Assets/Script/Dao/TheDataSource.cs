@@ -229,8 +229,6 @@ public class TheDataSource : Singleton<TheDataSource>
 
     public void SaveLikes()
     {
-        Debug.Log("Do Save");
-
         // open a new xml file
         XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
 
@@ -244,9 +242,6 @@ public class TheDataSource : Singleton<TheDataSource>
     // load function
     private void LoadLikes()
     {
-        Debug.Log("Do Load");
-
-
         XmlSerializer serializer = new XmlSerializer(typeof(LikeDataBase));
         FileStream stream = new FileStream(Application.dataPath + "/MagicWallAsset/like_data.xml", FileMode.Open);
         _likeDataBase = serializer.Deserialize(stream) as LikeDataBase;

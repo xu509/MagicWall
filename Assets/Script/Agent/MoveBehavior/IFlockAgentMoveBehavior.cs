@@ -10,4 +10,9 @@ public interface IFlockAgentMoveBehavior
         float distance, float effectDistance,float width,float height,
         MagicWallManager manager);
 
+
+    float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition,
+        float distance, float effectDistance, float width, float height,
+        MagicWallManager manager);
+
 }

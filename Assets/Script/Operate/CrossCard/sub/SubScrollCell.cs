@@ -187,7 +187,6 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
 
     private void OnClickLike() {
-        Debug.Log("On Click Like");
         _manager.daoService.UpdateLikes(_cellData.Image);
     }
 

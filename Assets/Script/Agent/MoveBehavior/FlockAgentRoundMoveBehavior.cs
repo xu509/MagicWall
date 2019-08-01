@@ -25,8 +25,7 @@ public class FlockAgentRoundMoveBehavior : IFlockAgentMoveBehavior
     public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, 
         float effectDistance, float width, float height, MagicWallManager manager)
     {
-        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);
-
+        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);       
         Vector2 panelOffset = positionWithOffset - position;
 
         if (distance > effectDistance)
@@ -35,14 +34,41 @@ public class FlockAgentRoundMoveBehavior : IFlockAgentMoveBehavior
         }
         else {
             // positionWithOffset 原位置
-
             // targetPosition 目标位置
+            float k = manager.flockBehaviorConfig.RoundOffsetInfluenceFactor;
+            k = easeFun(k);
 
-            Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * effectDistance;
+            float e = (effectDistance - distance) * k + distance;
+
+            //Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * effectDistance;
+            Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * e;
 
             to = to - panelOffset;
 
             return to;
+        }
+    }
+
+    public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance, float width, float height, MagicWallManager manager)
+    {
+        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);
+
+        Vector2 panelOffset = positionWithOffset - position;
+
+        float offset = effectDistance - distance;
+
+        if (distance > effectDistance)
+        {
+            return 1f;
+        }
+        else {
+            float maxScale = 1f;
+            float minScale = 0.1f;
+
+            float k = easeFun(offset / effectDistance);
+
+            float s = Mathf.Lerp(maxScale, minScale, k);
+            return s;
         }
     }
 }
