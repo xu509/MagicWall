@@ -33,8 +33,9 @@ public class SingleCardAgent : CardAgent
     #endregion
 
     #region Component Parameter
-    [SerializeField, Header("十字卡片 - 标题")] Text _title;
-    [SerializeField, Header("十字卡片 - 描述")] Text _description;
+    [SerializeField, Header("UI")] Text _title;
+    [SerializeField] Text _description;
+    [SerializeField] Image _cover;
 
 
 
@@ -52,39 +53,21 @@ public class SingleCardAgent : CardAgent
     //
     //  初始化数据
     //
-    public void InitSingleCardAgent()
+    public void InitSingleCardAgent(Enterprise data)
     {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
         InitAgency();
-        _questionTypeEnum = QuestionTypeEnum.CrossCard;
-
-        _scrollItemNumber = 0;
-
-        IDaoService daoService = _manager.daoService;
-        EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(DataId);
-
+        _questionTypeEnum = QuestionTypeEnum.SingleCard;
 
         //  设置标题
-        _title.text = enterpriseDetail.Enterprise.Name;
+        _title.text = data.Name;
 
-        ////  设置描述
-        //UpdateDescription(enterpriseDetail.Enterprise.Description);
-
-        // 设置喜欢数
-        Likes = enterpriseDetail.Enterprise.likes;
-
-        //// 判断几个类型
-        _hasCatalog = enterpriseDetail.catalog.Count > 0;
-        _hasProduct = enterpriseDetail.products.Count > 0;
-        _hasActivity = enterpriseDetail.activities.Count > 0;
-        _hasVideo = enterpriseDetail.videos.Count > 0;
-
-        int index = 0;
-        
+        // 设置封面
+        _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + data.Logo);
+        CanvasExtensions.SizeToParent(_cover);
 
         // 处理businesscard
-        _hasListBtn = _manager.daoService.GetEnvCards(DataId).Count > 0;
         InitComponents(false);
 
         // 设置完成回调
