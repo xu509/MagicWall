@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4657646210638118528}
         m_MethodName: DoClose
         m_Mode: 1
         m_Arguments:
@@ -2297,7 +2297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4657646210638118528}
         m_MethodName: DoSearch
         m_Mode: 1
         m_Arguments:
