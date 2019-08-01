@@ -30,7 +30,7 @@ public class FlockBehaviorConfig : ScriptableObject
     [Header("缩放动画效果")]
     public EaseEnum RoundScaleEaseEnum;
 
-    [Header("位移影响参数")]
+    [Range(0f, 2f),Header("位移影响参数")]
     public float RoundOffsetInfluenceFactor;
 
 

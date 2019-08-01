@@ -330,6 +330,9 @@ public class FlockAgent : MonoBehaviour
                 targetVector2, distance, 
                 effectDistance, w, h, _manager);
 
+            float sc = _flockAgentMoveBehavior.CalculateScale(refVector2, refVector2WithOffset,
+                        targetVector2, distance,
+                        effectDistance, w, h, _manager);
 
 
             // 获取缓动方法
@@ -338,7 +341,8 @@ public class FlockAgent : MonoBehaviour
 
             //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
             m_transform?.DOAnchorPos(to, Time.deltaTime);
-            m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+            //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+            m_transform?.DOScale(sc, Time.deltaTime);
             
 			IsChanging = true;
 		}
