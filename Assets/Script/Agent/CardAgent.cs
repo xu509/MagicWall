@@ -76,7 +76,8 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     [SerializeField,Header("Scale")] RectTransform _scale_container;    //  缩放容器
     [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
-    [SerializeField] RectTransform _searchContainer;    //  搜索容器
+
+    [SerializeField,Header("Search")] RectTransform _searchContainer;    //  搜索容器
     [SerializeField] SearchAgent _searchAgentPrefab;    //  搜索 prefab
 
     [SerializeField,Header("Move")] RectTransform _move_mask; // 移动蒙板

@@ -37,8 +37,7 @@ public class SingleCardAgent : CardAgent
     [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
 
-    [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
-    [SerializeField] CrossCardScrollBar crossCardScrollBar;
+
     [SerializeField] RectTransform _buttomTool;
 
 
