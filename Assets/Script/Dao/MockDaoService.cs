@@ -438,6 +438,8 @@ public class MockDaoService : MonoBehaviour, IDaoService
         {
 
         }
+        appConfig.Value = "5";
+
         return appConfig;
     }
 
@@ -521,20 +523,26 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            SceneTypeEnum.CurveStagger,
-            SceneTypeEnum.FrontBackUnfold,
-            SceneTypeEnum.LeftRightAdjust,
             SceneTypeEnum.MidDisperse,
-            SceneTypeEnum.Stars,
-            SceneTypeEnum.UpDownAdjustCutEffect,
+            //SceneTypeEnum.LeftRightAdjust,
+            //SceneTypeEnum.UpDownAdjustCutEffect,
+            //SceneTypeEnum.FrontBackUnfold,
+            
+            //SceneTypeEnum.CurveStagger,
+            //SceneTypeEnum.Stars,
+
+
+
+
+            
         };
 
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
         DataType[] dataTypes = new DataType[] {
             DataType.env,
-            //DataType.activity,
-            //DataType.product,
+            DataType.activity,
+            DataType.product,
         };
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
@@ -544,14 +552,14 @@ public class MockDaoService : MonoBehaviour, IDaoService
             {
                 SceneConfig sceneConfig = new SceneConfig();
 
-                if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env) {
-                    continue;
-                }
+                //if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env) {
+                //    continue;
+                //}
 
-                if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
-                {
-                    continue;
-                }
+                //if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
+                //{
+                //    continue;
+                //}
 
                 sceneConfig.sceneType = sceneTypes[i];
                 sceneConfig.dataType = dataTypes[j];

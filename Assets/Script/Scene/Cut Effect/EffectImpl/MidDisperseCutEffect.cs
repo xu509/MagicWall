@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using EasingUtil;
 
 // 过场效果 2 中间散开 
 public class MidDisperseCutEffect : CutEffect
@@ -11,7 +13,7 @@ public class MidDisperseCutEffect : CutEffect
 
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
-    private float _timeBetweenStartAndDisplay = 0f; //完成启动动画与表现动画之间的时间
+    private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
@@ -27,7 +29,7 @@ public class MidDisperseCutEffect : CutEffect
         _daoService = manager.daoService;
 
         //  获取持续时间
-        StartingDurTime = 0.5f;
+        StartingDurTime = 0.35f;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
@@ -87,17 +89,21 @@ public class MidDisperseCutEffect : CutEffect
                     agent.NextVector2 = ori_vector2;
                     agent.isCreateSuccess = true;
                 }
-
                 continue;
             }
 
             float t = time / run_time;
-            Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);           
+            Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
             agent.NextVector2 = to;
 
-
-            //float a = Mathf.Lerp(0f, 1f, t);
-            //agent.GetComponent<Image>().color = new Color(1, 1, 1, a);
+            // 透明度动画
+            float min_alpha = 0.01f;
+            float max_alpha = 1f;
+            float k = time / run_time;
+            Func<float, float> easeFunction = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseAlphaEaseEnum);
+            k = easeFunction(k);
+            float newAlpha = Mathf.Lerp(min_alpha, max_alpha, k);
+            agent.UpdateImageAlpha(newAlpha);
 
         }
 
@@ -120,6 +126,9 @@ public class MidDisperseCutEffect : CutEffect
         int _column = _manager.managerConfig.Column;
         int _itemWidth = _sceneUtil.GetFixedItemWidth();
         float gap = _sceneUtil.GetGap();
+
+
+        int middleX = _column / 2;
 
         //从下往上，从左往右
         for (int j = 0; j < _column; j++)
@@ -150,24 +159,40 @@ public class MidDisperseCutEffect : CutEffect
 
                 int ori_y = Mathf.RoundToInt(gen_y_position + itemHeigth / 2);
 
-                int middleX = _column / 2;
-                float delay = System.Math.Abs(middleX - j) * 0.05f;
+                //float delay = System.Math.Abs(middleX - j) * 0.05f;
+
+                float minDelay = 0;
+                //float maxDelay = middleX * 0.05f;
+                float maxDelay = _manager.cutEffectConfig.MidDisperseDelayMax;
+                int offset = Mathf.Abs(middleX - j);
+
+                float k = (float)offset / (float)middleX;
+                Func<float, float> easeFunction = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseMoveEaseEnum);
+                k = easeFunction(k);
+
+                float delay = Mathf.Lerp(minDelay, maxDelay, k);
 
                 if (delay > _timeBetweenStartAndDisplay)
                 {
                     _timeBetweenStartAndDisplay = delay;
                 }
+  
+                //Debug.Log("delay ater : " + delay);
 
                 float gen_x, gen_y;
 
                 gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
-                gen_y = ori_y + _itemWidth;
+                gen_y = ori_y + Mathf.Abs(j-middleX) * itemHeigth / 3 + itemHeigth * _manager.cutEffectConfig.MidDisperseHeightFactor;
 
                 // 创建agent
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, row, j,
                          _itemWidth, itemHeigth, data, AgentContainerType.MainPanel);
-                go.Delay = delay;
 
+                // 初始化透明度
+                go.UpdateImageAlpha(0.01f);
+
+                go.Delay = delay;
+                //go.UpdateImageAlpha(1f - Mathf.Abs(j - middleX)*0.05f);
                 if (delay > _startDelayTime)
                 {
                     _startDelayTime = delay;
@@ -181,8 +206,10 @@ public class MidDisperseCutEffect : CutEffect
 
         }
         // 调整启动动画的时间
-        StartingDurTime = StartingDurTime + _startDelayTime + 0.1f;
-
+        StartingDurTime = _startingTimeWithOutDelay + _startDelayTime + 0.05f;
+        //Debug.Log("StartingDurTime : " + StartingDurTime);
+        //Debug.Log("_startDelayTime : " + _startDelayTime);
+        //Debug.Log("_startingTimeWithOutDelay : " + _startingTimeWithOutDelay);
     }
 
     public override string GetID()

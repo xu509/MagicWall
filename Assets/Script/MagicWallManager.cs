@@ -63,9 +63,9 @@ public class MagicWallManager : MonoBehaviour
     [SerializeField, Header("Flock Move Behavior")] FlockBehaviorConfig _flockBehaviorConfig;
     [SerializeField] MoveBehaviourFactory _moveBehaviourFactory;
 
+    [SerializeField, Header("CutEffect Config")] CutEffectConfig _cutEffectConfig;
+
     [SerializeField, Header("Mock")] bool _isMockData;
-
-
 
     #endregion
 
@@ -86,9 +86,9 @@ public class MagicWallManager : MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    //public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -134,6 +134,7 @@ public class MagicWallManager : MonoBehaviour
     public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; }}
     public bool IsMockData { get { return _isMockData; } }
     public GlobalData globalData { get { return _globalData; } }
+    public CutEffectConfig cutEffectConfig { get { return _cutEffectConfig; } }
 
 
     // 获取文件地址
