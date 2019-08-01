@@ -592,6 +592,7 @@ MonoBehaviour:
   _backgroundManager: {fileID: 1167712290}
   _itemsFactoryAgent: {fileID: 1167712296}
   _operateMode: {fileID: 1167712297}
+  _starCamera: {fileID: 534669904}
   _managerConfig: {fileID: 11400000, guid: 2be48131d5f024944a52909c5203c6f4, type: 2}
   _writePanelConfig: {fileID: 11400000, guid: c129d6ec172fa404bb998dffe2f56483, type: 2}
   _cardItemFactoryInstance: {fileID: 1167712300}

@@ -45,4 +45,9 @@ public class FlockAgentRoundMoveBehavior : IFlockAgentMoveBehavior
             return to;
         }
     }
+
+    public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance, float width, float height, MagicWallManager manager)
+    {
+        throw new NotImplementedException();
+    }
 }

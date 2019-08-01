@@ -47,6 +47,8 @@ public class MagicWallManager : MonoBehaviour
 
     [SerializeField] OperateMode _operateMode;  //操作模块
 
+    [SerializeField] Camera _starCamera;    // 星空camera
+
     /// 配置面板
     [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
@@ -86,9 +88,9 @@ public class MagicWallManager : MonoBehaviour
 
     // 配置选项
 
-    //public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
+    public static string FileDir = "E:\\workspace\\MagicWall\\Assets\\Files\\"; // xu pc电脑
 
-    public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
+    // public static string FileDir = "D:\\workspace\\MagicWall\\Assets\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -134,6 +136,8 @@ public class MagicWallManager : MonoBehaviour
     public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; }}
     public bool IsMockData { get { return _isMockData; } }
     public GlobalData globalData { get { return _globalData; } }
+
+    public Camera starCamera { get { return _starCamera; } }
 
 
     // 获取文件地址

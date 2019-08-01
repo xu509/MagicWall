@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: FlockBehaviorConfig
   m_EditorClassIdentifier: 
   MoveBehaviourType: 1
-  InfluenceMoveFactor: 0.9
-  CommonEaseEnum: 20
-  CommonEffectInfluenceFactor: 0.2
+  InfluenceMoveFactor: 0.96
+  CommonEaseEnum: 17
+  CommonScaleEaseEnum: 0
+  CommonOffsetInfluenceFactor: 0
   RoundEaseEnum: 0
+  RoundScaleEaseEnum: 0
+  RoundOffsetInfluenceFactor: 0

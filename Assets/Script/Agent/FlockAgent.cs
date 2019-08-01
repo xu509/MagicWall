@@ -383,9 +383,13 @@ public class FlockAgent : MonoBehaviour
             {
                 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
             }
-            else if (_agentContainerType == AgentContainerType.BackPanel) {
+            else if (_agentContainerType == AgentContainerType.BackPanel)
+            {
                 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
-
+            }
+            else if (_agentContainerType == AgentContainerType.StarContainer) {
+                Vector2 v = RectTransformUtility.WorldToScreenPoint(_manager.starCamera,transform.position);
+                cardGenPosition = new Vector3(v.x,v.y, 200);
             }
 
             // 当产品是前后层关系时，此时会报错

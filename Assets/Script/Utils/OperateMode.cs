@@ -107,7 +107,7 @@ public class OperateMode : MonoBehaviour
             _manager.flockBehaviorConfig.MoveBehaviourType = _moveBehaviour;
             _moveBehaviourTypeQueue.Enqueue(_moveBehaviour);
 
-            _messageAgent.UpdateMessage("已更换卡片动画模式，当前模式为： " + _moveBehaviour,10f);
+            _messageAgent.UpdateMessage("已更换卡片动画模式，当前模式为： " + _moveBehaviour,5f);
         }
 
 
