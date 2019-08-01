@@ -10,7 +10,7 @@ public class FrontBackUnfoldCutEffect : CutEffect
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
     private float _startDelayTime = 0f;  //启动的延迟时间
     private float _startingTimeWithOutDelay;
-    private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
+    private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
 
     private int _row;   // 总共的行数
     private int _column;    //总共的列数

@@ -438,6 +438,8 @@ public class MockDaoService : MonoBehaviour, IDaoService
         {
 
         }
+        appConfig.Value = "5";
+
         return appConfig;
     }
 
@@ -521,12 +523,18 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            SceneTypeEnum.LeftRightAdjust,
-            SceneTypeEnum.CurveStagger,
-            SceneTypeEnum.FrontBackUnfold,
             SceneTypeEnum.MidDisperse,
-            SceneTypeEnum.Stars,
-            SceneTypeEnum.UpDownAdjustCutEffect,
+            //SceneTypeEnum.LeftRightAdjust,
+            //SceneTypeEnum.UpDownAdjustCutEffect,
+            //SceneTypeEnum.FrontBackUnfold,
+            
+            //SceneTypeEnum.CurveStagger,
+            //SceneTypeEnum.Stars,
+
+
+
+
+            
         };
 
 
@@ -544,14 +552,14 @@ public class MockDaoService : MonoBehaviour, IDaoService
             {
                 SceneConfig sceneConfig = new SceneConfig();
 
-                if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env) {
-                    continue;
-                }
+                //if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env) {
+                //    continue;
+                //}
 
-                if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
-                {
-                    continue;
-                }
+                //if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
+                //{
+                //    continue;
+                //}
 
                 sceneConfig.sceneType = sceneTypes[i];
                 sceneConfig.dataType = dataTypes[j];

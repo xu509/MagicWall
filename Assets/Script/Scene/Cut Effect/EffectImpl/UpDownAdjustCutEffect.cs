@@ -9,7 +9,7 @@ public class UpDownAdjustCutEffect : CutEffect
 {
 
     private float _startingTimeWithOutDelay;
-    private float _timeBetweenStartAndDisplay = 0.5f; //完成启动动画与表现动画之间的时间
+    private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
 
     private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
 
