@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -5.4552965}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8414957419784634366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,6 +814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6647140430719292917}
   - component: {fileID: 5307033276578621560}
+  - component: {fileID: 700272839115314218}
   m_Layer: 5
   m_Name: SearchResult
   m_TagString: Untagged
@@ -860,6 +861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: {fileID: 5758101501450986653}
   _ScrollViewItemContainer: {fileID: 2110123316612410934}
+  _scrollRect: {fileID: 5723322305398653550}
   _searchResultItemAgentPrefab: {fileID: 6132195421317577046, guid: 481029151a366604ca0ac3575b309fec,
     type: 3}
   _searchResultScrollBarAgent: {fileID: 1352424872954072447}
@@ -869,6 +871,20 @@ MonoBehaviour:
   _sprite_move: {fileID: 21300000, guid: 6066f3c8470f9b248a1c505c7fc76186, type: 3}
   _move_rect: {fileID: 1109139024513229675}
   _moveBtnComponent: {fileID: 5277237872513797671}
+--- !u!114 &700272839115314218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8924739980675417588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1
 --- !u!1001 &7750605273018935144
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -45,6 +45,7 @@ public class SearchResultScrollBarAgent : MonoBehaviour
 
         CreateItems();
 
+        Refresh(1.0f);
     }
 
 

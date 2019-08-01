@@ -17,6 +17,9 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
 
     public SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
     {
+        //Debug.Log("index : " + index);
+        //Debug.Log("pool count : " + pool.Count);
+
         if (pool.Count == 0) {
             return null;
         }
@@ -25,6 +28,16 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         {
             return pool[0];
         }
+
+
+        if (index > 5) {
+
+            int i = index % 5;
+            return pool[i];
+
+        }
+
+
 
         return pool[index];
     }
@@ -123,6 +136,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         }
             
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+
         for (var i = 0; i < addCount; i++)
         {
             var cell = Instantiate(CellPrefab, cellContainer).GetComponent<SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewContext>>();

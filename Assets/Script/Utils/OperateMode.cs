@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  操作模块
+/// </summary>
 public class OperateMode : MonoBehaviour
 {
-    public float f_UpdateInterval = 0.5F;
+    [SerializeField, Header("UI")] MessageAgent _messageAgent;
+
+    [SerializeField, Header("FPS")] float f_UpdateInterval = 0.5F;
+
     private float f_LastInterval;
     private int i_Frames = 0;
     private float f_Fps;
 
-    private bool showMode = false;  
-
+    private bool showMode = false;
+    private bool showHelp = false;
 
     private MagicWallManager _manager;
+
+    Queue<MoveBehaviourType> _moveBehaviourTypeQueue;
+
 
     public void Init(MagicWallManager manager) {
         _manager = manager;
@@ -23,6 +32,11 @@ public class OperateMode : MonoBehaviour
         f_LastInterval = Time.realtimeSinceStartup;
 
         i_Frames = 0;
+
+
+        _moveBehaviourTypeQueue = new Queue<MoveBehaviourType>();
+        _moveBehaviourTypeQueue.Enqueue(MoveBehaviourType.Common);
+        _moveBehaviourTypeQueue.Enqueue(MoveBehaviourType.Round);
     }
 
 
@@ -69,6 +83,31 @@ public class OperateMode : MonoBehaviour
             i_Frames = 0;
 
             f_LastInterval = Time.realtimeSinceStartup;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            showHelp = !showHelp;
+            if (showHelp)
+            {
+                _messageAgent.UpdateMessage("Help \n\n" +
+                    " 【1】 ： 切换卡片动画模式 \t" + "\n\n" +
+                    "【H】 ：打开/关闭帮助文档");
+            }
+            else {
+                _messageAgent.Close();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            // 切换卡片受影响模式
+
+            var _moveBehaviour = _moveBehaviourTypeQueue.Dequeue();
+            _manager.flockBehaviorConfig.MoveBehaviourType = _moveBehaviour;
+            _moveBehaviourTypeQueue.Enqueue(_moveBehaviour);
+
+            _messageAgent.UpdateMessage("已更换卡片动画模式，当前模式为： " + _moveBehaviour,10f);
         }
 
 

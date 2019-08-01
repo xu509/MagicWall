@@ -48,6 +48,11 @@ public class AppUtils
         }
         else
         {
+            // 模拟数据
+            fileData = File.ReadAllBytes(@"D:\workspace\MagicWall\Assets\Files\t.png");
+            tex = new Texture2D(400, 400);
+            tex.LoadImage(fileData);
+
             Debug.Log("File is not found : " + filePath);
         }
         return tex;
@@ -119,7 +124,7 @@ public class AppUtils
 
         string p = path + filename;
 
-        Debug.Log("p : " + p);
+        //Debug.Log("p : " + p);
 
 
         if (!File.Exists(@p)) {

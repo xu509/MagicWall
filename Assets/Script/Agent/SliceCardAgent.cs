@@ -62,6 +62,8 @@ public class SliceCardAgent : CardAgent
             // 初始化活动信息
             Activity activity = _manager.daoService.GetActivityDetail(DataId);
 
+            _title.text = activity.Name;
+
             // 获取产品所属公司信息
             InitComponents(_manager.daoService.GetEnvCards(activity.Ent_id).Count > 0);
 

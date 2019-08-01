@@ -25,11 +25,25 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
 
     public SliceCardBaseCell<SliceCardCellData, SliceCardCellContext> GetCell(int index) {
 
-        if (index == pool.Count) {
-            return pool[0];
-        }
+        try
+        {
+            if (index == pool.Count)
+            {
+                return pool[0];
+            }
 
-        return pool[index];
+            if (index > 5) {
+                return pool[index % 5];
+            }
+            return pool[index];
+        }
+        catch (Exception ex) {
+            Debug.LogError(ex);
+            Debug.LogError("index : " + index + " | pool count : " + pool.Count);
+
+
+        }
+        return null;
     }
 
     public IList<SliceCardBaseCell<SliceCardCellData, SliceCardCellContext>> Pool

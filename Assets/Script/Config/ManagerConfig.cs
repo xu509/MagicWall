@@ -73,10 +73,5 @@ public class ManagerConfig : ScriptableObject
     public float ItemSizeMaxHeightFactor;
 
 
-    [Range(0f, 10f), Header("[卡片动画] 影响移动距离系数")]
-    public float InfluenceMoveFactor = 0.5f;
-
-    [Header("[卡片动画] 卡片动画效果")]
-    public EaseEnum InfluenceEaseEnum;
 
 }

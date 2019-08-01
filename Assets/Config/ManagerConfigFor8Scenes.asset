@@ -33,5 +33,5 @@ MonoBehaviour:
   ItemSizeMaxWidthFactor: 0.0355
   ItemSizeMinHeightFactor: 0.153888
   ItemSizeMaxHeightFactor: 0.16666
-  InfluenceMoveFactor: 0.54
-  InfluenceEaseEnum: 13
+  InfluenceMoveFactor: 0.95
+  InfluenceEaseEnum: 20

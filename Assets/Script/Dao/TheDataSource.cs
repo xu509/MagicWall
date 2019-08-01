@@ -12,7 +12,8 @@ using System.IO;
 //
 public class TheDataSource : Singleton<TheDataSource>
 {
-    private bool _showLog = true;
+    //private bool _showLog = true;
+    private bool _showLog = false;
 
 
     public MySqlConnection mySqlConnection;
