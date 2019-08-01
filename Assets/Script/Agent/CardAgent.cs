@@ -227,6 +227,13 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     /// 销毁第一阶段
     /// </summary>
     private void DoDestoriedForFirstStep() {
+        // 如果当前处于移动中，则将移动关闭
+        if (_doMoving) {
+            DoMove();
+        }
+
+
+
         //  缩放
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
         _cardStatus = CardStatusEnum.DESTORING_STEP_FIRST;
@@ -385,6 +392,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _scaleAgent.SetOnCloseClicked(OnScaleClose);
         _scaleAgent.SetOnReturnClicked(OnScaleReturn);
         _scaleAgent.SetOnUpdated(OnScaleUpdate);
+        _scaleAgent.SetOnOpen(OnScaleOpen);
 
         // 显示缩放框体，隐藏普通框体
         if (_main_container.gameObject.activeSelf) {
@@ -428,6 +436,9 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
     // 当点击缩放收回
     private void OnScaleReturn() {
+        TurnOffKeepOpen();
+
+
         // 显示主框体，隐藏缩放框体
         if (!_main_container.gameObject.activeSelf)
         {
@@ -446,6 +457,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
     // 当点击缩放关闭
     private void OnScaleClose()
     {
+        TurnOffKeepOpen();
         //关闭卡片
         DoDestoriedForFirstStep();
 
@@ -456,10 +468,18 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         DoUpdate();
     }
 
+    private void OnScaleOpen()
+    {
+        TurnOnKeepOpen();
+    }
 
 
 
-
+    public void TurnOnKeepOpen()
+    {
+        DoUpdate();
+        _keepOpen = true;
+    }
 
     public void TurnOffKeepOpen() {
         DoUpdate();
