@@ -21,20 +21,20 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <summary>
     ///  公司测试环境
     /// </summary>
-    private static string _sqlStr = "Database=iq360_cloud_wall;"
-                + "Server=192.168.1.100"
-                + ";Uid=root;"
-                + "pooling=false;"
-                + "Password=artvoi; pooling=false;CharSet=utf8"
-                + ";port=3306";
+    //private static string _sqlStr = "Database=iq360_cloud_wall;"
+    //            + "Server=192.168.1.100"
+    //            + ";Uid=root;"
+    //            + "pooling=false;"
+    //            + "Password=artvoi; pooling=false;CharSet=utf8"
+    //            + ";port=3306";
 
     // 家
-    //private static string _sqlStr = "Database=MagicWall;"
-    //        + "Server=116.85.26.230"
-    //        + ";Uid=root;"
-    //        + "pooling=false;"
-    //        + "Password=; pooling=false;CharSet=utf8"
-    //        + ";port=3306";
+    private static string _sqlStr = "Database=MagicWall;"
+            + "Server=116.85.26.230"
+            + ";Uid=root;"
+            + "pooling=false;"
+            + "Password=; pooling=false;CharSet=utf8"
+            + ";port=3306";
 
 
     private LikeDataBase _likeDataBase;
