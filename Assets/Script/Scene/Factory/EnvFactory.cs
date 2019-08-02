@@ -77,7 +77,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(dataId);
         enterprise = enterpriseDetail.Enterprise;
 
-        bool flag = true;
+        bool flag = false;
 
         //if (CheckCardIsSample(enterpriseDetail))
         if (flag)
