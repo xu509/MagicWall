@@ -1126,6 +1126,8 @@ MonoBehaviour:
     type: 3}
   _sliceCardgentPrefab: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
     type: 3}
+  _singleCardPrefab: {fileID: 4657646210638118528, guid: e1647855844ec554fa6d89fff61dbb14,
+    type: 3}
   _flockContainer: {fileID: 577667532}
   _backContainer: {fileID: 2012783910}
   _starContainer: {fileID: 1005959059}

@@ -24,6 +24,8 @@ public class FlockAgent : MonoBehaviour
     private string _data_img;    //背景图片
     private int _data_id; // id
     private MWTypeEnum _type;
+    private MWEnterpriseTypeEnum _enterpriseType;
+
     private bool _isCard;
     private AgentContainerType _agentContainerType;
 
@@ -108,6 +110,7 @@ public class FlockAgent : MonoBehaviour
     public bool DataIsCustom { set { _data_iscustom = value; } get { return _data_iscustom; } }
     public bool IsCard { set { _isCard = value; } get { return _isCard; } }
     public MWTypeEnum type { set { _type = value; } get { return _type; } }
+    public MWEnterpriseTypeEnum enterpriseType { set { _enterpriseType = value; } get { return _enterpriseType; } }
     public AgentContainerType agentContainerType { set { _agentContainerType = value; } get { return _agentContainerType; } }
     public bool CanEffected { set { _canEffected = value; } get { return _canEffected; } }
     public float DelayX { set { delayX = value; } get { return delayX; } }

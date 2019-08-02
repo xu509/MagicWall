@@ -66,21 +66,59 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
     }
     #endregion
 
-    #region 生成十字卡片
+    #region 生成操作卡片
     public CardAgent GenerateCardAgent(Vector3 genPos, FlockAgent flockAgent, int dataId, bool isActive)
     {
+        CardAgent _cardAgent;
 
+        Enterprise enterprise;
+
+        IDaoService daoService = _manager.daoService;
+        EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(dataId);
+        enterprise = enterpriseDetail.Enterprise;
+
+        bool flag = true;
+
+        //if (CheckCardIsSample(enterpriseDetail))
+        if (flag)
+        {
+            Debug.Log("Create Single Card");
+
+            _cardAgent = GenerateSingleCard(genPos, flockAgent, dataId, isActive, enterprise);
+
+            Debug.Log("After Single Card");
+        }
+        else {
+            _cardAgent = GenerateCrossCard(genPos, flockAgent, dataId, isActive, enterprise);
+        }
+
+
+        return _cardAgent;
+    }
+    #endregion
+
+
+    /// <summary>
+    ///     生成十字卡片
+    /// </summary>
+    /// <param name="genPos"></param>
+    /// <param name="flockAgent"></param>
+    /// <param name="dataId"></param>
+    /// <param name="isActive"></param>
+    /// <returns></returns>
+    private CardAgent GenerateCrossCard(Vector3 genPos, FlockAgent flockAgent,
+        int dataId, bool isActive,Enterprise enterprise) {
         //  创建 Agent
         CrossCardAgent crossCardAgent = _agentManager.GetCrossCardAgent();
-            
+
 
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 
 
-
         // 初始化数据
         crossCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
+        crossCardAgent.enterpriseType = MWEnterpriseTypeEnum.Cross;
 
         // 添加到effect agent
         _agentManager.AddEffectItem(crossCardAgent);
@@ -98,7 +136,57 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         return crossCardAgent;
     }
-    #endregion
+
+    private CardAgent GenerateSingleCard(Vector3 genPos, FlockAgent flockAgent, 
+        int dataId, bool isActive, Enterprise enterprise)
+    {
+        //  创建 Agent
+        var singleCardAgent = _agentManager.GetSingleCardAgent();
+
+        //  定义缩放
+        Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
+
+        // 初始化数据
+        singleCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
+        singleCardAgent.enterpriseType = MWEnterpriseTypeEnum.Single;
+
+        // 添加到effect agent
+        _agentManager.AddEffectItem(singleCardAgent);
+
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+
+        // 初始化 CrossAgent 数据
+        singleCardAgent.InitSingleCardAgent(enterprise);
+
+        sw.Stop();
+        // Debug.Log("GenerateCardAgent Time : " + sw.ElapsedMilliseconds / 1000f);
+
+        singleCardAgent.gameObject.SetActive(isActive);
+
+        return singleCardAgent;
+    }
+
+
+    private bool CheckCardIsSample(EnterpriseDetail enterpriseDetail) {
+        bool _hasCatalog, _hasProduct, _hasActivity, _hasVideo;
+
+        //// 判断几个类型
+        _hasCatalog = enterpriseDetail.catalog.Count > 0;
+        _hasProduct = enterpriseDetail.products.Count > 0;
+        _hasActivity = enterpriseDetail.activities.Count > 0;
+        _hasVideo = enterpriseDetail.videos.Count > 0;
+
+        if (_hasCatalog || _hasProduct || _hasActivity || _hasVideo)
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
+
+
+    }
 
 
 }

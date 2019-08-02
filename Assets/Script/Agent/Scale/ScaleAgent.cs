@@ -31,12 +31,20 @@ public class ScaleAgent : MonoBehaviour
     private float perScale;//每次放大倍数
     private Vector2 originalSize;
 
+    // 提示功能相关
+    [SerializeField] RectTransform _questionContainer;
+    [SerializeField] QuestionAgent _questionPrefab;
+    private bool _showQuestion;
+    private QuestionAgent _questionAgent;
+    // 提示功能相关 结束
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         _onOpen.Invoke();
+        _showQuestion = false;
     }
 
     void FixedUpdate() {
@@ -142,6 +150,7 @@ public class ScaleAgent : MonoBehaviour
         }
     }
 
+
     public void ResetImage()
     {
         imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
@@ -192,10 +201,31 @@ public class ScaleAgent : MonoBehaviour
     }
 
 
-    
 
 
- 
+    #region 提示内容
+    public void DoQuestion()
+    {
+        if (_showQuestion)
+        {
+            _questionAgent?.CloseReminder();
+        }
+        else
+        {
+            _questionAgent = Instantiate(_questionPrefab, _questionContainer);
+            _questionAgent.Init(OnQuestionClose);
+            _questionAgent.ShowReminder(QuestionTypeEnum.ScalePanel);
+            _showQuestion = true;
+        }
+    }
+
+    private void OnQuestionClose()
+    {
+        _showQuestion = false;
+    }
+
+    #endregion
+
 
 
 }

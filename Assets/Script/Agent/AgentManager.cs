@@ -26,6 +26,11 @@ public class AgentManager : MonoBehaviour
     [SerializeField] CardAgent _sliceCardgentPrefab;
 
     /// <summary>
+    ///     单例浮动块
+    /// </summary>
+    [SerializeField] CardAgent _singleCardPrefab;
+
+    /// <summary>
     /// 普通浮动块容器
     /// </summary>
     [SerializeField , Header("Container")] RectTransform _flockContainer;
@@ -77,6 +82,10 @@ public class AgentManager : MonoBehaviour
     /// </summary>
     private FlockAgentPool<SliceCardAgent> _sliceCardAgentPool;
 
+    /// <summary>
+    /// 单例操作块对象池
+    /// </summary>
+    private FlockAgentPool<SingleCardAgent> _singleCardAgentPool;
 
 
     #region 业务逻辑相关属性
@@ -134,6 +143,9 @@ public class AgentManager : MonoBehaviour
 
         _sliceCardAgentPool = FlockAgentPool<SliceCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
         _sliceCardAgentPool.Init(_sliceCardgentPrefab as SliceCardAgent, _cardContainer);
+
+        _singleCardAgentPool = FlockAgentPool<SingleCardAgent>.GetInstance(_manager.managerConfig.CardPoolSize);
+        _singleCardAgentPool.Init(_singleCardPrefab as SingleCardAgent, _cardContainer);
     }
 
 
@@ -146,9 +158,7 @@ public class AgentManager : MonoBehaviour
         {
             if (agent.IsRecovering) {
                 Debug.Log("[Recovering]" + agent.name + " Is Destory !");
-            }
-            
-
+            }           
 
             DestoryAgent(agent);
             _agents.Remove(agent);
@@ -225,6 +235,7 @@ public class AgentManager : MonoBehaviour
         _flockAgentInBackPool.Reset();
         _sliceCardAgentPool.Reset();
         _crossCardAgentPool.Reset();
+        _singleCardAgentPool.Reset();
     }
 
 
@@ -278,7 +289,13 @@ public class AgentManager : MonoBehaviour
         {
             if (agent.type == MWTypeEnum.Enterprise)
             {
-                _crossCardAgentPool.ReleaseObj(agent as CrossCardAgent);
+                if (agent.enterpriseType == MWEnterpriseTypeEnum.Cross)
+                {
+                    _crossCardAgentPool.ReleaseObj(agent as CrossCardAgent);
+                }
+                else {
+                    _singleCardAgentPool.ReleaseObj(agent as SingleCardAgent);
+                }
             }
             else if (agent.type == MWTypeEnum.Activity || agent.type == MWTypeEnum.Product)
             {
@@ -329,7 +346,10 @@ public class AgentManager : MonoBehaviour
         return _sliceCardAgentPool.GetObj();
     }
 
-
+    public SingleCardAgent GetSingleCardAgent()
+    {
+        return _singleCardAgentPool.GetObj();
+    }
 
 
 }
