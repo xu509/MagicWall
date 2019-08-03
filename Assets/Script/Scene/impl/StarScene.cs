@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 /// <summary>
 ///     星空场景
@@ -21,6 +22,9 @@ public class StarScene : IScene
 
     private List<FlockAgent> _activeAgents; //活动的 Agents 
     private StarSceneStatusEnum _starSceneStatusEnum = StarSceneStatusEnum.Init;   // 状态
+
+    Action _onRunCompleted;
+    Action _onRunEndCompleted;
 
 
     enum StarSceneStatusEnum {
@@ -203,7 +207,7 @@ public class StarScene : IScene
         FlockData data = _daoService.GetFlockData(_dataType);
 
         // 获取出生位置
-        Vector2 randomPosition = Random.insideUnitSphere;
+        Vector2 randomPosition = UnityEngine.Random.insideUnitSphere;
 
         Vector3 position;
 
@@ -228,7 +232,8 @@ public class StarScene : IScene
         float z;
         if (randomZ)
         {
-            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint, Random.Range(0f, 1f));
+            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint,
+                UnityEngine.Random.Range(0f, 1f));
         }
         else
         {
@@ -300,6 +305,30 @@ public class StarScene : IScene
         {
             return x.Z.CompareTo(y.Z);
         }
+    }
+
+
+    public void OnRunCompleted()
+    {
+    }
+
+    public void SetOnRunCompleted(Action onRunCompleted)
+    {
+        _onRunCompleted = onRunCompleted;
+    }
+
+    public void RunEnd()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnRunEndCompleted()
+    {
+    }
+
+    public void SetOnRunEndCompleted(Action onRunEndCompleted)
+    {
+        _onRunEndCompleted = onRunEndCompleted;
     }
 
 }

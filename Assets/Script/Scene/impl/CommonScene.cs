@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 // 普通场景
 public class CommonScene : IScene
@@ -13,6 +14,9 @@ public class CommonScene : IScene
 
     // Dao Service
     DaoService _daoService;
+
+    Action _onRunCompleted;
+    Action _onRunEndCompleted;
 
     //
     private bool isDoDestoryCompleting = false;
@@ -224,5 +228,30 @@ public class CommonScene : IScene
         return null;
     }
 
+    #region Implement
 
+    public void OnRunCompleted()
+    {
+    }
+
+    public void SetOnRunCompleted(Action onRunCompleted)
+    {
+        _onRunCompleted = onRunCompleted;
+    }
+
+    public void RunEnd()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnRunEndCompleted()
+    {
+    }
+
+    public void SetOnRunEndCompleted(Action onRunEndCompleted)
+    {
+        _onRunEndCompleted = onRunEndCompleted;
+    }
+
+    #endregion
 }
