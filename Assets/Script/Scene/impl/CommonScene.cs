@@ -92,8 +92,6 @@ public class CommonScene : IScene
 	{
         _theCutEffect.Create(_dataType);
 
-        Debug.Log("Create Effect : " + _theCutEffect.GetID());
-
         doDestoryCompleting = false;
     }
 
