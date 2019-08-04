@@ -705,7 +705,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
     public MWConfig GetConfig()
     {
-        Debug.Log("Mock Config");
+        //Debug.Log("Mock Config");
         return new MWConfig();
     }
 

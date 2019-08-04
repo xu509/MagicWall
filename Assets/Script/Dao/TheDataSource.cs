@@ -126,6 +126,9 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <param name="sql"></param>
     /// <returns></returns>
     public Dictionary<string,object> SelectOne(string sql) {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+
         Dictionary<string, object> result = null;
         if (_showLog) {
             Debug.Log("sql : " + sql);
@@ -154,6 +157,13 @@ public class TheDataSource : Singleton<TheDataSource>
                     {
                         result.Add(table.Columns[i].ColumnName, table.Rows[0][i].ToString());
                     }
+
+
+                    sw.Stop();
+
+                    //    打印内容
+                    //Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
+
                     return result;
                 }
                 else if (table.Rows.Count > 1)
