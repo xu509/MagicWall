@@ -306,7 +306,7 @@ public class StarScene : IScene
         //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted
         _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
         _starSceneStatusEnum = StarSceneStatusEnum.End;
-        Debug.Log("Do OnRunCompleted Action");
+        //Debug.Log("Do OnRunCompleted Action");
 
         _onRunCompleted.Invoke();
 

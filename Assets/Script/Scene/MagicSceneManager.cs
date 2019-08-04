@@ -177,6 +177,17 @@ public class MagicSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 调整至上一个场景
+    /// </summary>
+    public void TurnToPrevious()
+    {
+        if (_sceneStatus == MagicSceneEnum.Running)
+        {
+            _sceneStatus = MagicSceneEnum.RunningEnd;
+        }
+    }
+
 
 
     private void GoNext() {
