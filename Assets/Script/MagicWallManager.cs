@@ -334,19 +334,19 @@ public class MagicWallManager : MonoBehaviour
             //    StartCoroutine(AfterFixedUpdate());
             //}
             mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-            while (mainPanel.anchoredPosition != Vector2.zero)
-            {
-                StartCoroutine(AfterFixedUpdate());
-            }
+            //while (mainPanel.anchoredPosition != Vector2.zero)
+            //{
+            //    StartCoroutine(AfterFixedUpdate());
+            //}
 
         }
         else
         {
             mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-            while (mainPanel.anchoredPosition != Vector2.zero)
-            {
-                StartCoroutine(AfterFixedUpdate());
-            }
+            //while (mainPanel.anchoredPosition != Vector2.zero)
+            //{
+            //    StartCoroutine(AfterFixedUpdate());
+            //}
         }
     }
 

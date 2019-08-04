@@ -438,7 +438,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
         {
 
         }
-        appConfig.Value = "5";
+        appConfig.Value = "10";
 
         return appConfig;
     }
@@ -531,11 +531,6 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
             SceneTypeEnum.CurveStagger,
             
-
-
-
-
-
         };
 
 

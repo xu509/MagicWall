@@ -25,13 +25,6 @@ public class MagicSceneManager : MonoBehaviour
     private MagicSceneEnum _sceneStatus;
 
 
-    enum MagicSceneEnum {
-        Running,
-        RunningComplete,
-        RunningEnd,
-        RunningEndComplete
-    }
-
 
     //
     // Awake instead of Constructor
@@ -140,6 +133,7 @@ public class MagicSceneManager : MonoBehaviour
         else if (_sceneStatus == MagicSceneEnum.RunningEndComplete)
         {
             GoNext();
+            _sceneStatus = MagicSceneEnum.Running;
         }
 
 
@@ -169,12 +163,23 @@ public class MagicSceneManager : MonoBehaviour
     public void Reset() {
         _hasInit = false;
 
-        Init(_manager);
+        //Init(_manager);
+    }
+
+
+    /// <summary>
+    ///  调整为下一个
+    /// </summary>
+    public void TurnToNext() {
+        if(_sceneStatus == MagicSceneEnum.Running)
+        {
+            _sceneStatus = MagicSceneEnum.RunningEnd;
+        }
     }
 
 
 
-    public void GoNext() {
+    private void GoNext() {
         if (_index == _scenes.Count - 1)
         {
             _index = 0;
@@ -188,7 +193,7 @@ public class MagicSceneManager : MonoBehaviour
         _manager.CurrentScene = _scenes[_index];
     }
 
-    public void GoPrevious() {
+    private void GoPrevious() {
         if (_index == 0)
         {
             _index = _scenes.Count - 1;

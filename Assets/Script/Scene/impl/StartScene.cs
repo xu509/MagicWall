@@ -34,6 +34,9 @@ public class StartScene : IScene
     private float _DuringTime = 3f;
     private float _StartTime = 0f;
 
+    MagicSceneEnum _magicSceneEnumStatus;
+
+
 
     private static bool LOG = true;
 
@@ -81,6 +84,9 @@ public class StartScene : IScene
         _doHideLogoComplete = false;
 
         _isCompleted = false;
+
+        _magicSceneEnumStatus = MagicSceneEnum.Running;
+
     }
 
 
@@ -373,9 +379,12 @@ public class StartScene : IScene
             .DOFade(0, 1f)
             .OnComplete(() => {
                 //_doHideLogoComplete = true;
-                RunEnd();
+               // RunEnd();
                 _manager.BgLogo.gameObject.SetActive(false);
             });
+
+        _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+
         _onRunCompleted.Invoke();
     }
 
@@ -386,6 +395,9 @@ public class StartScene : IScene
 
     public void RunEnd()
     {
+        _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
+
+
         OnRunEndCompleted();
 
     }
@@ -393,6 +405,10 @@ public class StartScene : IScene
     public void OnRunEndCompleted()
     {
         _hasInit = false;
+
+        _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+
+
         _onRunEndCompleted.Invoke();
 
     }
@@ -409,4 +425,8 @@ public class StartScene : IScene
         }
     }
 
+    public MagicSceneEnum GetSceneStatus()
+    {
+        return _magicSceneEnumStatus;
+    }
 }

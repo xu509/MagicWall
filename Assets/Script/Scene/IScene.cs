@@ -28,5 +28,8 @@ public interface IScene
     //
     DataType GetDataType();
 
+
+    MagicSceneEnum GetSceneStatus();
+
 }
 

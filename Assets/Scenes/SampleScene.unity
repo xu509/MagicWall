@@ -1239,6 +1239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageAgent: {fileID: 499944810}
+  _magicSceneManager: {fileID: 1167712291}
   f_UpdateInterval: 0.5
 --- !u!114 &1167712298
 MonoBehaviour:
