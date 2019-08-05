@@ -603,7 +603,7 @@ MonoBehaviour:
     type: 2}
   _moveBehaviourFactory: {fileID: 1167712302}
   _cutEffectConfig: {fileID: 11400000, guid: 8a1e9f2e8e4f43e468dc32743a9e1c51, type: 2}
-  _isMockData: 0
+  _isMockData: 1
 --- !u!225 &438711673
 CanvasGroup:
   m_ObjectHideFlags: 0
