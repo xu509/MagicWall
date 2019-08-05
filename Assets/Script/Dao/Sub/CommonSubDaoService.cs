@@ -46,6 +46,9 @@ public class CommonSubDaoService : IDaoSubService
             + themeId + " "
             + " ORDER BY ctr.ordering DESC";
         var results = theDataSource.SelectList(sql);
+
+        Debug.Log("GetEnterprises : " + sql);
+
         var enterprises = new List<Enterprise>();
 
         for (int i = 0; i < results.Count; i++)
