@@ -56,6 +56,9 @@ public class DaoService : MonoBehaviour, IDaoService
         if (_enterprises.Count == 0)
         {
             _enterprises = _daoSubService.GetEnterprises(_config.ThemeId);
+
+            Debug.Log("_enterprises : " + _enterprises.Count);
+
         }
 
         return _enterprises;
@@ -493,24 +496,32 @@ public class DaoService : MonoBehaviour, IDaoService
 
         string sql = "select video from company where com_id=" + envId + " and status = 1";
 
+        //Debug.Log("GetVideosByEnvId : " + sql);
+
         var row = _theDataSource.SelectOne(sql);
         if (row != null) {
             string material = row["video"].ToString();
-            List<MWMaterial> mWMaterials = (List<MWMaterial>)DaoUtil.ConvertMaterialJson(material);
 
-            for (int i = 0; i < mWMaterials.Count; i++)
-            {
-                MWMaterial data = mWMaterials[i];
-                //Debug.Log(data[i]["cuteffect_id"]);
-                Video video = new Video();
-                video.V_id = i;
-                if (data.type == "video")
+            object mWMaterialsObj = DaoUtil.ConvertMaterialJson(material);
+            if (mWMaterialsObj != null) {
+
+                List<MWMaterial> mWMaterials = (List<MWMaterial>)mWMaterialsObj;
+
+                for (int i = 0; i < mWMaterials.Count; i++)
                 {
-                    video.Cover = data.cover;
-                    video.Address = data.path;
+                    MWMaterial data = mWMaterials[i];
+                    //Debug.Log(data[i]["cuteffect_id"]);
+                    Video video = new Video();
+                    video.V_id = i;
+                    if (data.type == "video")
+                    {
+                        video.Cover = data.cover;
+                        video.Address = data.path;
+                    }
+                    video.Description = data.description;
+                    videos.Add(video);
                 }
-                video.Description = data.description;
-                videos.Add(video);
+
             }
         }
 

@@ -11,7 +11,7 @@ public class DaoUtil
     /// <param name="jsonstr"></param>
     /// <returns>ary： List<MWMaterial> / obj ： MWMaterial</returns>
     public static object ConvertMaterialJson(string jsonstr) {
-        if (jsonstr == null)
+        if (jsonstr == null || jsonstr.Length == 0)
             return null;
 
 
