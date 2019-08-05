@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 // 普通场景
 public class CommonScene : IScene
@@ -14,8 +15,11 @@ public class CommonScene : IScene
     // Dao Service
     DaoService _daoService;
 
-    //
-    private bool isDoDestoryCompleting = false;
+    Action _onRunCompleted;
+    Action _onRunEndCompleted;
+
+    //  是否正在运行 Destory
+    private bool doDestoryCompleting = false;
 
     //  使用的过场效果
     private CutEffect _theCutEffect;
@@ -36,13 +40,14 @@ public class CommonScene : IScene
     SceneStatus status = SceneStatus.PREPARING; //场景状态
     public SceneStatus Status { get { return status; } set { status = value; } }
 
+    MagicSceneEnum _magicSceneEnumStatus;
 
     //
     //  Private Methods
     //
 
-	//	过场动画
-	private void DoStarting()
+    //	过场动画
+    private void DoStarting()
 	{
         _theCutEffect.Starting();
 	}
@@ -63,11 +68,11 @@ public class CommonScene : IScene
 	//销毁动画已完成
 	private bool DoDestoryCompleted()
 	{
-        if (!isDoDestoryCompleting)
+        if (!doDestoryCompleting)
         {
             _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
             _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
-            isDoDestoryCompleting = true;
+            doDestoryCompleting = true;
 
             // 清理面板
             return _manager.Clear();
@@ -87,7 +92,7 @@ public class CommonScene : IScene
 	{
         _theCutEffect.Create(_dataType);
 
-        isDoDestoryCompleting = false;
+        doDestoryCompleting = false;
     }
 
 
@@ -103,6 +108,7 @@ public class CommonScene : IScene
         _theCutEffect = GetCutEffect(sceneConfig.sceneType); // 设置过场效果
         _theCutEffect.Init(_manager);
         _dataType = sceneConfig.dataType; // 设置类型
+        _magicSceneEnumStatus = MagicSceneEnum.Running;
     }
 
 
@@ -152,10 +158,13 @@ public class CommonScene : IScene
 			// 过场状态具有运行状态 或 已达到运行的时间
 			if (!_theCutEffect.HasDisplaying || (Time.time - _displayTime) > _theCutEffect.DisplayDurTime)
 			{
-				// 完成展示阶段，进行销毁
-				DoDestorying();
-				Status = SceneStatus.DESTORING;
-                _destoryTime = Time.time;
+                // 完成展示阶段，进行销毁
+                OnRunCompleted();
+
+
+    //            DoDestorying();
+				//Status = SceneStatus.DESTORING;
+    //            _destoryTime = Time.time;
 			}
 			else
 			{
@@ -164,27 +173,29 @@ public class CommonScene : IScene
 		}
 
 		// 销毁中
-		if (Status == SceneStatus.DESTORING)
-		{
-            // 达到销毁的时间
-            if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
-			{
-                if (DoDestoryCompleted())
-				{
-                    Status = SceneStatus.PREPARING;
-					return false;
-				}
-				else
-				{
+		//if (Status == SceneStatus.DESTORING)
+		//{
+  //          // 达到销毁的时间
+  //          if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
+		//	{
+  //              OnRunEndCompleted();
 
-                    DoDestorying();
-				}
-			}
-			else
-			{
-                DoDestorying();
-			}
-		}
+  //  //            if (DoDestoryCompleted())
+		//		//{
+  //  //                Status = SceneStatus.PREPARING;
+		//		//	return false;
+		//		//}
+		//		//else
+		//		//{
+
+  //  //                DoDestorying();
+		//		//}
+		//	}
+		//	else
+		//	{
+  //              RunEnd();
+  //           }
+		//}
 		return true;
 	}
 
@@ -224,5 +235,61 @@ public class CommonScene : IScene
         return null;
     }
 
+    #region Implement
 
+    public void OnRunCompleted()
+    {
+        _destoryTime = Time.time;
+        _onRunCompleted.Invoke();
+        Status = SceneStatus.PREPARING;
+
+        _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+
+    }
+
+    public void SetOnRunCompleted(Action onRunCompleted)
+    {
+        _onRunCompleted = onRunCompleted;
+    }
+
+    public void RunEnd()
+    {
+        if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
+        {
+            OnRunEndCompleted();
+        }
+        else {
+            _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
+            _theCutEffect.Destorying();
+        }
+    }
+
+    public void OnRunEndCompleted()
+    {
+        if (!doDestoryCompleting)
+        {
+            doDestoryCompleting = true;
+            _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
+            _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
+            _manager.Clear();
+
+            _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+            _onRunEndCompleted.Invoke();
+        }
+        else {
+
+        }
+    }
+
+    public void SetOnRunEndCompleted(Action onRunEndCompleted)
+    {
+        _onRunEndCompleted = onRunEndCompleted;
+    }
+
+    public MagicSceneEnum GetSceneStatus()
+    {
+        return _magicSceneEnumStatus;
+    }
+
+    #endregion
 }

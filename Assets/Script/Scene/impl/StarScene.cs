@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 /// <summary>
 ///     星空场景
@@ -20,7 +21,13 @@ public class StarScene : IScene
     private bool _isEnding;   // 正在执行关闭动画
 
     private List<FlockAgent> _activeAgents; //活动的 Agents 
-    private StarSceneStatusEnum _starSceneStatusEnum = StarSceneStatusEnum.Init;   // 状态
+    private StarSceneStatusEnum _starSceneStatusEnum;   // 状态
+
+    MagicSceneEnum _magicSceneEnumStatus;
+
+
+    Action _onRunCompleted;
+    Action _onRunEndCompleted;
 
 
     enum StarSceneStatusEnum {
@@ -36,6 +43,7 @@ public class StarScene : IScene
 
     private void Reset() {
         _starSceneStatusEnum = StarSceneStatusEnum.Init;
+        _magicSceneEnumStatus = MagicSceneEnum.Running;
         _isEnding = false;
         _isPreparing = false;
         _startTime = Time.time;
@@ -56,7 +64,6 @@ public class StarScene : IScene
         _itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
         _sceneUtil = new SceneUtils(_manager);
 
-
         Reset();
     }
 
@@ -66,6 +73,9 @@ public class StarScene : IScene
     /// <returns></returns>
     public bool Run()
     {
+        //Debug.Log("_starSceneStatusEnum : " + _starSceneStatusEnum);
+        _magicSceneEnumStatus = MagicSceneEnum.Running;
+
         if (_starSceneStatusEnum == StarSceneStatusEnum.Init) {
             if (!_isPreparing)
             {
@@ -80,39 +90,24 @@ public class StarScene : IScene
 
         if (_starSceneStatusEnum == StarSceneStatusEnum.Run)
         {
+            //Debug.Log("[Star] Running");
+
             DoAnimation();
         }
 
-        if (_starSceneStatusEnum == StarSceneStatusEnum.RunCompleted)
+        if ((_starSceneStatusEnum == StarSceneStatusEnum.Run) && ((Time.time - _startTime) > _durtime))
         {
-            _starSceneStatusEnum = StarSceneStatusEnum.End;
+            //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted;
+            OnRunCompleted();
         }
 
-        if (_starSceneStatusEnum == StarSceneStatusEnum.End)
-        {
-            if (!_isEnding)
-            {
-                _isEnding = true;
-                DoEnd();
-            }
-        }
-
-        if (_starSceneStatusEnum == StarSceneStatusEnum.EndCompleted)
-        {
-            Reset();
-            return false;
-        }
-
-        if ((_starSceneStatusEnum == StarSceneStatusEnum.Run) && ((Time.time - _startTime) > _durtime)) {
-            _starSceneStatusEnum = StarSceneStatusEnum.RunCompleted;
-        }
 
         return true;
     }
 
 
     private void DoPrepare() {
-        //Debug.Log("Do Prepare");
+        //Debug.Log("[Star] Do Prepare | _durtime: " + _durtime + " / _dataType: " + _dataType);
         _startTime = Time.time;
 
 
@@ -138,7 +133,9 @@ public class StarScene : IScene
             _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
         }
 
+        //Debug.Log("[Star] Do Prepare Complete");
 
+        _isPreparing = false;
         _starSceneStatusEnum = StarSceneStatusEnum.InitCompleted;
     }
 
@@ -180,21 +177,21 @@ public class StarScene : IScene
 
     }
 
-    private void DoEnd()
-    {
-        //Debug.Log("Do End");
+    //private void DoEnd()
+    //{
+    //    //Debug.Log("Do End");
 
+    //    // 淡出
+    //    _manager.starEffectContent.GetComponent<CanvasGroup>()
+    //        .DOFade(0, 2f)
+    //        .OnComplete(() => {
+    //            _manager.starEffectContainer.gameObject.SetActive(false);
+    //            _manager.Clear();
+    //            OnRunEndCompleted();
+    //            //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
+    //        });
 
-        // 淡出
-        _manager.starEffectContent.GetComponent<CanvasGroup>()
-            .DOFade(0, 2f)
-            .OnComplete(() => {
-                _manager.starEffectContainer.gameObject.SetActive(false);
-                _manager.Clear();
-                _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-            });
-
-    }
+    //}
 
 
     private FlockAgent CreateNewAgent(bool randomZ)
@@ -203,7 +200,7 @@ public class StarScene : IScene
         FlockData data = _daoService.GetFlockData(_dataType);
 
         // 获取出生位置
-        Vector2 randomPosition = Random.insideUnitSphere;
+        Vector2 randomPosition = UnityEngine.Random.insideUnitSphere;
 
         Vector3 position;
 
@@ -228,7 +225,8 @@ public class StarScene : IScene
         float z;
         if (randomZ)
         {
-            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint, Random.Range(0f, 1f));
+            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint,
+                UnityEngine.Random.Range(0f, 1f));
         }
         else
         {
@@ -302,4 +300,66 @@ public class StarScene : IScene
         }
     }
 
+
+    public void OnRunCompleted()
+    {
+        //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted
+        _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+        _starSceneStatusEnum = StarSceneStatusEnum.End;
+        //Debug.Log("Do OnRunCompleted Action");
+
+        _onRunCompleted.Invoke();
+
+    }
+
+
+
+    public void RunEnd()
+    {
+        if (!_isEnding)
+        {
+            _isEnding = true;
+            _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
+            //DoEnd();
+
+            _manager.starEffectContent.GetComponent<CanvasGroup>()
+                .DOFade(0, 2f)
+                .OnComplete(() => {
+                        _manager.starEffectContainer.gameObject.SetActive(false);
+                        _manager.Clear();
+                        OnRunEndCompleted();
+                        _isEnding = false;
+                    //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
+                });
+
+
+        }
+    }
+
+    public void OnRunEndCompleted()
+    {
+        _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
+        _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+
+        Reset();
+        _onRunEndCompleted.Invoke();
+
+    }
+
+    public void SetOnRunEndCompleted(Action onRunEndCompleted)
+    {
+        _onRunEndCompleted = onRunEndCompleted;
+    }
+
+    public void SetOnRunCompleted(Action onRunCompleted)
+    {
+        _onRunCompleted = onRunCompleted;
+    }
+
+    public MagicSceneEnum GetSceneStatus()
+    {
+
+        return _magicSceneEnumStatus;
+
+    }
 }

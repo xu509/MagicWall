@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.U2D;
+using System;
 
 //
 //   启动的场景 
@@ -33,6 +34,9 @@ public class StartScene : IScene
     private float _DuringTime = 3f;
     private float _StartTime = 0f;
 
+    MagicSceneEnum _magicSceneEnumStatus;
+
+
 
     private static bool LOG = true;
 
@@ -46,6 +50,9 @@ public class StartScene : IScene
 
     private IDaoService _daoService;
     private MagicWallManager _manager;
+
+    Action _onRunCompleted;
+    Action _onRunEndCompleted;
 
     //
     //  Construct
@@ -77,6 +84,9 @@ public class StartScene : IScene
         _doHideLogoComplete = false;
 
         _isCompleted = false;
+
+        _magicSceneEnumStatus = MagicSceneEnum.Running;
+
     }
 
 
@@ -115,22 +125,26 @@ public class StartScene : IScene
         if (_doShowLogoComplete) {
             // 进行logo隐藏
             if (_resourseIsChecked && (RunTime > _DuringTime)) {
-                _manager.BgLogo.GetComponent<Image>()
-                    .DOFade(0, 1f)
-                    .OnComplete(() => {
-                        _doHideLogoComplete = true;
-                        _manager.BgLogo.gameObject.SetActive(false);
-                    });
+
+                OnRunCompleted();
+
+
+                //_manager.BgLogo.GetComponent<Image>()
+                //    .DOFade(0, 1f)
+                //    .OnComplete(() => {
+                //        _doHideLogoComplete = true;
+                //        _manager.BgLogo.gameObject.SetActive(false);
+                //    });
             }
         }
 
-        if (_doHideLogoComplete) {
-            _hasInit = false;
+        //if (_doHideLogoComplete) {
+        //    _hasInit = false;
 
-            //DoDebug("Start Scene Is End!");
+        //    //DoDebug("Start Scene Is End!");
 
-            return false;
-        }
+        //    return false;
+        //}
 
         // 加载资源
         LoadResource();
@@ -190,12 +204,10 @@ public class StartScene : IScene
             return;
         }
 
-
         // 设置配置表
 
         MWConfig _config =  _daoService.GetConfig();
         _manager.globalData.SetMWConfig(_config);
-
 
         _doLoadConfig = true;
 
@@ -204,8 +216,6 @@ public class StartScene : IScene
         //}
         _configIsLoaded = true;
     }
-
-
 
 
     // Do Load
@@ -363,6 +373,50 @@ public class StartScene : IScene
     }
 
 
+    public void OnRunCompleted()
+    {
+        _manager.BgLogo.GetComponent<Image>()
+            .DOFade(0, 1f)
+            .OnComplete(() => {
+                //_doHideLogoComplete = true;
+               // RunEnd();
+                _manager.BgLogo.gameObject.SetActive(false);
+            });
+
+        _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+
+        _onRunCompleted.Invoke();
+    }
+
+    public void SetOnRunCompleted(Action onRunCompleted)
+    {
+        _onRunCompleted = onRunCompleted;
+    }
+
+    public void RunEnd()
+    {
+        _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
+
+
+        OnRunEndCompleted();
+
+    }
+
+    public void OnRunEndCompleted()
+    {
+        _hasInit = false;
+
+        _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+
+
+        _onRunEndCompleted.Invoke();
+
+    }
+
+    public void SetOnRunEndCompleted(Action onRunEndCompleted)
+    {
+        _onRunEndCompleted = onRunEndCompleted;
+    }
 
 
     private void DoDebug(string message) {
@@ -371,4 +425,8 @@ public class StartScene : IScene
         }
     }
 
+    public MagicSceneEnum GetSceneStatus()
+    {
+        return _magicSceneEnumStatus;
+    }
 }

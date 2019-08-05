@@ -21,20 +21,20 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <summary>
     ///  公司测试环境
     /// </summary>
-    private static string _sqlStr = "Database=iq360_cloud_wall;"
-                + "Server=192.168.1.100"
-                + ";Uid=root;"
-                + "pooling=false;"
-                + "Password=artvoi; pooling=false;CharSet=utf8"
-                + ";port=3306";
+    //private static string _sqlStr = "Database=iq360_cloud_wall;"
+    //            + "Server=192.168.1.100"
+    //            + ";Uid=root;"
+    //            + "pooling=false;"
+    //            + "Password=artvoi; pooling=false;CharSet=utf8"
+    //            + ";port=3306";
 
     // 家
-    //private static string _sqlStr = "Database=MagicWall;"
-    //        + "Server=116.85.26.230"
-    //        + ";Uid=root;"
-    //        + "pooling=false;"
-    //        + "Password=; pooling=false;CharSet=utf8"
-    //        + ";port=3306";
+    private static string _sqlStr = "Database=MagicWall;"
+            + "Server=116.85.26.230"
+            + ";Uid=root;"
+            + "pooling=false;"
+            + "Password=; pooling=false;CharSet=utf8"
+            + ";port=3306";
 
 
     private LikeDataBase _likeDataBase;
@@ -126,6 +126,9 @@ public class TheDataSource : Singleton<TheDataSource>
     /// <param name="sql"></param>
     /// <returns></returns>
     public Dictionary<string,object> SelectOne(string sql) {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+
         Dictionary<string, object> result = null;
         if (_showLog) {
             Debug.Log("sql : " + sql);
@@ -154,6 +157,13 @@ public class TheDataSource : Singleton<TheDataSource>
                     {
                         result.Add(table.Columns[i].ColumnName, table.Rows[0][i].ToString());
                     }
+
+
+                    sw.Stop();
+
+                    //    打印内容
+                    //Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
+
                     return result;
                 }
                 else if (table.Rows.Count > 1)

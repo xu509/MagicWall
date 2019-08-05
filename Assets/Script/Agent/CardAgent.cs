@@ -7,6 +7,7 @@ using UnityEngine;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using MWMagicWall;
 
 public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHandler,IPointerClickHandler,MoveSubject
 {
@@ -283,7 +284,7 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _cardStatus = CardStatusEnum.DESTORYING_STEP_SCEOND;
 
         //  如果场景没有变，则回到原位置
-        if (SceneIndex == _manager.SceneIndex && _originAgent != null)
+        if ((SceneIndex == _manager.SceneIndex) && (_originAgent != null))
         {
             //恢复并归位
             // 缩到很小很小
@@ -326,6 +327,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
                 .OnComplete(() => {
                     _agentManager.RemoveItemFromEffectItems(this);
                 });
+
+            // 清除原来的flock
+            
+            _originAgent.DestoryAgency();
 
         }
 

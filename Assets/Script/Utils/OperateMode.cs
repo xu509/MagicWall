@@ -9,6 +9,8 @@ public class OperateMode : MonoBehaviour
 {
     [SerializeField, Header("UI")] MessageAgent _messageAgent;
 
+    [SerializeField, Header("Scene")] MagicSceneManager _magicSceneManager;
+
     [SerializeField, Header("FPS")] float f_UpdateInterval = 0.5F;
 
     private float f_LastInterval;
@@ -92,6 +94,7 @@ public class OperateMode : MonoBehaviour
             {
                 _messageAgent.UpdateMessage("Help \n\n" +
                     " 【1】 ： 切换卡片动画模式 \t" + "\n\n" +
+                    " 【N】 ： 切换场景 \t" + "\n\n" +
                     "【H】 ：打开/关闭帮助文档");
             }
             else {
@@ -108,6 +111,15 @@ public class OperateMode : MonoBehaviour
             _moveBehaviourTypeQueue.Enqueue(_moveBehaviour);
 
             _messageAgent.UpdateMessage("已更换卡片动画模式，当前模式为： " + _moveBehaviour,5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            // 切换卡片受影响模式
+
+            _magicSceneManager.TurnToNext();
+
+            _messageAgent.UpdateMessage("切换场景中",3f);
         }
 
 

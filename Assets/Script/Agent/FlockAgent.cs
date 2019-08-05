@@ -5,7 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using EasingUtil;
 using System;
-
+using MWMagicWall;
 
 public class FlockAgent : MonoBehaviour
 {
@@ -17,6 +17,13 @@ public class FlockAgent : MonoBehaviour
     private IFlockAgentMoveBehavior _flockAgentMoveBehavior;
 
     public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
+
+    [SerializeField] protected FlockStatusEnum _flockStatusEnum;
+
+    /// <summary>
+    ///  卡片状态
+    /// </summary>
+    public FlockStatusEnum flockStatusEnum { set { _flockStatusEnum = value; } get { return _flockStatusEnum; } }
 
 
     #region Data Parameter 
@@ -70,7 +77,7 @@ public class FlockAgent : MonoBehaviour
     private Vector2 _nextVector2;
 
     // 是否被选中
-    private bool _isChoosing = false;
+    [SerializeField] private bool _isChoosing = false;
 
     // 是否被改变
     private bool isChanging = false;
@@ -155,8 +162,8 @@ public class FlockAgent : MonoBehaviour
         _type = type;
         _isCard = isCard;
 
-
         _flockTweenerManager = new FlockTweenerManager();
+        _flockStatusEnum = FlockStatusEnum.Normal;
     }
 
 
@@ -489,14 +496,11 @@ public class FlockAgent : MonoBehaviour
         Tweener t2 = rect.DOAnchorPos3D(to, 0.3f);
         _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
 
-
         // 放大至原大小
         Vector3 scaleVector3 = Vector3.one;
 
         // 在放大动画开始前，标记该组件为不被选择的
         IsChoosing = false;
-
-
 
         Tweener t = GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
            .OnUpdate(() =>
@@ -577,6 +581,10 @@ public class FlockAgent : MonoBehaviour
     public void DestoryAgency() {
         // 清除 Dotween 代理
 
+        _isChoosing = false;
+
+        _flockStatusEnum = FlockStatusEnum.Destoried;
+
         // 删除 Gameobject
         _agentManager.DestoryAgent(this);
     }
@@ -626,6 +634,11 @@ public class FlockAgent : MonoBehaviour
             CanEffected = true;
             _oriVector2 = Vector2.zero;
             _nextVector2 = Vector2.zero;
+
+            IsRecovering = false;
+            IsChoosing = false;
+            flockStatusEnum = FlockStatusEnum.Normal;
+            _StarsCutEffectIsPlaying = false;
 
         }
 

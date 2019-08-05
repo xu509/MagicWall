@@ -157,7 +157,7 @@ public class AgentManager : MonoBehaviour
         if (!agent.IsChoosing)
         {
             if (agent.IsRecovering) {
-                Debug.Log("[Recovering]" + agent.name + " Is Destory !");
+                //Debug.Log("[Recovering]" + agent.name + " Is Destory !");
             }           
 
             DestoryAgent(agent);

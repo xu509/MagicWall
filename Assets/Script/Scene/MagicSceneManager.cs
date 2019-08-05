@@ -19,9 +19,12 @@ public class MagicSceneManager : MonoBehaviour
     //
     bool _hasInit = false;
 
-
     List<IScene> _scenes; // 场景列表
     int _index; // 当前的索引
+
+    private MagicSceneEnum _sceneStatus;
+
+
 
     //
     // Awake instead of Constructor
@@ -41,6 +44,7 @@ public class MagicSceneManager : MonoBehaviour
         sw2.Start();
 
         _manager = manager;
+        _sceneStatus = MagicSceneEnum.Running;
 
         //  初始化场景列表
         _scenes = new List<IScene>();
@@ -79,6 +83,13 @@ public class MagicSceneManager : MonoBehaviour
         // 初始化管理器标志
         _manager.CurrentScene = _scenes[0];
 
+
+        for (int i = 0; i < _scenes.Count; i++) {
+            _scenes[i].SetOnRunCompleted(OnRunCompleted);
+            _scenes[i].SetOnRunEndCompleted(OnRunEndCompleted);
+        }
+
+
         _hasInit = true;
     }
 
@@ -104,22 +115,45 @@ public class MagicSceneManager : MonoBehaviour
 
         //return;
 
-        // 运行场景
-        if (!_scenes[_index].Run())
+        if (_sceneStatus == MagicSceneEnum.Running)
         {
-            // 返回为false时，表示场景已运行结束
-            if (_index == _scenes.Count - 1)
-            {
-                _index = 0;
-            }
-            else
-            {
-                _index++;
-            }
-
-            _manager.SceneIndex = _manager.SceneIndex + 1;
-            _manager.CurrentScene = _scenes[_index];
+            _scenes[_index].Run();
         }
+
+        else if (_sceneStatus == MagicSceneEnum.RunningComplete)
+        {
+            _sceneStatus = MagicSceneEnum.RunningEnd;
+        }
+
+        else if (_sceneStatus == MagicSceneEnum.RunningEnd)
+        {
+            _scenes[_index].RunEnd();
+        }
+
+        else if (_sceneStatus == MagicSceneEnum.RunningEndComplete)
+        {
+            GoNext();
+            _sceneStatus = MagicSceneEnum.Running;
+        }
+
+
+        //// 运行场景
+        //if (!_scenes[_index].Run())
+        //{
+        //    GoNext();
+        //    //// 返回为false时，表示场景已运行结束
+        //    //if (_index == _scenes.Count - 1)
+        //    //{
+        //    //    _index = 0;
+        //    //}
+        //    //else
+        //    //{
+        //    //    _index++;
+        //    //}
+
+        //    //_manager.SceneIndex = _manager.SceneIndex + 1;
+        //    //_manager.CurrentScene = _scenes[_index];
+        //}
 
     }
 
@@ -129,12 +163,69 @@ public class MagicSceneManager : MonoBehaviour
     public void Reset() {
         _hasInit = false;
 
-        Init(_manager);
+        //Init(_manager);
+    }
+
+
+    /// <summary>
+    ///  调整为下一个
+    /// </summary>
+    public void TurnToNext() {
+        if(_sceneStatus == MagicSceneEnum.Running)
+        {
+            _sceneStatus = MagicSceneEnum.RunningEnd;
+        }
+    }
+
+    /// <summary>
+    /// 调整至上一个场景
+    /// </summary>
+    public void TurnToPrevious()
+    {
+        if (_sceneStatus == MagicSceneEnum.Running)
+        {
+            _sceneStatus = MagicSceneEnum.RunningEnd;
+        }
     }
 
 
 
+    private void GoNext() {
+        if (_index == _scenes.Count - 1)
+        {
+            _index = 0;
+        }
+        else
+        {
+            _index++;
+        }
+
+        _manager.SceneIndex = _manager.SceneIndex + 1;
+        _manager.CurrentScene = _scenes[_index];
+    }
+
+    private void GoPrevious() {
+        if (_index == 0)
+        {
+            _index = _scenes.Count - 1;
+        }
+        else
+        {
+            _index--;
+        }
+
+        _manager.SceneIndex = _manager.SceneIndex + 1;
+        _manager.CurrentScene = _scenes[_index];
+    }
 
 
+    private void OnRunCompleted() {
+        _sceneStatus = MagicSceneEnum.RunningComplete;
+    }
+
+    private void OnRunEndCompleted()
+    {
+        _sceneStatus = MagicSceneEnum.RunningEndComplete;
+    }
 
 }
