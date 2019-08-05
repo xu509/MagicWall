@@ -29,7 +29,7 @@ public class TheDataSource : Singleton<TheDataSource>
     //            + ";port=3306";
 
     // 家
-    private static string _sqlStr = "Database=MagicWall;"
+    private static string _sqlStr = "Database=iq360_cloud_wall;"
             + "Server=116.85.26.230"
             + ";Uid=root;"
             + "pooling=false;"
