@@ -589,6 +589,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2258134200395076887}
   - component: {fileID: 2258134200395076884}
+  - component: {fileID: 8497823019095489290}
   m_Layer: 5
   m_Name: SearchAgent
   m_TagString: Untagged
@@ -653,6 +654,14 @@ MonoBehaviour:
   _questionContainer: {fileID: 2764761441156508368}
   _questionPrefab: {fileID: 451025744172064408, guid: 71b01d4cdb887934db22617de872dc86,
     type: 3}
+--- !u!222 &8497823019095489290
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2258134200395076886}
+  m_CullTransparentMesh: 0
 --- !u!1 &2258134200491484739
 GameObject:
   m_ObjectHideFlags: 0

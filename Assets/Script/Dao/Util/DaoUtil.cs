@@ -33,9 +33,16 @@ public class DaoUtil
     }
 
     private static List<MWMaterial> ConvertMaterialAry(string jsonstr) {
+
         jsonstr = jsonstr.Replace("[","");
         jsonstr = jsonstr.Replace("]","");
-        string[] datas = Regex.Split(jsonstr, "},{", RegexOptions.IgnoreCase);
+
+        jsonstr = jsonstr.Replace("\r\n", "");
+        jsonstr = jsonstr.Replace("\r", "");
+        jsonstr = jsonstr.Replace("\n", "");
+
+        string _regex = @"}\s*,\s*{";
+        string[] datas = Regex.Split(jsonstr, _regex);
 
         List<MWMaterial> mWMaterials = new List<MWMaterial>();
         if (datas.Length > 0) {

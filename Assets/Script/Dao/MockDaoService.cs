@@ -80,8 +80,14 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
     public List<string> GetEnvCards(int id) {
 
-        // TODO 
-        return GetEnterprise().EnvCards;
+        if (Random.Range(0, 5) > 2)
+        {
+            return GetEnterprise().EnvCards;
+        }
+        else {
+            return new List<string>();
+        }
+        
     }
 
 

@@ -1127,6 +1127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f899d054115ff847b5b4819fb4f3d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flockStatusEnum: 0
+  _isChoosing: 0
   _heightFactor: 0.4505
   _main_container: {fileID: 1447688283106226908}
   _tool_bottom_container: {fileID: 1702068175313341596}
@@ -3303,6 +3305,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7097238312486766091}
     m_Modifications:
+    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: m_Name
+      value: btn-move
+      objectReference: {fileID: 0}
     - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: _moveSubject
@@ -3412,11 +3419,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
-        type: 3}
-      propertyPath: m_Name
-      value: btn-move
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a3edff60d8e205459ad47f92843f9f7, type: 3}
