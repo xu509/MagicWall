@@ -51,27 +51,27 @@ public class QuestionAgent : MonoBehaviour
         SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas");
 
         if (questionTypeEnum == QuestionTypeEnum.CrossCard) {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SliceCard)
         {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SingleCard)
         {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SearchPanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SearchResultPanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
         else if (questionTypeEnum == QuestionTypeEnum.ScalePanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("background-bubble-clear");
+            _image.sprite = spriteAtlas.GetSprite("help-1");
         }
 
     }

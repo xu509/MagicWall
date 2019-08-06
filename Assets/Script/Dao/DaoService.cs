@@ -347,6 +347,8 @@ public class DaoService : MonoBehaviour, IDaoService
 
         string sql = "select * from product where prod_id=" + pro_id;
 
+        Debug.Log("GetProductDetail : " + sql);
+
         var row = _theDataSource.SelectOne(sql);
 
         if (row != null) {

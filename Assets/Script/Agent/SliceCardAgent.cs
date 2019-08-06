@@ -43,7 +43,6 @@ public class SliceCardAgent : CardAgent
             Product product = _manager.daoService.GetProductDetail(DataId);
 
             // 获取产品标题
-
             _title.text = product.Name;
 
             // 获取产品所属公司信息
