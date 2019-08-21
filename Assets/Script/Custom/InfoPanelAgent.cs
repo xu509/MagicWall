@@ -24,14 +24,17 @@ public class InfoPanelAgent : MonoBehaviour
     private float _panelWidth;
     private float _panelHeight;
 
+    private MagicWallManager _magicWallManager;
+
     /// <summary>
     ///  TODO 定制页还未注入 Dao Service
     /// </summary>
     IDaoService _dataService;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void Init(MagicWallManager manager) {
+        _magicWallManager = manager;
+        _dataService = _magicWallManager.daoService;
+
         // 初始化最左侧图片
         _leftImages = _dataService.GetCustomImage(CustomImageType.LEFT1);
 
@@ -45,7 +48,7 @@ public class InfoPanelAgent : MonoBehaviour
 
         // 初始化右侧图片
         _rightImages = _dataService.GetCustomImage(CustomImageType.RIGHT);
-        if(_rightImages.Count > 0)
+        if (_rightImages.Count > 0)
             SetRightImages();
 
         if (_leftImages.Count > 1)
@@ -148,7 +151,6 @@ public class InfoPanelAgent : MonoBehaviour
     }
 
     public void Run() {
-        //TODO 左侧的动画更换
 
     }
 

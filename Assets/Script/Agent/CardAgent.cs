@@ -187,10 +187,23 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         _recentActiveTime = Time.time;
         _cardStatus = CardStatusEnum.NORMAL;
 
-        _panel_top = -(_manager.OperationPanel.rect.yMin) + _manager.OperationPanel.rect.yMax;
-        _panel_bottom = 0;
-        _panel_left = 0;
-        _panel_right = -(_manager.OperationPanel.rect.xMin) + _manager.OperationPanel.rect.xMax;
+        //_panel_top = -(_manager.OperationPanel.rect.yMin) + _manager.OperationPanel.rect.yMax;
+        //_panel_bottom = 0;
+        //_panel_left = 0;
+        //_panel_right = -(_manager.OperationPanel.rect.xMin) + _manager.OperationPanel.rect.xMax;
+
+
+        var opposition = _manager.OperationPanel.position;
+
+        _panel_top = opposition.y + (_manager.OperationPanel.rect.height / 2);
+        _panel_bottom = opposition.y - (_manager.OperationPanel.rect.height / 2);
+        _panel_left = opposition.x - (_manager.OperationPanel.rect.width / 2);
+        _panel_right = opposition.x + (_manager.OperationPanel.rect.width / 2);
+
+        //_panel_left = _manager.OperationPanel.rect.xMin;
+        //print("_manager.OperationPanel.rect.xMin; : " + _manager.OperationPanel.rect.xMin);
+        //_panel_right = _panel_left + -(_manager.OperationPanel.rect.xMin) + _manager.OperationPanel.rect.xMax;
+
 
         _safe_distance_width = GetComponent<RectTransform>().rect.width / 3;
         _safe_distance_height = GetComponent<RectTransform>().rect.height / 3;
@@ -796,18 +809,24 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
         Vector2 rawanchorPositon = new Vector2(screenPos.x - _manager.OperationPanel.rect.width / 2.0f
         , screenPos.y - _manager.OperationPanel.rect.height / 2.0f);
 
-        // 获取偏移后的移动坐标
-        position = position - rawanchorPositon;
+        //nowPostion = nowPostion + rawanchorPositon;
+
+        //position = position - rawanchorPositon;
 
         bool overleft = position.x < (_panel_left + _safe_distance_width);
         bool overright = position.x > (_panel_right - _safe_distance_width);
         bool overtop = position.y > (_panel_top - _safe_distance_height);
         bool overbottom = position.y < (_panel_bottom + _safe_distance_height);
+
         bool isOver = false;
+
 
         if (overleft || overright)
         {
+            print("overleft : " + nowPostion);
+
             to.x = nowPostion.x;
+            print(nowPostion.x);
 
             isOver = true;
         }
@@ -818,6 +837,10 @@ public class CardAgent : FlockAgent,IBeginDragHandler, IEndDragHandler, IDragHan
 
         if (overtop || overbottom)
         {
+            print("overtop : " + nowPostion);
+            print("position : " + position);
+
+
             to.y = nowPostion.y;
 
             isOver = true;

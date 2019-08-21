@@ -529,14 +529,14 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            SceneTypeEnum.Stars,
+            //SceneTypeEnum.Stars,
             SceneTypeEnum.MidDisperse,
             SceneTypeEnum.LeftRightAdjust,
             SceneTypeEnum.UpDownAdjustCutEffect,
             SceneTypeEnum.FrontBackUnfold,
 
             SceneTypeEnum.CurveStagger,
-            
+
         };
 
 
