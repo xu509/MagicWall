@@ -206,6 +206,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
         _panel_left = opposition.x - (_manager.OperationPanel.rect.width / 2);
         _panel_right = opposition.x + (_manager.OperationPanel.rect.width / 2);
 
+        //print("_panel_top:" + _panel_top+ "---_panel_bottom:" + _panel_bottom+ "---_panel_left:" + _panel_left+ "---_panel_right:" + _panel_right);
         //_panel_left = _manager.OperationPanel.rect.xMin;
         //print("_manager.OperationPanel.rect.xMin; : " + _manager.OperationPanel.rect.xMin);
         //_panel_right = _panel_left + -(_manager.OperationPanel.rect.xMin) + _manager.OperationPanel.rect.xMax;
@@ -838,10 +839,22 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
         Vector2 size = new Vector2(GetComponent<RectTransform>().rect.width, GetComponent<RectTransform>().rect.height);
         //print("_panel_left:" + _panel_left + "---_panel_right:" + _panel_right + "---targetPoint:" + targetPoint);
         //print("_panel_top:" + _panel_top + "---_panel_bottom:" + _panel_bottom + "---targetPoint:" + targetPoint.y);
-        targetPoint.x = targetPoint.x < _panel_left + size.x / 2 ? _panel_left + size.x / 2 : targetPoint.x;
-        targetPoint.x = targetPoint.x > _panel_right - size.x / 2 ? _panel_right - size.x / 2 : targetPoint.x;
-        targetPoint.y = targetPoint.y < size.y / 2 ? size.y / 2 : targetPoint.y;
-        targetPoint.y = targetPoint.y > _panel_top - size.y / 2 ? _panel_top - size.y / 2 : targetPoint.y;
+        if (targetPoint.x < _panel_left + size.x / 2)
+        {
+            targetPoint.x = _panel_left + size.x / 2;
+        }   else if (targetPoint.x > _panel_right - size.x / 2)
+        {
+            targetPoint.x = _panel_right - size.x / 2;
+        }
+        if (targetPoint.y < size.y / 2)
+        {
+            targetPoint.y = size.y / 2;
+        }
+        else if (targetPoint.y > _panel_top - size.y / 2)
+        {
+            targetPoint.y = _panel_top - size.y / 2;
+        }
+
         transform.position = targetPoint;
 
         /*

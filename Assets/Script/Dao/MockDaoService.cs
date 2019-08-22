@@ -529,7 +529,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            //SceneTypeEnum.Stars,
+            SceneTypeEnum.Stars,
             SceneTypeEnum.MidDisperse,
             SceneTypeEnum.LeftRightAdjust,
             SceneTypeEnum.UpDownAdjustCutEffect,
@@ -541,11 +541,19 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
+
         DataType[] dataTypes = new DataType[] {
             DataType.env,
             DataType.activity,
             DataType.product,
         };
+        if (FindObjectOfType<MagicWallManager>().managerConfig.IsCustom)
+        {
+            dataTypes = new DataType[] {
+            DataType.activity,
+            DataType.product,
+            };
+        }
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
         for (int i = 0; i < sceneTypes.Length; i++)
