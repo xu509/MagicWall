@@ -14,24 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCustom: 0
   SelectedItemMaxCount: 5
-  gapFactor: 0
+  gapFactor: 1
   Column: 15
   FlockPoolSize: 150
   CardPoolSize: 8
-  MainPanelMoveFactor: 0
-  StarEffectAgentsCount: 0
-  StarEffectMoveFactor: 0
-  StarEffectOriginPoint: 0
-  StarEffectEndPoint: 0
-  BackgroundClearBubblePoolSize: 0
-  BackgroundClearMoveMinFactor: 0
-  BackgroundClearMoveMaxFactor: 0
-  BackgroundDimBubblePoolSize: 0
-  BackgroundDimMoveMinFactor: 0
-  BackgroundDimMoveMaxFactor: 0
-  ItemSizeMinWidthFactor: 0
-  ItemSizeMaxWidthFactor: 0
-  ItemSizeMinHeightFactor: 0
-  ItemSizeMaxHeightFactor: 0
-  InfluenceMoveFactor: 0
-  InfluenceEaseEnum: 0
+  MainPanelMoveFactor: 141
+  StarEffectAgentsCount: 60
+  StarEffectMoveFactor: 15
+  StarEffectOriginPoint: 1000
+  StarEffectEndPoint: -2500
+  BackgroundClearBubblePoolSize: 5
+  BackgroundClearMoveMinFactor: 50
+  BackgroundClearMoveMaxFactor: 150
+  BackgroundDimBubblePoolSize: 3
+  BackgroundDimMoveMinFactor: 25
+  BackgroundDimMoveMaxFactor: 75
+  ItemSizeMinWidthFactor: 0.0333
+  ItemSizeMaxWidthFactor: 0.0355
+  ItemSizeMinHeightFactor: 0.15388
+  ItemSizeMaxHeightFactor: 0.16666

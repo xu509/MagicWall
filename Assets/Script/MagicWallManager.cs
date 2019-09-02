@@ -205,6 +205,12 @@ public class MagicWallManager : MonoBehaviour
         //  初始化卡片工厂
         _cardItemFactoryInstance.Init(this);
 
+        // 初始化定制服务
+        if (managerConfig.IsCustom)
+        {
+            infoPanelAgent.Init(this);
+        }
+
         _hasInit = true;
     }
 
@@ -334,6 +340,8 @@ public class MagicWallManager : MonoBehaviour
             //    StartCoroutine(AfterFixedUpdate());
             //}
             mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
+            //mainPanel.offsetMin = new Vector2(2160, 0);
+            //mainPanel.offsetMax = new Vector2(-1080, 0);
             //while (mainPanel.anchoredPosition != Vector2.zero)
             //{
             //    StartCoroutine(AfterFixedUpdate());

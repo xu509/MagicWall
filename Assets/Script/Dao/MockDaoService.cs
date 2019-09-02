@@ -536,16 +536,24 @@ public class MockDaoService : MonoBehaviour, IDaoService
             SceneTypeEnum.FrontBackUnfold,
 
             SceneTypeEnum.CurveStagger,
-            
+
         };
 
 
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
+
         DataType[] dataTypes = new DataType[] {
             DataType.env,
             DataType.activity,
             DataType.product,
         };
+        if (FindObjectOfType<MagicWallManager>().managerConfig.IsCustom)
+        {
+            dataTypes = new DataType[] {
+            DataType.activity,
+            DataType.product,
+            };
+        }
         //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
 
         for (int i = 0; i < sceneTypes.Length; i++)

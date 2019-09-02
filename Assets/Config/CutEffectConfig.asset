@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: CutEffectConfig
   m_EditorClassIdentifier: 
   MidDisperseMoveEaseEnum: 0
-  MidDisperseDelayMax: 1.5
+  MidDisperseDelayMax: 1
   MidDisperseAlphaEaseEnum: 6
+  MidDisperseHeightFactor: 1

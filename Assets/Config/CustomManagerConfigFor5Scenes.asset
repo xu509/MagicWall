@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e62b06450fb1fc94982e8790f91c1054, type: 3}
-  m_Name: CustomManagerConfig
+  m_Name: CustomManagerConfigFor5Scenes
   m_EditorClassIdentifier: 
   IsCustom: 1
-  SelectedItemMaxCount: 5
+  SelectedItemMaxCount: 3
   gapFactor: 1
-  Column: 15
-  FlockPoolSize: 150
+  Column: 11
+  FlockPoolSize: 100
   CardPoolSize: 8
   MainPanelMoveFactor: 141
   StarEffectAgentsCount: 60
