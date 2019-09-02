@@ -402,18 +402,28 @@ public class FlockAgent : MonoBehaviour
                 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
             }
             else if (_agentContainerType == AgentContainerType.StarContainer) {
+                // 获取屏幕坐标
                 Vector2 v = RectTransformUtility.WorldToScreenPoint(_manager.starCamera,transform.position);
-                cardGenPosition = new Vector3(v.x,v.y, 200);
+
+                // 需要屏幕坐标转为某UGUI容器内的坐标
+
+                Vector2 refp;
+
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.OperationPanel, v, null, out refp);
+
+                Debug.Log(refp);
+
+                refp = new Vector2(refp.x + _manager.OperationPanel.rect.width / 2, refp.y + _manager.OperationPanel.rect.height / 2);
+
+                cardGenPosition = refp;
+
             }
 
             // 当产品是前后层关系时，此时会报错
 
-
-
             sw.Start();
 
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
-            //Debug.Log("dianji :" + _data_id);
 
             _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
 
@@ -450,16 +460,14 @@ public class FlockAgent : MonoBehaviour
             }
             _cardAgent.GetComponent<RectTransform>().anchoredPosition = cardGenPosition;
 
+            //Debug.Log("cardGenPosition : " + cardGenPosition);
+
 
             // 完成缩小与移动后创建十字卡片
             rect.DOAnchorPos3D(to, 0.3f).OnComplete(() => {
 
                 rect.gameObject.SetActive(false);
                 _cardAgent.GoToFront();
-
-                //if (_cardAgent.isPrepared) {
-
-                //}
                 
             });
         }

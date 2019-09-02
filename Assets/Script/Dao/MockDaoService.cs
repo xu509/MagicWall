@@ -430,7 +430,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
         {
-            appConfig.Value = "20";
+            appConfig.Value = "40";
         }
         else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
         {

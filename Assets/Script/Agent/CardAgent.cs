@@ -127,7 +127,6 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
 
     #endregion
 
-
     private void DoCardReset()
     {
         _showQuestion = false;

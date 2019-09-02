@@ -165,7 +165,7 @@ public class StarsCutEffect : CutEffect
         float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
 
         FlockAgent go = ItemsFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
-         width, height, data, AgentContainerType.MainPanel);
+         width, height, data, AgentContainerType.StarContainer);
         go.UpdateImageAlpha(0);
 
         // 星空效果不会被物理特效影响
