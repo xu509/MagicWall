@@ -411,8 +411,6 @@ public class FlockAgent : MonoBehaviour
 
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.OperationPanel, v, null, out refp);
 
-                Debug.Log(refp);
-
                 refp = new Vector2(refp.x + _manager.OperationPanel.rect.width / 2, refp.y + _manager.OperationPanel.rect.height / 2);
 
                 cardGenPosition = refp;
