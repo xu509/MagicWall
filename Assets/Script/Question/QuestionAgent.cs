@@ -48,32 +48,36 @@ public class QuestionAgent : MonoBehaviour
     void UpdateContent(QuestionTypeEnum questionTypeEnum) {
 
         // 设置图片
-        SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas");
+        SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas/QuestionAtlas");
 
         if (questionTypeEnum == QuestionTypeEnum.CrossCard) {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-crosscard");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SliceCard)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-slicecard-3");
+        }
+        else if (questionTypeEnum == QuestionTypeEnum.SliceCardFour)
+        {
+            _image.sprite = spriteAtlas.GetSprite("help-slicecard-4");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SingleCard)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-singlecard");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SearchPanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-search");
         }
         else if (questionTypeEnum == QuestionTypeEnum.SearchResultPanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-searchresult");
         }
         else if (questionTypeEnum == QuestionTypeEnum.ScalePanel)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _image.sprite = spriteAtlas.GetSprite("help-scale");
         }
-
+        
     }
 
 

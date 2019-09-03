@@ -9,9 +9,14 @@ public enum QuestionTypeEnum
     CrossCard,  
 
     /// <summary>
-    /// 滑动卡片
+    /// 滑动卡片 - 三项
     /// </summary>
     SliceCard,
+
+    /// <summary>
+    /// 滑动卡片 - 四项
+    /// </summary>
+    SliceCardFour,
 
     /// <summary>
     /// 单项卡片

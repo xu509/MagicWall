@@ -948,6 +948,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             _questionAgent = Instantiate(_questionAgentPrefab, _question_container);
             _questionAgent.Init(OnQuestionClose);
+
             _questionAgent.ShowReminder(_questionTypeEnum);
             _showQuestion = true;
 
