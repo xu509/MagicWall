@@ -42,7 +42,13 @@ public class AppUtils
         if (File.Exists(filePath))
         {
             fileData = File.ReadAllBytes(filePath);
-            tex = new Texture2D(400, 400);
+            tex = new Texture2D(16,16,TextureFormat.ARGB32,false);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Clamp;
+
+            //tex.LoadRawTextureData(fileData);
+            
+            //tex.Apply();
 
             bool t = tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
@@ -50,7 +56,7 @@ public class AppUtils
         {
             // 模拟数据
             fileData = File.ReadAllBytes(@"D:\workspace\MagicWall\Assets\Files\t.png");
-            tex = new Texture2D(400, 400);
+            tex = new Texture2D(1, 1);
             tex.LoadImage(fileData);
 
             Debug.Log("File is not found : " + filePath);

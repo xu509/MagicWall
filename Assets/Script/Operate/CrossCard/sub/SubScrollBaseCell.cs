@@ -59,5 +59,7 @@ public abstract class SubScrollBaseCell<CrossCardCellData, CrossCardScrollViewCo
 
     public abstract void ClearComponentStatus();
 
+    public abstract void SetAsLastPosition();
+
 
 }

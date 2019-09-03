@@ -15,6 +15,9 @@ public class SliceCardAgent : CardAgent
     [SerializeField] SliceCardScrollViewController _scrollController;
     [SerializeField] RectTransform _buttomTool;
 
+    private List<string> _envCards = new List<string>();
+
+
     void Awake() {
     }
 

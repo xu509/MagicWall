@@ -44,6 +44,7 @@ public class BusinessCardAgent : MonoBehaviour
     /// <param name="onClickCloseAction">当操作关闭时的回调</param>
     public void Init(string[] images,float cardWidth,Vector2 position, Action onHandleUpdateAction, Action onClickCloseAction)
     {
+
         _onHandleUpdateAction = onHandleUpdateAction;
         _onClickCloseAction = onClickCloseAction;
         InitComponents(position,cardWidth);

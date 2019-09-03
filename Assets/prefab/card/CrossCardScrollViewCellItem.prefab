@@ -548,6 +548,7 @@ MonoBehaviour:
   _cover: {fileID: 6637553661733701214}
   _video_cover: {fileID: 2086811869972044802}
   _buttonLikeAgent: {fileID: 3118850661165122564}
+  _coverContainer: {fileID: 4379128245164149240}
 --- !u!114 &447576637649953334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1116,6 +1117,7 @@ GameObject:
   - component: {fileID: 396943201431732140}
   - component: {fileID: 8454168163813034124}
   - component: {fileID: 206038365870680008}
+  - component: {fileID: 866072168246964257}
   m_Layer: 5
   m_Name: Cover
   m_TagString: Untagged
@@ -1175,6 +1177,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &866072168246964257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285418679814544059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1.59292
 --- !u!1 &6312356315387813863
 GameObject:
   m_ObjectHideFlags: 0

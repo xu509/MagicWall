@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fead4b3af02c904f88cf1cd6875a47b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSpacing: 0.2
+  cellSpacing: 0.1
   scrollOffset: 0.5
   loop: 0
   cellContainer: {fileID: 2023887377428806986}

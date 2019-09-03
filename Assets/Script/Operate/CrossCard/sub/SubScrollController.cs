@@ -87,8 +87,13 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
 
     protected override void UpdateComponents()
     {
+        List<int> lis = new List<int>();
+        int d = 0;
+
         for (int i = 0; i < Pool.Count; i++) {
             int Index = GetCell(i).Index;
+
+            GetCell(i).SetupContext(Context);
 
             if (Index == CurrentIndex)
             {
@@ -97,7 +102,20 @@ public class SubScrollController : SubScrollBaseController<CrossCardCellData, Cr
             else {
                 GetCell(i).ClearComponentStatus();
             }
+
+            // 调整一次位置
+            int dis = Mathf.Abs(Index - CurrentIndex);
+            lis.Add(dis);
         }
+
+        // 略微调整下位置
+        lis.Sort((a,b) => b.CompareTo(a));
+
+        if (Pool.Count > 5) {
+            GetCell(lis[1]).SetAsLastPosition();
+            GetCell(lis[0]).SetAsLastPosition();
+        }
+
     }
 
     public override void UpdateAllComponents()

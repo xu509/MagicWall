@@ -29,13 +29,15 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
             return pool[0];
         }
 
+        int maxSize = Mathf.CeilToInt(1 / cellSpacing);
 
-        if (index > 5) {
-
-            int i = index % 5;
+        if (index > maxSize) {
+            int i = index % maxSize;
             return pool[i];
-
         }
+
+        // cell space : 0.1   -> 10
+        //var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
 
 
 
@@ -136,6 +138,7 @@ public abstract class SubScrollBaseController<CrossCardCellData, CrossCardScroll
         }
             
         var addCount = Mathf.CeilToInt((1f - firstPosition) / cellSpacing) - pool.Count;
+        Debug.Log("add count : " + addCount);
 
         for (var i = 0; i < addCount; i++)
         {

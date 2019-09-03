@@ -32,16 +32,19 @@ public abstract class SliceCardBaseController<SliceCardCellData, SliceCardCellCo
                 return pool[0];
             }
 
-            if (index > 5) {
-                return pool[index % 5];
+            int maxSize = Mathf.CeilToInt(1 / cellSpacing);
+
+            if (index > maxSize)
+            {
+                int i = index % maxSize;
+                return pool[i];
             }
+
             return pool[index];
         }
         catch (Exception ex) {
             Debug.LogError(ex);
             Debug.LogError("index : " + index + " | pool count : " + pool.Count);
-
-
         }
         return null;
     }

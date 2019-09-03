@@ -75,6 +75,9 @@ public class Enterprise : FlockData,Generator<Enterprise>
             "env-card-2-2.png",
             "env-card-2-3.png"
         };
+
+
+
     #endregion
 
     public Enterprise Generator()
@@ -107,12 +110,22 @@ public class Enterprise : FlockData,Generator<Enterprise>
         bool hasLike = Random.Range(0, 5) > 5;
         env.likes = hasLike ? Random.Range(1, 99) : 0;
 
-        env._business_card = "env\\" + businessCards[Random.Range(0, businessCards.Length)];
+
+
+        if (Random.Range(0, 5) > 2)
+        {
+            env._business_card = "env\\" + businessCards[Random.Range(0, businessCards.Length)];
+        }
+        else {
+            env._business_card = "env\\sh1.jpg";
+        }
+
+
 
         // 1. 没有企业卡片 2. 单个企业卡片 3. 多个企业卡片
 
-        int cardType = Random.Range(0, 3);
-        cardType = 2;
+        int cardType = Random.Range(1, 8);
+        cardType = 4;
 
 
         if (cardType == 0)
@@ -126,12 +139,19 @@ public class Enterprise : FlockData,Generator<Enterprise>
             string address = "env\\" + "env-card-1.png";
             _env_cards.Add(address);
         }
-        else
+        else if (cardType == 2)
         {
             _env_cards = new List<string>();
             _env_cards.Add("env\\" + "env-card-2-1.png");
             _env_cards.Add("env\\" + "env-card-2-2.png");
             _env_cards.Add("env\\" + "env-card-2-3.png");
+        }
+        else {
+            _env_cards = new List<string>();
+            for (int i = 1; i < 9; i++) {
+                string s = "env\\" + "sh" + i + ".jpg";
+                _env_cards.Add(s);
+            }
         }
 
         env.EnvCards = _env_cards;

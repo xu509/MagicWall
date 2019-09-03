@@ -41,10 +41,11 @@ public class SpriteResource : Singleton<SpriteResource>
             return _resources[address];
         }
         else
-        {
+        {            
             Texture2D texture = AppUtils.LoadPNGToTexture2D(address);
-            texture.filterMode = FilterMode.Bilinear;
+            //texture.filterMode = FilterMode.Point;
             Sprite sprite = Sprite.Create(texture,new Rect(0,0,texture.width,texture.height), Vector2.zero);
+            
             Add(address, sprite);
             return sprite;
         }

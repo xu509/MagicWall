@@ -30,6 +30,7 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
     [SerializeField] Image _cover;
     [SerializeField] Image _video_cover;
     [SerializeField] ButtonLikeAgent _buttonLikeAgent;
+    [SerializeField] RectTransform _coverContainer;
 
 
     bool _hasLikeNumber = false;
@@ -65,20 +66,23 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         _index = cellData.Index;
         _title = cellData.Title;
 
-        gameObject.name = "CrossSubScroll" + cellData.Index;
+        gameObject.name = "CSS" + cellData.Category + " - " + cellData.Index + " - " + cellData.Description;
             
         if (cellData.Category == CrossCardCategoryEnum.VIDEO)
         {
             videoContainer.gameObject.SetActive(true);
             _cover.gameObject.SetActive(false);
             _video_cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + cellData.Image);
+
             CanvasExtensions.SizeToParent(_video_cover);
 
         }
         else {
             //  设置 Image
+
             _cover.gameObject.SetActive(true);
-            _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir +  cellData.Image);
+            _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + cellData.Image);
+
             CanvasExtensions.SizeToParent(_cover);
 
             // 关闭视频框
@@ -87,6 +91,10 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
         sw2.Stop();
         //Debug.Log("[" + _title  + "] Sub Cell Time : " + sw2.ElapsedMilliseconds / 1000f);
+
+
+
+
 
 
     }
@@ -152,6 +160,11 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
             scale_tool.gameObject.SetActive(true);
         }
 
+        // 设置图片的尺寸
+
+        CanvasExtensions.SizeToParent(_cover);
+
+        _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + _cellData.Image);
 
         // 调整 Like 按钮
         //_manager.daoService.
@@ -177,6 +190,12 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
         // 清除喜欢按钮
         _buttonLikeAgent.gameObject.SetActive(false);
 
+
+        //  调整位置
+
+        int p = Mathf.Abs(Index - Context.SelectedIndex);
+        //GetComponent<RectTransform>().SetSiblingIndex(p);
+
     }
 
 
@@ -188,6 +207,12 @@ public class SubScrollCell : SubScrollBaseCell<CrossCardCellData, CrossCardScrol
 
     private void OnClickLike() {
         _manager.daoService.UpdateLikes(_cellData.Image);
+    }
+
+
+    public override void SetAsLastPosition() {
+        GetComponent<RectTransform>().SetAsFirstSibling();
+
     }
 
 

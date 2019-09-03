@@ -80,7 +80,9 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
     public List<string> GetEnvCards(int id) {
 
-        if (Random.Range(0, 5) > 2)
+        int r = Random.Range(0, 5);
+
+        if (r >=0)
         {
             return GetEnterprise().EnvCards;
         }
@@ -106,14 +108,33 @@ public class MockDaoService : MonoBehaviour, IDaoService
     public List<Catalog> GetCatalogs(int id)
     {
         List<Catalog> catalogs = new List<Catalog>();
-        string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
-        string[] descriptions = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
-        for (int i = 0; i < imgs.Length; i++) {
-            Catalog catalog = new Catalog();
-            catalog.Img = "env\\" + imgs[i];
-            catalog.Description = descriptions[i];
-            catalogs.Add(catalog);
+
+
+
+        if (Random.Range(0, 10) < 1)
+        {
+            string[] imgs = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+            string[] descriptions = { "catalog-1-1.png", "catalog-1-2.png", "catalog-1-3.png", "catalog-1-4.png" };
+
+            for (int i = 0; i < imgs.Length; i++)
+            {
+                Catalog catalog = new Catalog();
+                catalog.Img = "env\\" + imgs[i];
+                catalog.Description = descriptions[i];
+                catalogs.Add(catalog);
+            }
         }
+        else {
+            for (int i = 1; i < 9; i++) {
+                Catalog catalog = new Catalog();
+                catalog.Img = "env\\sh" + i + ".jpg";                
+
+                catalog.Description = "上海浦东燃气发展有限公司" + i;
+                catalogs.Add(catalog);
+
+            }
+        }
+
         return catalogs;
     }
 
@@ -529,8 +550,8 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
         {
-            SceneTypeEnum.Stars,
             SceneTypeEnum.MidDisperse,
+            SceneTypeEnum.Stars,
             SceneTypeEnum.LeftRightAdjust,
             SceneTypeEnum.UpDownAdjustCutEffect,
             SceneTypeEnum.FrontBackUnfold,

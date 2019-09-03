@@ -48,8 +48,6 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
     {
         // TODO 非常耗时， 每个都耗时
 
-
-
         System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
         sw2.Start();
 
@@ -60,13 +58,10 @@ public class CrossCardScrollViewCell : CrossCardBaseCell<CrossCardCellData, Cros
         _index = cellData.Index;
         _title = cellData.Title;
 
-        gameObject.name = "CrossCardScrollCell" + cellData.Index;
-
+        gameObject.name = "CCSC" + cellData.Index + " - " +  cellData.Category;
 
         IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
             .Generate(cellData.EnvId, cellData.Category,cellData.crossCardAgent);
-
-
 
 
         System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();

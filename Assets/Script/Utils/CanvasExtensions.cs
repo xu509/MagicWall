@@ -93,6 +93,9 @@ static class CanvasExtensions
         imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
         imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
 
+        //Debug.Log("width : " + w);
+        //Debug.Log("height : " + h);
+
         return imageTransform.sizeDelta;
     }
 }
