@@ -13,10 +13,23 @@ MonoBehaviour:
   m_Name: ManagerConfigFor3Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
-  StarEffectDistance: 5000
-  StarEffectDistanceTime: 4
   SelectedItemMaxCount: 3
-  ClearBubblePoolTotal: 25
-  DimBubblePoolTotal: 25
-  ClearBubbbleCreateIntervalTime: 1
-  DimBubbbleCreateIntervalTime: 2
+  gapFactor: 1
+  Column: 11
+  FlockPoolSize: 84
+  CardPoolSize: 5
+  MainPanelMoveFactor: 141
+  StarEffectAgentsCount: 20
+  StarEffectMoveFactor: 15
+  StarEffectOriginPoint: 1000
+  StarEffectEndPoint: -2500
+  BackgroundClearBubblePoolSize: 2
+  BackgroundClearMoveMinFactor: 50
+  BackgroundClearMoveMaxFactor: 150
+  BackgroundDimBubblePoolSize: 1
+  BackgroundDimMoveMinFactor: 8
+  BackgroundDimMoveMaxFactor: 9
+  ItemSizeMinWidthFactor: 0.333
+  ItemSizeMaxWidthFactor: 0.355
+  ItemSizeMinHeightFactor: 0.153888
+  ItemSizeMaxHeightFactor: 0.16666
