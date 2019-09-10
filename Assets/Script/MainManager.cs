@@ -9,6 +9,10 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MainManager : MonoBehaviour
 {
+    [SerializeField] SceneType _sceneType;
+
+
+
     /// <summary>
     /// TODO 主服务还未注入数据
     /// </summary>
@@ -31,4 +35,8 @@ public class MainManager : MonoBehaviour
 
     }
 
+}
+
+public enum SceneType {
+    Eight,Five
 }

@@ -19,17 +19,17 @@ MonoBehaviour:
   FlockPoolSize: 84
   CardPoolSize: 5
   MainPanelMoveFactor: 141
-  StarEffectAgentsCount: 20
-  StarEffectMoveFactor: 15
-  StarEffectOriginPoint: 1000
-  StarEffectEndPoint: -2500
+  StarEffectAgentsCount: 40
+  StarEffectMoveFactor: 50
+  StarEffectOriginPoint: 7191
+  StarEffectEndPoint: -1450
   BackgroundClearBubblePoolSize: 2
   BackgroundClearMoveMinFactor: 50
   BackgroundClearMoveMaxFactor: 150
   BackgroundDimBubblePoolSize: 1
   BackgroundDimMoveMinFactor: 8
   BackgroundDimMoveMaxFactor: 9
-  ItemSizeMinWidthFactor: 0.333
-  ItemSizeMaxWidthFactor: 0.355
-  ItemSizeMinHeightFactor: 0.153888
-  ItemSizeMaxHeightFactor: 0.16666
+  ItemSizeMinWidthFactor: 0.06172
+  ItemSizeMaxWidthFactor: 0.0966
+  ItemSizeMinHeightFactor: 0.095
+  ItemSizeMaxHeightFactor: 0.165

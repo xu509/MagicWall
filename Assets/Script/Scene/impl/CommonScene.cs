@@ -105,7 +105,7 @@ public class CommonScene : IScene
     {
         _manager = manager;
 
-        _theCutEffect = GetCutEffect(sceneConfig.sceneType); // 设置过场效果
+        _theCutEffect = GetCutEffect(sceneConfig); // 设置过场效果
         _theCutEffect.Init(_manager);
         _dataType = sceneConfig.dataType; // 设置类型
         _magicSceneEnumStatus = MagicSceneEnum.Running;
@@ -211,28 +211,42 @@ public class CommonScene : IScene
     /// </summary>
     /// <param name="sceneTypeEnum"></param>
     /// <returns></returns>
-    private CutEffect GetCutEffect(SceneTypeEnum sceneTypeEnum) {
+    private CutEffect GetCutEffect(SceneConfig sceneConfig) {
+        CutEffect cutEffect = null;
+
+        var sceneTypeEnum = sceneConfig.sceneType;
+
         if (sceneTypeEnum == SceneTypeEnum.CurveStagger)
         {
-            return new CurveStaggerCutEffect();
+            cutEffect = new CurveStaggerCutEffect();
         }
         else if (sceneTypeEnum == SceneTypeEnum.FrontBackUnfold)
         {
-            return new FrontBackUnfoldCutEffect();
+            cutEffect = new FrontBackUnfoldCutEffect();
         }
         else if (sceneTypeEnum == SceneTypeEnum.LeftRightAdjust)
         {
-            return new LeftRightAdjustCutEffect();
+            cutEffect = new LeftRightAdjustCutEffect();
         }
         else if (sceneTypeEnum == SceneTypeEnum.MidDisperse)
         {
-            return new MidDisperseCutEffect();
+            cutEffect = new MidDisperseCutEffect();
         }
         else if (sceneTypeEnum == SceneTypeEnum.UpDownAdjustCutEffect) {
-            return new UpDownAdjustCutEffect();
+            cutEffect = new UpDownAdjustCutEffect();
         }
 
-        return null;
+        if (cutEffect == null)
+        {
+            return null;
+        }
+        else {
+            cutEffect.DisplayDurTime = sceneConfig.durtime;
+
+            return cutEffect;
+        }
+
+        
     }
 
     #region Implement

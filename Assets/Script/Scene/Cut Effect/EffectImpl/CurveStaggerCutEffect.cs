@@ -31,9 +31,9 @@ public class CurveStaggerCutEffect : CutEffect
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
-        //  设置显示的时间
-        string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
-        DisplayDurTime = AppUtils.ConvertToFloat(t);
+        ////  设置显示的时间
+        //string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_CurveStagger).Value;
+        //DisplayDurTime = AppUtils.ConvertToFloat(t);
 
         // 获取Display的动画
         DisplayBehavior = new GoLeftDisplayBehavior();
