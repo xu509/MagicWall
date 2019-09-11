@@ -60,16 +60,16 @@ public class ManagerConfig : ScriptableObject
     [Range(0, 300f), Header("[背景] 模糊的气球最大移动速度")]
     public float BackgroundDimMoveMaxFactor;
 
-    [Range(0f, 5f), Header("[卡片] 最小的宽度系数（对应屏幕宽度）")]
+    [Range(0f, 0.2f), Header("[卡片] 最小的宽度系数（对应屏幕宽度）")]
     public float ItemSizeMinWidthFactor;
 
-    [Range(0f, 5f), Header("[卡片] 最大的宽度系数（对应屏幕宽度）")]
+    [Range(0f, 0.2f), Header("[卡片] 最大的宽度系数（对应屏幕宽度）")]
     public float ItemSizeMaxWidthFactor;
 
-    [Range(0f, 5f), Header("[卡片] 最小的高度系数（对应屏幕高度）")]
+    [Range(0f, 0.2f), Header("[卡片] 最小的高度系数（对应屏幕高度）")]
     public float ItemSizeMinHeightFactor;
 
-    [Range(0f, 5f), Header("[卡片] 最大的高度系数（对应屏幕高度）")]
+    [Range(0f, 0.2f), Header("[卡片] 最大的高度系数（对应屏幕高度）")]
     public float ItemSizeMaxHeightFactor;
 
 

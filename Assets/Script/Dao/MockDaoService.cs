@@ -9,6 +9,20 @@ using UnityEngine;
 /// </summary>
 public class MockDaoService : MonoBehaviour, IDaoService
 {
+    [SerializeField]
+    MockSceneConfig _mockSceneConfig;
+
+    public MockSceneConfig mockSceneConfig
+    {
+        set {
+            _mockSceneConfig = value;
+        }
+        get {
+            return _mockSceneConfig;
+        }
+    }
+
+
 
     private List<Enterprise> _enterprises;
     private List<Activity> _activities;
@@ -535,74 +549,37 @@ public class MockDaoService : MonoBehaviour, IDaoService
     //
     public List<SceneConfig> GetShowConfigs()
     {
-
-        List<SceneConfig> sceneConfigs = new List<SceneConfig>();
-
-        // Real 
-        //CutEffect[] effects = new CutEffect[] {
-        //    //new FrontBackUnfoldCutEffect(),
-        //    new CurveStaggerCutEffect(),
-        //    new MidDisperseCutEffect(),
-        //    new StarsCutEffect(),
-        //    //new LeftRightAdjustCutEffect(),
-        //    //new UpDownAdjustCutEffect(),
-        //};
-
-        SceneTypeEnum[] sceneTypes = new SceneTypeEnum[]
-        {
-            SceneTypeEnum.MidDisperse,
-            SceneTypeEnum.Stars,
-            SceneTypeEnum.LeftRightAdjust,
-            SceneTypeEnum.UpDownAdjustCutEffect,
-            SceneTypeEnum.FrontBackUnfold,
-
-            SceneTypeEnum.CurveStagger,
-
-        };
+        /// 已修改为编辑器配置方式
+        ///  -》 config / MockSceneConfig 
 
 
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.product, SceneContentType.activity };
+        List<SceneConfig> items = new List<SceneConfig>();
 
-        DataType[] dataTypes = new DataType[] {
-            DataType.env,
-            DataType.activity,
-            DataType.product,
-        };
-        if (FindObjectOfType<MagicWallManager>().managerConfig.IsCustom)
-        {
-            dataTypes = new DataType[] {
-            DataType.activity,
-            DataType.product,
-            };
-        }
-        //SceneContentType[] contentTypes = new SceneContentType[] { SceneContentType.activity };
+        var sceneConfigs = _mockSceneConfig.sceneConfigs;
 
-        for (int i = 0; i < sceneTypes.Length; i++)
-        {
-            for (int j = 0; j < dataTypes.Length; j++)
+        for (int i = 0; i < sceneConfigs.Length; i++) {
+            var scene = sceneConfigs[i].sceneType;
+            var data = sceneConfigs[i].dataType;
+            var time = sceneConfigs[i].durtime;
+
+
+            if (scene == SceneTypeEnum.Stars && data == DataType.env)
             {
-                SceneConfig sceneConfig = new SceneConfig();
-
-                if (sceneTypes[i] == SceneTypeEnum.Stars && dataTypes[j] == DataType.env)
-                {
-                    continue;
-                }
-
-                if (sceneTypes[i] == SceneTypeEnum.FrontBackUnfold && dataTypes[j] == DataType.env)
-                {
-                    continue;
-                }
-
-                sceneConfig.sceneType = sceneTypes[i];
-                sceneConfig.dataType = dataTypes[j];
-
-                // 设置场景时间
-                sceneConfig.durtime = GetSceneDurTime(sceneTypes[i]);
-                sceneConfigs.Add(sceneConfig);
+                continue;
             }
+
+            if (scene == SceneTypeEnum.FrontBackUnfold && data == DataType.env)
+            {
+                continue;
+            }
+
+
+            items.Add(sceneConfigs[i]);
         }
 
-        return sceneConfigs;
+        return items;
+
+
     }
 
     public bool IsCustom() {

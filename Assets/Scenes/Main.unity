@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 125120520}
   - component: {fileID: 125120519}
   - component: {fileID: 125120522}
+  - component: {fileID: 125120524}
+  - component: {fileID: 125120523}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -214,5 +216,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ae57d6d3b45c8f40ad8e21ebe1c8b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneType: 0
+  isMock: 1
+  _mockDaoService: {fileID: 125120523}
+  _daoService: {fileID: 125120524}
+--- !u!114 &125120523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125120518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b66762bf3c7fd8b43bfec62c422c382a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mockSceneConfig: {fileID: 11400000, guid: edc9fee1f9f435b4c9046f71f115dd54, type: 2}
+--- !u!114 &125120524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125120518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7321130eb34e8d2448567691d3f8104c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
