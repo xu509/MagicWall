@@ -29,7 +29,7 @@ MonoBehaviour:
   BackgroundDimBubblePoolSize: 3
   BackgroundDimMoveMinFactor: 25
   BackgroundDimMoveMaxFactor: 75
-  ItemSizeMinWidthFactor: 0.012498
-  ItemSizeMaxWidthFactor: 0.01333
-  ItemSizeMinHeightFactor: 0.0577
-  ItemSizeMaxHeightFactor: 0.06249
+  ItemSizeMinWidthFactor: 0.036
+  ItemSizeMaxWidthFactor: 0.048
+  ItemSizeMinHeightFactor: 0.086
+  ItemSizeMaxHeightFactor: 0.114

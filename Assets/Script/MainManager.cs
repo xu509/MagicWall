@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -11,29 +9,54 @@ public class MainManager : MonoBehaviour
 {
     [SerializeField] SceneType _sceneType;
 
+    [SerializeField] bool isMock;
+    [SerializeField] MockDaoService _mockDaoService;
+    [SerializeField] DaoService _daoService;
 
-
-    /// <summary>
-    /// TODO 主服务还未注入数据
-    /// </summary>
-    IDaoService daoService;
 
     // Start is called before the first frame update
     void Start()
     {
         // 加载配置表
+        IDaoService daoService;
+
+        if (isMock)
+        {
+            daoService = _mockDaoService;
+        }
+        else {
+            daoService = _daoService;
+        }
 
         bool isCustom = daoService.IsCustom();
 
-        if (isCustom)
-        {
-            SceneManager.LoadScene("CustomScene");
-        }
-        else {
-            SceneManager.LoadScene("SampleScene");
+        // 加载场景
+        LoadScene(_sceneType, isCustom);
+    }
+
+    private void LoadScene(SceneType sceneType,bool isCustom) {
+        if (sceneType == SceneType.Eight) {
+            if (isCustom) {
+                SceneManager.LoadScene("CustomScene");
+
+            } else {
+                SceneManager.LoadScene("SampleScene");
+            }
         }
 
+        if (sceneType == SceneType.Five) {
+            if (isCustom)
+            {
+                SceneManager.LoadScene("CustomSceneFive");
+            }
+            else
+            {
+                SceneManager.LoadScene("MagicWallFive");
+            }
+        }
     }
+
+
 
 }
 
