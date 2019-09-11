@@ -1,15 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using UnityEngine;
 /// <summary>
 ///     场景配置信息
 /// </summary>
 /// 
 
-[System.Serializable]
+
+[Serializable]
 public class SceneConfig
 {
+    [SerializeField]
     private SceneTypeEnum _sceneType;    //过场名
+
+    [SerializeField]
     private DataType _dataType;    //内容类型
+
+    [SerializeField]
     private float _durTime; // 持续时间
 
 

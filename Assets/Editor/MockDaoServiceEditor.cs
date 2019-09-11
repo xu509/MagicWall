@@ -20,13 +20,15 @@ public class MockDaoServiceEditor : Editor
         MockSceneConfig cb = (MockSceneConfig)target;
         //CopyValue(cb);
 
-        SceneConfig[] _sceneConfigs = cb.sceneConfigs;
+        var _sceneConfigs = cb.sceneConfigs;
 
+
+        cb.data =  EditorGUILayout.FloatField(cb.data, GUILayout.Width(_durtime_width));
 
         //Rect r = EditorGUILayout.BeginHorizontal();
         //r.height = EditorGUIUtility.singleLineHeight * 1.2f;
 
-        if (_sceneConfigs == null || _sceneConfigs.Length == 0)
+        if (_sceneConfigs == null || _sceneConfigs.Count == 0)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.HelpBox("No behaviors in array.", MessageType.Warning);
@@ -50,7 +52,7 @@ public class MockDaoServiceEditor : Editor
             EditorGUILayout.EndHorizontal();
 
 
-            for (int i = 0; i < _sceneConfigs.Length; i++)
+            for (int i = 0; i < _sceneConfigs.Count; i++)
             {
                 var config = _sceneConfigs[i];
 
@@ -81,7 +83,7 @@ public class MockDaoServiceEditor : Editor
                 }
 
                 // 显示向下移动
-                if (i < _sceneConfigs.Length - 1) {
+                if (i < _sceneConfigs.Count - 1) {
                     if (GUILayout.Button("down", GUILayout.Width(_tool_width)))
                     {
                         Down(cb, i);
@@ -114,6 +116,8 @@ public class MockDaoServiceEditor : Editor
             EditorUtility.SetDirty(cb);
         }
 
+        
+
     }
 
     void Add(MockSceneConfig cb)
@@ -121,7 +125,7 @@ public class MockDaoServiceEditor : Editor
         var configs = cb.sceneConfigs;
 
 
-        int oldCount = (configs != null) ? configs.Length : 0;
+        int oldCount = (configs != null) ? configs.Count : 0;
 
         SceneConfig[] nsceneConfig = new SceneConfig[oldCount + 1];
 
@@ -132,9 +136,15 @@ public class MockDaoServiceEditor : Editor
         }
 
         SceneConfig n = new SceneConfig(SceneTypeEnum.CurveStagger, DataType.activity, 5f);
-        nsceneConfig[nsceneConfig.Length - 1] = n;
 
-        cb.sceneConfigs = nsceneConfig;
+        configs.Add(n);
+
+
+        //nsceneConfig[nsceneConfig.Length - 1] = n;
+
+        //cb.sceneConfigs = nsceneConfig;
+
+        cb.sceneConfigs = configs;
     }
 
 
@@ -142,7 +152,8 @@ public class MockDaoServiceEditor : Editor
     void Del(MockSceneConfig cb,int index)
     {
         var configs = cb.sceneConfigs;
-        ArrayUtility.RemoveAt(ref configs, index);
+        configs.RemoveAt(index);
+        //ArrayUtility.RemoveAt(ref configs, index);
         cb.sceneConfigs = configs;
     }
 

@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339ad0c5e25662c41ba772634a7b6a06, type: 3}
   m_Name: MockSceneConfig
   m_EditorClassIdentifier: 
-  sceneConfigs: []
+  sceneConfigs:
+  - _sceneType: 2
+    _dataType: 0
+    _durTime: 0
+  - _sceneType: 3
+    _dataType: 1
+    _durTime: 0
+  - _sceneType: 1
+    _dataType: 2
+    _durTime: 0
+  - _sceneType: 3
+    _dataType: 0
+    _durTime: 0
+  - _sceneType: 2
+    _dataType: 0
+    _durTime: 0
+  data: 1110

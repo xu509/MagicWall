@@ -557,7 +557,7 @@ public class MockDaoService : MonoBehaviour, IDaoService
 
         var sceneConfigs = _mockSceneConfig.sceneConfigs;
 
-        for (int i = 0; i < sceneConfigs.Length; i++) {
+        for (int i = 0; i < sceneConfigs.Count; i++) {
             var scene = sceneConfigs[i].sceneType;
             var data = sceneConfigs[i].dataType;
             var time = sceneConfigs[i].durtime;
