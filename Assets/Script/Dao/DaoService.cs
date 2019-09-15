@@ -615,6 +615,10 @@ public class DaoService : MonoBehaviour, IDaoService
         return products;
     }
 
+    /// <summary>
+    ///  TODO config 的获取方法可能需要修改
+    /// </summary>
+    /// <returns></returns>
     public MWConfig GetConfig()
     {
         MWConfig mWConfig = new MWConfig();
