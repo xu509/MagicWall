@@ -111,6 +111,14 @@ public class FlockAgent : MonoBehaviour
     ItemsFactory _itemsFactory;
     #endregion
 
+
+    private float _lastEffectTime;
+    private FlockAgent _lastEffectAgent;    // 上一个影响的 agent
+    private bool _effectLastFlag = false;
+
+
+
+
     #region 引用
     public string DataImg { set { _data_img = value; } get { return _data_img; } }
     public int DataId { set { _data_id = value; } get { return _data_id; } }
@@ -312,6 +320,22 @@ public class FlockAgent : MonoBehaviour
             w = targetAgent.Width * scaleVector3.x;
             h = targetAgent.Height * scaleVector3.y;
 
+            _effectLastFlag = false; // 初始化
+
+            // 如果有多个影响体，则设置疲劳期
+            if (transforms.Count > 1) {
+                if (_lastEffectAgent != targetAgent) {
+              
+                    Debug.Log("接收到新的影响体");
+                    if ((Time.time - _lastEffectTime) < _manager.flockBehaviorConfig.EffectTiredTime) {
+                        //仍然受原物体影响
+                        targetAgent = _lastEffectAgent;
+                        _effectLastFlag = true;
+                    }
+                }
+            }
+
+
         }
         else {
             w = 0;
@@ -353,8 +377,15 @@ public class FlockAgent : MonoBehaviour
             m_transform?.DOAnchorPos(to, Time.deltaTime);
             //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
             m_transform?.DOScale(sc, Time.deltaTime);
-            
-			IsChanging = true;
+
+            // 记录影响的数据
+            if (!_effectLastFlag) {
+                _lastEffectTime = Time.time;
+                _lastEffectAgent = targetAgent;
+            }
+
+
+            IsChanging = true;
 		}
 		else
 			// 未进入影响范围

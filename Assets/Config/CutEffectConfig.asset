@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697eb86ab20866941a98a75cacf7d8fd, type: 3}
   m_Name: CutEffectConfig
   m_EditorClassIdentifier: 
-  MidDisperseMoveEaseEnum: 0
-  MidDisperseDelayMax: 1
-  MidDisperseAlphaEaseEnum: 6
+  MidDisperseMoveEaseEnum: 14
+  MidDisperseDelayMax: 0.75
+  MidDisperseDisplayTime: 1.5
+  MidDisperseAlphaMinDistanceFactor: 1.5
+  MidDisperseAlphaEaseEnum: 0
   MidDisperseHeightFactor: 1

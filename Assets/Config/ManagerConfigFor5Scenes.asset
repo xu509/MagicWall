@@ -18,7 +18,7 @@ MonoBehaviour:
   Column: 15
   FlockPoolSize: 150
   CardPoolSize: 8
-  MainPanelMoveFactor: 141
+  MainPanelMoveFactor: 52
   StarEffectAgentsCount: 60
   StarEffectMoveFactor: 15
   StarEffectOriginPoint: 1000

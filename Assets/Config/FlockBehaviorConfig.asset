@@ -20,3 +20,4 @@ MonoBehaviour:
   RoundEaseEnum: 0
   RoundScaleEaseEnum: 0
   RoundOffsetInfluenceFactor: 1
+  EffectTiredTime: 3.19

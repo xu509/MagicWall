@@ -33,6 +33,9 @@ public class FlockBehaviorConfig : ScriptableObject
     [Range(0f, 2f),Header("位移影响参数")]
     public float RoundOffsetInfluenceFactor;
 
+    [Range(0f,10f),Header("影响疲劳时间")]
+    public float EffectTiredTime;
+
 
 
 }

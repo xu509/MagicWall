@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneConfigs:
   - _sceneType: 3
-    _dataType: 2
+    _dataType: 0
     _durTime: 5
   - _sceneType: 3
-    _dataType: 2
+    _dataType: 0
     _durTime: 5
   - _sceneType: 3
-    _dataType: 2
+    _dataType: 0
     _durTime: 5
   - _sceneType: 3
     _dataType: 2

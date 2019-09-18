@@ -29,7 +29,8 @@ public class MidDisperseCutEffect : CutEffect
         _daoService = manager.daoService;
 
         //  获取持续时间
-        StartingDurTime = 0.35f;
+        //StartingDurTime = 0.35f;
+        StartingDurTime = manager.cutEffectConfig.MidDisperseDisplayTime;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
@@ -46,6 +47,9 @@ public class MidDisperseCutEffect : CutEffect
 
         //  初始化 config
         _displayBehaviorConfig = new DisplayBehaviorConfig();
+
+
+        InitConfig();
     }
 
     //
@@ -71,6 +75,9 @@ public class MidDisperseCutEffect : CutEffect
     }
 
     public override void Starting() {
+
+        DisplayBehavior.Run();
+
         for (int i = 0; i < _agentManager.Agents.Count; i++) {
             FlockAgent agent = _agentManager.Agents[i];
             Vector2 agent_vector2 = agent.GenVector2;
@@ -93,17 +100,31 @@ public class MidDisperseCutEffect : CutEffect
             }
 
             float t = time / run_time;
+
+            Func<float, float> moveEase = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseMoveEaseEnum);
+            t = moveEase(t);
+
+
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
             agent.NextVector2 = to;
 
             // 透明度动画
-            float min_alpha = 0.01f;
-            float max_alpha = 1f;
-            float k = time / run_time;
-            Func<float, float> easeFunction = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseAlphaEaseEnum);
-            k = easeFunction(k);
-            float newAlpha = Mathf.Lerp(min_alpha, max_alpha, k);
-            agent.UpdateImageAlpha(newAlpha);
+            var distance = Vector2.Distance(ori_vector2,to);
+
+            var agentHeight = agent.GetComponent<RectTransform>().rect.height;
+
+
+            var maxDistance = agentHeight * _manager.cutEffectConfig.MidDisperseAlphaMinDistanceFactor;
+
+            if (distance < maxDistance) {
+                float min_alpha = 0.1f;
+                float max_alpha = 1f;
+                float k = distance / maxDistance;
+                Func<float, float> easeFunction = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseAlphaEaseEnum);
+                k = easeFunction(k);
+                float newAlpha = Mathf.Lerp(max_alpha, min_alpha, k);
+                agent.UpdateImageAlpha(newAlpha);
+            }
 
         }
 
@@ -124,6 +145,9 @@ public class MidDisperseCutEffect : CutEffect
 
     private void CreateAgency(DataType dataType) {
         List<FlockAgent> agents = new List<FlockAgent>();
+        _displayBehaviorConfig.dataType = dataType;
+        _displayBehaviorConfig.sceneUtils = _sceneUtil;
+        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
 
 
         int _column = _manager.managerConfig.Column;
@@ -173,7 +197,8 @@ public class MidDisperseCutEffect : CutEffect
                 Func<float, float> easeFunction = EasingFunction.Get(_manager.cutEffectConfig.MidDisperseMoveEaseEnum);
                 k = easeFunction(k);
 
-                float delay = Mathf.Lerp(minDelay, maxDelay, k);
+                //float delay = Mathf.Lerp(minDelay, maxDelay, k);
+                float delay = 0;
 
                 if (delay > _timeBetweenStartAndDisplay)
                 {
@@ -193,7 +218,7 @@ public class MidDisperseCutEffect : CutEffect
                          _itemWidth, itemHeigth, data, AgentContainerType.MainPanel);
 
                 // 初始化透明度
-                go.UpdateImageAlpha(0.01f);
+                go.UpdateImageAlpha(0.1f);
 
                 go.Delay = delay;
                 agents.Add(go);
@@ -234,4 +259,16 @@ public class MidDisperseCutEffect : CutEffect
     {
         return "MidDisperseCutEffect";
     }
+
+
+    private void InitConfig() {
+        _displayBehaviorConfig.dataType = dataType;
+        _displayBehaviorConfig.ItemsFactory = ItemsFactory;
+        //_displayBehaviorConfig.DisplayTime = DisplayDurTime;
+        _displayBehaviorConfig.Manager = _manager;
+        _displayBehaviorConfig.sceneUtils = _sceneUtil;
+        DisplayBehavior.Init(_displayBehaviorConfig);
+    }
+
+
 }
