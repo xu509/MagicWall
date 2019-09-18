@@ -123,6 +123,9 @@ public class MidDisperseCutEffect : CutEffect
 
 
     private void CreateAgency(DataType dataType) {
+        List<FlockAgent> agents = new List<FlockAgent>();
+
+
         int _column = _manager.managerConfig.Column;
         int _itemWidth = _sceneUtil.GetFixedItemWidth();
         float gap = _sceneUtil.GetGap();
@@ -182,7 +185,8 @@ public class MidDisperseCutEffect : CutEffect
                 float gen_x, gen_y;
 
                 gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
-                gen_y = ori_y + Mathf.Abs(j-middleX) * itemHeigth / 3 + itemHeigth * _manager.cutEffectConfig.MidDisperseHeightFactor;
+                gen_y = ori_y + itemHeigth / 3 
+                    + itemHeigth * _manager.cutEffectConfig.MidDisperseHeightFactor;
 
                 // 创建agent
                 FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, row, j,
@@ -192,6 +196,7 @@ public class MidDisperseCutEffect : CutEffect
                 go.UpdateImageAlpha(0.01f);
 
                 go.Delay = delay;
+                agents.Add(go);
                 //go.UpdateImageAlpha(1f - Mathf.Abs(j - middleX)*0.05f);
                 if (delay > _startDelayTime)
                 {
@@ -205,6 +210,19 @@ public class MidDisperseCutEffect : CutEffect
             }
 
         }
+
+        // 调整显示的前后
+        agents.Sort((x, y) =>
+        {
+           return Mathf.Abs(x.Y - middleX).CompareTo(Mathf.Abs(y.Y - middleX));
+        });
+
+        for (int i = 0; i < agents.Count; i++) {
+            agents[i].GetComponent<RectTransform>().SetAsFirstSibling();
+        }
+
+
+
         // 调整启动动画的时间
         StartingDurTime = _startingTimeWithOutDelay + _startDelayTime + 0.05f;
         //Debug.Log("StartingDurTime : " + StartingDurTime);

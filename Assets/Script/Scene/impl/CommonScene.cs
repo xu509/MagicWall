@@ -50,6 +50,7 @@ public class CommonScene : IScene
     private void DoStarting()
 	{
         _theCutEffect.Starting();
+
 	}
 
 	//  展示动画
