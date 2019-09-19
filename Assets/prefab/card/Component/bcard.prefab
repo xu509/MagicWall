@@ -619,6 +619,7 @@ MonoBehaviour:
   _btnNext: {fileID: 6736186052792272969}
   _heightFactor: 0.30208
   _widthFactor: 1.41379
+  size: 
 --- !u!114 &5737629128111346229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 1
-  m_AspectRatio: 1.59292
+  m_AspectRatio: 1.41379
 --- !u!1 &6704765858983157213
 GameObject:
   m_ObjectHideFlags: 0

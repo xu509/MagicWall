@@ -58,6 +58,7 @@ public class MagicWallManager : MonoBehaviour
     [SerializeField] CardItemFactoryInstance _cardItemFactoryInstance;
 
     [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
+    [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
     [SerializeField] DaoService _realDaoService;
 
     [SerializeField, Header("Global Data")] GlobalData _globalData;
@@ -68,6 +69,10 @@ public class MagicWallManager : MonoBehaviour
     [SerializeField, Header("CutEffect Config")] CutEffectConfig _cutEffectConfig;
 
     [SerializeField, Header("Mock")] bool _isMockData;
+
+    [SerializeField] bool _isMockFeiyueData;
+    public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
+
 
     #endregion
 
@@ -164,8 +169,13 @@ public class MagicWallManager : MonoBehaviour
         // 初始化数据服务
         if (_isMockData)
         {
-            //_daoService = DaoService.Instance;
-            _daoService = _mockDaoService;
+            if (_isMockFeiyueData)
+            {
+                _daoService = _mockFeiyueDaoService;
+            }
+            else {
+                _daoService = _mockDaoService;
+            }            
         }
         else {
             _daoService = _realDaoService;

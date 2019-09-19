@@ -193,5 +193,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 85210e867ddbfb04b8018ca9a16d1834,
         type: 2}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _isMockData
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}

@@ -179,7 +179,13 @@ public class StartScene : IScene
 
         if (_manager.IsMockData)
         {
-            DoLoadMock();
+            if (_manager.isMockFeiyueData)
+            {
+                DoLoadFeiyueData();
+            }
+            else {
+                DoLoadMock();
+            }
         }
         else {
             DoLoad();
@@ -279,6 +285,16 @@ public class StartScene : IScene
             }
         }
     }
+
+
+
+
+
+    private void DoLoadFeiyueData() {
+
+        // TODO
+    }
+
 
     /// <summary>
     ///     加载数据

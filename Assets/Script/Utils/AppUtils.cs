@@ -54,12 +54,14 @@ public class AppUtils
         }
         else
         {
+            Debug.Log("File is not found : " + filePath);
+
+
             // 模拟数据
-            fileData = File.ReadAllBytes(@"D:\workspace\MagicWall\Assets\Files\t.png");
+            fileData = File.ReadAllBytes(MagicWallManager.FileDir +  @"\t.png");
             tex = new Texture2D(1, 1);
             tex.LoadImage(fileData);
 
-            Debug.Log("File is not found : " + filePath);
         }
         return tex;
     }

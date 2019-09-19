@@ -984,6 +984,7 @@ MonoBehaviour:
   _moveBehaviourFactory: {fileID: 6911621782827720615}
   _cutEffectConfig: {fileID: 11400000, guid: 8a1e9f2e8e4f43e468dc32743a9e1c51, type: 2}
   _isMockData: 1
+  _isMockFeiyueData: 0
 --- !u!225 &6911621782184364784
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1251,6 +1252,7 @@ GameObject:
   - component: {fileID: 6911621782827720613}
   - component: {fileID: 6911621782827720612}
   - component: {fileID: 6911621782827720615}
+  - component: {fileID: 4955610289510155501}
   m_Layer: 0
   m_Name: ManagerAgent
   m_TagString: Untagged
@@ -1452,6 +1454,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db74a42f9f647b409984aa22fabe996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4955610289510155501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6911621782827720617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f530869e091204d831ba1b749db25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mockSceneConfig: {fileID: 11400000, guid: 8e5fb8a8b2daf3b4d9afab42673066f1, type: 2}
 --- !u!1 &6911621782969243063
 GameObject:
   m_ObjectHideFlags: 0

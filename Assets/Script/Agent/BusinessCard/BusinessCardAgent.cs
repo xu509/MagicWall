@@ -30,6 +30,10 @@ public class BusinessCardAgent : MonoBehaviour
     private Action _onClickCloseAction;
 
 
+    [SerializeField] string size = "1640 * 1160";
+
+
+
     void Update()
     {
         

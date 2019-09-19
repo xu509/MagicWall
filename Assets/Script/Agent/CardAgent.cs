@@ -360,7 +360,8 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
 
             // 清除原来的flock
 
-            _originAgent.DestoryAgency();
+            // 搜索后点开可能存在问题
+            _originAgent?.DestoryAgency();
 
         }
 
