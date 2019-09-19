@@ -62,6 +62,24 @@ public class OperateMode : MonoBehaviour
             _manager.managerConfig.MainPanelMoveFactor = _manager.managerConfig.MainPanelMoveFactor + 1;
         }
 
+        // ← ， → 修改浮动块影响范围
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            _manager.flockBehaviorConfig.InfluenceMoveFactor = _manager.flockBehaviorConfig.InfluenceMoveFactor - 0.05f;
+            UpdateMessage();
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _manager.flockBehaviorConfig.InfluenceMoveFactor = _manager.flockBehaviorConfig.InfluenceMoveFactor + 0.05f;
+            UpdateMessage();
+
+        }
+
+
+
+
         // 限制帧率
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -92,10 +110,7 @@ public class OperateMode : MonoBehaviour
             showHelp = !showHelp;
             if (showHelp)
             {
-                _messageAgent.UpdateMessage("Help \n\n" +
-                    " 【1】 ： 切换卡片动画模式 \t" + "\n\n" +
-                    " 【N】 ： 切换场景 \t" + "\n\n" +
-                    "【H】 ：打开/关闭帮助文档");
+                UpdateMessage();
             }
             else {
                 _messageAgent.Close();
@@ -162,8 +177,20 @@ public class OperateMode : MonoBehaviour
             GUI.Label(new Rect(30, 90, 300, 300), moveStr, moveTextStyle);
 
         }
+    }
+
+
+
+    private void UpdateMessage() {
+
+        _messageAgent.UpdateMessage("Help \n\n" +
+            " 【1】 ： 切换卡片动画模式 \t" + "\n\n" +
+            " 【N】 ： 切换场景 \t" + "\n\n" +
+            " 【← | →】 ： 调整方块影响距离 \t" + "当前速率" + _manager.flockBehaviorConfig.InfluenceMoveFactor + "\n\n" +
+            "【H】 ：打开/关闭帮助文档");
 
     }
+
 
 
 }
