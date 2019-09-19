@@ -374,7 +374,6 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
     {
         if (_cardRecoverStatus == CardRecoverStatus.Init)
         {
-            Debug.Log("恢复动画开始");
             _cardRecoverStatus = CardRecoverStatus.Recovering;
             CardStatus = CardStatusEnum.NORMAL;
 

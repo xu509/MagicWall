@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using DG.Tweening;
+using System;
 
 public class VideoAgent : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class VideoAgent : MonoBehaviour
     [SerializeField] RectTransform _btn_muisc_disable;
     [SerializeField] float widthFactorByHeight; // 宽度系数
     [SerializeField] float heightFactorByScreen;    //高度系数
+
+    [SerializeField, Header("UI")] AspectRatioFitter _screenAspectRatioFitter;
+
+
 
 
     private CardAgent _cardAgent;
@@ -92,7 +97,7 @@ public class VideoAgent : MonoBehaviour
         _text_description.text = _description;
 
         //  播放视频
-        StartCoroutine(PlayVideo());
+        StartCoroutine(PlayVideo());   
         
     }
 
@@ -149,9 +154,11 @@ public class VideoAgent : MonoBehaviour
 
     IEnumerator PlayVideo()
     {
-        _videoPlayer.Prepare();
-        DoDisableMusic();
 
+        _videoPlayer.Prepare();
+
+        
+        DoDisableMusic();
 
         WaitForSeconds waitForSeconds = new WaitForSeconds(1);
         while (!_videoPlayer.isPrepared)
@@ -166,6 +173,14 @@ public class VideoAgent : MonoBehaviour
             float videoh = _videoPlayer.texture.height;
             //float screenw = _screen.texture.width;
             //float screenh = _screen.texture.height;
+
+            // video 查看长宽
+
+
+            var ratios = videow / videoh;
+
+            _screenAspectRatioFitter.aspectRatio =  ratios;
+
 
             // 功能未处理不同屏幕尺寸下的视频
             // 得出总时长 - 秒
@@ -276,8 +291,6 @@ public class VideoAgent : MonoBehaviour
 
     public void DoClose()
     {
-        Debug.Log("DO CLOSE");
-
         _cardAgent?.DoCloseVideoContainer();
     }
 
@@ -291,6 +304,9 @@ public class VideoAgent : MonoBehaviour
 
 
     private void ErrorReceivedCallBack(VideoPlayer source, string message) {
+        Debug.Log("ErrorReceivedCallBack : " + message);
+        // 视频播放出现问题
+        DoClose();
 
     }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MidDisperseMoveEaseEnum: 14
   MidDisperseDelayMax: 0.75
-  MidDisperseDisplayTime: 1.5
-  MidDisperseAlphaMinDistanceFactor: 1.5
+  MidDisperseDisplayTime: 1
+  MidDisperseAlphaMinDistanceFactor: 1
   MidDisperseAlphaEaseEnum: 0
   MidDisperseHeightFactor: 1

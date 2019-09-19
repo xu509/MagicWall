@@ -351,13 +351,21 @@ public class MockDaoService : MonoBehaviour, IDaoService
         productDetail5.SetVideoType();
         productDetail5.Image = "video\\1.png";
         productDetail5.Description = "video\\video-1。";
-        productDetail5.VideoUrl = "1.mp4";
+        productDetail5.VideoUrl = "video\\1.mp4";
         productDetails1.Add(productDetail5);
         ProductDetail productDetail6 = new ProductDetail();
         productDetail6.SetImageType();
         productDetail6.Image = "product\\detail\\1-3.jpg";
         productDetail6.Description = "[type1] 雷士照明led吸顶灯客厅灯灯具长方形套餐组合简约现代大气卧室灯。";
         productDetails1.Add(productDetail6);
+        ProductDetail productDetail7 = new ProductDetail();
+        productDetail7.SetVideoType();
+        productDetail7.Image = "video\\feiyue1_Moment.png";
+        productDetail7.Description = "飞跃";
+        productDetail7.VideoUrl = "video\\feiyue1.mp4";
+        productDetails1.Add(productDetail7);
+
+
 
         List<ProductDetail> productDetails2 = new List<ProductDetail>();
         ProductDetail productDetail20 = new ProductDetail();
@@ -425,6 +433,13 @@ public class MockDaoService : MonoBehaviour, IDaoService
         productDetail36.Description = "[type3] video-1。";
         productDetail36.VideoUrl = "video\\1.mp4";
         productDetails3.Add(productDetail36);
+
+        ProductDetail productDetail37 = new ProductDetail();
+        productDetail37.SetVideoType();
+        productDetail37.Image = "video\\feiyue1_Moment.png";
+        productDetail37.Description = "飞跃";
+        productDetail37.VideoUrl = "video\\feiyue1.mp4";
+        productDetails3.Add(productDetail37);
 
         List<ProductDetail> productDetails4 = new List<ProductDetail>();
         ProductDetail productDetail41 = new ProductDetail();

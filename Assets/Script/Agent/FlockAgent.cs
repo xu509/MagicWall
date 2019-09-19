@@ -326,7 +326,7 @@ public class FlockAgent : MonoBehaviour
             if (transforms.Count > 1) {
                 if (_lastEffectAgent != targetAgent) {
               
-                    Debug.Log("接收到新的影响体");
+                    //Debug.Log("接收到新的影响体");
                     if ((Time.time - _lastEffectTime) < _manager.flockBehaviorConfig.EffectTiredTime) {
                         //仍然受原物体影响
                         targetAgent = _lastEffectAgent;
