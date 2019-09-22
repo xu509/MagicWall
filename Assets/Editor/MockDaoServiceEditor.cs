@@ -20,6 +20,9 @@ public class MockDaoServiceEditor : Editor
         MockSceneConfig cb = (MockSceneConfig)target;
         //CopyValue(cb);
 
+        //Debug.Log("Mock Scene Config is NULL : " + cb == null);
+
+
         var _sceneConfigs = cb.sceneConfigs;
 
 

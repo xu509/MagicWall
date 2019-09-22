@@ -352,6 +352,10 @@ public class SearchAgent : MonoBehaviour
         CloseSearchAgentContainer(true);
         CloseSearchResultContainer(true);
 
+
+        // 将card的显示关系打开
+        _cardAgent.RecoverContainerAfterSearch();
+
         _manager.agentManager.RemoveItemFromEffectItems(_cardAgent); // 将影响实体清除
 
         //  打开新的卡片

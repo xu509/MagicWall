@@ -76,7 +76,7 @@ public class MidDisperseCutEffect : CutEffect
 
     public override void Starting() {
 
-        DisplayBehavior.Run();
+        //DisplayBehavior.Run();
 
         for (int i = 0; i < _agentManager.Agents.Count; i++) {
             FlockAgent agent = _agentManager.Agents[i];

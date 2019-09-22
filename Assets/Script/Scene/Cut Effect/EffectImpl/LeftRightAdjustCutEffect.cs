@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using EasingUtil;
 
 // 过场效果 5，左右校准
 public class LeftRightAdjustCutEffect : CutEffect
@@ -24,7 +26,8 @@ public class LeftRightAdjustCutEffect : CutEffect
 
 
         //  获取持续时间
-        StartingDurTime = 2f;
+        //StartingDurTime = 2f;
+        StartingDurTime = manager.cutEffectConfig.LeftRightDisplayDurTime;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
@@ -99,6 +102,11 @@ public class LeftRightAdjustCutEffect : CutEffect
             }
 
             float t = (time - delay_time) / run_time;
+
+            Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.LeftRightDisplayEaseEnum);
+
+            t = defaultEasingFunction(t);
+
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
             agent.NextVector2 = to;

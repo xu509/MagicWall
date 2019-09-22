@@ -287,20 +287,23 @@ public class AgentManager : MonoBehaviour
     public void DestoryAgent(FlockAgent agent) {
         if (agent.IsCard)
         {
-            if (agent.type == MWTypeEnum.Enterprise)
-            {
-                if (agent.enterpriseType == MWEnterpriseTypeEnum.Cross)
-                {
-                    _crossCardAgentPool.ReleaseObj(agent as CrossCardAgent);
-                }
-                else {
-                    _singleCardAgentPool.ReleaseObj(agent as SingleCardAgent);
-                }
-            }
-            else if (agent.type == MWTypeEnum.Activity || agent.type == MWTypeEnum.Product)
-            {
-                _sliceCardAgentPool.ReleaseObj(agent as SliceCardAgent);
-            }
+            //if (agent.type == MWTypeEnum.Enterprise)
+            //{
+            //    if (agent.enterpriseType == MWEnterpriseTypeEnum.Cross)
+            //    {
+            //        _crossCardAgentPool.ReleaseObj(agent as CrossCardAgent);
+            //    }
+            //    else {
+            //        _singleCardAgentPool.ReleaseObj(agent as SingleCardAgent);
+            //    }
+            //}
+            //else if (agent.type == MWTypeEnum.Activity || agent.type == MWTypeEnum.Product)
+            //{
+            //    _sliceCardAgentPool.ReleaseObj(agent as SliceCardAgent);
+            //}
+
+            Destroy(agent.gameObject);
+
         }
         else {
             if (agent.agentContainerType == AgentContainerType.MainPanel)

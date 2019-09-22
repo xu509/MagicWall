@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using EasingUtil;
 
 // 过场效果 4，上下校准
 public class UpDownAdjustCutEffect : CutEffect
@@ -24,7 +26,7 @@ public class UpDownAdjustCutEffect : CutEffect
 
 
         //  获取持续时间
-        StartingDurTime = 1f;
+        StartingDurTime = manager.cutEffectConfig.UpDownDisplayDurTime;
         _startingTimeWithOutDelay = StartingDurTime;
         DestoryDurTime = 0.5f;
 
@@ -86,6 +88,10 @@ public class UpDownAdjustCutEffect : CutEffect
             }
 
             float t = (Time.time - StartTime) / run_time;
+            Func<float, float> ef = EasingFunction.Get(_manager.cutEffectConfig.UpDownDisplayEaseEnum);
+            t = ef(t);
+
+
             Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
             float a = Mathf.Lerp(0f, 1f, t);
             agent.GetComponent<Image>().color = new Color(1, 1, 1, a);

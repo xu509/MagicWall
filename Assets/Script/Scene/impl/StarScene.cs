@@ -116,7 +116,7 @@ public class StarScene : IScene
 
 
         // 创建浮动块
-        for (int i = 0; i < _manager.managerConfig.StarEffectAgentsCount; i++)
+        for (int i = 0; i < _manager.cutEffectConfig.StarEffectAgentsCount; i++)
         {
             CreateNewAgent(true);
         }
@@ -150,18 +150,18 @@ public class StarScene : IScene
 
         for (int i = 0; i < _activeAgents.Count; i++)
         {
-            if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.managerConfig.StarEffectEndPoint)
+            if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.cutEffectConfig.StarEffectEndPoint)
             {
                 //  清理agent，
                 agentsNeedClear.Add(_activeAgents[i]);
                 //  创建新 agent
-                FlockAgent agent = CreateNewAgent(false);
+                FlockAgent agent = CreateNewAgent(false); 
                 agent.GetComponent<RectTransform>().SetAsFirstSibling();
             }
             else
             {
                 // 移动
-                Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.managerConfig.StarEffectMoveFactor));
+                Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.cutEffectConfig.StarEffectMoveFactor));
                 _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
 
                 // 更新透明度
@@ -225,12 +225,12 @@ public class StarScene : IScene
         float z;
         if (randomZ)
         {
-            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint,
+            z = Mathf.Lerp(_manager.cutEffectConfig.StarEffectOriginPoint, _manager.cutEffectConfig.StarEffectEndPoint,
                 UnityEngine.Random.Range(0f, 1f));
         }
         else
         {
-            z = _manager.managerConfig.StarEffectOriginPoint;
+            z = _manager.cutEffectConfig.StarEffectOriginPoint;
         }
 
         go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
@@ -266,8 +266,8 @@ public class StarScene : IScene
         float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
 
         // 判断Z在距离中的位置
-        float distance = Mathf.Abs(_manager.managerConfig.StarEffectOriginPoint - _manager.managerConfig.StarEffectEndPoint);
-        float offset = Mathf.Abs(z - _manager.managerConfig.StarEffectOriginPoint) / distance;
+        float distance = Mathf.Abs(_manager.cutEffectConfig.StarEffectOriginPoint - _manager.cutEffectConfig.StarEffectEndPoint);
+        float offset = Mathf.Abs(z - _manager.cutEffectConfig.StarEffectOriginPoint) / distance;
 
         // 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
         if (offset < 0.05)

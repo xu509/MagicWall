@@ -478,12 +478,19 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
             _tool_bottom_container.gameObject.SetActive(true);
             _tool_bottom_three_container.gameObject.SetActive(false);
             InitEnvCard();
+
+            _questionTypeEnum = QuestionTypeEnum.SliceCardFour;
+
+
         }
         else
         {
             // 显示三个按钮
             _tool_bottom_container?.gameObject.SetActive(false);
             _tool_bottom_three_container?.gameObject.SetActive(true);
+
+            _questionTypeEnum = QuestionTypeEnum.SliceCard;
+
 
         }
 
@@ -650,6 +657,13 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
             _searchAgent.gameObject.SetActive(true);
         }
     }
+
+    public void RecoverContainerAfterSearch()
+    {
+        _main_container.gameObject.SetActive(true);
+    }
+
+
 
     private void OnClickSearchReturnBtn()
     {

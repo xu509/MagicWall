@@ -45,6 +45,8 @@ public class SpriteResource : Singleton<SpriteResource>
             Texture2D texture = AppUtils.LoadPNGToTexture2D(address);
             //texture.filterMode = FilterMode.Point;
             Sprite sprite = Sprite.Create(texture,new Rect(0,0,texture.width,texture.height), Vector2.zero);
+
+            //Debug.Log("address : " + address);
             
             Add(address, sprite);
             return sprite;

@@ -17,7 +17,7 @@ MonoBehaviour:
   gapFactor: 1
   Column: 11
   FlockPoolSize: 100
-  CardPoolSize: 8
+  CardPoolSize: 1
   MainPanelMoveFactor: 141
   StarEffectAgentsCount: 60
   StarEffectMoveFactor: 15

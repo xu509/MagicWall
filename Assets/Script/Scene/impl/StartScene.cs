@@ -113,8 +113,8 @@ public class StartScene : IScene
         if (!_doShowLogo) {
             _doShowLogo = true;
             _manager.BgLogo.gameObject.SetActive(true);
-            _manager.BgLogo.GetComponent<Image>().sprite 
-                = Resources.Load<SpriteAtlas>("SpriteAtlas").GetSprite("background-logo");
+            //_manager.BgLogo.GetComponent<Image>().sprite 
+            //    = Resources.Load<SpriteAtlas>("SpriteAtlas").GetSprite("background-logo");
             _manager.BgLogo.GetComponent<Image>()
                 .DOFade(1, 1f)
                 .OnComplete(() => {
@@ -292,7 +292,22 @@ public class StartScene : IScene
 
     private void DoLoadFeiyueData() {
 
-        // TODO
+        //// TODO
+        List<string> addresses = new List<string>();
+
+        var products = _daoService.GetProducts();
+        for (int i = 0; i < products.Count; i++) {
+            addresses.Add(products[i].Image);
+        }
+
+        for (int i = 0; i < addresses.Count; i++)
+        {
+            SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+        }
+
+
+        //Debug.Log("loading complete");
+
     }
 
 

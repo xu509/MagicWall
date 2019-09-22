@@ -27,7 +27,7 @@ MonoBehaviour:
     _durTime: 5
   - _sceneType: 4
     _dataType: 2
-    _durTime: 5
+    _durTime: 10
   - _sceneType: 5
     _dataType: 2
     _durTime: 5
@@ -36,11 +36,14 @@ MonoBehaviour:
     _durTime: 5
   - _sceneType: 4
     _dataType: 2
-    _durTime: 5
+    _durTime: 10
   - _sceneType: 2
-    _dataType: 1
+    _dataType: 2
     _durTime: 5
   - _sceneType: 1
+    _dataType: 2
+    _durTime: 5
+  - _sceneType: 0
     _dataType: 1
     _durTime: 5
   data: 0

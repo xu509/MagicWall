@@ -18,3 +18,11 @@ MonoBehaviour:
   MidDisperseAlphaMinDistanceFactor: 1
   MidDisperseAlphaEaseEnum: 0
   MidDisperseHeightFactor: 1
+  LeftRightDisplayEaseEnum: 14
+  LeftRightDisplayDurTime: 1.5
+  UpDownDisplayEaseEnum: 14
+  UpDownDisplayDurTime: 1.5
+  StarEffectAgentsCount: 60
+  StarEffectMoveFactor: 15
+  StarEffectOriginPoint: 1000
+  StarEffectEndPoint: -2500

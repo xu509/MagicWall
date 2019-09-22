@@ -32,4 +32,28 @@ public class CutEffectConfig : ScriptableObject
     public float MidDisperseHeightFactor;
 
 
+
+    [SerializeField, Header("LeftRightAdjust")] public EaseEnum LeftRightDisplayEaseEnum;
+
+    [Range(0f, 10f)] public float LeftRightDisplayDurTime;
+
+    [SerializeField, Header("UpDownAdjustCutEffect")] public EaseEnum UpDownDisplayEaseEnum;
+
+    [Range(0f, 10f)] public float UpDownDisplayDurTime;
+
+
+    [SerializeField, Range(0f, 500f), Header("[星空效果] 卡片数量")]
+    public int StarEffectAgentsCount;
+
+    [SerializeField, Range(0f, 200f), Header("[星空效果] 动画移动速度")]
+    public float StarEffectMoveFactor;
+
+    [SerializeField, Range(1f, 10000f), Header("[星空效果] 动画起点")]
+    public float StarEffectOriginPoint;
+
+    [SerializeField, Range(-5000f, 5000f), Header("[星空效果] 动画终点")]
+    public float StarEffectEndPoint;
+
+
+
 }

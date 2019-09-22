@@ -366,6 +366,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: CustomVersion
       objectReference: {fileID: 0}
+    - target: {fileID: 6911621782705545546, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955610289510155501, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
+        type: 2}
     - target: {fileID: 3977546247670605121, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -436,6 +447,12 @@ PrefabInstance:
       propertyPath: _mockFeiyueDaoService
       value: 
       objectReference: {fileID: 477024252}
+    - target: {fileID: 6911621782184364798, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _cutEffectConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f95c90cff3035744e98020e3e5d94740,
+        type: 2}
     - target: {fileID: 6911621782153278176, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: m_RootOrder
@@ -474,7 +491,24 @@ PrefabInstance:
     - target: {fileID: 6911621782705545549, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 765
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6911621782827720610, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e5fb8a8b2daf3b4d9afab42673066f1,
+        type: 2}
+    - target: {fileID: 6911621782705545548, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6911621782705545548, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24, type: 3}
