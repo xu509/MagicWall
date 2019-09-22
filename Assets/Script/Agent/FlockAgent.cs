@@ -148,12 +148,10 @@ public class FlockAgent : MonoBehaviour
 
     // Start is called before the first frame update
 
-    #region 生命周期 - start
     void Start()
     {
         // _flockAgentMoveBehavior = new FlockAgentCommonMoveBehavior();
     }
-    #endregion
 
 
     /// <summary>
