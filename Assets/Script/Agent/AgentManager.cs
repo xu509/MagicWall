@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using MagicWall;
 
 /// <summary>
 /// 浮动体块
@@ -269,8 +270,8 @@ public class AgentManager : MonoBehaviour
             {
                 // 此时得到的是CardAgent
                 CardAgent effectAgent = EffectAgent[0] as CardAgent;
-                if (effectAgent.CardStatus != CardStatusEnum.DESTORYING_STEP_SCEOND
-                    && effectAgent.CardStatus != CardStatusEnum.DESTORYED)
+                if (effectAgent.CardStatus != CardStatusEnum.DESTORY
+                    && effectAgent.CardStatus != CardStatusEnum.OBSOLETE)
                 {
                     effectAgent.DoCloseDirect();
                 }

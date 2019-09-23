@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 using System;
-
+using MagicWall;
 
 /// <summary>
 ///  单个卡片
@@ -68,7 +68,7 @@ public class SingleCardAgent : CardAgent
         CanvasExtensions.SizeToParent(_cover);
 
         // 处理businesscard
-        InitComponents(false);
+        InitComponents(null);
 
         // 设置完成回调
         SetOnCreatedCompleted(OnCreatedCompleted);
@@ -111,6 +111,11 @@ public class SingleCardAgent : CardAgent
 
 
 
+    public override void InitData(OperateCardData operateCardData)
+    {
+        OperateCardDataSingle operateCardDataSingle = (OperateCardDataSingle)operateCardData;
+        Debug.Log("Do In slice: " + operateCardDataSingle.Title);
+    }
 
 
 

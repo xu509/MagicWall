@@ -58,7 +58,9 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager,ori_position, new Vector2(gen_x, gen_y), row + 1, column + 1,
-            width, height, activity.Id, activity.Image, false, MWTypeEnum.Activity, agentContainerType);
+            width, height, activity.Id, activity.Image, false, MWTypeEnum.Activity,
+            MagicWall.DataTypeEnum.Activity
+            , agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -78,7 +80,7 @@ public class ActivityFactory :MonoBehaviour, ItemsFactory
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 
         //  初始化卡片基础数据
-        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Activity, genPos, scaleVector3, flockAgent);
+        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Activity, MagicWall.DataTypeEnum.Activity, genPos, scaleVector3, flockAgent);
 
         //  初始化数据
         sliceCardAgent.InitSliceCard();

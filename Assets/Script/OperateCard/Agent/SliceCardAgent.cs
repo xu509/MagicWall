@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+using MagicWall;
 
 //
 //  滑动卡片代理，用于product和activity
@@ -16,6 +17,9 @@ public class SliceCardAgent : CardAgent
     [SerializeField] RectTransform _buttomTool;
 
     private List<string> _envCards = new List<string>();
+
+    private OperateCardDataSlide _operateCardDataSlide;
+
 
 
     void Awake() {
@@ -38,51 +42,76 @@ public class SliceCardAgent : CardAgent
         InitAgency();
 
 
+        // 获取产品标题
+        _title.text = _operateCardDataSlide.Title;
 
-        List<SliceCardCellData> cellDatas;
-        if (type == MWTypeEnum.Product)
+
+        InitComponents(_operateCardDataSlide.ExtraCardData);
+
+        // 获取产品详细（图片，描述）
+        List<SliceCardCellData> cellDatas = new List<SliceCardCellData>();
+        for (int i = 0; i < _operateCardDataSlide.ScrollData.Count; i++)
         {
-            Product product = _manager.daoService.GetProductDetail(DataId);
+            var data = _operateCardDataSlide.ScrollData[i];
 
-            // 获取产品标题
-            _title.text = product.Name;
-
-            // 获取产品所属公司信息
-            InitComponents(_manager.daoService.GetEnvCards(product.Ent_id).Count > 0);
-
-            // 获取产品详细（图片，描述）
-            cellDatas = new List<SliceCardCellData>();
-            for (int i = 0; i < product.ProductDetails.Count; i++)
-            {
-                SliceCardCellData cellData = new SliceCardCellData();
-                cellData.Type = 0;
-                cellData.sliceCardAgent = this;
-                cellData.magicWallManager = _manager;
-                cellData.LoadProductDetail(product.ProductDetails[i]);
-                cellDatas.Add(cellData);
-            }
+            SliceCardCellData cellData = new SliceCardCellData();
+            cellData.Type = 0;
+            cellData.sliceCardAgent = this;
+            cellData.magicWallManager = _manager;
+            cellData.LoadDetail(data);
+            cellDatas.Add(cellData);
         }
-        else {
-            // 初始化活动信息
-            Activity activity = _manager.daoService.GetActivityDetail(DataId);
 
-            _title.text = activity.Name;
 
-            // 获取产品所属公司信息
-            InitComponents(_manager.daoService.GetEnvCards(activity.Ent_id).Count > 0);
 
-            // 获取产品详细（图片，描述）
-            cellDatas = new List<SliceCardCellData>();
-            for (int i = 0; i < activity.ActivityDetails.Count; i++)
-            {
-                SliceCardCellData cellData = new SliceCardCellData();
-                cellData.Type = 0;
-                cellData.sliceCardAgent = this;
-                cellData.magicWallManager = _manager;
-                cellData.LoadActivityDetail(activity.ActivityDetails[i]);
-                cellDatas.Add(cellData);
-            }
-        }
+
+
+
+
+        //List<SliceCardCellData> cellDatas;
+        //if (type == MWTypeEnum.Product)
+        //{
+        //    Product product = _manager.daoService.GetProductDetail(DataId);
+
+        //    // 获取产品标题
+        //    _title.text = product.Name;
+
+        //    // 获取产品所属公司信息
+        //    InitComponents(_manager.daoService.GetEnvCards(product.Ent_id).Count > 0);
+
+        //    // 获取产品详细（图片，描述）
+        //    cellDatas = new List<SliceCardCellData>();
+        //    for (int i = 0; i < product.ProductDetails.Count; i++)
+        //    {
+        //        SliceCardCellData cellData = new SliceCardCellData();
+        //        cellData.Type = 0;
+        //        cellData.sliceCardAgent = this;
+        //        cellData.magicWallManager = _manager;
+        //        cellData.LoadProductDetail(product.ProductDetails[i]);
+        //        cellDatas.Add(cellData);
+        //    }
+        //}
+        //else {
+        //    // 初始化活动信息
+        //    Activity activity = _manager.daoService.GetActivityDetail(DataId);
+
+        //    _title.text = activity.Name;
+
+        //    // 获取产品所属公司信息
+        //    InitComponents(_manager.daoService.GetEnvCards(activity.Ent_id).Count > 0);
+
+        //    // 获取产品详细（图片，描述）
+        //    cellDatas = new List<SliceCardCellData>();
+        //    for (int i = 0; i < activity.ActivityDetails.Count; i++)
+        //    {
+        //        SliceCardCellData cellData = new SliceCardCellData();
+        //        cellData.Type = 0;
+        //        cellData.sliceCardAgent = this;
+        //        cellData.magicWallManager = _manager;
+        //        cellData.LoadActivityDetail(activity.ActivityDetails[i]);
+        //        cellDatas.Add(cellData);
+        //    }
+        //}
 
         
         _scrollController.SetUpCardAgent(this);
@@ -157,6 +186,17 @@ public class SliceCardAgent : CardAgent
         UpdateToolComponent();
 
     }
+
+    public override void InitData(OperateCardData operateCardData)
+    {
+        OperateCardDataSlide operateCardDataSlide = (OperateCardDataSlide)operateCardData;
+        //Debug.Log("Do In slice: " + operateCardDataSlide.Title);
+        _operateCardDataSlide = operateCardDataSlide;
+
+        InitSliceCard();
+
+    }
+
 
 
 }

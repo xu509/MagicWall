@@ -57,7 +57,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
-            width, height, env.Ent_id, env.Logo, env.IsCustom, MWTypeEnum.Enterprise, agentContainerType);
+            width, height, env.Ent_id, env.Logo, env.IsCustom, MWTypeEnum.Enterprise,MagicWall.DataTypeEnum.Enterprise, agentContainerType);
 
         //  添加到组件袋
         _agentManager.AddItem(newAgent);
@@ -117,7 +117,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
 
 
         // 初始化数据
-        crossCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
+        crossCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, MagicWall.DataTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
         crossCardAgent.enterpriseType = MWEnterpriseTypeEnum.Cross;
 
         // 添加到effect agent
@@ -147,7 +147,7 @@ public class EnvFactory : Singleton<EnvFactory>, ItemsFactory
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 
         // 初始化数据
-        singleCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
+        singleCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Enterprise,MagicWall.DataTypeEnum.Enterprise, genPos, scaleVector3, flockAgent);
         singleCardAgent.enterpriseType = MWEnterpriseTypeEnum.Single;
 
         // 添加到effect agent

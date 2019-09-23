@@ -22,16 +22,7 @@ public enum WallStatusEnum
 
 
 
-//
-//  卡片状态
-//
-public enum CardStatusEnum
-{
-    NORMAL, // 正常
-    DESTORING_STEP_FIRST, // 销毁动画中(第一次)
-    DESTORYING_STEP_SCEOND, // 进行第二次动画中
-    DESTORYED, // 已销毁
-}
+
 
 //
 //  十字卡片类型

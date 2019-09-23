@@ -193,7 +193,7 @@ public class CrossCardAgent : CardAgent
 
         // 处理businesscard
         _hasListBtn = _manager.daoService.GetEnvCards(DataId).Count > 0;
-        InitComponents(false);
+        //InitComponents(false);
 
         // 设置完成回调
         SetOnCreatedCompleted(OnCreatedCompleted);

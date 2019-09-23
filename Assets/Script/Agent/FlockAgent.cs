@@ -6,6 +6,7 @@ using DG.Tweening;
 using EasingUtil;
 using System;
 using MWMagicWall;
+using MagicWall;
 
 public class FlockAgent : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class FlockAgent : MonoBehaviour
     private string _data_img;    //背景图片
     private int _data_id; // id
     private MWTypeEnum _type;
+    private DataTypeEnum _dataType;
     private MWEnterpriseTypeEnum _enterpriseType;
 
     private bool _isCard;
@@ -113,7 +115,7 @@ public class FlockAgent : MonoBehaviour
 
 
     private float _lastEffectTime;
-    private FlockAgent _lastEffectAgent;    // 上一个影响的 agent
+    private CardAgent _lastEffectAgent;    // 上一个影响的 agent
     private bool _effectLastFlag = false;
 
 
@@ -161,12 +163,13 @@ public class FlockAgent : MonoBehaviour
     /// <param name="dataId"></param>
     /// <param name="type"></param>
     /// <param name="isCard"></param>
-    protected void InitBase(MagicWallManager manager,int dataId, MWTypeEnum type, bool isCard) {
+    protected void InitBase(MagicWallManager manager,int dataId, MWTypeEnum type,DataTypeEnum dataType, bool isCard) {
         _manager = manager;
         _agentManager = _manager.agentManager;
         _data_id = dataId;
         _type = type;
         _isCard = isCard;
+        _dataType = dataType;
 
         _flockTweenerManager = new FlockTweenerManager();
         _flockStatusEnum = FlockStatusEnum.Normal;
@@ -189,9 +192,9 @@ public class FlockAgent : MonoBehaviour
     /// <param name="dataType"></param>
 	public virtual void Initialize(MagicWallManager manager,Vector2 originVector,Vector2 genVector,int row,
         int column,float width,float height,int dataId,string dataImg,bool dataIsCustom, 
-        MWTypeEnum dataType,AgentContainerType agentContainerType)
+        MWTypeEnum dataType,DataTypeEnum dataTypeEnum,AgentContainerType agentContainerType)
     {
-        InitBase(manager,dataId, dataType,false);
+        InitBase(manager,dataId, dataType, dataTypeEnum, false);
         _manager = manager;
         OriVector2 = originVector;
 
@@ -289,12 +292,17 @@ public class FlockAgent : MonoBehaviour
 
         // 获取施加影响的目标物
         //  判断是否有多个影响体，如有多个，取距离最近的那个
-        List<FlockAgent> transforms = _agentManager.EffectAgent;
-        FlockAgent targetAgent = null;
+        //List<FlockAgent> transforms = _agentManager.EffectAgent;
+
+
+        List<CardAgent> transforms = _manager.operateCardManager.EffectAgents;
+
+
+        CardAgent targetAgent = null;
         Vector2 targetVector2; // 目标物位置
         float distance = 1000f;
 
-		foreach (FlockAgent item in transforms)
+		foreach (CardAgent item in transforms)
 		{
             // 判断大小，如果item还过小则不认为是影响的
             if (!IsEffectiveTarget(item))
@@ -452,7 +460,10 @@ public class FlockAgent : MonoBehaviour
 
             // 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
 
-            _cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
+            //_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
+
+            _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, cardGenPosition, this);
+
 
             sw.Stop();
 
@@ -562,7 +573,8 @@ public class FlockAgent : MonoBehaviour
     //  判断是否需要调整位置
     private bool NeedAdjustPostion() {
         // 当前位置与目标位置一致
-        bool NoEffectAgent = _agentManager.EffectAgent.Count == 0;
+        bool NoEffectAgent = _manager.operateCardManager.EffectAgents.Count == 0;
+        
         if (!NoEffectAgent) {
             return true;
         }
@@ -587,7 +599,7 @@ public class FlockAgent : MonoBehaviour
 
 
     //  判断目标是否是有效的
-    private bool IsEffectiveTarget(FlockAgent flockAgent)
+    private bool IsEffectiveTarget(CardAgent flockAgent)
     {
         if (!flockAgent.gameObject.activeSelf)
         {

@@ -6,6 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using EasingUtil;
+using MagicWall;
 //
 //  入口类
 //
@@ -48,6 +49,10 @@ public class MagicWallManager : MonoBehaviour
     [SerializeField] OperateMode _operateMode;  //操作模块
 
     [SerializeField] Camera _starCamera;    // 星空camera
+
+    [SerializeField] OperateCardManager _operateCardManager;
+    public OperateCardManager operateCardManager { get { return _operateCardManager; } }
+
 
     /// 配置面板
     [SerializeField, Header("config")] ManagerConfig _managerConfig;
@@ -95,9 +100,9 @@ public class MagicWallManager : MonoBehaviour
 
     //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-    //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+    public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-     public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+    // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
     //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -216,6 +221,9 @@ public class MagicWallManager : MonoBehaviour
 
         //  初始化卡片工厂
         _cardItemFactoryInstance.Init(this);
+
+        // 初始化操作卡片管理器
+        _operateCardManager.Init(this);
 
         // 初始化定制服务
         if (managerConfig.IsCustom)

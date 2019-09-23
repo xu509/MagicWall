@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MagicWall;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,23 @@ public class SliceCardCellData
     public bool IsActivity()
     {
         return _type == 1;
+    }
+
+    public void LoadDetail(ScrollData scrollData)
+    {
+
+        _id = scrollData.Type;
+        _description = scrollData.Description;
+        _likes = _manager.daoService.GetLikes(scrollData.Cover);
+        _image = scrollData.Cover;
+        _type = 0;
+        _isImage = scrollData.Type == 0;
+
+        if (!_isImage)
+        {
+            _videoUrl = scrollData.Src;
+        }
+
     }
 
 

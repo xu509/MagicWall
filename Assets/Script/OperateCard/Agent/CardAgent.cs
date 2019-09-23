@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
-using MWMagicWall;
+using MagicWall;
+
+
 
 public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
 {
@@ -144,10 +142,10 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
     /// <param name="genPosition">生成位置</param>
     /// <param name="scaleVector3">缩放比例</param>
     /// <param name="originAgent">原关联的浮块</param>
-    public void InitCardData(MagicWallManager manager, int dataId, MWTypeEnum dataType,
+    public void InitCardData(MagicWallManager manager, int dataId, MWTypeEnum dataType, DataTypeEnum dataTypeEnum,
         Vector3 genPosition, Vector3 scaleVector3, FlockAgent originAgent)
     {
-        InitBase(manager, dataId, dataType, true);
+        InitBase(manager, dataId, dataType, dataTypeEnum, true);
 
         // 初始化框体长宽
         float rectHeight = manager.mainPanel.rect.height * _heightFactor;
@@ -169,6 +167,63 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
         SceneIndex = _manager.SceneIndex;
 
         GetComponent<RectTransform>().localScale = scaleVector3;
+
+        //  初始化长宽字段
+        Width = GetComponent<RectTransform>().rect.width;
+        Height = GetComponent<RectTransform>().rect.height;
+
+        // 初始化移动组件
+        _moveBtnObservers = new List<MoveBtnObserver>();
+
+        _moveBtnComponent?.Init(DoMove, this);
+        _moveBtnComponentInThree?.Init(DoMove, this);
+
+        parentRtf = transform.parent as RectTransform;
+    }
+
+    public virtual void InitData(OperateCardData operateCardData){
+        //Debug.Log("Do In Parent");
+    }
+
+
+
+    /// <summary>
+    ///     初始化卡片类型浮动块数据
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="dataId"></param>
+    /// <param name="dataType"></param>
+    /// <param name="genPosition">生成位置</param>
+    /// <param name="scaleVector3">缩放比例</param>
+    /// <param name="originAgent">原关联的浮块</param>
+    public void InitCardData(MagicWallManager manager, int dataId, DataTypeEnum dataType,
+        Vector3 genPosition, FlockAgent originAgent)
+    {
+        InitBase(manager, dataId,MWTypeEnum.Activity ,dataType, true);
+
+        // 初始化框体长宽
+        float rectHeight = manager.mainPanel.rect.height * _heightFactor;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+
+        //  命名
+        if (originAgent != null)
+        {
+            name = dataType.ToString() + "(" + originAgent.name + ")";
+
+            //  添加原组件
+            OriginAgent = originAgent;
+        }
+
+        //  定出生位置
+        GetComponent<RectTransform>().anchoredPosition3D = genPosition;
+
+        //  配置scene
+        //Debug.Log("_manager.SceneIndex :" + manager.SceneIndex);
+
+
+        SceneIndex = _manager.SceneIndex;
+
+        //GetComponent<RectTransform>().localScale = scaleVector3;
 
         //  初始化长宽字段
         Width = GetComponent<RectTransform>().rect.width;
@@ -236,7 +291,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
             }
 
             // 第二次缩小
-            if (_cardStatus == CardStatusEnum.DESTORING_STEP_FIRST)
+            if (_cardStatus == CardStatusEnum.TODESTORY)
             {
                 if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
                 {
@@ -258,7 +313,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
         {
             _recentActiveTime = Time.time;
         }
-        else if (CardStatus == CardStatusEnum.DESTORING_STEP_FIRST)
+        else if (CardStatus == CardStatusEnum.TODESTORY)
         {
             DoRecover();
         }
@@ -281,7 +336,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
 
         //  缩放
         Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
-        _cardStatus = CardStatusEnum.DESTORING_STEP_FIRST;
+        _cardStatus = CardStatusEnum.TODESTORY;
 
         _destory_first_scale_tweener = GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
             .OnUpdate(() =>
@@ -307,7 +362,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
     //
     private void DoDestoriedForSecondStep()
     {
-        _cardStatus = CardStatusEnum.DESTORYING_STEP_SCEOND;
+        _cardStatus = CardStatusEnum.DESTORY;
 
         //  如果场景没有变，则回到原位置
         if ((SceneIndex == _manager.SceneIndex) && (_originAgent != null))
@@ -335,7 +390,9 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
                 {
                     //  使卡片消失na 
                     OriginAgent.DoRecoverAfterChoose();
-                    _agentManager.RemoveItemFromEffectItems(this);
+
+                    //_agentManager.RemoveItemFromEffectItems(this);
+                    _cardStatus = CardStatusEnum.OBSOLETE;
                 });
             _flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin, t2);
 
@@ -355,7 +412,8 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
                 })
                 .OnComplete(() =>
                 {
-                    _agentManager.RemoveItemFromEffectItems(this);
+                    _cardStatus = CardStatusEnum.OBSOLETE;
+                    //_agentManager.RemoveItemFromEffectItems(this);
                 });
 
             // 清除原来的flock
@@ -365,7 +423,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
 
         }
 
-        _cardStatus = CardStatusEnum.DESTORYED;
+        //_cardStatus = CardStatusEnum.OBSOLETE;
     }
 
     //
@@ -413,7 +471,16 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
     //
     public void DoClose()
     {
-        DoDestoriedForFirstStep();
+        // 点击关闭
+        if (CardStatus == CardStatusEnum.NORMAL) {
+            DoDestoriedForFirstStep();
+        }
+
+        if (CardStatus == CardStatusEnum.TODESTORY) {
+            DoDestoriedForSecondStep();
+        }
+
+        
     }
 
     // 直接进行关闭
@@ -469,15 +536,22 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
 
 
     //  初始化组件显示的状态
-    protected void InitComponents(bool hasListBtn)
+    protected void InitComponents(List<ExtraCardData> extraCardDatas)
     {
-        _hasListBtn = hasListBtn;
+        if (extraCardDatas != null && extraCardDatas.Count > 0)
+        {
+            _hasListBtn = true;
+        }
+        else {
+            _hasListBtn = false;
+        }
+        
         if (_hasListBtn)
         {
             // 显示四组按钮
             _tool_bottom_container.gameObject.SetActive(true);
             _tool_bottom_three_container.gameObject.SetActive(false);
-            InitEnvCard();
+            InitEnvCard(extraCardDatas);
 
             _questionTypeEnum = QuestionTypeEnum.SliceCardFour;
 
@@ -715,6 +789,8 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
                 // 执行完成后动画
                 DoOnCreatedCompleted();
 
+                CardStatus = CardStatusEnum.NORMAL;
+
             }).SetEase(Ease.OutBack);
     }
 
@@ -748,7 +824,7 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
     #region Business Card 相关
 
     // 生成企业卡片
-    private void InitEnvCard()
+    private void InitEnvCard(List<ExtraCardData> extraCardDatas)
     {
         if (!hasInitBusinessCard)
         {
@@ -758,22 +834,19 @@ public class CardAgent : FlockAgent, IBeginDragHandler, IEndDragHandler, IDragHa
                                         _business_card_prefab,
                                         _business_card_container
                                         ) as BusinessCardAgent;
-
             int envId;
 
             // 需要获取企业ID
-            if (type == MWTypeEnum.Activity)
-            {
-                envId = _manager.daoService.GetActivityDetail(DataId).Ent_id;
-            }
-            else
-            {
-                envId = _manager.daoService.GetProductDetail(DataId).Ent_id;
+            Vector2 position = GetComponent<RectTransform>().anchoredPosition;
+
+
+            string[] addressAry = new string[extraCardDatas.Count];
+            for (int i = 0; i < extraCardDatas.Count; i++) {
+                addressAry[i] = extraCardDatas[i].Cover;
             }
 
-            List<string> address = _manager.daoService.GetEnvCards(envId);
-            Vector2 position = GetComponent<RectTransform>().anchoredPosition;
-            businessCardAgent.Init(address.ToArray(), GetComponent<RectTransform>().rect.width
+
+            businessCardAgent.Init(addressAry, GetComponent<RectTransform>().rect.width
                 , position, OnHandleBusinessUpdate, OnClickBusinessCardClose);
 
             businessCardAgent.gameObject.SetActive(false);

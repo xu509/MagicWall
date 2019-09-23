@@ -57,7 +57,9 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
 
         //  初始化内容
         newAgent.Initialize(_manager, ori_position, postion, row + 1, column + 1,
-            width, height, product.Pro_id, product.Image, false, MWTypeEnum.Product, agentContainerType);
+            width, height, product.Pro_id, product.Image, false, MWTypeEnum.Product
+            , MagicWall.DataTypeEnum.Product
+            , agentContainerType);
 
         //  添加到组件袋
         _agentManager.Agents.Add(newAgent);
@@ -77,7 +79,7 @@ public class ProductFactory : Singleton<ProductFactory>, ItemsFactory
         //  定义缩放
         Vector3 scaleVector3 = new Vector3(0.2f, 0.2f, 0.2f);
 
-        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Product,
+        sliceCardAgent.InitCardData(_manager, dataId, MWTypeEnum.Product, MagicWall.DataTypeEnum.Product,
             genPos, scaleVector3, flockAgent);
 
         //  初始化数据

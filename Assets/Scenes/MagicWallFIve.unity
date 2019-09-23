@@ -214,5 +214,27 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 433035726018076245, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _magicSceneManager
+      value: 
+      objectReference: {fileID: 1008701219}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+--- !u!114 &1008701219 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 132d4d55d70adda43adb4ad2000d5c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
