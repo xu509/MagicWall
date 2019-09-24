@@ -42,7 +42,7 @@ namespace MagicWall {
                     sd.Description = cat.Description;
                     categoryList.Add(sd);
                 }
-                dics.Add(CrossCardNavType.Category, categoryList);
+                dics.Add(CrossCardNavType.CataLog, categoryList);
             }
 
             // product

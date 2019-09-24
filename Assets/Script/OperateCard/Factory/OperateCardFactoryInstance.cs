@@ -32,7 +32,7 @@ namespace MagicWall {
                 var catalogs = daoService.GetCatalogs(enterprise.Ent_id);
                 OperateCardDataCross operateCardDataCross = EnterpriseAdapter
                     .Transfer(enterprise, activities, products, videos, catalogs);
-                Debug.Log(operateCardDataCross.ToString());
+                //Debug.Log(operateCardDataCross.ToString());
 
 
                 if (CheckIsSimple(operateCardDataCross))

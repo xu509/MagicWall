@@ -21,6 +21,7 @@ namespace MagicWall
         //
         public override void Init(MagicWallManager manager)
         {
+
             //  初始化 manager
             _manager = manager;
             _agentManager = manager.agentManager;
@@ -51,7 +52,6 @@ namespace MagicWall
 
         public override void Starting()
         {
-
             for (int i = 0; i < _agentManager.Agents.Count; i++)
             {
                 FlockAgent agent = _agentManager.Agents[i];
@@ -109,8 +109,7 @@ namespace MagicWall
 
             for (int i = 0; i < _manager.agentManager.Agents.Count; i++) {
                 _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
-            }
-
+            }           
         }
 
 
@@ -119,6 +118,9 @@ namespace MagicWall
         /// </summary>
         private void CreateAgency(DataTypeEnum dataType)
         {
+            Debug.Log("开始加载左右动画");
+
+
             // 固定高度
             int _row = _manager.Row;
             int _itemHeight = _sceneUtil.GetFixedItemHeight();

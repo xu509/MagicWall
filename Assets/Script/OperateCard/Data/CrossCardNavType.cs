@@ -7,7 +7,7 @@ namespace MagicWall {
     public enum CrossCardNavType
     {
         Index,
-        Category,
+        CataLog,
         Product,
         Activity,
         Video

@@ -347,20 +347,17 @@ namespace MagicWall
 
             GetComponent<CircleCollider2D>().radius = 0;
 
-
-            Debug.Log("SceneIndex : " + _sceneIndex);
-            Debug.Log("_manager.SceneIndex : " + _manager.SceneIndex);
-
-
             //  如果场景没有变，则回到原位置
             if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null))
             {
+                Debug.Log("返回原位置");
+
                 //恢复并归位
                 // 缩到很小很小
-                RectTransform rect = GetComponent<RectTransform>();
+                RectTransform cardRect = GetComponent<RectTransform>();
 
                 //  移到后方、缩小、透明
-                Tweener t = rect.DOScale(0.2f, 1f);
+                Tweener t = cardRect.DOScale(0.2f, 1f);
                 _originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
 
                 //  获取位置
@@ -368,11 +365,20 @@ namespace MagicWall
                 Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX
                     , oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
-                Tweener t2 = rect.DOAnchorPos3D(to, 1f)
+                Tweener t2 = cardRect.DOAnchorPos3D(to, 1f)
                     .OnComplete(() =>
                     {
-                        //  使卡片消失na 
-                        OriginAgent.DoRecoverAfterChoose();
+                        // 再次判断场景是否已经改变
+                        if (_sceneIndex == _manager.SceneIndex)
+                        {
+                            // 恢复
+                            OriginAgent.DoRecoverAfterChoose();
+                        }
+                        else {
+                            OriginAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                        }
+
+                        // 无论如何，该卡片都会进行销毁
 
                         //_agentManager.RemoveItemFromEffectItems(this);
                         _cardStatus = CardStatusEnum.OBSOLETE;
@@ -400,15 +406,12 @@ namespace MagicWall
                     {
                         _cardStatus = CardStatusEnum.OBSOLETE;
 
-                        Debug.Log("删除完毕");
+                        OriginAgent.flockStatus = FlockStatusEnum.OBSOLETE;
 
-                        //_agentManager.RemoveItemFromEffectItems(this);
+                        Debug.Log("删除完毕");
+                        
                     });
 
-                // 清除原来的flock
-
-                // 搜索后点开可能存在问题
-                _originAgent?.DestoryAgency();
 
             }
 

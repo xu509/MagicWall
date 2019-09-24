@@ -62,24 +62,27 @@ namespace MagicWall {
 
             _scrollItemNumber = 0;
 
-            IDaoService daoService = _manager.daoService;
-            EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(_dataId);
+            //IDaoService daoService = _manager.daoService;
+            //EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(_dataId);
 
 
             //  设置标题
-            _title.text = enterpriseDetail.Enterprise.Name;
+            _title.text = _cardData.Title;
 
             ////  设置描述
             //UpdateDescription(enterpriseDetail.Enterprise.Description);
 
             // 设置喜欢数
-            Likes = enterpriseDetail.Enterprise.likes;
+            //Likes = enterpriseDetail.Enterprise.likes;
 
             //// 判断几个类型
-            _hasCatalog = enterpriseDetail.catalog.Count > 0;
-            _hasProduct = enterpriseDetail.products.Count > 0;
-            _hasActivity = enterpriseDetail.activities.Count > 0;
-            _hasVideo = enterpriseDetail.videos.Count > 0;
+
+            
+
+            _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
+            _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
+            _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
+            _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
 
             int index = 0;
 
@@ -92,13 +95,46 @@ namespace MagicWall {
             item2.Category = CrossCardCategoryEnum.INDEX;
             item2.Index = index;
             item2.Title = "公司名片";
-            item2.Description = enterpriseDetail.Enterprise.Description;
+            item2.Description = _cardData.Description;
             item2.magicWallManager = _manager;
+
+            ScrollData sd = new ScrollData();
+            sd.Cover = _cardData.Cover;
+            sd.Description = _cardData.Description;
+
+            var cces = TransferScrollData(sd);
+            List<CrossCardCellData> indexData = new List<CrossCardCellData>();
+            indexData.Add(cces);
+            item2.Datas = indexData;
+
             index++;
             _cellDatas.Add(item2);
 
             _scrollItemNumber++;
             //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
+
+            if (_hasCatalog)
+            {
+                //Debug.Log("_hasCatalog");
+
+                CrossCardCellData item = new CrossCardCellData();
+                item.Category = CrossCardCategoryEnum.CATALOG;
+                item.crossCardAgent = this;
+                item.EnvId = _dataId;
+                item.Likes = Likes;
+                item.Index = index;
+                item.Title = "CATALOG";
+                item.magicWallManager = _manager;
+
+                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.CataLog]);
+
+                _cellDatas.Add(item);
+
+                _scrollItemNumber++;
+                index++;
+                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
+            }
+
 
             if (_hasProduct)
             {
@@ -111,6 +147,7 @@ namespace MagicWall {
                 item.Index = index;
                 item.Title = "产品";
                 item.magicWallManager = _manager;
+                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Product]);
                 _cellDatas.Add(item);
                 _scrollItemNumber++;
                 index++;
@@ -128,6 +165,7 @@ namespace MagicWall {
                 item.Index = index;
                 item.Title = "活动";
                 item.magicWallManager = _manager;
+                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Activity]);
                 _cellDatas.Add(item);
                 _scrollItemNumber++;
                 index++;
@@ -146,6 +184,7 @@ namespace MagicWall {
                 item.Index = index;
                 item.Title = "视频";
                 item.magicWallManager = _manager;
+                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Video]);
                 _cellDatas.Add(item);
 
                 _scrollItemNumber++;
@@ -153,24 +192,7 @@ namespace MagicWall {
                 //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
             }
 
-            if (_hasCatalog)
-            {
-                //Debug.Log("_hasCatalog");
 
-                CrossCardCellData item = new CrossCardCellData();
-                item.Category = CrossCardCategoryEnum.CATALOG;
-                item.crossCardAgent = this;
-                item.EnvId = _dataId;
-                item.Likes = Likes;
-                item.Index = index;
-                item.Title = "CATALOG";
-                item.magicWallManager = _manager;
-                _cellDatas.Add(item);
-
-                _scrollItemNumber++;
-                index++;
-                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
-            }
 
 
             sw.Start();
@@ -356,6 +378,57 @@ namespace MagicWall {
             InitCrossCardAgent();
 
         }
+
+
+        private List<CrossCardCellData> Transfer(List<ScrollData> scrollDatas) {
+            List<CrossCardCellData> crossCardCellDatas = new List<CrossCardCellData>();
+
+            for (int i = 0; i < scrollDatas.Count; i++) {
+                CrossCardCellData crossCardCellData = new CrossCardCellData();
+                crossCardCellData.Image = scrollDatas[i].Cover;
+                crossCardCellData.Index = i;
+                crossCardCellData.Description = scrollDatas[i].Description;
+                if (scrollDatas[i].Type == 0)
+                {
+                    crossCardCellData.IsImage = true;
+                }
+                else {
+                    crossCardCellData.IsImage = false;
+                    crossCardCellData.VideoUrl = scrollDatas[i].Src;
+                }
+
+                crossCardCellData.magicWallManager = _manager;
+
+                crossCardCellDatas.Add(crossCardCellData);
+            }
+
+
+            return crossCardCellDatas;
+        }
+
+        private CrossCardCellData TransferScrollData(ScrollData scrollData)
+        {
+
+            CrossCardCellData crossCardCellData = new CrossCardCellData();
+            crossCardCellData.Image = scrollData.Cover;
+            crossCardCellData.Index = 0;
+            crossCardCellData.Description = scrollData.Description;
+            if (scrollData.Type == 0)
+            {
+                crossCardCellData.IsImage = true;
+            }
+            else
+            {
+                crossCardCellData.IsImage = false;
+                crossCardCellData.VideoUrl = scrollData.Src;
+            }
+
+            crossCardCellData.magicWallManager = _manager;
+
+
+            return crossCardCellData;
+        }
+
 
 
     }

@@ -17,6 +17,7 @@ namespace MagicWall {
             int row,int column,float width,float height, FlockData flockData)
         {
             FlockAgent _flockAgent = manager.agentManager.GetFlockAgent(parent);
+            _flockAgent.name = "["+ manager.SceneIndex + "]Agent" + row + "-" + column;
 
             //  定面板位置
             Vector2 ori_position = new Vector2(ori_x, ori_y);
@@ -25,7 +26,7 @@ namespace MagicWall {
                 row, column, width, height, flockData.GetId(), flockData.GetCover(), false,
                 flockData.GetDataType(), parent);
 
-            manager.agentManager.AddItem(_flockAgent);
+            manager.agentManager.AddItem(_flockAgent);            
 
             //CardAgent cardAgent = Instantiate(cardPrefab, parent);
 

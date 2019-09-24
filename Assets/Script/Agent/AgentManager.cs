@@ -125,7 +125,7 @@ namespace MagicWall
         //
         public void RecycleAgent(FlockAgent agent)
         {
-            Debug.Log("Recycle Agent : " + agent.gameObject);
+            //Debug.Log("Recycle Agent : " + agent.gameObject + "[" + agent.SceneIndex + "]") ;
 
             agent.Reset();
             _agents.Remove(agent);
@@ -138,7 +138,9 @@ namespace MagicWall
         public void ClearAll()
         {
             for (int i = 0; i < _agents.Count; i++) {
-                _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                if (_agents[i].flockStatus != FlockStatusEnum.HIDE) {
+                    _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                }
             }            
         }
 

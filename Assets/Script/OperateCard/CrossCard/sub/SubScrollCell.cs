@@ -57,6 +57,13 @@ namespace MagicWall
 
         public override void UpdateContent(CrossCardCellData cellData)
         {
+            if (cellData == null) {
+                Debug.Log("cell data = null");
+            }
+
+            if (cellData.Image == null) {
+                Debug.Log("cell data image = null");
+            }
 
             _manager = cellData.magicWallManager;
 

@@ -127,8 +127,6 @@ namespace MagicWall
         public Vector2 OriVector2 { set { _oriVector2 = value; } get { return _oriVector2; } }
         public Vector2 GenVector2 { set { _genVector2 = value; } get { return _genVector2; } }
         public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
-        public bool IsChoosing { set { _isChoosing = value; } get { return _isChoosing; } }
-        public bool IsRecovering { set { isRecovering = value; } get { return isRecovering; } }
         public CardAgent GetCardAgent { get { return _cardAgent; } }
         public int SceneIndex { set { _sceneIndex = value; } get { return _sceneIndex; } }
         #endregion
@@ -202,7 +200,8 @@ namespace MagicWall
             GetComponent<Image>().sprite = SpriteResource.Instance.GetData(AppUtils.GetFullFileAddressOfImage(DataImg));
 
             // 定义 agent 的名字
-            _sceneIndex = _manager.SceneIndex;
+            int si = _manager.SceneIndex;
+            _sceneIndex = si + 0;
 
             _agentContainerType = agentContainerType;
 
@@ -529,13 +528,13 @@ namespace MagicWall
         {
             flockStatus = FlockStatusEnum.RECOVER;            
 
-            // 如果组件已不在原场景，则不进行恢复
-            if (_sceneIndex != _manager.SceneIndex)
-            {
-                gameObject.SetActive(false);
-                DestoryAgency();
-                return;
-            }
+            //// 如果组件已不在原场景，则不进行恢复
+            //if (_sceneIndex != _manager.SceneIndex)
+            //{
+            //    gameObject.SetActive(false);
+            //    DestoryAgency();
+            //    return;
+            //}
 
             //  将原组件启用
             gameObject.SetActive(true);
@@ -698,8 +697,6 @@ namespace MagicWall
             _oriVector2 = Vector2.zero;
             _nextVector2 = Vector2.zero;
 
-            IsRecovering = false;
-            IsChoosing = false;
             _flockStatus = FlockStatusEnum.PREPARED;
 
             

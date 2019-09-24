@@ -62,9 +62,10 @@ namespace MagicWall
 
             gameObject.name = "CCSC" + cellData.Index + " - " + cellData.Category;
 
-            IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
-                .Generate(cellData.EnvId, cellData.Category, cellData.crossCardAgent);
+            //IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
+            //    .Generate(cellData.EnvId, cellData.Category, cellData.crossCardAgent);
 
+            var datas = cellData.Datas;
 
             System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();
             sw3.Start();
