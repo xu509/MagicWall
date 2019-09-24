@@ -120,6 +120,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &543480276 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6427589682069815309, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &543480278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543480276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be8ba2eea05fa542b4ddeb10bf9c7ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &553118714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -224,7 +242,14 @@ PrefabInstance:
       propertyPath: _magicSceneManager
       value: 
       objectReference: {fileID: 1008701219}
-    m_RemovedComponents: []
+    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
+        type: 2}
+    m_RemovedComponents:
+    - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
 --- !u!114 &1008701219 stripped
 MonoBehaviour:

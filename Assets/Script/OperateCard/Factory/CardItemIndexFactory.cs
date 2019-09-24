@@ -2,37 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardItemIndexFactory : CardItemFactory
+namespace MagicWall
 {
-
-    MagicWallManager _manager;
-
-    public CardItemIndexFactory(MagicWallManager manager)
+    public class CardItemIndexFactory : CardItemFactory
     {
-        _manager = manager;
-    }
 
-    //
-    //  生存公司卡片
-    //
-    public IList<CrossCardCellData> Generator(int id,CardAgent cardAgent)
-    {
-        List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
+        MagicWallManager _manager;
 
-        Enterprise e = _manager.daoService.GetEnterpriseById(id);
-        CrossCardCellData cd = new CrossCardCellData();
+        public CardItemIndexFactory(MagicWallManager manager)
+        {
+            _manager = manager;
+        }
 
-        string address = e.Business_card;
-        cd.Image = address;
-        cd.Description = e.Description;
-        cd.magicWallManager = _manager;
+        //
+        //  生存公司卡片
+        //
+        public IList<CrossCardCellData> Generator(int id, CardAgent cardAgent)
+        {
+            List<CrossCardCellData> _cellDatas = new List<CrossCardCellData>();
 
-        cd.IsImage = true;
-        cd.Id = e.Ent_id;
-        cd.Category = CrossCardCategoryEnum.INDEX;
-        cd.crossCardAgent = cardAgent as CrossCardAgent;
+            Enterprise e = _manager.daoService.GetEnterpriseById(id);
+            CrossCardCellData cd = new CrossCardCellData();
 
-        _cellDatas.Add(cd);
-        return _cellDatas;
+            string address = e.Business_card;
+            cd.Image = address;
+            cd.Description = e.Description;
+            cd.magicWallManager = _manager;
+
+            cd.IsImage = true;
+            cd.Id = e.Ent_id;
+            cd.Category = CrossCardCategoryEnum.INDEX;
+            cd.crossCardAgent = cardAgent as CrossCardAgent;
+
+            _cellDatas.Add(cd);
+            return _cellDatas;
+        }
     }
 }

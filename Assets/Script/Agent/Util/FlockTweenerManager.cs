@@ -3,55 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-
-/// <summary>
-/// 滑块的DoTween 动画管理
-/// </summary>
-public class FlockTweenerManager
+namespace MagicWall
 {
     /// <summary>
-    ///     卡片 —— 完全删除 —— 移动至后方动画
+    /// 滑块的DoTween 动画管理
     /// </summary>
-    public static string CardAgent_Destory_Second_DOAnchorPos3D = "CardAgentDestorySecondDOAnchorPos3D";
+    public class FlockTweenerManager
+    {
+        /// <summary>
+        ///     卡片 —— 完全删除 —— 移动至后方动画
+        /// </summary>
+        public static string CardAgent_Destory_Second_DOAnchorPos3D = "CardAgentDestorySecondDOAnchorPos3D";
 
-    public static string CardAgent_Destory_Second_DOScale_IsOrigin = "CardAgentDestorySecondDOScaleIsOrigin";
-    public static string CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin = "CardAgentDestorySecondDOAnchorPos3DIsOrigin";
+        public static string CardAgent_Destory_Second_DOScale_IsOrigin = "CardAgentDestorySecondDOScaleIsOrigin";
+        public static string CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin = "CardAgentDestorySecondDOAnchorPos3DIsOrigin";
 
-    public static string FlockAgent_DoRecoverAfterChoose_DOScale = "FlockAgentDoRecoverAfterChooseDOScale";
-    public static string FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D = "FlockAgentDoRecoverAfterChooseDOAnchorPos3D";
-    public static string StarEffect_Starting_DOAnchorPos3DZ = "StarEffectStartingDOAnchorPos3DZ";
-    public static string StarEffect_Starting_DOFade_AtStart = "StarEffectStartingDOFadeAtStart";
-    public static string StarEffect_Starting_DOFade_AtEnd = "StarEffectStartingDOFadeAtEnd";
+        public static string FlockAgent_DoRecoverAfterChoose_DOScale = "FlockAgentDoRecoverAfterChooseDOScale";
+        public static string FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D = "FlockAgentDoRecoverAfterChooseDOAnchorPos3D";
+        public static string StarEffect_Starting_DOAnchorPos3DZ = "StarEffectStartingDOAnchorPos3DZ";
+        public static string StarEffect_Starting_DOFade_AtStart = "StarEffectStartingDOFadeAtStart";
+        public static string StarEffect_Starting_DOFade_AtEnd = "StarEffectStartingDOFadeAtEnd";
 
-    private Dictionary<string, Tweener> _tweenerMap;
+        private Dictionary<string, Tweener> _tweenerMap;
 
-    public FlockTweenerManager() {
-        _tweenerMap = new Dictionary<string, Tweener>();
-    }
-
-    public void Add(string key , Tweener tweener) {
-        if (_tweenerMap.ContainsKey(key))
+        public FlockTweenerManager()
         {
-            _tweenerMap[key].Kill();
-            _tweenerMap[key] = tweener;
+            _tweenerMap = new Dictionary<string, Tweener>();
         }
-        else {
-            _tweenerMap.Add(key, tweener);
-        }
-    }
 
-
-
-
-    public void Reset() {
-
-        foreach (KeyValuePair<string, Tweener> kvp in _tweenerMap)
+        public void Add(string key, Tweener tweener)
         {
-            if (kvp.Value.IsActive()) {
-                kvp.Value.Kill();
+            if (_tweenerMap.ContainsKey(key))
+            {
+                _tweenerMap[key].Kill();
+                _tweenerMap[key] = tweener;
+            }
+            else
+            {
+                _tweenerMap.Add(key, tweener);
             }
         }
+
+
+
+
+        public void Reset()
+        {
+
+            foreach (KeyValuePair<string, Tweener> kvp in _tweenerMap)
+            {
+                if (kvp.Value.IsActive())
+                {
+                    kvp.Value.Kill();
+                }
+            }
+        }
+
+
     }
-
-
 }

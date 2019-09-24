@@ -3,33 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IScene
+namespace MagicWall
 {
+    public interface IScene
+    {
 
-    void Init(SceneConfig sceneConfig, MagicWallManager manager);
-    //
-    //	启动,返回值表明场景是否正在运行,当为false时表示该场景已运行完毕
-    //
-    bool Run();
+        void Init(SceneConfig sceneConfig, MagicWallManager manager);
+        //
+        //	启动,返回值表明场景是否正在运行,当为false时表示该场景已运行完毕
+        //
+        bool Run();
 
-    void SetOnRunCompleted(Action onRunCompleted);
+        void SetOnRunCompleted(Action onRunCompleted);
 
-    void OnRunCompleted();
+        void OnRunCompleted();
 
-    void RunEnd();
+        void RunEnd();
 
-    void SetOnRunEndCompleted(Action onRunEndCompleted);
+        void SetOnRunEndCompleted(Action onRunEndCompleted);
 
-    void OnRunEndCompleted();
-
-
-    //
-    //  获取内容类型
-    //
-    DataType GetDataType();
+        void OnRunEndCompleted();
 
 
-    MagicSceneEnum GetSceneStatus();
+        //
+        //  获取内容类型
+        //
+        DataTypeEnum GetDataType();
+
+
+        MagicSceneEnum GetSceneStatus();
+
+    }
 
 }
-

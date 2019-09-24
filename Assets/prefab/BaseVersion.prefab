@@ -120,7 +120,6 @@ GameObject:
   - component: {fileID: 3095498651678668687}
   - component: {fileID: 3095498651678668684}
   - component: {fileID: 3095498651678668677}
-  - component: {fileID: 3095498651678668676}
   - component: {fileID: 3095498651678668679}
   m_Layer: 0
   m_Name: ManagerAgent
@@ -211,18 +210,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98ebf010b61abdf4ebbc4d0568f62d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3095498651678668676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3095498651678668681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be8ba2eea05fa542b4ddeb10bf9c7ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3095498651678668679
@@ -1466,7 +1453,7 @@ MonoBehaviour:
   _mockDaoService: {fileID: 6471648411595723779}
   _mockFeiyueDaoService: {fileID: 497914293278708638}
   _realDaoService: {fileID: 7490234408961536810}
-  _globalData: {fileID: 3095498651678668676}
+  _globalData: {fileID: 5510444976479438623}
   _flockBehaviorConfig: {fileID: 11400000, guid: a2c6e530e82e65748b04c32644d76d1d,
     type: 2}
   _moveBehaviourFactory: {fileID: 3095498651678668679}
@@ -1737,6 +1724,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7190124302901047408}
   - component: {fileID: 7656926779250438374}
+  - component: {fileID: 3209679092688163136}
   m_Layer: 0
   m_Name: FlockCard
   m_TagString: Untagged
@@ -1772,16 +1760,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _flockAgentPrefab: {fileID: 3679100315635514291, guid: dca75ace6c0d1e54eaa146ecda9b9789,
     type: 3}
-  _crossCardgentPrefab: {fileID: 8137593796822784393, guid: 0005f6786f0b4884baf9fe2d95708c5b,
-    type: 3}
-  _sliceCardgentPrefab: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
-    type: 3}
-  _singleCardPrefab: {fileID: 4657646210638118528, guid: e1647855844ec554fa6d89fff61dbb14,
-    type: 3}
   _flockContainer: {fileID: 3095498653422753381}
   _backContainer: {fileID: 3095498652523737743}
   _starContainer: {fileID: 3095498653799653434}
-  _cardContainer: {fileID: 3095498653154776513}
+  _flockAgentFactoryInstance: {fileID: 3209679092688163136}
+--- !u!114 &3209679092688163136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250251117720265415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f31132948077649946e22b33b2ce3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5115759583094592442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1910,6 +1904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5529049318395092345}
+  - component: {fileID: 5510444976479438623}
   m_Layer: 0
   m_Name: Config
   m_TagString: Untagged
@@ -1931,6 +1926,18 @@ Transform:
   m_Father: {fileID: 3095498651678668685}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5510444976479438623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6427589682069815309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be8ba2eea05fa542b4ddeb10bf9c7ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8887958054628518254
 GameObject:
   m_ObjectHideFlags: 0

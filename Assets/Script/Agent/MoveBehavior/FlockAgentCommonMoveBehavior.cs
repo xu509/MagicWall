@@ -3,90 +3,93 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
+namespace MagicWall
 {
-    public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance,
-        float width, float height, MagicWallManager manager)
+    public class FlockAgentCommonMoveBehavior : IFlockAgentMoveBehavior
     {
-        if (distance > effectDistance)
+        public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance,
+            float width, float height, MagicWallManager manager)
         {
-            return Vector2.zero;
-        }
-        else {
-            // 获取offset_x;offset_y
-            float offset_x = Mathf.Abs(positionWithOffset.x - targetPosition.x);
-            float offset_y = Mathf.Abs(positionWithOffset.y - targetPosition.y);
-
-            //
-            //  上下移动的偏差值
-            //
-            float move_offset_y = offset_y * ((height / 2) / effectDistance);
-            move_offset_y += height / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
-
-            float move_offset_x = offset_x * ((width / 2) / effectDistance);
-            move_offset_x += width / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
-
-            float to_y, to_x;
-            if (positionWithOffset.y > targetPosition.y)
+            if (distance > effectDistance)
             {
-                to_y = position.y + move_offset_y;
-            }
-            else if (positionWithOffset.y < targetPosition.y)
-            {
-                to_y = position.y - move_offset_y;
+                return Vector2.zero;
             }
             else
             {
-                to_y = position.y;
-            }
+                // 获取offset_x;offset_y
+                float offset_x = Mathf.Abs(positionWithOffset.x - targetPosition.x);
+                float offset_y = Mathf.Abs(positionWithOffset.y - targetPosition.y);
 
-            if (positionWithOffset.x > targetPosition.x)
-            {
-                to_x = position.x + move_offset_x;
+                //
+                //  上下移动的偏差值
+                //
+                float move_offset_y = offset_y * ((height / 2) / effectDistance);
+                move_offset_y += height / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
+
+                float move_offset_x = offset_x * ((width / 2) / effectDistance);
+                move_offset_x += width / 10 * manager.flockBehaviorConfig.CommonOffsetInfluenceFactor;
+
+                float to_y, to_x;
+                if (positionWithOffset.y > targetPosition.y)
+                {
+                    to_y = position.y + move_offset_y;
+                }
+                else if (positionWithOffset.y < targetPosition.y)
+                {
+                    to_y = position.y - move_offset_y;
+                }
+                else
+                {
+                    to_y = position.y;
+                }
+
+                if (positionWithOffset.x > targetPosition.x)
+                {
+                    to_x = position.x + move_offset_x;
+                }
+                else if (positionWithOffset.x < targetPosition.x)
+                {
+                    to_x = position.x - move_offset_x;
+                }
+                else
+                {
+                    to_x = position.x;
+                }
+
+                Vector2 to = new Vector2(to_x, to_y); //目标位置
+
+                Func<float, float> defaultEasingFunction = EasingFunction.Get(manager.flockBehaviorConfig.CommonEaseEnum);
+                float k = defaultEasingFunction((effectDistance - distance) / effectDistance);
+
+                Vector2 r = Vector2.Lerp(position, to, k);
+
+                return r;
             }
-            else if (positionWithOffset.x < targetPosition.x)
+        }
+
+        public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition,
+            float distance, float effectDistance, float width, float height, MagicWallManager manager)
+        {
+            Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.CommonScaleEaseEnum);
+
+            Vector2 panelOffset = positionWithOffset - position;
+
+            float offset = effectDistance - distance;
+
+            if (distance > effectDistance)
             {
-                to_x = position.x - move_offset_x;
+                return 1f;
             }
             else
             {
-                to_x = position.x;
+                float maxScale = 1f;
+                float minScale = 0.1f;
+
+                float k = offset / effectDistance;
+
+                float s = Mathf.Lerp(maxScale, minScale, easeFun(k));
+                return s;
             }
-
-            Vector2 to = new Vector2(to_x, to_y); //目标位置
-
-            Func<float, float> defaultEasingFunction = EasingFunction.Get(manager.flockBehaviorConfig.CommonEaseEnum);
-            float k = defaultEasingFunction((effectDistance - distance) / effectDistance);
-
-            Vector2 r = Vector2.Lerp(position, to, k);
-
-            return r;
-        }
-    }
-
-    public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition,
-        float distance, float effectDistance, float width, float height, MagicWallManager manager)
-    {
-        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.CommonScaleEaseEnum);
-
-        Vector2 panelOffset = positionWithOffset - position;
-
-        float offset = effectDistance - distance;
-
-        if (distance > effectDistance)
-        {
-            return 1f;
-        }
-        else
-        {
-            float maxScale = 1f;
-            float minScale = 0.1f;
-
-            float k = offset / effectDistance;
-
-            float s = Mathf.Lerp(maxScale, minScale, easeFun(k));
-            return s;
         }
     }
 }

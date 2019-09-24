@@ -5,61 +5,72 @@ using UnityEngine.SceneManagement;
 /// 只在8屏时用
 /// 用于判断是否为定制屏幕
 /// </summary>
-public class MainManager : MonoBehaviour
+namespace MagicWall
 {
-    [SerializeField] SceneType _sceneType;
-
-    [SerializeField] bool isMock;
-    [SerializeField] MockDaoService _mockDaoService;
-    [SerializeField] DaoService _daoService;
-
-
-    // Start is called before the first frame update
-    void Start()
+    public class MainManager : MonoBehaviour
     {
-        // 加载配置表
-        IDaoService daoService;
+        [SerializeField] SceneType _sceneType;
 
-        if (isMock)
+        [SerializeField] bool isMock;
+        [SerializeField] MockDaoService _mockDaoService;
+        [SerializeField] DaoService _daoService;
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            daoService = _mockDaoService;
-        }
-        else {
-            daoService = _daoService;
-        }
+            // 加载配置表
+            IDaoService daoService;
 
-        bool isCustom = daoService.IsCustom();
-
-        // 加载场景
-        LoadScene(_sceneType, isCustom);
-    }
-
-    private void LoadScene(SceneType sceneType,bool isCustom) {
-        if (sceneType == SceneType.Eight) {
-            if (isCustom) {
-                SceneManager.LoadScene("CustomScene");
-
-            } else {
-                SceneManager.LoadScene("SampleScene");
-            }
-        }
-
-        if (sceneType == SceneType.Five) {
-            if (isCustom)
+            if (isMock)
             {
-                SceneManager.LoadScene("CustomSceneFive");
+                daoService = _mockDaoService;
             }
             else
             {
-                SceneManager.LoadScene("MagicWallFive");
+                daoService = _daoService;
+            }
+
+            bool isCustom = daoService.IsCustom();
+
+            // 加载场景
+            LoadScene(_sceneType, isCustom);
+        }
+
+        private void LoadScene(SceneType sceneType, bool isCustom)
+        {
+            if (sceneType == SceneType.Eight)
+            {
+                if (isCustom)
+                {
+                    SceneManager.LoadScene("CustomScene");
+
+                }
+                else
+                {
+                    SceneManager.LoadScene("SampleScene");
+                }
+            }
+
+            if (sceneType == SceneType.Five)
+            {
+                if (isCustom)
+                {
+                    SceneManager.LoadScene("CustomSceneFive");
+                }
+                else
+                {
+                    SceneManager.LoadScene("MagicWallFive");
+                }
             }
         }
+
+
+
     }
 
-
-
-}
-
-public enum SceneType {
-    Eight,Five
+    public enum SceneType
+    {
+        Eight, Five
+    }
 }

@@ -5,34 +5,40 @@ using UnityEngine;
 /// <summary>
 ///     移动工厂
 /// </summary>
-public class MoveBehaviourFactory : MonoBehaviour
+namespace MagicWall
 {
-    private IFlockAgentMoveBehavior _commonMoveBehavior;
-    private IFlockAgentMoveBehavior _roundMoveBehavior;
-
-    // Start is called before the first frame update
-    void Start()
+    public class MoveBehaviourFactory : MonoBehaviour
     {
-        _commonMoveBehavior = new FlockAgentCommonMoveBehavior();
-        _roundMoveBehavior = new FlockAgentRoundMoveBehavior();
+        private IFlockAgentMoveBehavior _commonMoveBehavior;
+        private IFlockAgentMoveBehavior _roundMoveBehavior;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            _commonMoveBehavior = new FlockAgentCommonMoveBehavior();
+            _roundMoveBehavior = new FlockAgentRoundMoveBehavior();
+        }
+
+        public IFlockAgentMoveBehavior GetMoveBehavior(MoveBehaviourType moveBehaviourType)
+        {
+            if (moveBehaviourType == MoveBehaviourType.Common)
+            {
+                return _commonMoveBehavior;
+            }
+            else if (moveBehaviourType == MoveBehaviourType.Round)
+            {
+                return _roundMoveBehavior;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
-    public IFlockAgentMoveBehavior GetMoveBehavior(MoveBehaviourType moveBehaviourType) {
-        if (moveBehaviourType == MoveBehaviourType.Common)
-        {
-            return _commonMoveBehavior;
-        }
-        else if (moveBehaviourType == MoveBehaviourType.Round)
-        {
-            return _roundMoveBehavior;
-        }
-        else {
-            return null;
-        }
+    public enum MoveBehaviourType
+    {
+        Common, // 正常的类型
+        Round   // 圆形
     }
-}
-
-public enum MoveBehaviourType {
-    Common, // 正常的类型
-    Round   // 圆形
 }

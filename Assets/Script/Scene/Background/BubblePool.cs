@@ -5,113 +5,122 @@ using UnityEngine;
 /// <summary>
 /// 气球对象池
 /// </summary>
-public class BubblePool<T> where T:BubbleAgent
+namespace MagicWall
 {
-    #region 单例
-    private static BubblePool<T> instance;
-    private BubblePool(int initTotal)
+    public class BubblePool<T> where T : BubbleAgent
     {
-        _pool = new Queue<T>();
-        _initTotal = initTotal;
-    }
-    public static BubblePool<T> GetInstance(int total)
-    {
-        if (instance == null)
+        #region 单例
+        private static BubblePool<T> instance;
+        private BubblePool(int initTotal)
         {
-            instance = new BubblePool<T>(total);
+            _pool = new Queue<T>();
+            _initTotal = initTotal;
         }
-        return instance;
-    }
-
-    #endregion
-
-    /// <summary>
-    /// 对象池
-    /// </summary>
-    private Queue<T> _pool;
-
-
-    /// <summary>
-    /// 对象池总数
-    /// </summary>
-    private int _initTotal;
-
-
-    private T _t;
-    private RectTransform _container;
-
-
-    /// <summary>
-    /// 初始化
-    /// </summary>
-    public void Init(T t , RectTransform container) {
-        _t = t;
-        _container = container;
-
-        for (int i = 0; i < _initTotal; i++) {
-            Add();
-        }
-    }
-
-    /// <summary>
-    /// 从对象池中获取对象
-    /// </summary>
-    /// <param name="objName"></param>
-    /// <returns></returns>
-    public T GetObj()
-    {
-        // 如果对象池内无剩余可用对象，则再生成一个
-        if (_pool.Count == 0)
+        public static BubblePool<T> GetInstance(int total)
         {
-            Add();
-            var result = _pool.Dequeue();
-            result.gameObject.SetActive(true);
-            return result;
+            if (instance == null)
+            {
+                instance = new BubblePool<T>(total);
+            }
+            return instance;
         }
-        else {
-            var result = _pool.Dequeue();
-            result.gameObject.SetActive(true);
-            return result;
+
+        #endregion
+
+        /// <summary>
+        /// 对象池
+        /// </summary>
+        private Queue<T> _pool;
+
+
+        /// <summary>
+        /// 对象池总数
+        /// </summary>
+        private int _initTotal;
+
+
+        private T _t;
+        private RectTransform _container;
+
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public void Init(T t, RectTransform container)
+        {
+            _t = t;
+            _container = container;
+
+            for (int i = 0; i < _initTotal; i++)
+            {
+                Add();
+            }
         }
+
+        /// <summary>
+        /// 从对象池中获取对象
+        /// </summary>
+        /// <param name="objName"></param>
+        /// <returns></returns>
+        public T GetObj()
+        {
+            // 如果对象池内无剩余可用对象，则再生成一个
+            if (_pool.Count == 0)
+            {
+                Add();
+                var result = _pool.Dequeue();
+                result.gameObject.SetActive(true);
+                return result;
+            }
+            else
+            {
+                var result = _pool.Dequeue();
+                result.gameObject.SetActive(true);
+                return result;
+            }
+        }
+
+
+        /// <summary>
+        /// 回收 / 增加 对象
+        /// </summary>
+        /// <param name="obj"></param>
+        public void ReleaseObj(T obj)
+        {
+            obj.gameObject.SetActive(false);
+            _pool.Enqueue(obj);
+        }
+
+
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+
+        private void Add()
+        {
+            T bubbleAgent = BackgroundInvoker<T>.CreateBubble(_t, _container);
+            bubbleAgent.gameObject.SetActive(false);
+            _pool.Enqueue(bubbleAgent);
+        }
+
+        public void Reset()
+        {
+            _pool = new Queue<T>();
+            _initTotal = 0;
+        }
+
     }
 
-
-    /// <summary>
-    /// 回收 / 增加 对象
-    /// </summary>
-    /// <param name="obj"></param>
-    public void ReleaseObj(T obj) {
-        obj.gameObject.SetActive(false);
-        _pool.Enqueue(obj);
-    }
-
-
-    void Start()
+    public enum BubbleType
     {
-
+        Clear, Dim
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
-    private void Add() {
-        T bubbleAgent = BackgroundInvoker<T>.CreateBubble(_t, _container);
-        bubbleAgent.gameObject.SetActive(false);
-        _pool.Enqueue(bubbleAgent);
-    }
-
-    public void Reset()
-    {
-        _pool = new Queue<T>();
-        _initTotal = 0;
-    }
-
-}
-
-public enum BubbleType {
-    Clear,Dim
 }

@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-interface CutEffectDestoryBehavior
+namespace MagicWall
 {
-    void Init(MagicWallManager manager,float destoryDurTime);
+    interface CutEffectDestoryBehavior
+    {
+        void Init(MagicWallManager manager, float destoryDurTime);
 
-	void Run();
+        void Run();
+    }
+
 }
-

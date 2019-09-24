@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class CutEffectConfigAsset
+namespace MagicWall
 {
-    [MenuItem("Assets/Create/MagicWall/CutEffect Config")]
-    public static void CreateAsset()
+    public class CutEffectConfigAsset
     {
-        ScriptableObjectUtility.CreateAsset<CutEffectConfig>();
-    }
+        [MenuItem("Assets/Create/MagicWall/CutEffect Config")]
+        public static void CreateAsset()
+        {
+            ScriptableObjectUtility.CreateAsset<CutEffectConfig>();
+        }
 
+    }
 }

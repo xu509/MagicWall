@@ -33,7 +33,6 @@ namespace MagicWall {
             // category
             if (catalogs != null && catalogs.Count > 0)
             {
-
                 List<ScrollData> categoryList = new List<ScrollData>();
                 for (int i = 0; i < catalogs.Count; i++) {
                     var cat = catalogs[i];
@@ -95,6 +94,7 @@ namespace MagicWall {
                 dics.Add(CrossCardNavType.Video, l);
             }
 
+            operateCardDataCross.ScrollDic = dics;
 
 
             return operateCardDataCross;

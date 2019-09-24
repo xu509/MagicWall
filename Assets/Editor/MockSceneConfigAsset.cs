@@ -1,11 +1,14 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class MockSceneConfigAsset 
+namespace MagicWall
 {
-    [MenuItem("Assets/Create/MagicWall/Mock Scene Config")]
-    public static void CreateAsset()
+    public class MockSceneConfigAsset
     {
-        ScriptableObjectUtility.CreateAsset<MockSceneConfig>();
+        [MenuItem("Assets/Create/MagicWall/Mock Scene Config")]
+        public static void CreateAsset()
+        {
+            ScriptableObjectUtility.CreateAsset<MockSceneConfig>();
+        }
     }
 }

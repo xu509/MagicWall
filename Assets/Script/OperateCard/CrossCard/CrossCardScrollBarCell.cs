@@ -5,119 +5,125 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 
-public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
+namespace MagicWall
 {
-    private CrossCardCellData _cellData;
-    string _title;  // 标题
-
-    RectTransform _signRect;
-
-    [SerializeField] int _index; //  索引
-    [SerializeField] Animator _animator;
-
-    //
-    //  Component Paramater 
-    //
-    [SerializeField] Text text;
-
-    static class AnimatorHash
+    public class CrossCardScrollBarCell : FancyScrollViewCell<CrossCardCellData, CrossCardScrollViewContext>
     {
-        public static readonly int Scroll = Animator.StringToHash("scroll");
-    }
+        private CrossCardCellData _cellData;
+        string _title;  // 标题
 
+        RectTransform _signRect;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+        [SerializeField] int _index; //  索引
+        [SerializeField] Animator _animator;
 
-        //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
+        //
+        //  Component Paramater 
+        //
+        [SerializeField] Text text;
 
-    }
-
-    public override void UpdateContent(CrossCardCellData cellData)
-    {
-        _cellData = cellData;
-
-        _index = cellData.Index;
-        _title = cellData.Title;
-
-        text.text = cellData.Title.ToString();
-        gameObject.name = "CrossCardScrollCell" + cellData.Index;
-
-
-
-    }
-
-    public override void UpdatePosition(float position)
-    {
-        currentPosition = position;
-        _animator.Play(AnimatorHash.Scroll, -1, position);
-        _animator.speed = 0;
-    }
-
-    float currentPosition = 0;
-
-    void OnEnable() => UpdatePosition(currentPosition);
-
-
-
-    /// <summary>
-    /// 更新 scroll bar 的左侧符号
-    /// </summary>
-    public void UpdateAsCurrent() {
-
-        // 每单个icon的宽度 ： anchors min -> max 0.1171
-        // else : min - 0.3003   ,  max - 0.7058
-
-
-        int length = _cellData.Title.Length;
-        if (length == 2)
+        static class AnimatorHash
         {
-            Vector2 anchor_min = new Vector2(0.297f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.368f, 0.7058f);
-
-            _signRect.anchorMax = anchor_max;
-            _signRect.anchorMin = anchor_min;
-            _signRect.DOAnchorPos(Vector2.zero, 1f);
+            public static readonly int Scroll = Animator.StringToHash("scroll");
         }
-        else if (length == 4)
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            //  anchors min (-0.15) | anchors max (-0.0329)
-            Vector2 anchor_min = new Vector2(0.209f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.28f, 0.7058f);
 
-            _signRect.anchorMax = anchor_max;
-            _signRect.anchorMin = anchor_min;
-            _signRect.DOAnchorPos(Vector2.zero,1f);
+            //button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
+
         }
-        else if (length == 7)
+
+        public override void UpdateContent(CrossCardCellData cellData)
         {
-            Vector2 anchor_min = new Vector2(0.180f, 0.3003f);
-            Vector2 anchor_max = new Vector2(0.251f, 0.7058f);
+            _cellData = cellData;
 
-            _signRect.anchorMax = anchor_max;
-            _signRect.anchorMin = anchor_min;
-            _signRect.DOAnchorPos(Vector2.zero, 1f);
+            _index = cellData.Index;
+            _title = cellData.Title;
+
+            text.text = cellData.Title.ToString();
+            gameObject.name = "CrossCardScrollCell" + cellData.Index;
+
+
+
         }
 
-        text.DOText(" | " + _cellData.Title + " | ", Time.deltaTime);
+        public override void UpdatePosition(float position)
+        {
+            currentPosition = position;
+            _animator.Play(AnimatorHash.Scroll, -1, position);
+            _animator.speed = 0;
+        }
 
-        //TODO 有时候text 改变无效
+        float currentPosition = 0;
+
+        void OnEnable() => UpdatePosition(currentPosition);
+
+
+
+        /// <summary>
+        /// 更新 scroll bar 的左侧符号
+        /// </summary>
+        public void UpdateAsCurrent()
+        {
+
+            // 每单个icon的宽度 ： anchors min -> max 0.1171
+            // else : min - 0.3003   ,  max - 0.7058
+
+
+            int length = _cellData.Title.Length;
+            if (length == 2)
+            {
+                Vector2 anchor_min = new Vector2(0.297f, 0.3003f);
+                Vector2 anchor_max = new Vector2(0.368f, 0.7058f);
+
+                _signRect.anchorMax = anchor_max;
+                _signRect.anchorMin = anchor_min;
+                _signRect.DOAnchorPos(Vector2.zero, 1f);
+            }
+            else if (length == 4)
+            {
+                //  anchors min (-0.15) | anchors max (-0.0329)
+                Vector2 anchor_min = new Vector2(0.209f, 0.3003f);
+                Vector2 anchor_max = new Vector2(0.28f, 0.7058f);
+
+                _signRect.anchorMax = anchor_max;
+                _signRect.anchorMin = anchor_min;
+                _signRect.DOAnchorPos(Vector2.zero, 1f);
+            }
+            else if (length == 7)
+            {
+                Vector2 anchor_min = new Vector2(0.180f, 0.3003f);
+                Vector2 anchor_max = new Vector2(0.251f, 0.7058f);
+
+                _signRect.anchorMax = anchor_max;
+                _signRect.anchorMin = anchor_min;
+                _signRect.DOAnchorPos(Vector2.zero, 1f);
+            }
+
+            text.DOText(" | " + _cellData.Title + " | ", Time.deltaTime);
+
+            //TODO 有时候text 改变无效
+        }
+
+
+        public void UpdateComponent(RectTransform rect)
+        {
+            _signRect = rect;
+
+            if (_index == Context.SelectedIndex)
+            {
+                UpdateAsCurrent();
+            }
+            else
+            {
+                text.text = _cellData.Title.ToString();
+            }
+        }
+
+
+
     }
-
-
-    public void UpdateComponent(RectTransform rect) {
-        _signRect = rect;
-
-        if (_index == Context.SelectedIndex)
-        {
-            UpdateAsCurrent();
-        }
-        else {
-            text.text = _cellData.Title.ToString();
-        }
-    }
-
-
-
 }

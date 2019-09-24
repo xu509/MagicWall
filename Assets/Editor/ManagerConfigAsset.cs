@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class ManagerConfigAsset
+namespace MagicWall
 {
-    [MenuItem("Assets/Create/MagicWall/Manager Config")]
-    public static void CreateAsset()
+    public class ManagerConfigAsset
     {
-        ScriptableObjectUtility.CreateAsset<ManagerConfig>();
-    }
+        [MenuItem("Assets/Create/MagicWall/Manager Config")]
+        public static void CreateAsset()
+        {
+            ScriptableObjectUtility.CreateAsset<ManagerConfig>();
+        }
 
+    }
 }

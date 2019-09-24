@@ -4,71 +4,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-///  
-/// </summary>
-public class FlockAgentRoundMoveBehavior : IFlockAgentMoveBehavior
+namespace MagicWall
 {
     /// <summary>
-    ///  将影响范围内的点直接衍生至已影响范围的半径
+    ///  
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="positionWithOffset"></param>
-    /// <param name="targetPosition"></param>
-    /// <param name="distance"></param>
-    /// <param name="effectDistance"></param>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    /// <param name="manager"></param>
-    /// <param name="InfluenceEaseEnum"></param>
-    /// <returns></returns>
-    public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, 
-        float effectDistance, float width, float height, MagicWallManager manager)
+    public class FlockAgentRoundMoveBehavior : IFlockAgentMoveBehavior
     {
-        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);       
-        Vector2 panelOffset = positionWithOffset - position;
-
-        if (distance > effectDistance)
+        /// <summary>
+        ///  将影响范围内的点直接衍生至已影响范围的半径
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="positionWithOffset"></param>
+        /// <param name="targetPosition"></param>
+        /// <param name="distance"></param>
+        /// <param name="effectDistance"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="manager"></param>
+        /// <param name="InfluenceEaseEnum"></param>
+        /// <returns></returns>
+        public Vector2 CalculatePosition(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance,
+            float effectDistance, float width, float height, MagicWallManager manager)
         {
-            return position;
+            Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);
+            Vector2 panelOffset = positionWithOffset - position;
+
+            if (distance > effectDistance)
+            {
+                return position;
+            }
+            else
+            {
+                // positionWithOffset 原位置
+                // targetPosition 目标位置
+                float k = manager.flockBehaviorConfig.RoundOffsetInfluenceFactor;
+                k = easeFun(k);
+
+                float e = (effectDistance - distance) * k + distance;
+
+                //Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * effectDistance;
+                Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * e;
+
+                to = to - panelOffset;
+
+                return to;
+            }
         }
-        else {
-            // positionWithOffset 原位置
-            // targetPosition 目标位置
-            float k = manager.flockBehaviorConfig.RoundOffsetInfluenceFactor;
-            k = easeFun(k);
 
-            float e = (effectDistance - distance) * k + distance;
-
-            //Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * effectDistance;
-            Vector2 to = targetPosition + (positionWithOffset - targetPosition).normalized * e;
-
-            to = to - panelOffset;
-
-            return to;
-        }
-    }
-
-    public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance, float width, float height, MagicWallManager manager)
-    {
-        Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);
-
-        Vector2 panelOffset = positionWithOffset - position;
-
-        float offset = effectDistance - distance;
-
-        if (distance > effectDistance)
+        public float CalculateScale(Vector2 position, Vector2 positionWithOffset, Vector2 targetPosition, float distance, float effectDistance, float width, float height, MagicWallManager manager)
         {
-            return 1f;
-        }
-        else {
-            float maxScale = 1f;
-            float minScale = 0.1f;
+            Func<float, float> easeFun = EasingFunction.Get(manager.flockBehaviorConfig.RoundEaseEnum);
 
-            float k = easeFun(offset / effectDistance);
+            Vector2 panelOffset = positionWithOffset - position;
 
-            float s = Mathf.Lerp(maxScale, minScale, k);
-            return s;
+            float offset = effectDistance - distance;
+
+            if (distance > effectDistance)
+            {
+                return 1f;
+            }
+            else
+            {
+                float maxScale = 1f;
+                float minScale = 0.1f;
+
+                float k = easeFun(offset / effectDistance);
+
+                float s = Mathf.Lerp(maxScale, minScale, k);
+                return s;
+            }
         }
     }
 }

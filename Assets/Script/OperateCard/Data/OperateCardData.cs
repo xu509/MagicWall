@@ -20,6 +20,17 @@ namespace MagicWall{
         public string Description { set { description = value; } get { return description; } }
         public string Cover { set { cover = value; } get { return cover; } }
 
+        public override string ToString()
+        {
+            string str = "id : " + id + " ,"
+                + "dataType: " + dataType.ToString() + ","
+                + "title: " + title + ","
+                + "description: " + description + ","
+                + "cover: " + cover;
+            return str;
+        }
+
+
     }
 }
 

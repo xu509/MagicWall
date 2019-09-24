@@ -5,7 +5,11 @@ using UnityEngine;
 /// <summary>
 ///     数据基类
 /// </summary>
-public abstract class BaseData
-{
 
+namespace MagicWall
+{
+    public abstract class BaseData
+    {
+
+    }
 }

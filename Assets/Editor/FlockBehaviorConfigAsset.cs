@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class FlockBehaviorConfigAsset
+namespace MagicWall
 {
-    [MenuItem("Assets/Create/MagicWall/FlockBehavior Config")]
-    public static void CreateAsset()
+    public class FlockBehaviorConfigAsset
     {
-        ScriptableObjectUtility.CreateAsset<FlockBehaviorConfig>();
-    }
+        [MenuItem("Assets/Create/MagicWall/FlockBehavior Config")]
+        public static void CreateAsset()
+        {
+            ScriptableObjectUtility.CreateAsset<FlockBehaviorConfig>();
+        }
 
+    }
 }

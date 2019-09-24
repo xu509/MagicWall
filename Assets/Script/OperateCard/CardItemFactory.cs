@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface CardItemFactory 
+namespace MagicWall { 
+
+    public interface CardItemFactory
 {
-    IList<CrossCardCellData> Generator(int id,CardAgent cardAgent);
+    IList<CrossCardCellData> Generator(int id, CardAgent cardAgent);
+}
 }

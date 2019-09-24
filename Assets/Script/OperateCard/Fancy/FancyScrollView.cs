@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+namespace MagicWall
+{
     public abstract class FancyScrollView<TItemData, TContext> : MonoBehaviour where TContext : class, new()
     {
         [SerializeField, Range(float.Epsilon, 1f)] protected float cellSpacing = 0.2f;
@@ -149,3 +150,4 @@ using UnityEngine;
     {
     }
 
+}

@@ -6,20 +6,23 @@ using UnityEngine.UI;
 /// <summary>
 /// 模糊的背景球 Agent
 /// </summary>
-public class DimBubbleAgent : BubbleAgent
+namespace MagicWall
 {
-    public override float GetMoveFactor(float minFactor, float maxFactor)
+    public class DimBubbleAgent : BubbleAgent
     {
-        float range =  _scaleFactorMax - _scaleFactorMin;
-        float k = (_scaleFactor - _scaleFactorMin) / range;
+        public override float GetMoveFactor(float minFactor, float maxFactor)
+        {
+            float range = _scaleFactorMax - _scaleFactorMin;
+            float k = (_scaleFactor - _scaleFactorMin) / range;
 
-        float factor = Mathf.Lerp(minFactor, maxFactor, k);
+            float factor = Mathf.Lerp(minFactor, maxFactor, k);
 
-        return factor;
-    }
+            return factor;
+        }
 
-    public override void Raise(float moveFactor)
-    {
-        transform.Translate(new Vector3(0, Time.deltaTime * moveFactor, 0));
+        public override void Raise(float moveFactor)
+        {
+            transform.Translate(new Vector3(0, Time.deltaTime * moveFactor, 0));
+        }
     }
 }

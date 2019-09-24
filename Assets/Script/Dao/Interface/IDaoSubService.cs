@@ -2,12 +2,16 @@
 /// <summary>
 ///     次级数据接口
 /// </summary>
-public interface IDaoSubService
+
+namespace MagicWall
 {
-    
-    List<Enterprise> GetEnterprises(int themeId);
+    public interface IDaoSubService
+    {
 
-    List<Activity> GetActivities(int themeId);
+        List<Enterprise> GetEnterprises(int themeId);
 
-    List<Product> GetProducts(int themeId);
+        List<Activity> GetActivities(int themeId);
+
+        List<Product> GetProducts(int themeId);
+    }
 }

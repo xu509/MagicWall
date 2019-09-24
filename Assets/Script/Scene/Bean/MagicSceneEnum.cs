@@ -1,9 +1,12 @@
 ﻿
 
-public enum MagicSceneEnum
+namespace MagicWall
 {
-    Running,
-    RunningComplete,
-    RunningEnd,
-    RunningEndComplete
+    public enum MagicSceneEnum
+    {
+        Running,
+        RunningComplete,
+        RunningEnd,
+        RunningEndComplete
+    }
 }

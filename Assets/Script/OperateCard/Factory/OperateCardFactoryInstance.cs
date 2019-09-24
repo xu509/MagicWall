@@ -12,7 +12,8 @@ namespace MagicWall {
     public class OperateCardFactoryInstance : MonoBehaviour
     {
 
-        public static CardAgent Generate(MagicWallManager magicWallManager, Vector3 position, Transform parent, int dataId, DataTypeEnum dataType,FlockAgent refFlockAgent)
+        public static CardAgent Generate(MagicWallManager magicWallManager, Vector3 position
+            , Transform parent, int dataId, DataTypeEnum dataType,FlockAgent refFlockAgent)
         {
 
             IDaoService daoService = magicWallManager.daoService;
@@ -29,11 +30,19 @@ namespace MagicWall {
                 var products = daoService.GetProductsByEnvId(enterprise.Ent_id);
                 var videos = daoService.GetVideosByEnvId(enterprise.Ent_id);
                 var catalogs = daoService.GetCatalogs(enterprise.Ent_id);
-                OperateCardDataCross operateCardDataCross = EnterpriseAdapter.Transfer(enterprise, activities, products, videos, catalogs);
+                OperateCardDataCross operateCardDataCross = EnterpriseAdapter
+                    .Transfer(enterprise, activities, products, videos, catalogs);
+                Debug.Log(operateCardDataCross.ToString());
+
+
                 if (CheckIsSimple(operateCardDataCross))
                 {
                     cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
                     cardData = operateCardDataCross;
+
+                    Debug.Log("Generate 单个企业卡片");
+
+
                 }
                 else
                 {
@@ -41,6 +50,8 @@ namespace MagicWall {
                     // 单个卡片的逻辑
                     //OperateCardDataSingle operateCardDataSingle = new OperateCardDataSingle();
 
+                    Debug.Log("Generate 正常企业卡片");
+                    cardData = operateCardDataCross;
 
                     //cardData = (OperateCardDataSingle)operateCardDataCross;
                 }
@@ -66,7 +77,7 @@ namespace MagicWall {
             CardAgent cardAgent = Instantiate(cardPrefab, parent);
             cardAgent.GetComponent<Transform>().position = position;
             //cardAgent.DataId = dataId;
-            cardAgent.InitCardData(magicWallManager, dataId,dataType,position, refFlockAgent);
+            cardAgent.InitComponent(magicWallManager, dataId,dataType,position, refFlockAgent);
             cardAgent.InitData(cardData);
             return cardAgent;
         }

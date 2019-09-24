@@ -13,6 +13,20 @@ namespace MagicWall {
 
         public Dictionary<CrossCardNavType, List<ScrollData>> ScrollDic { set { scrollDic = value; } get { return scrollDic; } }
 
+
+        public override string ToString()
+        {
+            string str = base.ToString();
+
+            str += "\n";
+            if (scrollDic != null) {
+                str += "Scroll Dic : " + scrollDic.Count;
+            }
+            
+
+            return str;
+        }
+
     }
 
 }

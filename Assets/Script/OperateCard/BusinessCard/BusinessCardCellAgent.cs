@@ -5,66 +5,74 @@ using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
 
-public class BusinessCardCellAgent : MonoBehaviour
+namespace MagicWall
 {
-    int _index; // 当前索引，从0开始
-
-    private BusinessCardData _businessCardData;
-
-    private Vector2 backVectorRight;
-    private Vector2 backVectorLeft;
-
-    /// <summary>
-    ///  Component
-    /// </summary>
-    [SerializeField] Image _image;
-
-    void Awake() {
-        float w = GetComponent<RectTransform>().rect.width;
-        backVectorRight = new Vector2(w, 0);
-        backVectorLeft = new Vector2(-w, 0);
-    }
-
-
-    void Update()
+    public class BusinessCardCellAgent : MonoBehaviour
     {
-        
-    }
+        int _index; // 当前索引，从0开始
 
-    public void UpdateContent(BusinessCardData businessCardData) {
-        _businessCardData = businessCardData;
+        private BusinessCardData _businessCardData;
 
-        _image.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir +  businessCardData.address);
-        _index = businessCardData.Index;
+        private Vector2 backVectorRight;
+        private Vector2 backVectorLeft;
 
-        if (_index > 0) {
+        /// <summary>
+        ///  Component
+        /// </summary>
+        [SerializeField] Image _image;
 
-            GetComponent<RectTransform>().anchoredPosition = backVectorRight;
+        void Awake()
+        {
+            float w = GetComponent<RectTransform>().rect.width;
+            backVectorRight = new Vector2(w, 0);
+            backVectorLeft = new Vector2(-w, 0);
+        }
+
+
+        void Update()
+        {
 
         }
-        
-    }
 
-    public void GoFront(Action action) {
-        GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1f).OnComplete(() => DoGoFrontComplete(action));
-        GetComponent<RectTransform>().SetAsLastSibling();
-    }
+        public void UpdateContent(BusinessCardData businessCardData)
+        {
+            _businessCardData = businessCardData;
 
-    public void GoBackLeft()
-    {
-        GetComponent<RectTransform>().DOAnchorPos(backVectorLeft, 1f);
-    }
+            _image.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + businessCardData.address);
+            _index = businessCardData.Index;
 
-    public void GoBackRight()
-    {
-        GetComponent<RectTransform>().DOAnchorPos(backVectorRight, 1f);
-    }
+            if (_index > 0)
+            {
 
-    private void DoGoFrontComplete(Action action) {
-        action.Invoke();
+                GetComponent<RectTransform>().anchoredPosition = backVectorRight;
+
+            }
+
+        }
+
+        public void GoFront(Action action)
+        {
+            GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, 1f).OnComplete(() => DoGoFrontComplete(action));
+            GetComponent<RectTransform>().SetAsLastSibling();
+        }
+
+        public void GoBackLeft()
+        {
+            GetComponent<RectTransform>().DOAnchorPos(backVectorLeft, 1f);
+        }
+
+        public void GoBackRight()
+        {
+            GetComponent<RectTransform>().DOAnchorPos(backVectorRight, 1f);
+        }
+
+        private void DoGoFrontComplete(Action action)
+        {
+            action.Invoke();
+        }
+
+
     }
 
 
 }
-
-
