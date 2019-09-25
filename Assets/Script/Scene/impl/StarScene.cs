@@ -185,10 +185,12 @@ namespace MagicWall
                     UpdateAlpha(_activeAgents[i]);
                 }
             }
-
+            //Debug.Log(_activeAgents.Count);
             for (int i = 0; i < agentsNeedClear.Count; i++)
             {
                 ClearAgent(agentsNeedClear[i]);
+                //TODO有问题
+                _activeAgents.Remove(agentsNeedClear[i]);
             }
 
         }
@@ -256,7 +258,8 @@ namespace MagicWall
         private void ClearAgent(FlockAgent agent)
         {
             // 清理出实体袋
-            agent.flockStatus = FlockStatusEnum.OBSOLETE;            
+            agent.flockStatus = FlockStatusEnum.OBSOLETE;    
+            
         }
 
 
