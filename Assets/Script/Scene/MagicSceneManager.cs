@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 //
 //  场景管理器
@@ -27,6 +28,11 @@ namespace MagicWall
         private MagicSceneEnum _sceneStatus;
 
 
+        Action _onSceneEnterLoop;
+        Action _onStartCompleted;
+
+
+
 
         //
         // Awake instead of Constructor
@@ -40,11 +46,14 @@ namespace MagicWall
         /// 初始化场景状态
         /// </summary>
         /// <param name="manager"></param>
-        public void Init(MagicWallManager manager)
+        public void Init(MagicWallManager manager,Action onSceneEnterLoop,Action onStartCompleted)
         {
 
             System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
             sw2.Start();
+
+            _onSceneEnterLoop = onSceneEnterLoop;
+            _onStartCompleted = onStartCompleted;
 
             _manager = manager;
             _sceneStatus = MagicSceneEnum.Running;
@@ -111,14 +120,14 @@ namespace MagicWall
         //
         public void Run()
         {
+            // 背景始终运行
+            _manager.backgroundManager.run();
+
 
             if (!_hasInit && _scenes != null)
             {
                 return;
             }
-
-            // 背景始终运行
-            _manager.backgroundManager.run();
 
             //return;
 
@@ -201,9 +210,24 @@ namespace MagicWall
 
         private void GoNext()
         {
+            if (_index == 0) {
+                // 预加载场景结束
+                _onStartCompleted.Invoke();
+
+            }
+
+
             if (_index == _scenes.Count - 1)
             {
-                _index = 0;
+                
+                if (!_manager.switchMode)
+                {
+                    _index = 0;
+                }
+                else {
+                    _onSceneEnterLoop.Invoke();
+                    return;
+                }
             }
             else
             {

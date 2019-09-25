@@ -48,17 +48,20 @@ namespace MagicWall
 
         public void Init(MagicWallManager manager)
         {
-            _manager = manager;
+            if (!hasInit) {
+                hasInit = true;
 
-            _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundClearBubblePoolSize);
-            _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundDimBubblePoolSize);
+                _manager = manager;
 
-            //  初始化对象池
-            PrepareData();
+                _clearBubbleAgentPool = BubblePool<ClearBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundClearBubblePoolSize);
+                _dimBubbleAgentPool = BubblePool<DimBubbleAgent>.GetInstance(_manager.managerConfig.BackgroundDimBubblePoolSize);
 
-            hasInit = true;
-            _doBeforeRun = false;
-            _bubbleAgents = new List<BubbleAgent>();
+                //  初始化对象池
+                PrepareData();
+
+                _doBeforeRun = false;
+                _bubbleAgents = new List<BubbleAgent>();
+            }            
         }
 
         /// <summary>
@@ -212,7 +215,8 @@ namespace MagicWall
 
 
         public void Reset()
-        {
+        {            
+
             hasInit = false;
             _clearBubbleAgentPool.Reset();
             _dimBubbleAgentPool.Reset();

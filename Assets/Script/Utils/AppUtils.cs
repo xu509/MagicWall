@@ -52,6 +52,9 @@ namespace MagicWall
                 tex.filterMode = FilterMode.Bilinear;
                 tex.wrapMode = TextureWrapMode.Clamp;
 
+                // 过大处理
+
+
                 //tex.LoadRawTextureData(fileData);
 
                 //tex.Apply();

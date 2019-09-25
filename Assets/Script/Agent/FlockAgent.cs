@@ -529,9 +529,6 @@ namespace MagicWall
             _flockStatus = FlockStatusEnum.RECOVER;
 
 
-            Debug.Log("恢复中： " + gameObject.name);
-
-
             //// 如果组件已不在原场景，则不进行恢复
             //if (_sceneIndex != _manager.SceneIndex)
             //{

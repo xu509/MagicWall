@@ -87,7 +87,6 @@ namespace MagicWall {
             if (_effectAgents.Count >= _manager.managerConfig.SelectedItemMaxCount) {
                 Debug.Log("打开卡片超过限度");
 
-
                 CardAgent cardToClose = null;
 
                 for (int i = 0; i < _effectAgents.Count; i++) {

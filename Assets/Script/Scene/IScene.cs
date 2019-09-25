@@ -24,12 +24,10 @@ namespace MagicWall
 
         void OnRunEndCompleted();
 
-
         //
         //  获取内容类型
         //
         DataTypeEnum GetDataType();
-
 
         MagicSceneEnum GetSceneStatus();
 

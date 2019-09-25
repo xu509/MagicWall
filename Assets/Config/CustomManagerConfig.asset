@@ -14,15 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCustom: 1
   SelectedItemMaxCount: 5
+  OperateCardAutoCloseTime: 5.55
   gapFactor: 1
   Column: 15
   FlockPoolSize: 150
   CardPoolSize: 8
   MainPanelMoveFactor: 141
-  StarEffectAgentsCount: 60
-  StarEffectMoveFactor: 15
-  StarEffectOriginPoint: 1000
-  StarEffectEndPoint: -2500
   BackgroundClearBubblePoolSize: 5
   BackgroundClearMoveMinFactor: 50
   BackgroundClearMoveMaxFactor: 150

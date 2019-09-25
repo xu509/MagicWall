@@ -386,7 +386,12 @@ namespace MagicWall
                 }
                 else {
                     _cardStatus = CardStatusEnum.OBSOLETE;
-                    _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+
+                    if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED)) {
+                        _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                    }
+
+                    
                 }
 
 
@@ -431,7 +436,11 @@ namespace MagicWall
                     {
                         _cardStatus = CardStatusEnum.OBSOLETE;
 
-                        _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+
+                        if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
+                        {
+                            _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                        }
 
                         Debug.Log("直接删除");
                         
@@ -821,6 +830,7 @@ namespace MagicWall
                 {
                     _width = GetComponent<RectTransform>().sizeDelta.x; ;
                     _height = GetComponent<RectTransform>().sizeDelta.y;
+                    _hasChangeSize = true;
 
                 }).OnComplete(() =>
                 {
@@ -848,18 +858,15 @@ namespace MagicWall
             }
             else
             {
-
                 if (_hasChangeSize)
                 {
                     float width = GetComponent<RectTransform>().rect.width;
-                    float height = GetComponent<RectTransform>().rect.width;
-                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.8f;
+                    float height = GetComponent<RectTransform>().rect.height;
+                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.6f;
                     _collider.radius = radius;
                     _hasChangeSize = false;
-
                     //Debug.Log("UpdateColliderRadius! " + radius);
                 }
-
             }
         }
 

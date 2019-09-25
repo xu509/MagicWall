@@ -19,6 +19,7 @@ namespace MagicWall
         protected MagicWallManager() { }
 
         #region 可配置项
+        public bool switchMode = false;
 
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
@@ -110,6 +111,9 @@ namespace MagicWall
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
+        private int themeCounter = 0; // 主题计数器
+        public int ThemeCounter { get { return themeCounter; }}
+
 
         #endregion
 
@@ -177,14 +181,27 @@ namespace MagicWall
             // 初始化数据服务
             if (_isMockData)
             {
-                if (_isMockFeiyueData)
+                if (switchMode)
                 {
-                    _daoService = _mockFeiyueDaoService;
+                    if (themeCounter % 2 == 0)
+                    {
+                        _daoService = _mockFeiyueDaoService;
+                    }
+                    else {
+                        _daoService = _mockZhichengDaoService;
+                    }
                 }
-                else
-                {
-                    _daoService = _mockDaoService;
+                else {
+                    if (_isMockFeiyueData)
+                    {
+                        _daoService = _mockFeiyueDaoService;
+                    }
+                    else
+                    {
+                        _daoService = _mockDaoService;
+                    }
                 }
+                
             }
             else
             {
@@ -210,7 +227,7 @@ namespace MagicWall
 
 
             // 初始化场景管理器
-            _magicSceneManager.Init(this);
+            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
 
             // 初始化背景管理器, 此时对象池完成
             _backgroundManager.Init(this);
@@ -232,6 +249,10 @@ namespace MagicWall
             }
 
             _hasInit = true;
+
+
+            //StartCoroutine(ExchangeScene(switchTime));
+
         }
 
 
@@ -343,7 +364,7 @@ namespace MagicWall
                 _magicSceneManager.Reset();
 
                 //  初始化背景库
-                _backgroundManager.Reset();
+                //_backgroundManager.Reset();
 
                 //  初始化 SOCKET 接收器
                 UdpServer.Instance.Reset();
@@ -393,6 +414,97 @@ namespace MagicWall
         {
             return new Vector2(Screen.width, Screen.height);
         }
+
+
+        //IEnumerator ExchangeScene(float waitTime)
+        //{
+        //    yield return new WaitForSeconds(waitTime);
+
+        //    // 加载另一个
+
+        //    // 更换主题
+
+
+        //    Debug.Log("111111111");
+        //}
+
+        private void ExchangeTheme() {
+            // ExchangeTheme
+
+
+            System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+            sw2.Start();
+
+            //Debug.Log("修改主题");
+            infoPanelAgent.Hide();
+
+            _hasInit = false;
+            themeCounter++;
+
+
+            ExchangeThemeInit();
+
+            sw2.Stop();
+            //Debug.Log(" ExchangeTheme init : " + sw2.ElapsedMilliseconds / 1000f);
+
+
+            _hasInit = true;
+
+        }
+
+
+        private void ExchangeThemeInit() {
+
+            // 初始化数据服务
+            if (_isMockData)
+            {
+                if (switchMode)
+                {
+                    if (themeCounter % 2 == 0)
+                    {
+                        _daoService = _mockFeiyueDaoService;
+                    }
+                    else
+                    {
+                        _daoService = _mockZhichengDaoService;
+                    }
+                }
+            }
+
+            // 初始化 Global Data
+            _globalData.Init(this);
+
+            ResetMainPanel(); //主面板归位
+
+            PanelOffsetX = 0f;   // 清理两个panel偏移量
+            PanelBackOffsetX = 0f;
+            PanelOffsetY = 0f;   // 清理两个panel偏移量
+
+            // 初始化场景管理器
+            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
+
+            // 初始化定制服务
+            if (managerConfig.IsCustom)
+            {
+                infoPanelAgent.Init(this);
+            }
+
+        }
+
+
+
+
+
+        private void OnStartSceneCompleted() {
+            //OnStartSceneCompleted
+            if (managerConfig.IsCustom) {
+                // 显示
+                infoPanelAgent.Show();
+
+            }
+        }
+
+
 
 
     }

@@ -129,7 +129,11 @@ namespace MagicWall
 
             agent.Reset();
             _agents.Remove(agent);
-            DestoryAgent(agent);
+
+
+            Destroy(agent.gameObject);
+
+            //DestoryAgent(agent);
         }
 
         //
@@ -138,9 +142,14 @@ namespace MagicWall
         public void ClearAll()
         {
             for (int i = 0; i < _agents.Count; i++) {
-                if (!(_agents[i].flockStatus == FlockStatusEnum.HIDE || _agents[i].flockStatus == FlockStatusEnum.TOHIDE)) {
-                    _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
-                }
+
+                _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+
+
+                //if (!(_agents[i].flockStatus == FlockStatusEnum.HIDE
+                //    || _agents[i].flockStatus == FlockStatusEnum.TOHIDE)) {
+                //    _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                //}
             }            
         }
 
@@ -226,6 +235,8 @@ namespace MagicWall
 
             if (agent.agentContainerType == AgentContainerType.MainPanel)
             {
+                //Debug.Log("ReleaseObj : " + agent.name);
+
                 _flockAgentPool.ReleaseObj(agent);
             }
             else if (agent.agentContainerType == AgentContainerType.BackPanel)

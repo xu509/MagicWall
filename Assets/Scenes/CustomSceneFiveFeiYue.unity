@@ -158,6 +158,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CustomInfoPanelFive
       objectReference: {fileID: 0}
+    - target: {fileID: 6785187535722254734, guid: 4d53e8e5a3be4da4c88c4f330fcd37e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6785187535722254721, guid: 4d53e8e5a3be4da4c88c4f330fcd37e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -330,13 +335,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d53e8e5a3be4da4c88c4f330fcd37e0, type: 3}
+--- !u!1 &1241777190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6785187535722254734, guid: 4d53e8e5a3be4da4c88c4f330fcd37e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1241777189}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1241777191
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241777190}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1318816347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1310833465855219623, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+    type: 3}
+  m_PrefabInstance: {fileID: 6911621781813313417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a1ee734dc7f3448a9ff237d4051e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1583209954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6785187535722254720, guid: 4d53e8e5a3be4da4c88c4f330fcd37e0,
     type: 3}
   m_PrefabInstance: {fileID: 1241777189}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1241777190}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ed767e4494d90549925e585fc2d9523, type: 3}
@@ -491,6 +526,16 @@ PrefabInstance:
       propertyPath: _mainCamera
       value: 
       objectReference: {fileID: 1831402249}
+    - target: {fileID: 6911621782184364798, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: switchMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6911621782184364798, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _mockZhichengDaoService
+      value: 
+      objectReference: {fileID: 1318816347}
     - target: {fileID: 6911621782827720610, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: _mockSceneConfig

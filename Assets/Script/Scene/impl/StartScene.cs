@@ -192,14 +192,22 @@ namespace MagicWall
 
             if (_manager.IsMockData)
             {
-                if (_manager.isMockFeiyueData)
+                if (_manager.switchMode)
                 {
                     DoLoadFeiyueData();
+                    DoLoadZhiChengData();
                 }
-                else
-                {
-                    DoLoadMock();
+                else {
+                    if (_manager.isMockFeiyueData)
+                    {
+                        DoLoadFeiyueData();
+                    }
+                    else
+                    {
+                        DoLoadMock();
+                    }
                 }
+
             }
             else
             {
@@ -305,8 +313,6 @@ namespace MagicWall
 
 
 
-
-
         private void DoLoadFeiyueData()
         {
 
@@ -319,14 +325,60 @@ namespace MagicWall
                 addresses.Add(products[i].Image);
             }
 
+            var left1s = _daoService.GetCustomImage(CustomImageType.LEFT1);
+            var rights = _daoService.GetCustomImage(CustomImageType.RIGHT);
+
+            for (int i = 0; i < left1s.Count; i++)
+            {
+                addresses.Add(left1s[i]);
+            }
+
+            for (int i = 0; i < rights.Count; i++)
+            {
+                addresses.Add(rights[i]);
+            }
+
+            for (int i = 0; i < addresses.Count; i++)
+            {
+                SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+            }
+
+            //Debug.Log("loading complete");
+        }
+
+        private void DoLoadZhiChengData()
+        {
+
+            Debug.Log("预加载智城");
+
+            List<string> addresses = new List<string>();
+
+            var products = _daoService.GetProducts();
+            for (int i = 0; i < products.Count; i++)
+            {
+                addresses.Add(products[i].Image);
+            }
+
+            var left1s = _daoService.GetCustomImage(CustomImageType.LEFT1);
+            var rights = _daoService.GetCustomImage(CustomImageType.RIGHT);
+
+            for (int i = 0; i < left1s.Count; i++) {
+                addresses.Add(left1s[i]);
+            }
+
+            for (int i = 0; i < rights.Count; i++)
+            {
+                addresses.Add(rights[i]);
+            }
+
             for (int i = 0; i < addresses.Count; i++)
             {
                 SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
             }
 
 
-            //Debug.Log("loading complete");
 
+            //Debug.Log("loading complete");
         }
 
 

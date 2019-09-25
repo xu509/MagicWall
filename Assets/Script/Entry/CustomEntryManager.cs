@@ -8,11 +8,15 @@ public class CustomEntryManager : MonoBehaviour
     /// <summary>
     /// 每过一段时间切换scene
     /// </summary>
+    int number;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("number:" + number);
+        number++;
         SceneManager.LoadScene("CustomSceneFiveFeiYue");
     }
 

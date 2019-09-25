@@ -26,10 +26,13 @@ namespace MagicWall
         private float _panelWidth;
         private float _panelHeight;
 
+        // 所有图片
+        List<RawImage> images;
+
+
         private MagicWallManager _magicWallManager;
 
         /// <summary>
-        ///  TODO 定制页还未注入 Dao Service
         /// </summary>
         IDaoService _dataService;
 
@@ -37,6 +40,9 @@ namespace MagicWall
         {
             _magicWallManager = manager;
             _dataService = _magicWallManager.daoService;
+
+            images = new List<RawImage>();
+            
 
             // 初始化最左侧图片
             _leftImages = _dataService.GetCustomImage(CustomImageType.LEFT1);
@@ -53,7 +59,7 @@ namespace MagicWall
             _rightImages = _dataService.GetCustomImage(CustomImageType.RIGHT);
             if (_rightImages.Count > 0)
                 SetRightImages();
-
+            
             if (_leftImages.Count > 1)
             {
                 InvokeRepeating("ChangeLeftImage", _leftChangeTime, _leftChangeTime + _fadeoutDuration);
@@ -76,6 +82,9 @@ namespace MagicWall
             rawImage.DOFade(0, _fadeoutDuration).OnComplete(() =>
             {
                 Destroy(rawImage.gameObject);
+
+                this.images.Remove(rawImage);
+
                 RawImage[] images = leftPanel.GetComponentsInChildren<RawImage>();
                 if (images.Length == 2)
                 {
@@ -92,6 +101,8 @@ namespace MagicWall
             rawImage.DOFade(0, _fadeoutDuration).OnComplete(() =>
             {
                 Destroy(rawImage.gameObject);
+                this.images.Remove(rawImage);
+
                 RawImage[] images = middlePanel.GetComponentsInChildren<RawImage>();
                 if (images.Length == 2)
                 {
@@ -108,6 +119,8 @@ namespace MagicWall
             rawImage.DOFade(0, _fadeoutDuration).OnComplete(() =>
             {
                 Destroy(rawImage.gameObject);
+                this.images.Remove(rawImage);
+
                 RawImage[] images = rightPanel.GetComponentsInChildren<RawImage>();
                 Debug.Log(images.Length);
                 if (images.Length == 2)
@@ -127,6 +140,7 @@ namespace MagicWall
                 rtf.localScale = new Vector3(1, 1, 1);
                 rtf.SetAsFirstSibling();
                 rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + _leftImages[i]);
+                images.Add(rawImage);
             }
         }
 
@@ -140,6 +154,7 @@ namespace MagicWall
                 rtf.localScale = new Vector3(1, 1, 1);
                 rtf.SetAsFirstSibling();
                 rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + _middleImages[i]);
+                images.Add(rawImage);
             }
         }
 
@@ -153,6 +168,7 @@ namespace MagicWall
                 rtf.localScale = new Vector3(1, 1, 1);
                 rtf.SetAsFirstSibling();
                 rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + _rightImages[i]);
+                images.Add(rawImage);
             }
         }
 
@@ -179,11 +195,29 @@ namespace MagicWall
             rightPanel.sizeDelta = new Vector2(_panelWidth, _panelHeight);
 
             Debug.Log("_panelWidth : " + _panelWidth + " |_panelHeight " + _panelHeight);
-
-
-
         }
 
+
+        public void Show() {
+            GetComponent<CanvasGroup>().alpha = 1;
+        }
+
+
+        public void Hide()
+        {
+            GetComponent<CanvasGroup>().alpha = 0;
+            CancelInvoke();
+
+            for (int i = 0; i < images.Count; i++)
+            {
+                if (images[i].gameObject!= null || images[i].gameObject.activeSelf) {
+                    Destroy(images[i].gameObject);
+                }        
+            }
+
+            images = new List<RawImage>();
+
+        }
 
     }
 }
