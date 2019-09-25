@@ -92,9 +92,9 @@ namespace MagicWall
         {
             List<string> list = new List<string>();
 
-            list.Add("zhicheng\\企业名片1.jpg");
-            list.Add("zhicheng\\企业名片2.jpg");
-            list.Add("zhicheng\\企业名片3.jpg");
+            //list.Add("zhicheng\\企业名片1.jpg");
+            //list.Add("zhicheng\\企业名片2.jpg");
+            //list.Add("zhicheng\\企业名片3.jpg");
 
 
 
@@ -182,6 +182,18 @@ namespace MagicWall
                 "园区配套设施",
                 "园区效果图",
                 "智城园区能源保障区",
+                "办公环境一览",
+                "公司前台一览",
+                "机房大厅",
+                "监控室操作大厅",
+                "人才公寓全貌",
+                "食堂一角",
+                "小绍兴饭店",
+                "星巴克陈列",
+                "星巴克大厅",
+                "星巴克外貌",
+                "园区鸟瞰图",
+                "主楼风貌",
             };
 
                 //Dictionary<int, List<string>> images = new Dictionary<int, List<string>>();
@@ -281,7 +293,72 @@ namespace MagicWall
             };
                 imageCovers.Add(i10);
 
-           
+
+                string[] i11 = {
+                  "zhicheng\\竖图\\办公环境一览.jpg"
+                };
+                imageCovers.Add(i11);
+
+                string[] i12 = {
+                  "zhicheng\\竖图\\公司前台一览.jpg"
+                };
+                imageCovers.Add(i12);
+
+                string[] i13 = {
+                  "zhicheng\\竖图\\公司前台一览.jpg"
+                };
+                imageCovers.Add(i13);
+
+                string[] i14 = {
+                  "zhicheng\\竖图\\机房大厅.jpg"
+                };
+                imageCovers.Add(i14);
+
+                string[] i15 = {
+                  "zhicheng\\竖图\\监控室操作大厅.jpg"
+                };
+                imageCovers.Add(i15);
+
+                string[] i16 = {
+                  "zhicheng\\竖图\\人才公寓全貌.jpg"
+                };
+                imageCovers.Add(i16);
+
+                string[] i17 = {
+                  "zhicheng\\竖图\\食堂一角.jpg"
+                };
+                imageCovers.Add(i17);
+
+                string[] i18 = {
+                  "zhicheng\\竖图\\小绍兴饭店.jpg"
+                };
+                imageCovers.Add(i18);
+
+                string[] i19 = {
+                  "zhicheng\\竖图\\星巴克陈列.jpg"
+                };
+                imageCovers.Add(i19);
+
+                string[] i20 = {
+                  "zhicheng\\竖图\\星巴克大厅.jpg"
+                };
+                imageCovers.Add(i20);
+
+                string[] i21 = {
+                  "zhicheng\\竖图\\星巴克外貌.jpg"
+                };
+                imageCovers.Add(i21);
+
+                string[] i22 = {
+                  "zhicheng\\竖图\\园区鸟瞰图.jpg"
+                };
+                imageCovers.Add(i22);
+
+                string[] i23 = {
+                  "zhicheng\\竖图\\主楼风貌.jpg"
+                };
+                imageCovers.Add(i23);
+
 
                 //  从数据库中获取数据
                 _products = new List<Product>();
@@ -667,20 +744,20 @@ namespace MagicWall
         {
             Enterprise enterprise = new Enterprise();
 
-            // 公司卡片初始化
-            List<string> list = new List<string>();
+            //// 公司卡片初始化
+            //List<string> list = new List<string>();
 
-            list.Add("zhicheng\\企业名片1.jpg");
-            list.Add("zhicheng\\企业名片2.jpg");
-            list.Add("zhicheng\\企业名片3.jpg");
+            //list.Add("zhicheng\\企业名片1.jpg");
+            //list.Add("zhicheng\\企业名片2.jpg");
+            //list.Add("zhicheng\\企业名片3.jpg");
 
-            enterprise.EnvCards = list;
-
-
+            //enterprise.EnvCards = list;
 
 
 
-            return enterprise;
+
+
+            return null;
         }
 
         public Video GetVideoDetail(int envId, int index)
@@ -756,6 +833,11 @@ namespace MagicWall
                 return GetActivity();
             }
             return null;
+        }
+
+        public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
+        {
+            return GetFlockData(type);
         }
     }
 }

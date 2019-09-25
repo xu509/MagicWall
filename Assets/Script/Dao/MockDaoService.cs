@@ -788,5 +788,10 @@ namespace MagicWall
             }
             return null;
         }
+
+        public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

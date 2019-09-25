@@ -288,6 +288,8 @@ namespace MagicWall
 
         public Product GetProduct()
         {
+            // 需要按场景获取
+
             List<Product> products = GetProducts();
 
             var r = products[_productIndex];
@@ -780,6 +782,19 @@ namespace MagicWall
         public FlockData GetFlockData(DataTypeEnum type)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 根据场景获取
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="sceneIndex"></param>
+        /// <returns></returns>
+        public FlockData GetFlockDataByScene(DataTypeEnum type,int sceneIndex)
+        {
+
+            return null;
+
         }
     }
 }

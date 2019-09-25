@@ -144,6 +144,10 @@ namespace MagicWall
 
             _isPreparing = false;
             _starSceneStatusEnum = StarSceneStatusEnum.InitCompleted;
+
+            Debug.Log("_activeAgents : " + _activeAgents.Count);
+
+
         }
 
 
@@ -157,6 +161,9 @@ namespace MagicWall
 
             for (int i = 0; i < _activeAgents.Count; i++)
             {
+
+
+
                 if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.cutEffectConfig.StarEffectEndPoint)
                 {
                     //  清理agent，

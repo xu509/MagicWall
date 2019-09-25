@@ -100,6 +100,8 @@ namespace MagicWall
             }
             else
             {
+                Debug.Log("video");
+
                 videoContainer.gameObject.SetActive(true);
                 string address = MagicWallManager.FileDir + cellData.Image;
 

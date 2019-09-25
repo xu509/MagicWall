@@ -119,6 +119,8 @@ namespace MagicWall
         /// <returns></returns>
         FlockData GetFlockData(DataTypeEnum type);
 
+        FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex);
+
         /// <summary>
         ///     搜索
         /// </summary>

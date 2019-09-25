@@ -131,9 +131,9 @@ namespace MagicWall
             _agents.Remove(agent);
 
 
-            Destroy(agent.gameObject);
+           
 
-            //DestoryAgent(agent);
+            DestoryAgent(agent);
         }
 
         //
@@ -236,12 +236,14 @@ namespace MagicWall
             if (agent.agentContainerType == AgentContainerType.MainPanel)
             {
                 //Debug.Log("ReleaseObj : " + agent.name);
-
-                _flockAgentPool.ReleaseObj(agent);
+                Destroy(agent.gameObject);
+                //_flockAgentPool.ReleaseObj(agent);
             }
             else if (agent.agentContainerType == AgentContainerType.BackPanel)
             {
-                _flockAgentInBackPool.ReleaseObj(agent);
+                Destroy(agent.gameObject);
+
+                //_flockAgentInBackPool.ReleaseObj(agent);
             }
             else
             {

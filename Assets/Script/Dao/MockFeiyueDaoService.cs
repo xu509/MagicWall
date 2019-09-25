@@ -870,5 +870,10 @@ namespace MagicWall
             }
             return null;
         }
+
+        public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
+        {
+            return GetFlockData(type);
+        }
     }
 }
