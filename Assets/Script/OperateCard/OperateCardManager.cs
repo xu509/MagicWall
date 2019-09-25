@@ -58,7 +58,6 @@ namespace MagicWall {
                 }
             }
 
-
             // 删除需要删除的卡片
             if (cardAgentNeedDestory != null && cardAgentNeedDestory.Count > 0)
             {
@@ -81,12 +80,48 @@ namespace MagicWall {
         }
 
         /// <summary>
+        ///  REF: https://www.yuque.com/docs/share/58f46b17-0b98-430b-a14c-4a08e20690e5
+        /// </summary>
+        private void CloseCardWhenOverNumber() {
+            // 当数量超过设定的额度
+            if (_effectAgents.Count >= _manager.managerConfig.SelectedItemMaxCount) {
+                Debug.Log("打开卡片超过限度");
+
+
+                CardAgent cardToClose = null;
+
+                for (int i = 0; i < _effectAgents.Count; i++) {
+                    var effectAgent = _effectAgents[i];
+                    if (effectAgent.CardStatus == CardStatusEnum.NORMAL) {
+                        if (cardToClose == null || effectAgent.GetFreeTime() > cardToClose.GetFreeTime()) {
+                            cardToClose = effectAgent;
+                        }
+                    }
+                }
+
+                if (cardToClose != null) {
+                    Debug.Log("打开卡片超过限度,关闭：" + cardToClose.name);
+
+
+                    // 直接删除
+                    cardToClose.DoCloseDirect();
+                }
+            }
+        }
+
+
+
+
+        /// <summary>
         ///  创建一个新的操作卡片
         /// </summary>
         /// <param name="dataId">数据ID</param>
         /// <param name="dataType">数据类型</param>
         public CardAgent CreateNewOperateCard(int dataId, DataTypeEnum dataType,Vector3 position,FlockAgent refAgent)
-        {
+        {            
+            CloseCardWhenOverNumber();
+
+
             CardAgent cardAgent = OperateCardFactoryInstance.
                 Generate(_manager, position, _container,dataId, dataType, refAgent);
 

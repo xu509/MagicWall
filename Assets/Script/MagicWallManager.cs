@@ -59,8 +59,6 @@ namespace MagicWall
         // 手写板配置项
         [SerializeField] WritePanelConfig _writePanelConfig;
 
-        [SerializeField] CardItemFactoryInstance _cardItemFactoryInstance;
-
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
         [SerializeField] DaoService _realDaoService;
@@ -99,9 +97,9 @@ namespace MagicWall
 
         //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-        //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -141,7 +139,6 @@ namespace MagicWall
         public BackgroundManager backgroundManager { get { return _backgroundManager; } }
         public IDaoService daoService { get { return _daoService; } }
         public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
-        public CardItemFactoryInstance cardItemFactoryInstance { get { return _cardItemFactoryInstance; } }
         public FlockBehaviorConfig flockBehaviorConfig { get { return _flockBehaviorConfig; } }
         public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; } }
         public bool IsMockData { get { return _isMockData; } }
@@ -217,9 +214,6 @@ namespace MagicWall
 
             //  初始化操作模块
             _operateMode.Init(this);
-
-            //  初始化卡片工厂
-            _cardItemFactoryInstance.Init(this);
 
             // 初始化操作卡片管理器
             _operateCardManager.Init(this);

@@ -114,7 +114,7 @@ namespace MagicWall
             _flockAgentInBackPool = FlockAgentInBackPool<FlockAgent>.GetInstance(_manager.managerConfig.FlockPoolSize / 2);
             _flockAgentInBackPool.Init(_flockAgentPrefab, _backContainer);
 
-            _flockAgentInStarPool = FlockAgentInStarPool<FlockAgent>.GetInstance(_manager.managerConfig.StarEffectAgentsCount);
+            _flockAgentInStarPool = FlockAgentInStarPool<FlockAgent>.GetInstance(_manager.cutEffectConfig.StarEffectAgentsCount);
             _flockAgentInStarPool.Init(_flockAgentPrefab, _starContainer);
 
         }
@@ -138,7 +138,7 @@ namespace MagicWall
         public void ClearAll()
         {
             for (int i = 0; i < _agents.Count; i++) {
-                if (_agents[i].flockStatus != FlockStatusEnum.HIDE) {
+                if (!(_agents[i].flockStatus == FlockStatusEnum.HIDE || _agents[i].flockStatus == FlockStatusEnum.TOHIDE)) {
                     _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
                 }
             }            

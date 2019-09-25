@@ -13,16 +13,13 @@ MonoBehaviour:
   m_Name: ManagerConfigFor5Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
-  SelectedItemMaxCount: 5
+  SelectedItemMaxCount: 3
+  OperateCardAutoCloseTime: 5
   gapFactor: 1
   Column: 15
   FlockPoolSize: 150
   CardPoolSize: 8
   MainPanelMoveFactor: 52
-  StarEffectAgentsCount: 60
-  StarEffectMoveFactor: 15
-  StarEffectOriginPoint: 1000
-  StarEffectEndPoint: -2500
   BackgroundClearBubblePoolSize: 5
   BackgroundClearMoveMinFactor: 50
   BackgroundClearMoveMaxFactor: 150

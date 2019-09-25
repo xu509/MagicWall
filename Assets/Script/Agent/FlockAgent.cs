@@ -526,7 +526,11 @@ namespace MagicWall
 
         public void DoRecoverAfterChoose()
         {
-            flockStatus = FlockStatusEnum.RECOVER;            
+            _flockStatus = FlockStatusEnum.RECOVER;
+
+
+            Debug.Log("恢复中： " + gameObject.name);
+
 
             //// 如果组件已不在原场景，则不进行恢复
             //if (_sceneIndex != _manager.SceneIndex)
@@ -565,9 +569,14 @@ namespace MagicWall
                }).OnComplete(() =>
                {
                    flockStatus = FlockStatusEnum.NORMAL;
+
+                   Debug.Log("放大动画 completed");
+
                }).OnKill(() =>
                {
-                   flockStatus = FlockStatusEnum.NORMAL;
+                   //flockStatus = FlockStatusEnum.OBSOLETE;
+
+                   //Debug.Log("放大动画 kill");
                });
 
             _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);

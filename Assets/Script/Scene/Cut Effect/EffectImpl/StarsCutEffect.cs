@@ -55,41 +55,41 @@ namespace MagicWall
         public override void Starting()
         {
 
-            if (!doStartEffect)
-            {
-                doStartEffect = true;
-                _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(1, 1f);
-            }
+            //if (!doStartEffect)
+            //{
+            //    doStartEffect = true;
+            //    _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(1, 1f);
+            //}
 
 
-            List<FlockAgent> agentsNeedClear = new List<FlockAgent>();
+            //List<FlockAgent> agentsNeedClear = new List<FlockAgent>();
 
-            for (int i = 0; i < _activeAgents.Count; i++)
-            {
-                if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.managerConfig.StarEffectEndPoint)
-                {
-                    //  清理agent，
-                    agentsNeedClear.Add(_activeAgents[i]);
-                    //  创建新 agent
-                    FlockAgent agent = CreateNewAgent(false);
-                    agent.GetComponent<RectTransform>().SetAsFirstSibling();
-                }
-                else
-                {
-                    // 移动
-                    Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.managerConfig.StarEffectMoveFactor));
-                    _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
+            //for (int i = 0; i < _activeAgents.Count; i++)
+            //{
+            //    if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.managerConfig.StarEffectEndPoint)
+            //    {
+            //        //  清理agent，
+            //        agentsNeedClear.Add(_activeAgents[i]);
+            //        //  创建新 agent
+            //        FlockAgent agent = CreateNewAgent(false);
+            //        agent.GetComponent<RectTransform>().SetAsFirstSibling();
+            //    }
+            //    else
+            //    {
+            //        // 移动
+            //        Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.managerConfig.StarEffectMoveFactor));
+            //        _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
 
-                    // 更新透明度
-                    UpdateAlpha(_activeAgents[i]);
-                }
-            }
+            //        // 更新透明度
+            //        UpdateAlpha(_activeAgents[i]);
+            //    }
+            //}
 
-            for (int i = 0; i < agentsNeedClear.Count; i++)
-            {
-                ClearAgent(agentsNeedClear[i]);
+            //for (int i = 0; i < agentsNeedClear.Count; i++)
+            //{
+            //    ClearAgent(agentsNeedClear[i]);
 
-            }
+            //}
 
         }
 
@@ -107,21 +107,21 @@ namespace MagicWall
         /// <param name="dataType"></param>
         private void CreateAgency()
         {
-            // 随机生成
-            for (int i = 0; i < _manager.managerConfig.StarEffectAgentsCount; i++)
-            {
-                CreateNewAgent(true);
-            }
+            //// 随机生成
+            //for (int i = 0; i < _manager.managerConfig.StarEffectAgentsCount; i++)
+            //{
+            //    CreateNewAgent(true);
+            //}
 
-            // 设置远近关系，Z轴越小越前面
-            _activeAgents.Sort(new FlockCompare());
-            for (int i = 0; i < _activeAgents.Count; i++)
-            {
-                int si = _activeAgents.Count - 1 - i;
-                _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
-            }
+            //// 设置远近关系，Z轴越小越前面
+            //_activeAgents.Sort(new FlockCompare());
+            //for (int i = 0; i < _activeAgents.Count; i++)
+            //{
+            //    int si = _activeAgents.Count - 1 - i;
+            //    _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
+            //}
 
-            _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 0;
+            //_manager.mainPanel.GetComponent<CanvasGroup>().alpha = 0;
         }
 
 
@@ -136,48 +136,48 @@ namespace MagicWall
         private FlockAgent CreateNewAgent(bool randomZ)
         {
 
-            // 获取数据
-            FlockData data = _daoService.GetFlockData(_dataType);
+            //// 获取数据
+            //FlockData data = _daoService.GetFlockData(_dataType);
 
-            // 获取出生位置
-            Vector2 randomPosition = Random.insideUnitSphere;
+            //// 获取出生位置
+            //Vector2 randomPosition = Random.insideUnitSphere;
 
-            Vector3 position;
+            //Vector3 position;
 
-            position.x = (randomPosition.x / 2 + 0.5f) * _manager.GetScreenRect().x;
-            position.y = (randomPosition.y / 2 + 0.5f) * _manager.GetScreenRect().y;
+            //position.x = (randomPosition.x / 2 + 0.5f) * _manager.GetScreenRect().x;
+            //position.y = (randomPosition.y / 2 + 0.5f) * _manager.GetScreenRect().y;
 
 
-            // 获取长宽
-            Sprite logoSprite = data.GetCoverSprite();
-            float width = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).x;
-            float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
+            //// 获取长宽
+            //Sprite logoSprite = data.GetCoverSprite();
+            //float width = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).x;
+            //float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
 
-            FlockAgent go = null;
-            go.UpdateImageAlpha(0);
+            //FlockAgent go = null;
+            //go.UpdateImageAlpha(0);
 
-            // 星空效果不会被物理特效影响
-            go.CanEffected = false;
+            //// 星空效果不会被物理特效影响
+            //go.CanEffected = false;
 
-            // 设置Z轴
+            //// 设置Z轴
 
-            float z;
-            if (randomZ)
-            {
-                z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint, Random.Range(0f, 1f));
-            }
-            else
-            {
-                z = _manager.managerConfig.StarEffectOriginPoint;
-            }
+            //float z;
+            //if (randomZ)
+            //{
+            //    z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint, Random.Range(0f, 1f));
+            //}
+            //else
+            //{
+            //    z = _manager.managerConfig.StarEffectOriginPoint;
+            //}
 
-            go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
-            go.Z = z;
-            go.name = "Agent-" + Mathf.RoundToInt(go.Z);
+            //go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
+            //go.Z = z;
+            //go.name = "Agent-" + Mathf.RoundToInt(go.Z);
 
-            _activeAgents.Add(go);
+            //_activeAgents.Add(go);
 
-            return go;
+            return null;
         }
 
         /// <summary>
@@ -198,29 +198,29 @@ namespace MagicWall
         /// <param name="agent"></param>
         private void UpdateAlpha(FlockAgent agent)
         {
-            float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
+            //float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
 
-            // 判断Z在距离中的位置
-            float distance = Mathf.Abs(_manager.managerConfig.StarEffectOriginPoint - _manager.managerConfig.StarEffectEndPoint);
-            float offset = Mathf.Abs(z - _manager.managerConfig.StarEffectOriginPoint) / distance;
+            //// 判断Z在距离中的位置
+            //float distance = Mathf.Abs(_manager.managerConfig.StarEffectOriginPoint - _manager.managerConfig.StarEffectEndPoint);
+            //float offset = Mathf.Abs(z - _manager.managerConfig.StarEffectOriginPoint) / distance;
 
-            // 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
-            if (offset < 0.05)
-            {
-                float k = Mathf.Abs(offset - 0.05f);
-                float alpha = Mathf.Lerp(1, 0, k / 0.05f);
-                agent.UpdateImageAlpha(alpha);
-            }
-            else if (offset > 0.95)
-            {
-                float k = Mathf.Abs(1 - offset);
-                float alpha = Mathf.Lerp(0, 1, k / 0.05f);
-                agent.UpdateImageAlpha(alpha);
-            }
-            else
-            {
-                agent.UpdateImageAlpha(1);
-            }
+            //// 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
+            //if (offset < 0.05)
+            //{
+            //    float k = Mathf.Abs(offset - 0.05f);
+            //    float alpha = Mathf.Lerp(1, 0, k / 0.05f);
+            //    agent.UpdateImageAlpha(alpha);
+            //}
+            //else if (offset > 0.95)
+            //{
+            //    float k = Mathf.Abs(1 - offset);
+            //    float alpha = Mathf.Lerp(0, 1, k / 0.05f);
+            //    agent.UpdateImageAlpha(alpha);
+            //}
+            //else
+            //{
+            //    agent.UpdateImageAlpha(1);
+            //}
 
         }
 

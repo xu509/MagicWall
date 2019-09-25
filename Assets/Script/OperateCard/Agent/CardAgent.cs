@@ -11,7 +11,7 @@ namespace MagicWall
 {
     public class CardAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
     {
-        [SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
+        //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
         [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
 
 
@@ -350,43 +350,57 @@ namespace MagicWall
             //  如果场景没有变，则回到原位置
             if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null))
             {
-                Debug.Log("返回原位置");
-
                 //恢复并归位
                 // 缩到很小很小
                 RectTransform cardRect = GetComponent<RectTransform>();
 
                 //  移到后方、缩小、透明
                 Tweener t = cardRect.DOScale(0.2f, 1f);
-                _originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
+                //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
 
                 //  获取位置
-                FlockAgent oriAgent = _originAgent;
-                Vector3 to = new Vector3(oriAgent.OriVector2.x - _manager.PanelOffsetX
-                    , oriAgent.OriVector2.y - _manager.PanelOffsetY, 200);
+                Vector3 to = new Vector3(_originAgent.OriVector2.x - _manager.PanelOffsetX
+                    , _originAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
-                Tweener t2 = cardRect.DOAnchorPos3D(to, 1f)
-                    .OnComplete(() =>
-                    {
-                        // 再次判断场景是否已经改变
-                        if (_sceneIndex == _manager.SceneIndex)
-                        {
-                            // 恢复
-                            OriginAgent.DoRecoverAfterChoose();
-                        }
-                        else {
-                            OriginAgent.flockStatus = FlockStatusEnum.OBSOLETE;
-                        }
 
-                        // 无论如何，该卡片都会进行销毁
+                if (_originAgent.SceneIndex == _manager.SceneIndex)
+                {
+                    cardRect.DOAnchorPos3D(to, 1f)
+                         .OnComplete(() =>
+                         {
+                             // 恢复
+                             _originAgent.DoRecoverAfterChoose();
+                             _cardStatus = CardStatusEnum.OBSOLETE;
+                         });
+                }
+                else {
+                    _cardStatus = CardStatusEnum.OBSOLETE;
+                    _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                }
 
-                        //_agentManager.RemoveItemFromEffectItems(this);
-                        _cardStatus = CardStatusEnum.OBSOLETE;
 
-                        Debug.Log("删除完毕");
-                    });
+                //Tweener t2 = cardRect.DOAnchorPos3D(to, 1f)
+                //    .OnComplete(() =>
+                //    {
+                //        // 再次判断场景是否已经改变
+                //        if (_sceneIndex == _manager.SceneIndex)
+                //        {
+                //            // 恢复
+                //            oriAgent.DoRecoverAfterChoose();
+                //        }
+                //        else {
+                //            oriAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                //        }
 
-                _originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin, t2);
+                //        // 无论如何，该卡片都会进行销毁
+
+                //        //_agentManager.RemoveItemFromEffectItems(this);
+                //        _cardStatus = CardStatusEnum.OBSOLETE;
+
+                //        Debug.Log("返回原位置，删除完毕");
+                //    });
+
+                //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin, t2);
 
 
             }
@@ -406,16 +420,13 @@ namespace MagicWall
                     {
                         _cardStatus = CardStatusEnum.OBSOLETE;
 
-                        OriginAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                        _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
 
-                        Debug.Log("删除完毕");
+                        Debug.Log("直接删除");
                         
                     });
-
-
             }
 
-            //_cardStatus = CardStatusEnum.OBSOLETE;
         }
 
         //
@@ -468,10 +479,16 @@ namespace MagicWall
             }                
         }
 
-        // 直接进行关闭
+        /// <summary>
+        /// 直接关闭 ref ： https://www.yuque.com/docs/share/0c30b857-6019-41b0-b575-e9697bae1df6
+        /// </summary>       
         public void DoCloseDirect()
         {
-            DoDestoriedForSecondStep();
+            // 直接关闭的逻辑
+            if (_cardStatus == CardStatusEnum.NORMAL) {
+                DoDestoriedForSecondStep();
+            }
+            
         }
 
 
@@ -722,7 +739,7 @@ namespace MagicWall
             _searchAgent.OnClickReturn(OnClickSearchReturnBtn);
             _searchAgent.OnClickMove(OnClickSearchReturnMoveBtn);
             _searchAgent.OnUpdate(OnSearchAgentUpdated);
-            //_keepOpen = true;
+            DoUpdate();
             _inExtendOpen = true;
 
             // 显示缩放框体，隐藏普通框体
@@ -795,11 +812,11 @@ namespace MagicWall
 
                 }).OnComplete(() =>
                 {
-                // 完成生成后，碰撞体再改变
-                _hasChangeSize = true;
+                    // 完成生成后，碰撞体再改变
+                    _hasChangeSize = true;
 
-                // 执行完成后动画
-                DoOnCreatedCompleted();
+                    // 执行完成后动画
+                    DoOnCreatedCompleted();
 
                     CardStatus = CardStatusEnum.NORMAL;
 
@@ -824,7 +841,7 @@ namespace MagicWall
                 {
                     float width = GetComponent<RectTransform>().rect.width;
                     float height = GetComponent<RectTransform>().rect.width;
-                    float radius = Mathf.Sqrt(width * width + height * height) / 2;
+                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.8f;
                     _collider.radius = radius;
                     _hasChangeSize = false;
                 }
@@ -1251,10 +1268,19 @@ namespace MagicWall
 
 
         /// <summary>
-        ///     获取空闲时间
+        ///     获取空闲时间,
+        ///     当 agent 处于 inExtendOpen 的状态下，总体时间除以二
         /// </summary>
         public float GetFreeTime() {
-            return Time.time - _recentActiveTime;
+
+            float freeTime = Time.time - _recentActiveTime;
+
+            if (_inExtendOpen)
+            {
+                freeTime = freeTime / 2f;
+            }
+
+            return freeTime;
         }
 
         /// <summary>
@@ -1268,9 +1294,9 @@ namespace MagicWall
             //    || )
 
             if (_inExtendOpen) {
-                waitTime = _destoryForSpaceTime * 3;
+                waitTime = _manager.managerConfig.OperateCardAutoCloseTime * 3;
             } else {
-                waitTime = _destoryForSpaceTime;
+                waitTime = _manager.managerConfig.OperateCardAutoCloseTime;
             }
 
 

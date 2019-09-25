@@ -13,6 +13,9 @@ namespace MagicWall
         [Range(3, 8), Header("点开的最大数量")]
         public int SelectedItemMaxCount;
 
+        [Range(1f,20f), Header("操作卡片的关闭时间")]
+        public float OperateCardAutoCloseTime;
+
         [Header("Gap 比率"), Range(0f, 5f)]
         public float gapFactor;
 
@@ -30,18 +33,6 @@ namespace MagicWall
 
         [Range(1, 400), Header("[场景]移动速率")]
         public int MainPanelMoveFactor;
-
-        [Range(0f, 500f), Header("[星空效果] 卡片数量")]
-        public int StarEffectAgentsCount;
-
-        [Range(0f, 200f), Header("[星空效果] 动画移动速度")]
-        public float StarEffectMoveFactor;
-
-        [Range(1f, 10000f), Header("[星空效果] 动画起点")]
-        public float StarEffectOriginPoint;
-
-        [Range(-5000f, 5000f), Header("[星空效果] 动画终点")]
-        public float StarEffectEndPoint;
 
         [Range(0, 200), Header("[背景] 清晰的背景气球池")]
         public int BackgroundClearBubblePoolSize;
