@@ -171,6 +171,10 @@ namespace MagicWall
         //
         public List<Product> GetProducts()
         {
+            List<Product> items = new List<Product>();
+
+            Debug.Log("Mock shi cun dao service");
+
             if (_products == null)
             {
                 _productMap = new Dictionary<int, Product>();
@@ -245,13 +249,13 @@ namespace MagicWall
             };
                 imageCovers.Add(i5);
 
-                string[] i6 = {
-                "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\1.jpg",
-                "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\2.jpg",
-                "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\3.jpg",
-                "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\4.jpg",
-            };
-                imageCovers.Add(i6);
+            //    string[] i6 = {
+            //    "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\1.jpg",
+            //    "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\2.jpg",
+            //    "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\3.jpg",
+            //    "shicun\\互动魔墙里的酒图片\\低帮帆布鞋\\4.jpg",
+            //};
+            //    imageCovers.Add(i6);
 
                 string[] i7 = {
                 "shicun\\互动魔墙里的酒图片\\丽隆红酒\\Chateau-de-Rochemorin先哲堡.jpg",
@@ -322,23 +326,13 @@ namespace MagicWall
 
 
                 string[] i14 = {
-                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\1.jpg",
-                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\2.jpg",
-                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\3.jpg",
-                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\4.jpg",
-                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\5.jpg",
+                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\Chateau-Batailley巴特利庄园.jpg",
+                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\Chateau-Belgrave百家富庄园.jpg",
+                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\Chateau-Camensac卡门萨克庄园.jpg",
+                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\Chateau-Cantemerle佳得美庄园.jpg",
+                "shicun\\互动魔墙里的酒图片\\梅多克1855列级庄5级庄\\Chateau-Clerc-Milon克拉米伦庄园.jpg",
             };
                 imageCovers.Add(i14);
-
-
-                string[] i15 = {
-                "shicun\\互动魔墙里的酒图片\\休闲情侣鸳鸯鞋\\Chateau-Batailley巴特利庄园.jpg",
-                "shicun\\互动魔墙里的酒图片\\休闲情侣鸳鸯鞋\\Chateau-Belgrave百家富庄园.jpg",
-                "shicun\\互动魔墙里的酒图片\\休闲情侣鸳鸯鞋\\Chateau-Camensac卡门萨克庄园.jpg",
-                "shicun\\互动魔墙里的酒图片\\休闲情侣鸳鸯鞋\\Chateau-Cantemerle佳得美庄园.jpg",
-                "shicun\\互动魔墙里的酒图片\\休闲情侣鸳鸯鞋\\Chateau-Clerc-Milon克拉米伦庄园.jpg"
-            };
-                imageCovers.Add(i15);
 
 
                 string[] i16 = {
@@ -379,19 +373,6 @@ namespace MagicWall
                 imageCovers.Add(i18);
 
 
-                string[] i19 = {
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\1.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\2.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\3.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\4.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\5.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\6.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\7.jpg",
-                "shicun\\互动魔墙里的酒图片\\手绘街头嘻哈学生板鞋\\8.jpg",
-            };
-                imageCovers.Add(i19);
-
-
 
                 //  从数据库中获取数据
                 _products = new List<Product>();
@@ -405,9 +386,7 @@ namespace MagicWall
                     //
                     AddProduct(mats, name, x);
 
-                }
-
-                return _products;
+                }                
             }
 
 
@@ -468,11 +447,18 @@ namespace MagicWall
                     AddProduct2(mats, name, x);
 
                 }
-
-                return _products;
             }
 
-            return null;
+            for (int i = 0; i < _products.Count; i++) {
+                items.Add(_products[i]);
+            }
+
+            for (int i = 0; i < _products2.Count; i++)
+            {
+                items.Add(_products2[i]);
+            }
+
+            return items;
         }
 
         private void AddProduct(string[] details, string name, int proid)
@@ -959,10 +945,10 @@ namespace MagicWall
         {
             if (sceneIndex % 2 == 0)
             {
-                return _products[Random.Range(0, _products.Count)];
+                return _products[Random.Range(0, _products.Count - 1)];
             }
             else {
-                return _products2[Random.Range(0, _products.Count)];
+                return _products2[Random.Range(0, _products2.Count - 1)];
             }
         }
     }

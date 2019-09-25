@@ -150,7 +150,8 @@ namespace MagicWall
                 while (gen_x_position < _manager.mainPanel.rect.width)
                 {
                     // 获取数据
-                    FlockData data = _daoService.GetFlockData(dataType);
+                    //FlockData data = _daoService.GetFlockData(dataType);
+                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite coverSprite = data.GetCoverSprite();
                     float itemWidth = AppUtils.GetSpriteWidthByHeight(coverSprite, _itemHeight);
 

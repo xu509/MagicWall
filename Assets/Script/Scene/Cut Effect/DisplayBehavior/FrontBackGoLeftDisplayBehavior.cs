@@ -95,7 +95,9 @@ namespace MagicWall
                     if ((isOddColumn && isOddRow) || (!isOddRow && !isOddColumn))
                     {
                         //  获取要创建的内容
-                        FlockData agent = _daoService.GetFlockData(dataType);
+                        //FlockData agent = _daoService.GetFlockData(dataType);
+                        FlockData agent = _daoService.GetFlockDataByScene(dataType, _manager.SceneIndex);
+
                         Sprite coverSprite = agent.GetCoverSprite();
                         float imageWidth = coverSprite.rect.width;
                         float imageHeight = coverSprite.rect.height;
@@ -166,7 +168,10 @@ namespace MagicWall
                     else
                     {
                         //  获取要创建的内容
-                        FlockData agent = _daoService.GetFlockData(dataType);
+                        //FlockData agent = _daoService.GetFlockData(dataType);
+                        FlockData agent = _daoService.GetFlockDataByScene(dataType, _manager.SceneIndex);
+
+
                         Sprite coverSprite = agent.GetCoverSprite();
                         float imageWidth = coverSprite.rect.width;
                         float imageHeight = coverSprite.rect.height;

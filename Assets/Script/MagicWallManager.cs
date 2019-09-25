@@ -19,7 +19,7 @@ namespace MagicWall
         protected MagicWallManager() { }
 
         #region 可配置项
-        public bool switchMode = false;
+        public bool switchMode = false;        
 
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
@@ -66,6 +66,7 @@ namespace MagicWall
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
+        [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] DaoService _realDaoService;
 
         [SerializeField, Header("Global Data")] GlobalData _globalData;
@@ -80,6 +81,9 @@ namespace MagicWall
         [SerializeField] bool _isMockFeiyueData;
 
         [SerializeField] bool _isMockZhichengData;
+
+        [SerializeField] bool _isMockShicunData;
+        public bool isMockShicunData { get { return _isMockShicunData; } }
 
         public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
 
@@ -103,9 +107,9 @@ namespace MagicWall
 
         // 配置选项
 
-        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+       // public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-       // public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
         //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
@@ -195,6 +199,9 @@ namespace MagicWall
                     if (_isMockFeiyueData)
                     {
                         _daoService = _mockFeiyueDaoService;
+                    }
+                    else if (_isMockShicunData) {
+                        _daoService = _mockShicunDaoService;
                     }
                     else
                     {

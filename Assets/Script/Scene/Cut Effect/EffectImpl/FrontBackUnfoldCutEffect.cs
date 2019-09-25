@@ -152,7 +152,8 @@ namespace MagicWall
                     bool isOddRow = i % 2 == 0;
 
                     //  获取要创建的内容
-                    FlockData agent = _daoService.GetFlockData(type);
+                    //FlockData agent = _daoService.GetFlockData(type);
+                    FlockData agent = _daoService.GetFlockDataByScene(type,_manager.SceneIndex);
                     Sprite coverSprite = agent.GetCoverSprite();
                     float imageWidth = coverSprite.rect.width;
                     float imageHeight = coverSprite.rect.height;

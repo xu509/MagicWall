@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ManagerConfigFor5Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
-  SelectedItemMaxCount: 3
+  SelectedItemMaxCount: 5
   OperateCardAutoCloseTime: 5
   gapFactor: 1
   Column: 15

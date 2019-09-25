@@ -201,6 +201,8 @@ namespace MagicWall
                     if (_manager.isMockFeiyueData)
                     {
                         DoLoadFeiyueData();
+                    } else if (_manager.isMockShicunData) {
+                        DoLoadShicunData();
                     }
                     else
                     {
@@ -345,6 +347,32 @@ namespace MagicWall
 
             //Debug.Log("loading complete");
         }
+
+        private void DoLoadShicunData()
+        {
+
+            //// TODO
+            List<string> addresses = new List<string>();
+
+            var products = _daoService.GetProducts();
+            for (int i = 0; i < products.Count; i++)
+            {
+                addresses.Add(products[i].Image);
+            }
+
+
+            for (int i = 0; i < addresses.Count; i++)
+            {
+                //Debug.Log("MagicWallManager.FileDir + addresses[i] : " + MagicWallManager.FileDir + addresses[i]);
+
+                SpriteResource.Instance.GetData(MagicWallManager.FileDir + addresses[i]);
+            }
+
+            //Debug.Log("loading complete");
+        }
+
+
+
 
         private void DoLoadZhiChengData()
         {

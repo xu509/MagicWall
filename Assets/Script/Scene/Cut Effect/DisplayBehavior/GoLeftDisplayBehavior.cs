@@ -84,7 +84,8 @@ namespace MagicWall
                 if (flag == false)
                 {
                     // 该行添加内容
-                    FlockData data = _manager.daoService.GetFlockData(dataType);
+                    //FlockData data = _manager.daoService.GetFlockData(dataType);
+                    FlockData data = _manager.daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite spriteImage = data.GetCoverSprite();
 
                     int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();

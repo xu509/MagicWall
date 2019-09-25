@@ -145,7 +145,7 @@ namespace MagicWall
             _isPreparing = false;
             _starSceneStatusEnum = StarSceneStatusEnum.InitCompleted;
 
-            Debug.Log("_activeAgents : " + _activeAgents.Count);
+            //Debug.Log("_activeAgents : " + _activeAgents.Count);
 
 
         }
@@ -171,6 +171,9 @@ namespace MagicWall
                     //  创建新 agent
                     FlockAgent agent = CreateNewAgent(false);
                     agent.GetComponent<RectTransform>().SetAsFirstSibling();
+
+                    Debug.Log("Create star card!");
+
                 }
                 else
                 {
@@ -188,30 +191,14 @@ namespace MagicWall
                 ClearAgent(agentsNeedClear[i]);
             }
 
-
         }
-
-        //private void DoEnd()
-        //{
-        //    //Debug.Log("Do End");
-
-        //    // 淡出
-        //    _manager.starEffectContent.GetComponent<CanvasGroup>()
-        //        .DOFade(0, 2f)
-        //        .OnComplete(() => {
-        //            _manager.starEffectContainer.gameObject.SetActive(false);
-        //            _manager.Clear();
-        //            OnRunEndCompleted();
-        //            //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-        //        });
-
-        //}
 
 
         private FlockAgent CreateNewAgent(bool randomZ)
         {
             // 获取数据
-            FlockData data = _daoService.GetFlockData(_dataType);
+            //FlockData data = _daoService.GetFlockData(_dataType,_manager);
+            FlockData data = _daoService.GetFlockDataByScene(_dataType,_manager.SceneIndex);
 
             // 获取出生位置
             Vector2 randomPosition = UnityEngine.Random.insideUnitSphere;

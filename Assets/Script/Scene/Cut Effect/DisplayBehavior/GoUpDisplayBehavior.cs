@@ -111,7 +111,8 @@ namespace MagicWall
                     int itemwidth = _displayBehaviorConfig.sceneUtils.GetFixedItemWidth();
 
                     //在该列上补充一个
-                    FlockData data = _daoService.GetFlockData(dataType);
+                    //FlockData data = _daoService.GetFlockData(dataType);
+                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite coverSprite = data.GetCoverSprite();
                     int itemHeight = Mathf.RoundToInt(AppUtils.GetSpriteHeightByWidth(coverSprite, itemwidth));
 
