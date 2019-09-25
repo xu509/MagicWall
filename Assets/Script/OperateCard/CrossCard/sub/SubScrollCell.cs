@@ -77,13 +77,14 @@ namespace MagicWall
 
             gameObject.name = "CSS" + cellData.Category + " - " + cellData.Index + " - " + cellData.Description;
 
-            if (cellData.Category == CrossCardCategoryEnum.VIDEO)
+            if (!cellData.IsImage)
             {
                 videoContainer.gameObject.SetActive(true);
                 _cover.gameObject.SetActive(false);
                 _video_cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + cellData.Image);
 
                 CanvasExtensions.SizeToParent(_video_cover);
+                //crossCardCellData.IsImage = false;
 
             }
             else

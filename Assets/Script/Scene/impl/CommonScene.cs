@@ -129,7 +129,7 @@ namespace MagicWall
                 //Debug.Log("Scene is Cutting");
                 _startTime = Time.time; //标记开始的时间
 
-                _manager.Status = WallStatusEnum.Cutting;   //标记项目进入过场状态
+                _manager.SceneStatus = WallStatusEnum.Cutting;   //标记项目进入过场状态
 
                 DoCreating();  //初始化场景
 
@@ -149,7 +149,7 @@ namespace MagicWall
 
                     _displayTime = Time.time;
                     Status = SceneStatus.DISPLAYING;
-                    magicWallManager.Status = WallStatusEnum.Displaying;
+                    magicWallManager.SceneStatus = WallStatusEnum.Displaying;
                 }
                 else
                 {

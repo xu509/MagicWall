@@ -243,8 +243,6 @@ namespace MagicWall
 
             if (doDestory)
             {
-                Debug.Log("删除容器");
-
                 //_searchResultAgent = null;
                 Destroy(_searchAgentContainer.gameObject);
             }
@@ -326,11 +324,11 @@ namespace MagicWall
                     Debug.Log("_searchResultAgent == null");
 
                     _searchResultAgent = Instantiate(_searchResultAgentPrefab, _searchResultContainer) as SearchResultAgent;
-                    _searchResultAgent.Init();
+                    _searchResultAgent.Init(_onUpdate);
                 }
                 else
                 {
-                    _searchResultAgent.Init();
+                    _searchResultAgent.Init(_onUpdate);
                 }
 
                 //  搜索结果控件进行加载数据

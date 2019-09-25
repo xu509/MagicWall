@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using EasingUtil;
+using System;
 
 // 过场效果 前后层展开
 namespace MagicWall
@@ -28,7 +30,7 @@ namespace MagicWall
             _daoService = manager.daoService;
 
             //  获取持续时间
-            StartingDurTime = 1.5f;
+            StartingDurTime = manager.cutEffectConfig.FrontBackDisplayDurTime;
             _startingTimeWithOutDelay = StartingDurTime;
             DestoryDurTime = 0.5f;
 
@@ -79,16 +81,22 @@ namespace MagicWall
                 }
 
                 // 模拟 DOTWEEN InOutQuad
-                if ((time /= run_time * 0.5f) < 1f)
-                {
-                    time = 0.5f * time * time;
-                }
-                else
-                {
-                    time = -0.5f * ((time -= 1f) * (time - 2f) - 1f);
-                }
+                //if ((time /= run_time * 0.5f) < 1f)
+                //{
+                //    time = 0.5f * time * time;
+                //}
+                //else
+                //{
+                //    time = -0.5f * ((time -= 1f) * (time - 2f) - 1f);
+                //}
 
-                Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, time);
+                float t = time / run_time;
+                Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.CurveStaggerDisplayEaseEnum);
+
+                t = defaultEasingFunction(t);
+
+
+                Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
                 agent.NextVector2 = to;
             }

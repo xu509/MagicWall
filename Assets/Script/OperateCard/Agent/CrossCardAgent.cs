@@ -393,6 +393,7 @@ namespace MagicWall {
                     crossCardCellData.IsImage = true;
                 }
                 else {
+                    crossCardCellData.Category = CrossCardCategoryEnum.VIDEO;
                     crossCardCellData.IsImage = false;
                     crossCardCellData.VideoUrl = scrollDatas[i].Src;
                 }

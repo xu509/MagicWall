@@ -342,6 +342,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed767e4494d90549925e585fc2d9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1831402249 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6911621782118847961, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+    type: 3}
+  m_PrefabInstance: {fileID: 6911621781813313417}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6911621781813313417
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -480,6 +486,11 @@ PrefabInstance:
       propertyPath: _operateCardManager
       value: 
       objectReference: {fileID: 6911621781813313423}
+    - target: {fileID: 6911621782184364798, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 1831402249}
     - target: {fileID: 6911621782827720610, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: _mockSceneConfig

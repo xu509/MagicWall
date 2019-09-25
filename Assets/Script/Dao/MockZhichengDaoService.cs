@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockFeiyueDaoService : MonoBehaviour, IDaoService
+    public class MockZhichengDaoService : MonoBehaviour, IDaoService
     {
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
@@ -45,7 +45,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockFeiyueDaoService() { }
+        protected MockZhichengDaoService() { }
 
 
 

@@ -11,6 +11,7 @@ namespace MagicWall
     {
         Action _onClickMove;
         Action _onClickReturn;
+        Action _onUpdated;
         Action<SearchBean> _onClickSearchResultItem;
 
         [SerializeField] Text _title;   //  标题
@@ -104,9 +105,9 @@ namespace MagicWall
         /// <summary>
         /// 初始化搜索结果
         /// </summary>
-        public void Init()
+        public void Init(Action onUpdatedAction)
         {
-            // 初始化移动、回退、帮助按钮
+            _onUpdated = onUpdatedAction;            
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace MagicWall
                 SetContentSize();
 
                 // 初始化滚动条
-                _searchResultScrollBarAgent.Init();
+                _searchResultScrollBarAgent.Init(_onUpdated);
             }
 
 

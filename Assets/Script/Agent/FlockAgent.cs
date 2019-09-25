@@ -228,7 +228,7 @@ namespace MagicWall
         {
 
             Vector2 refVector2; // 参照的目标位置
-            if (_manager.Status == WallStatusEnum.Cutting)
+            if (_manager.SceneStatus == WallStatusEnum.Cutting)
             {
                 // 当前场景正在切换时，参考位置为目标的下个移动位置
                 refVector2 = NextVector2;
@@ -721,7 +721,7 @@ namespace MagicWall
             var result = false;
 
             // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
-            if (_flockStatus == FlockStatusEnum.NORMAL)
+            if (_flockStatus == FlockStatusEnum.NORMAL && _manager.SceneStatus != WallStatusEnum.Cutting)
             {
 
                 //Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);

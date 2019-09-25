@@ -263,7 +263,7 @@ namespace MagicWall
         {
 
             //缩小一半
-            if (_cardStatus == CardStatusEnum.NORMAL || _cardStatus == CardStatusEnum.MOVE)
+            if (_cardStatus == CardStatusEnum.NORMAL || _cardStatus == CardStatusEnum.MOVE || _cardStatus == CardStatusEnum.HIDE)
             {
                 // 删除逻辑 REF ： https://www.yuque.com/docs/share/da04bf34-f197-41cb-9f3c-80308fe90cf1
                 if (EnterToDestoryTime())
@@ -295,6 +295,17 @@ namespace MagicWall
             {
                 _recentActiveTime = Time.time;
             }
+
+            if (_cardStatus == CardStatusEnum.HIDE) {
+                _recentActiveTime = Time.time;
+            }
+
+            if (_cardStatus == CardStatusEnum.RECOVER)
+            {
+                _recentActiveTime = Time.time;
+            }
+
+
             //else if (CardStatus == CardStatusEnum.TODESTORY)
             //{
             //    DoRecover();
@@ -498,52 +509,44 @@ namespace MagicWall
         //
         public void DoDetail()
         {
-            if (_cardStatus == CardStatusEnum.TODESTORY)
+
+            // 生成企业卡片
+            if (!_showDetail)
             {
-                DoUpdate();
+                OpenBusinessCard();
             }
-            else {
-                // 生成企业卡片
-                if (!_showDetail)
-                {
-                    OpenBusinessCard();
-                }
-                else
-                {
-                    CloseBusinessCard();
-                }
+            else
+            {
+                CloseBusinessCard();
             }
+            
         }
 
 
         // 生成缩放卡片
         public void InitScaleAgent(Texture texture)
         {
-            if (_cardStatus == CardStatusEnum.TODESTORY)
+
+            _scaleAgent = Instantiate(_scale_prefab,
+                            _scale_container
+                            ) as ScaleAgent;
+            _scaleAgent.SetImage(texture);
+            _scaleAgent.SetOnCloseClicked(OnScaleClose);
+            _scaleAgent.SetOnReturnClicked(OnScaleReturn);
+            _scaleAgent.SetOnUpdated(OnScaleUpdate);
+            _scaleAgent.SetOnOpen(OnScaleOpen);
+
+            // 显示缩放框体，隐藏普通框体
+            if (_main_container.gameObject.activeSelf)
             {
-                DoUpdate();
+                _main_container.gameObject.SetActive(false);
             }
-            else {
-                _scaleAgent = Instantiate(_scale_prefab,
-                              _scale_container
-                                ) as ScaleAgent;
-                _scaleAgent.SetImage(texture);
-                _scaleAgent.SetOnCloseClicked(OnScaleClose);
-                _scaleAgent.SetOnReturnClicked(OnScaleReturn);
-                _scaleAgent.SetOnUpdated(OnScaleUpdate);
-                _scaleAgent.SetOnOpen(OnScaleOpen);
 
-                // 显示缩放框体，隐藏普通框体
-                if (_main_container.gameObject.activeSelf)
-                {
-                    _main_container.gameObject.SetActive(false);
-                }
-
-                if (!_scaleAgent.gameObject.activeSelf)
-                {
-                    _scaleAgent.gameObject.SetActive(true);
-                }
+            if (!_scaleAgent.gameObject.activeSelf)
+            {
+                _scaleAgent.gameObject.SetActive(true);
             }
+            
         }
 
 
@@ -597,7 +600,11 @@ namespace MagicWall
         // 当点击缩放收回
         private void OnScaleReturn()
         {
-            TurnOffKeepOpen();
+            DoUpdate();
+            _inExtendOpen = false;
+
+
+            //TurnOffKeepOpen();
 
 
             // 显示主框体，隐藏缩放框体
@@ -640,17 +647,17 @@ namespace MagicWall
 
 
 
-        public void TurnOnKeepOpen()
-        {
-            DoUpdate();
-            _keepOpen = true;
-        }
+        //public void TurnOnKeepOpen()
+        //{
+        //    DoUpdate();
+        //    _keepOpen = true;
+        //}
 
-        public void TurnOffKeepOpen()
-        {
-            DoUpdate();
-            _keepOpen = false;
-        }
+        //public void TurnOffKeepOpen()
+        //{
+        //    DoUpdate();
+        //    _keepOpen = false;
+        //}
 
 
         public void DoOnCreatedCompleted()
@@ -674,10 +681,6 @@ namespace MagicWall
             // 隐藏平时的框框
             HideNormalContainer();
 
-
-            // 当打开视频框体时不自动关闭
-            KeepOpen = true;
-
         }
 
         public void DoCloseVideoContainer()
@@ -686,7 +689,9 @@ namespace MagicWall
 
             CloseVideoContainer();
 
-            TurnOffKeepOpen();
+            DoUpdate();
+
+            //TurnOffKeepOpen();
         }
 
 
@@ -695,9 +700,11 @@ namespace MagicWall
         //
         private void CloseVideoContainer()
         {
+            _cardStatus = CardStatusEnum.NORMAL;
             videoContainer.gameObject.SetActive(false);
             _videoAgent?.DoDestory();
             Destroy(_videoAgent?.gameObject);
+            DoUpdate();
         }
 
         // 显示普通的窗口
@@ -715,9 +722,14 @@ namespace MagicWall
         // 显示 Video 的窗口
         private void OpenVideoContainer(string address, string description, string cover)
         {
+            _cardStatus = CardStatusEnum.HIDE;
             videoContainer.gameObject.SetActive(true);
             _videoAgent = Instantiate(videoAgentPrefab, videoContainer);
-            _videoAgent.SetData(address, description, this, cover);
+            _videoAgent.SetData(address, description, this, cover,()=> {
+                //Debug.Log("video agent is update");
+                //Debug.Log("current free time : " + GetFreeTime());
+                DoUpdate();                
+            });
             _videoAgent.Init();
         }
         #endregion
@@ -844,6 +856,8 @@ namespace MagicWall
                     float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.8f;
                     _collider.radius = radius;
                     _hasChangeSize = false;
+
+                    //Debug.Log("UpdateColliderRadius! " + radius);
                 }
 
             }
@@ -1067,6 +1081,8 @@ namespace MagicWall
                 {
                     _questionAgent?.CloseReminder();
                     _showQuestion = false;
+
+                    _inExtendOpen = false;
                 }
                 else
                 {
@@ -1076,14 +1092,16 @@ namespace MagicWall
                     _questionAgent.ShowReminder(_questionTypeEnum);
                     _showQuestion = true;
 
-                    TurnOnKeepOpen();
+                    _inExtendOpen = true;
                 }
+                DoUpdate();
             }
         }
 
         private void OnQuestionClose()
         {
-            TurnOffKeepOpen();
+            DoUpdate();
+            _inExtendOpen = false;
             _showQuestion = false;
         }
 
@@ -1299,8 +1317,7 @@ namespace MagicWall
                 waitTime = _manager.managerConfig.OperateCardAutoCloseTime;
             }
 
-
-            if ((!_keepOpen) && (Time.time - _recentActiveTime > waitTime)) {
+            if ((!_keepOpen) && ((Time.time - _recentActiveTime) > waitTime)) {
                 return true;
             }
             return false;

@@ -36,12 +36,16 @@ namespace MagicWall
 
 
         [SerializeField, Header("LeftRightAdjust")] public EaseEnum LeftRightDisplayEaseEnum;
-
         [Range(0f, 10f)] public float LeftRightDisplayDurTime;
 
         [SerializeField, Header("UpDownAdjustCutEffect")] public EaseEnum UpDownDisplayEaseEnum;
-
         [Range(0f, 10f)] public float UpDownDisplayDurTime;
+
+        [SerializeField, Header("前后分层")] public EaseEnum FrontBackDisplayEaseEnum;
+        [Range(0f, 10f)] public float FrontBackDisplayDurTime;
+
+        [SerializeField, Header("曲线")] public EaseEnum CurveStaggerDisplayEaseEnum;
+        [Range(0f, 10f)] public float CurveStaggerDisplayDurTime;
 
 
         [SerializeField, Range(0f, 500f), Header("[星空效果] 卡片数量")]

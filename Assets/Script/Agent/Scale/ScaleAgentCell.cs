@@ -104,6 +104,8 @@ namespace MagicWall
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            Debug.Log("需调整图片是否过界");
+
 
             if (touchs.Count == 1)
             {

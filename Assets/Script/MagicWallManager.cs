@@ -20,6 +20,9 @@ namespace MagicWall
 
         #region 可配置项
 
+        [SerializeField, Header("Camera")] Camera _mainCamera;
+        public Camera mainCamera { get { return _mainCamera; } }
+
         // 定制 INFO 面板
         [SerializeField, Header("UI")] InfoPanelAgent infoPanelAgent;
         // MagicWall 面板
@@ -61,6 +64,7 @@ namespace MagicWall
 
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
+        [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] DaoService _realDaoService;
 
         [SerializeField, Header("Global Data")] GlobalData _globalData;
@@ -73,6 +77,9 @@ namespace MagicWall
         [SerializeField, Header("Mock")] bool _isMockData;
 
         [SerializeField] bool _isMockFeiyueData;
+
+        [SerializeField] bool _isMockZhichengData;
+
         public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
 
 
@@ -134,7 +141,7 @@ namespace MagicWall
         public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }
         public int SceneIndex { get { return _sceneIndex; } set { _sceneIndex = value; } }
         public IScene CurrentScene { get { return _currentScene; } set { _currentScene = value; } }
-        public WallStatusEnum Status { get { return status; } set { status = value; } }
+        public WallStatusEnum SceneStatus { get { return status; } set { status = value; } }
         public AgentManager agentManager { get { return _agentManager; } }
         public BackgroundManager backgroundManager { get { return _backgroundManager; } }
         public IDaoService daoService { get { return _daoService; } }

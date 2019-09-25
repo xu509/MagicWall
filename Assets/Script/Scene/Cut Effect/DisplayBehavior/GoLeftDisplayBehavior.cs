@@ -77,7 +77,7 @@ namespace MagicWall
             float deviationValue = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight() / 2;
 
             // 超过屏幕的距离
-            float overDistense = last_x - deviationValue - Screen.width;
+            float overDistense = last_x - deviationValue - _manager.mainPanel.rect.width;
 
             if ((overDistense - _manager.PanelOffsetX) < 0)
             {

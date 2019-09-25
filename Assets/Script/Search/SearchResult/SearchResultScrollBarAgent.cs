@@ -9,6 +9,8 @@ namespace MagicWall
 {
     public class SearchResultScrollBarAgent : MonoBehaviour
     {
+        Action onScrollUpdatedAction;
+
 
         [SerializeField] private int _itemNumber = 50;   //  Item 的数量
         [SerializeField] private RectTransform _container; //   item 的容器
@@ -42,9 +44,11 @@ namespace MagicWall
         /// <summary>
         /// 初始化入口
         /// </summary>
-        public void Init()
+        public void Init(Action onUpdated)
         {
             _items = new List<SearchResultScrollBarItemAgent>();
+
+            onScrollUpdatedAction = onUpdated;
 
             CreateItems();
 
@@ -93,6 +97,8 @@ namespace MagicWall
                 float widthOffset = CalculateItemWidthOffset(effectRange, midindex, item.Index);
                 item.Refresh(widthOffset);
             }
+
+            onScrollUpdatedAction.Invoke();
         }
 
 

@@ -42,6 +42,8 @@ namespace MagicWall
         private bool _isMusicing = true;
         private string _cover;
 
+        Action _onVideoUpdated;
+
 
         //private Vector2 _progress_init = new Vector2(-487, 0);
         //private Vector2 _progress_finish = new Vector2(-15, 0);
@@ -71,12 +73,13 @@ namespace MagicWall
         }
 
 
-        public void SetData(string address, string description, CardAgent cardAgent, string cover)
+        public void SetData(string address, string description, CardAgent cardAgent, string cover,Action onVideoUpdated)
         {
             SetAddress(address);
             SetCardAgent(cardAgent);
             SetDescription(description);
 
+            _onVideoUpdated = onVideoUpdated;
             _cover = cover;
         }
 
@@ -136,6 +139,7 @@ namespace MagicWall
 
                     UpdateTime();
                     Progress(CalculateRate());
+                    _onVideoUpdated.Invoke();
                 }
 
                 // 音乐控制按钮监控

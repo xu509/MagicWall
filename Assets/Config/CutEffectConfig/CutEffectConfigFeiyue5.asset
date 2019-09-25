@@ -22,6 +22,10 @@ MonoBehaviour:
   LeftRightDisplayDurTime: 2
   UpDownDisplayEaseEnum: 13
   UpDownDisplayDurTime: 2
+  FrontBackDisplayEaseEnum: 27
+  FrontBackDisplayDurTime: 1.5
+  CurveStaggerDisplayEaseEnum: 27
+  CurveStaggerDisplayDurTime: 3
   StarEffectAgentsCount: 60
   StarEffectMoveFactor: 15
   StarEffectOriginPoint: 1500
