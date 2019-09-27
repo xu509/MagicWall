@@ -14,6 +14,13 @@ namespace MagicWall
         void InitData();
 
 
+        /// <summary>
+        ///     获取所有的素材图片地址
+        /// </summary>
+        /// <returns></returns>
+        List<string> GetMatImageAddresses();
+
+
         #region 企业
 
         /// <summary>

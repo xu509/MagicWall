@@ -50,7 +50,6 @@ namespace MagicWall
             // 获取产品标题
             _title.text = _operateCardDataSlide.Title;
 
-
             InitComponents(_operateCardDataSlide.ExtraCardData);
 
             // 获取产品详细（图片，描述）
@@ -67,56 +66,6 @@ namespace MagicWall
                 cellDatas.Add(cellData);
             }
 
-
-
-
-
-
-
-            //List<SliceCardCellData> cellDatas;
-            //if (type == MWTypeEnum.Product)
-            //{
-            //    Product product = _manager.daoService.GetProductDetail(DataId);
-
-            //    // 获取产品标题
-            //    _title.text = product.Name;
-
-            //    // 获取产品所属公司信息
-            //    InitComponents(_manager.daoService.GetEnvCards(product.Ent_id).Count > 0);
-
-            //    // 获取产品详细（图片，描述）
-            //    cellDatas = new List<SliceCardCellData>();
-            //    for (int i = 0; i < product.ProductDetails.Count; i++)
-            //    {
-            //        SliceCardCellData cellData = new SliceCardCellData();
-            //        cellData.Type = 0;
-            //        cellData.sliceCardAgent = this;
-            //        cellData.magicWallManager = _manager;
-            //        cellData.LoadProductDetail(product.ProductDetails[i]);
-            //        cellDatas.Add(cellData);
-            //    }
-            //}
-            //else {
-            //    // 初始化活动信息
-            //    Activity activity = _manager.daoService.GetActivityDetail(DataId);
-
-            //    _title.text = activity.Name;
-
-            //    // 获取产品所属公司信息
-            //    InitComponents(_manager.daoService.GetEnvCards(activity.Ent_id).Count > 0);
-
-            //    // 获取产品详细（图片，描述）
-            //    cellDatas = new List<SliceCardCellData>();
-            //    for (int i = 0; i < activity.ActivityDetails.Count; i++)
-            //    {
-            //        SliceCardCellData cellData = new SliceCardCellData();
-            //        cellData.Type = 0;
-            //        cellData.sliceCardAgent = this;
-            //        cellData.magicWallManager = _manager;
-            //        cellData.LoadActivityDetail(activity.ActivityDetails[i]);
-            //        cellDatas.Add(cellData);
-            //    }
-            //}
 
 
             _scrollController.SetUpCardAgent(this);

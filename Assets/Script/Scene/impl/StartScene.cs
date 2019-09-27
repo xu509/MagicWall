@@ -190,32 +190,17 @@ namespace MagicWall
 
             _doLoadResourse = true;
 
-            if (_manager.IsMockData)
+            _manager.daoService.InitData();
+
+            var addresses = _manager.daoService.GetMatImageAddresses();
+            Debug.Log("加载图片的数量：" + addresses.Count);
+
+            foreach (string address in addresses)
             {
-                if (_manager.switchMode)
-                {
-                    DoLoadFeiyueData();
-                    DoLoadZhiChengData();
-                }
-                else {
-                    if (_manager.isMockFeiyueData)
-                    {
-                        DoLoadFeiyueData();
-                    } else if (_manager.isMockShicunData) {
-                        DoLoadShicunData();
-                    }
-                    else
-                    {
-                        DoLoadMock();
-                    }
-                }
+                string imageAddress = MagicWallManager.FileDir + address;
+                TextureResource.Instance.GetTexture(imageAddress);
 
             }
-            else
-            {
-                DoLoad();
-            }
-
 
             // 加载其他资源
             //  - 手写板用的texture
@@ -254,7 +239,6 @@ namespace MagicWall
 
         private void DoLoadMock()
         {
-
 
             List<string> addresses = new List<string>();
 

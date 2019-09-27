@@ -793,5 +793,10 @@ namespace MagicWall
         {
             throw new System.NotImplementedException();
         }
+
+        public List<string> GetMatImageAddresses()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

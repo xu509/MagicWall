@@ -15,6 +15,8 @@ namespace MagicWall
         [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
 
 
+
+
         protected MagicWallManager _manager;
         protected int _dataId;
         private float _width;
@@ -126,6 +128,10 @@ namespace MagicWall
         [SerializeField] RectTransform videoContainer;  // video的安放框体
 
         [SerializeField, Header("Physics"), Range(0, 500)] int _physicesEffectFactor;
+
+
+        //public FlockStatusEnum fs = _originAgent.flockStatus;
+
 
 
 
@@ -358,96 +364,86 @@ namespace MagicWall
 
             GetComponent<CircleCollider2D>().radius = 0;
 
-            //  如果场景没有变，则回到原位置
-            if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null))
+            if (_originAgent.isStarEffect)
             {
-                //恢复并归位
-                // 缩到很小很小
-                RectTransform cardRect = GetComponent<RectTransform>();
-
-                //  移到后方、缩小、透明
-                Tweener t = cardRect.DOScale(0.2f, 1f);
-                //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
-
-                //  获取位置
-                Vector3 to = new Vector3(_originAgent.OriVector2.x - _manager.PanelOffsetX
-                    , _originAgent.OriVector2.y - _manager.PanelOffsetY, 200);
-
-
-                if (_originAgent.SceneIndex == _manager.SceneIndex)
-                {
-                    cardRect.DOAnchorPos3D(to, 1f)
-                         .OnComplete(() =>
-                         {
-                             // 恢复
-                             _originAgent.DoRecoverAfterChoose();
-                             _cardStatus = CardStatusEnum.OBSOLETE;
-                         });
-                }
-                else {
-                    _cardStatus = CardStatusEnum.OBSOLETE;
-
-                    if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED)) {
-                        _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
-                    }
-
-                    
-                }
-
-
-                //Tweener t2 = cardRect.DOAnchorPos3D(to, 1f)
-                //    .OnComplete(() =>
-                //    {
-                //        // 再次判断场景是否已经改变
-                //        if (_sceneIndex == _manager.SceneIndex)
-                //        {
-                //            // 恢复
-                //            oriAgent.DoRecoverAfterChoose();
-                //        }
-                //        else {
-                //            oriAgent.flockStatus = FlockStatusEnum.OBSOLETE;
-                //        }
-
-                //        // 无论如何，该卡片都会进行销毁
-
-                //        //_agentManager.RemoveItemFromEffectItems(this);
-                //        _cardStatus = CardStatusEnum.OBSOLETE;
-
-                //        Debug.Log("返回原位置，删除完毕");
-                //    });
-
-                //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOAnchorPos3D_IsOrigin, t2);
-
-
+                Close();
             }
-            //  直接消失
             else
             {
-                // 慢慢缩小直到消失
-                Vector3 vector3 = Vector3.zero;
+                //  如果场景没有变，则回到原位置
+                if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null))
+                {
+                    //恢复并归位
+                    // 缩到很小很小
+                    RectTransform cardRect = GetComponent<RectTransform>();
 
-                GetComponent<RectTransform>().DOScale(vector3, 1.5f)
-                    .OnUpdate(() =>
+                    //  移到后方、缩小、透明
+                    Tweener t = cardRect.DOScale(0.2f, 1f);
+                    //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
+
+                    //  获取位置
+                    Vector3 to = new Vector3(_originAgent.OriVector2.x - _manager.PanelOffsetX
+                        , _originAgent.OriVector2.y - _manager.PanelOffsetY, 200);
+
+
+                    if (_originAgent.SceneIndex == _manager.SceneIndex)
                     {
-                        _width = GetComponent<RectTransform>().sizeDelta.x;
-                        _height = GetComponent<RectTransform>().sizeDelta.y;
-                    })
-                    .OnComplete(() =>
+                        cardRect.DOAnchorPos3D(to, 1f)
+                             .OnComplete(() =>
+                             {
+                             // 恢复
+                             _originAgent.DoRecoverAfterChoose();
+                                 _cardStatus = CardStatusEnum.OBSOLETE;
+                             });
+                    }
+                    else
                     {
                         _cardStatus = CardStatusEnum.OBSOLETE;
-
 
                         if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
                         {
                             _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
                         }
-
-                        Debug.Log("直接删除");
-                        
-                    });
+                    }
+                }
+                //  直接消失
+                else
+                {
+                    Close();
+                }
             }
 
+
         }
+
+
+
+        private void Close() {
+            // 慢慢缩小直到消失
+            Vector3 vector3 = Vector3.zero;
+
+            GetComponent<RectTransform>().DOScale(vector3, 1.5f)
+                .OnUpdate(() =>
+                {
+                    _width = GetComponent<RectTransform>().sizeDelta.x;
+                    _height = GetComponent<RectTransform>().sizeDelta.y;
+                })
+                .OnComplete(() =>
+                {
+                    _cardStatus = CardStatusEnum.OBSOLETE;
+
+
+                    if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
+                    {
+                        _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
+                    }
+
+                    Debug.Log("直接删除");
+
+                });
+
+        }
+
 
         //
         //  恢复

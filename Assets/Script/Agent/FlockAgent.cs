@@ -108,6 +108,12 @@ namespace MagicWall
         private CardAgent _lastEffectAgent;    // 上一个影响的 agent
         private bool _effectLastFlag = false;
 
+        private bool _isStarEffect = false;
+        public bool isStarEffect { set { _isStarEffect = value; } get { return _isStarEffect; } }
+
+        // 标志位
+        private bool _needAdjustPosition = false;
+        public bool needAdjustPosition { set { _needAdjustPosition = value; } get { return _needAdjustPosition; } }
 
 
 
@@ -148,6 +154,8 @@ namespace MagicWall
         /// <param name="isCard"></param>
         protected void InitBase(MagicWallManager manager, int dataId, DataTypeEnum dataType)
         {
+            //Debug.Log("Init Base : " + dataId);
+
             _manager = manager;
             _data_id = dataId;
             _dataType = dataType;
@@ -221,6 +229,10 @@ namespace MagicWall
                 {
                     UpdatePositionEffect();
                 }
+                else {
+                    //Debug.Log("No Need To Adjust Position");
+
+                }
             }
         }
 
@@ -281,23 +293,6 @@ namespace MagicWall
                 w = targetAgent.width * scaleVector3.x;
                 h = targetAgent.height * scaleVector3.y;
 
-                //_effectLastFlag = false; // 初始化
-
-                //// 如果有多个影响体，则设置疲劳期
-                //if (transforms.Count > 1)
-                //{
-                //    if (_lastEffectAgent != targetAgent)
-                //    {
-
-                //        //Debug.Log("接收到新的影响体");
-                //        if ((Time.time - _lastEffectTime) < _manager.flockBehaviorConfig.EffectTiredTime)
-                //        {
-                //            //仍然受原物体影响
-                //            targetAgent = _lastEffectAgent;
-                //            _effectLastFlag = true;
-                //        }
-                //    }
-                //}
             }
             else
             {
@@ -394,6 +389,8 @@ namespace MagicWall
                     _flockStatus = FlockStatusEnum.HIDE;
                     gameObject.SetActive(false);
 
+                    //Debug.Log("chose :" + _data_id);
+
                     _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, _cardGenPos, this);
 
 
@@ -432,91 +429,6 @@ namespace MagicWall
                 });
 
 
-
-
-
-
-                //Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f,
-                //    rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 
-                //    200);
-
-
-                //if (_agentContainerType == AgentContainerType.MainPanel)
-                //{
-                //    cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
-                //}
-                //else if (_agentContainerType == AgentContainerType.BackPanel)
-                //{
-                //    cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
-                //}
-                //else if (_agentContainerType == AgentContainerType.StarContainer)
-                //{
-                //    // 获取屏幕坐标
-                //    Vector2 v = RectTransformUtility.WorldToScreenPoint(_manager.starCamera, transform.position);
-
-                //    // 需要屏幕坐标转为某UGUI容器内的坐标
-
-                //    Vector2 refp;
-
-                //    RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.OperationPanel, v, null, out refp);
-
-                //    refp = new Vector2(refp.x + _manager.OperationPanel.rect.width / 2, refp.y + _manager.OperationPanel.rect.height / 2);
-
-                //    cardGenPosition = refp;
-                //}
-
-                //// 当产品是前后层关系时，此时会报错
-
-                //// 同时创建十字卡片，加载数据，以防因加载数据引起的卡顿
-
-                ////_cardAgent = _itemsFactory.GenerateCardAgent(cardGenPosition, this, _data_id, false);
-
-                //_cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, cardGenPosition, this);
-
-
-
-
-                ////靠近四周边界需要偏移
-                //float w = _cardAgent.GetComponent<RectTransform>().rect.width;
-                //float h = _cardAgent.GetComponent<RectTransform>().rect.height;
-
-                //// 如果点击时,出生位置在最左侧
-                //if (cardGenPosition.x < w / 2)
-                //{
-                //    cardGenPosition.x = w / 2;
-                //}
-
-                //// 出身位置在最右侧
-                //if (cardGenPosition.x > _manager.OperationPanel.rect.width - w / 2)
-                //{
-                //    cardGenPosition.x = _manager.OperationPanel.rect.width - w / 2;
-                //}
-
-                //// 出生位置在最下侧
-                //if (cardGenPosition.y < h / 2)
-                //{
-                //    cardGenPosition.y = h / 2;
-                //}
-
-                //// 出生位置在最上侧
-                //if (cardGenPosition.y > _manager.OperationPanel.rect.height - h / 2)
-                //{
-                //    cardGenPosition.y = _manager.OperationPanel.rect.height - h / 2;
-                //}
-                //_cardAgent.GetComponent<RectTransform>().anchoredPosition = cardGenPosition;
-
-                ////Debug.Log("cardGenPosition : " + cardGenPosition);
-
-
-                //// 完成缩小与移动后创建十字卡片
-                //rect.DOAnchorPos3D(to, 1f).OnComplete(() =>
-                //{
-                //    _flockStatus = FlockStatusEnum.HIDE;
-
-                //    rect.gameObject.SetActive(false);
-                //    _cardAgent.GoToFront();
-
-                //});
             }
         }
 
@@ -526,8 +438,15 @@ namespace MagicWall
 
         public void DoRecoverAfterChoose()
         {
-            _flockStatus = FlockStatusEnum.RECOVER;
 
+            if (_flockStatus != FlockStatusEnum.HIDE) {
+                return;
+            }
+
+            //gameObject == null;
+            Debug.Log("status : " + _flockStatus);
+
+            _flockStatus = FlockStatusEnum.RECOVER;
 
             //// 如果组件已不在原场景，则不进行恢复
             //if (_sceneIndex != _manager.SceneIndex)
@@ -591,13 +510,25 @@ namespace MagicWall
        /// <returns></returns>
         private bool NeedAdjustPostion()
         {
-            // 当前位置与目标位置一致
-            bool NoEffectAgent = _manager.operateCardManager.EffectAgents.Count == 0;
+            //Debug.Log("Check adjust : " + _manager.operateCardManager.EffectAgents.Count);
 
-            if (!NoEffectAgent)
-            {
-                return true;
+
+            if (_flockStatus == FlockStatusEnum.NORMAL) {
+
+                // 当前位置与目标位置一致
+                bool NoEffectAgent = (_manager.operateCardManager.EffectAgents.Count == 0);
+
+                if (!NoEffectAgent)
+                {
+
+                    //Debug.Log("NoEffectAgent is false");
+
+                    return true;
+                }
             }
+
+
+
 
             Vector2 position = GetComponent<RectTransform>().anchoredPosition;
             bool InOriginPosition = AppUtils.CheckVectorIsEqual(position, NextVector2);

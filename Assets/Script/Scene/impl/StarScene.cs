@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -162,8 +163,6 @@ namespace MagicWall
             for (int i = 0; i < _activeAgents.Count; i++)
             {
 
-
-
                 if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.cutEffectConfig.StarEffectEndPoint)
                 {
                     //  清理agent，
@@ -172,7 +171,7 @@ namespace MagicWall
                     FlockAgent agent = CreateNewAgent(false);
                     agent.GetComponent<RectTransform>().SetAsFirstSibling();
 
-                    Debug.Log("Create star card!");
+                    //Debug.Log("Create star card!");
 
                 }
                 else
@@ -226,6 +225,7 @@ namespace MagicWall
             // 星空效果不会被物理特效影响
             //go.CanEffected = false;
             go.flockStatus = FlockStatusEnum.STAR;
+            go.isStarEffect = true;
 
             // 设置Z轴
 

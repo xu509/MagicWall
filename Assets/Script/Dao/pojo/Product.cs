@@ -119,7 +119,7 @@ namespace MagicWall
 
         public override int GetId()
         {
-            return ent_id;            
+            return pro_id;            
         }
 
         public override DataTypeEnum GetDataType()

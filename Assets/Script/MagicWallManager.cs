@@ -24,6 +24,8 @@ namespace MagicWall
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
 
+        [SerializeField] Camera _starCamera;    // 星空camera
+
         // 定制 INFO 面板
         [SerializeField, Header("UI")] InfoPanelAgent infoPanelAgent;
         // MagicWall 面板
@@ -51,8 +53,6 @@ namespace MagicWall
 
         [SerializeField] OperateMode _operateMode;  //操作模块
 
-        [SerializeField] Camera _starCamera;    // 星空camera
-
         [SerializeField] OperateCardManager _operateCardManager;
         public OperateCardManager operateCardManager { get { return _operateCardManager; } }
 
@@ -68,6 +68,8 @@ namespace MagicWall
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] DaoService _realDaoService;
+
+        [SerializeField, Header("Music")] MusicManager _musicManager;
 
         [SerializeField, Header("Global Data")] GlobalData _globalData;
 
@@ -109,9 +111,9 @@ namespace MagicWall
 
       // public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+         public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+       // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -248,6 +250,12 @@ namespace MagicWall
 
             // 初始化操作卡片管理器
             _operateCardManager.Init(this);
+
+            // 初始化音乐服务
+            _musicManager.Init();
+
+            _musicManager.Play();
+
 
             // 初始化定制服务
             if (managerConfig.IsCustom)

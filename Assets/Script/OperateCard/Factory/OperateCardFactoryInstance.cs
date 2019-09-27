@@ -56,8 +56,9 @@ namespace MagicWall {
                     //cardData = (OperateCardDataSingle)operateCardDataCross;
                 }
             }
-            else if (dataType == DataTypeEnum.Product)
+            else if (dataType == DataTypeEnum.Product || dataType == DataTypeEnum.Wine)
             {
+
                 Product product = daoService.GetProductDetail(dataId);
                 Enterprise enterprise = daoService.GetEnterpriseById(product.Ent_id);
                 OperateCardDataSlide operateCardDataSlide = ProductAdapter.Transfer(product, enterprise);

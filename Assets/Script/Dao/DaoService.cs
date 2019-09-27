@@ -796,5 +796,10 @@ namespace MagicWall
             return null;
 
         }
+
+        public List<string> GetMatImageAddresses()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

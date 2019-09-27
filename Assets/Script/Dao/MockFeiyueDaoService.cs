@@ -166,6 +166,8 @@ namespace MagicWall
         //
         public List<Product> GetProducts()
         {
+            return _products;
+
             if (_products == null)
             {
                 _productMap = new Dictionary<int, Product>();
@@ -406,32 +408,9 @@ namespace MagicWall
 
                     var mats = imageCovers[x];
 
-                    //
+                    
                     AddProduct(mats, name, x);
 
-                    //Product product = new Product();
-                    //product.Name = name;
-                    //product.Pro_id = x;
-                    //product.Ent_id = 0;
-                    //product.Description = name;
-                    //product.Image = mats[0];
-
-
-                    //List<ProductDetail> productDetails = new List<ProductDetail>();
-                    //for (int y = 0; y < mats.Length; y++) {
-                    //    var mat = mats[y];
-
-                    //    ProductDetail productDetail = new ProductDetail();
-                    //    productDetail.Id = y;
-                    //    productDetail.Type = 0;
-                    //    productDetail.Pro_id = x;
-                    //    productDetail.Description = mat;
-                    //    productDetail.Image = mat;
-                    //    productDetails.Add(productDetail);
-                    //}
-
-                    //product.ProductDetails = productDetails;
-                    //_products.Add(product);
                 }
 
                 return _products;
@@ -442,6 +421,12 @@ namespace MagicWall
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="details">同产品下的多张图片，如 [“detailImages1”,“detailImages2”]</param>
+        /// <param name="name"></param>
+        /// <param name="proid"></param>
         private void AddProduct(string[] details, string name, int proid)
         {
 
@@ -455,7 +440,7 @@ namespace MagicWall
                 product.Pro_id = pro_id;
                 product.Ent_id = 0;
                 product.Description = name;
-                product.Image = details[i];
+                product.Image = details[i]; // 封面
 
                 // 包裹detail
 
@@ -473,6 +458,15 @@ namespace MagicWall
                     productDetails.Add(productDetail);
                 }
 
+                // 调整选中的图片为第一张图片
+                //productDetails
+                var temp = productDetails[0];
+                var tempC = productDetails[i];
+                productDetails[0] = tempC;
+                productDetails[i] = temp;
+
+
+
                 // todo 添加视频
                 ProductDetail productDetailVideo = new ProductDetail();
                 productDetailVideo.Id = 99;
@@ -488,7 +482,6 @@ namespace MagicWall
 
 
                 //Debug.Log(pro_id);
-
                 _productMap.Add(pro_id, product);
 
                 _products.Add(product);
@@ -509,7 +502,12 @@ namespace MagicWall
         {
             List<Product> product = GetProducts();
             int index = Random.Range(0, _products.Count);
-            return _products[index];
+
+            var item = _products[index];
+
+            //Debug.Log("number : " + product.Count + " | " + item.GetId());
+
+            return item;
         }
 
         //
@@ -517,6 +515,23 @@ namespace MagicWall
         //
         public Product GetProductDetail(int pro_id)
         {
+            //Debug.Log("get pro id : " + pro_id);
+
+
+            //foreach (KeyValuePair<int,Product> d in _productMap)
+            //{
+            //    Debug.Log("Map id : " + d.Key);
+            //    Debug.Log("Map value : " + d.Value.Name);
+            //}
+
+            //for (int i = 0; i < _products.Count; i++) {
+            //    Debug.Log("List id : " + _products[i].Pro_id);
+            //    Debug.Log("List id : " + _products[i].Name);
+            //}
+
+
+
+
             var product = _productMap[pro_id];
 
             return product;
@@ -839,6 +854,249 @@ namespace MagicWall
 
         public void InitData()
         {
+            // 初始化数据
+
+            _products = new List<Product>();
+
+            _productMap = new Dictionary<int, Product>();
+
+
+            string[] names = {
+                "ins风法国版帆布鞋",
+                "超纤皮休闲百搭板鞋",
+                "骑士风高帮帆布鞋",
+                "魔术贴学生跑步鞋",
+                "经典运动休闲超纤鞋",
+                "低帮帆布鞋",
+                "低帮女学生帆布鞋",
+                "复古潮流豹纹平底鞋",
+                "低帮帆布女鞋",
+                "大孚飞跃文字快闪小白鞋",
+                "半拖懒人复古帆布鞋",
+                "高跟马丁靴",
+                "飞跃漫威联名款拖鞋",
+                "复古原宿帆布小白鞋",
+                "休闲情侣鸳鸯鞋",
+                "涂鸦迷彩帆布鞋",
+                "绿色潮流休闲情侣帆布鞋",
+                "经典帆布鞋",
+                "手绘街头嘻哈学生板鞋",
+                "休闲男鞋低帮情侣学生潮流小白鞋",
+            };
+
+            //Dictionary<int, List<string>> images = new Dictionary<int, List<string>>();
+
+            List<string[]> imageCovers = new List<string[]>();
+
+            string[] i = {
+                "feiyue\\ins风法国版帆布鞋\\1.jpg",
+                "feiyue\\ins风法国版帆布鞋\\2.jpg",
+                "feiyue\\ins风法国版帆布鞋\\3.jpg",
+                "feiyue\\ins风法国版帆布鞋\\4.jpg",
+                "feiyue\\ins风法国版帆布鞋\\5.jpg",
+            };
+            imageCovers.Add(i);
+
+            string[] i2 = {
+                "feiyue\\超纤皮休闲百搭板鞋\\1.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\2.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\3.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\4.jpg"
+            };
+            imageCovers.Add(i2);
+
+
+            string[] i3 = {
+                "feiyue\\骑士风高帮帆布鞋\\1.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\2.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\3.jpg"
+            };
+            imageCovers.Add(i3);
+
+
+            string[] i4 = {
+                "feiyue\\魔术贴学生跑步鞋\\1.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\2.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\3.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\4.jpg"
+            };
+            imageCovers.Add(i4);
+
+
+            string[] i5 = {
+                "feiyue\\经典运动休闲超纤鞋\\1.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\2.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\3.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\4.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\5.jpg",
+            };
+            imageCovers.Add(i5);
+
+            string[] i6 = {
+                "feiyue\\低帮帆布鞋\\1.jpg",
+                "feiyue\\低帮帆布鞋\\2.jpg",
+                "feiyue\\低帮帆布鞋\\3.jpg",
+                "feiyue\\低帮帆布鞋\\4.jpg",
+            };
+            imageCovers.Add(i6);
+
+            string[] i7 = {
+                "feiyue\\低帮女学生帆布鞋\\1.jpg",
+                "feiyue\\低帮女学生帆布鞋\\2.jpg",
+                "feiyue\\低帮女学生帆布鞋\\3.jpg",
+                "feiyue\\低帮女学生帆布鞋\\4.jpg",
+            };
+            imageCovers.Add(i7);
+
+
+            string[] i8 = {
+                "feiyue\\复古潮流豹纹平底鞋\\1.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\2.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\3.jpg",
+            };
+            imageCovers.Add(i8);
+
+
+            string[] i9 = {
+                "feiyue\\低帮帆布女鞋\\1.jpg",
+                "feiyue\\低帮帆布女鞋\\2.jpg",
+                "feiyue\\低帮帆布女鞋\\3.jpg",
+                "feiyue\\低帮帆布女鞋\\4.jpg",
+            };
+            imageCovers.Add(i9);
+
+
+            string[] i10 = {
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837249.jpg",
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837408.jpg"
+            };
+            imageCovers.Add(i10);
+
+
+            string[] i11 = {
+                "feiyue\\半拖懒人复古帆布鞋\\1.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\2.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\3.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\4.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\5.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\6.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\7.jpg"
+            };
+            imageCovers.Add(i11);
+
+
+            string[] i12 = {
+                "feiyue\\高跟马丁靴\\1.jpg",
+                "feiyue\\高跟马丁靴\\2.jpg",
+                "feiyue\\高跟马丁靴\\3.jpg",
+                "feiyue\\高跟马丁靴\\4.jpg",
+                "feiyue\\高跟马丁靴\\5.jpg",
+                "feiyue\\高跟马丁靴\\6.jpg",
+                "feiyue\\高跟马丁靴\\7.jpg",
+                "feiyue\\高跟马丁靴\\8.jpg"
+            };
+            imageCovers.Add(i12);
+
+
+            string[] i13 = {
+                "feiyue\\飞跃漫威联名款拖鞋\\1.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\2.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\3.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\4.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\5.jpg",
+            };
+            imageCovers.Add(i13);
+
+
+            string[] i14 = {
+                "feiyue\\复古原宿帆布小白鞋\\1.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\2.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\3.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\4.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\5.jpg",
+            };
+            imageCovers.Add(i14);
+
+
+            string[] i15 = {
+                "feiyue\\休闲情侣鸳鸯鞋\\1.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\2.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\3.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\4.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\5.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\6.jpg",
+            };
+            imageCovers.Add(i15);
+
+
+            string[] i16 = {
+                "feiyue\\涂鸦迷彩帆布鞋\\1.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\2.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\3.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\4.jpg"
+            };
+            imageCovers.Add(i16);
+
+
+            string[] i17 = {
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\1.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\2.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\3.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\4.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\5.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\6.jpg",
+            };
+            imageCovers.Add(i17);
+
+
+            string[] i18 = {
+                "feiyue\\经典帆布鞋\\7747427.jpg",
+                "feiyue\\经典帆布鞋\\7747787.jpg",
+                "feiyue\\经典帆布鞋\\7747957.jpg",
+                "feiyue\\经典帆布鞋\\7748486.jpg",
+                "feiyue\\经典帆布鞋\\7748971.jpg",
+                "feiyue\\经典帆布鞋\\7749427.jpg",
+                "feiyue\\经典帆布鞋\\7787236.jpg",
+                "feiyue\\经典帆布鞋\\7787656.jpg",
+                "feiyue\\经典帆布鞋\\7787783.jpg",
+                "feiyue\\经典帆布鞋\\7794456.jpg",
+                "feiyue\\经典帆布鞋\\7794807.jpg",
+            };
+            imageCovers.Add(i18);
+
+
+            string[] i19 = {
+                "feiyue\\手绘街头嘻哈学生板鞋\\1.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\2.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\3.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\4.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\5.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\6.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\7.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\8.jpg",
+            };
+            imageCovers.Add(i19);
+
+
+            string[] i20 = {
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\1.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\2.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\3.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\4.jpg"
+            };
+            imageCovers.Add(i20);
+
+
+            //  从数据库中获取数据
+            for (int x = 0; x < names.Length; x++)
+            {
+                var name = names[x];
+                var mats = imageCovers[x];
+
+                AddProduct(mats, name, x);
+            }
+
+
             //throw new System.NotImplementedException();
         }
 
@@ -873,7 +1131,37 @@ namespace MagicWall
 
         public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
         {
-            return GetFlockData(type);
+            var item = GetFlockData(type);
+
+            //Debug.Log("Get by scene : " + item.GetId());
+
+
+            return item;
+        }
+
+        public List<string> GetMatImageAddresses()
+        {
+            var result = new List<string>();
+
+            for (int i = 0; i < _products.Count; i++) {
+                result.Add(_products[i].Image);
+            }
+
+            var c1 = GetCustomImage(CustomImageType.LEFT1);
+            var c2 = GetCustomImage(CustomImageType.RIGHT);
+
+            for (int i = 0; i < c1.Count; i++)
+            {
+                result.Add(c1[i]);
+            }
+
+            for (int i = 0; i < c2.Count; i++)
+            {
+                result.Add(c2[i]);
+            }
+
+
+            return result;
         }
     }
 }

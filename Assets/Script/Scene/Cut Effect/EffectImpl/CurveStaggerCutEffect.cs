@@ -84,16 +84,6 @@ namespace MagicWall
                     continue;
                 }
 
-                // 模拟 DOTWEEN InOutQuad
-                //if ((time /= run_time * 0.5f) < 1f)
-                //{
-                //    time = 0.5f * time * time;
-                //}
-                //else
-                //{
-                //    time = -0.5f * ((time -= 1f) * (time - 2f) - 1f);
-                //}
-
                 float t = time / run_time;
                 Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.CurveStaggerDisplayEaseEnum);
 

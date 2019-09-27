@@ -22,6 +22,9 @@ namespace MagicWall {
             //  定面板位置
             Vector2 ori_position = new Vector2(ori_x, ori_y);
 
+
+            //Debug.Log("Generate flock data : " + flockData.GetId());
+
             _flockAgent.Initialize(manager, ori_position, position,
                 row, column, width, height, flockData.GetId(), flockData.GetCover(), false,
                 flockData.GetDataType(), parent);

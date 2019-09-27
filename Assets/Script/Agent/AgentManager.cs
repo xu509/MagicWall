@@ -236,11 +236,14 @@ namespace MagicWall
             if (agent.agentContainerType == AgentContainerType.MainPanel)
             {
                 //Debug.Log("ReleaseObj : " + agent.name);
+                agent.Reset();
                 Destroy(agent.gameObject);
                 //_flockAgentPool.ReleaseObj(agent);
             }
             else if (agent.agentContainerType == AgentContainerType.BackPanel)
             {
+                agent.Reset();
+
                 Destroy(agent.gameObject);
 
                 //_flockAgentInBackPool.ReleaseObj(agent);

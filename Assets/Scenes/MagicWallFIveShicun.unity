@@ -218,6 +218,11 @@ PrefabInstance:
       propertyPath: _mockShicunDaoService
       value: 
       objectReference: {fileID: 553118717}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 1035516556}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -250,9 +255,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
         type: 2}
+    - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+    - {fileID: 4191529308201820063, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
 --- !u!114 &553118715 stripped
 MonoBehaviour:
@@ -302,3 +318,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132d4d55d70adda43adb4ad2000d5c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1035516556 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3095498653193108985, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}

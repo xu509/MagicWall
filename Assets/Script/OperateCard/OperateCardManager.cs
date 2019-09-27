@@ -44,6 +44,9 @@ namespace MagicWall {
         {
             List<CardAgent> cardAgentNeedDestory = null;
 
+            //Debug.Log("_effectAgents count : " + _effectAgents.Count); 
+
+
             // 检测需要关闭的卡片
             for (int i = 0; i < _effectAgents.Count; i++)
             {

@@ -395,6 +395,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CustomVersion
       objectReference: {fileID: 0}
+    - target: {fileID: 6911621782705545546, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3977546247670605121, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -536,6 +541,11 @@ PrefabInstance:
       propertyPath: _mockZhichengDaoService
       value: 
       objectReference: {fileID: 1318816347}
+    - target: {fileID: 6911621782184364798, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: _musicManager
+      value: 
+      objectReference: {fileID: 6911621781813313433}
     - target: {fileID: 6911621782827720610, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: _mockSceneConfig
@@ -583,11 +593,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6911621782705545546, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6911621782705545548, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
         type: 3}
       propertyPath: m_Color.a
@@ -629,6 +634,21 @@ PrefabInstance:
       propertyPath: _container
       value: 
       objectReference: {fileID: 6911621781813313428}
+    - target: {fileID: 9120736236892251034, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4240f6e231183aa4095ddeea2d906be0, type: 3}
+    - target: {fileID: 9120736236892251034, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120736236892251034, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24, type: 3}
 --- !u!114 &6911621781813313418 stripped
@@ -785,5 +805,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a017bf4937fadaf4881636674e88466f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6911621781813313433 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8946470305972782928, guid: 5dc5c1b853bae5b4d8dbafc7bde6eb24,
+    type: 3}
+  m_PrefabInstance: {fileID: 6911621781813313417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32adf9e75c9f7fc40a4b9680e57636f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
