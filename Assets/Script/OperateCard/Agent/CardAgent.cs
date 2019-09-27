@@ -364,7 +364,9 @@ namespace MagicWall
 
             GetComponent<CircleCollider2D>().radius = 0;
 
-            if (_originAgent.isStarEffect)
+            if (_originAgent == null) {
+                Close();
+            }else if (_originAgent.isStarEffect)
             {
                 Close();
             }

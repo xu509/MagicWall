@@ -347,10 +347,17 @@ namespace MagicWall
             else
             // 未进入影响范围
             {
-                Vector2 toy = new Vector2(refVector2.x, refVector2.y);
-                m_transform?.DOAnchorPos(toy, Time.deltaTime);
+                var ap = GetComponent<RectTransform>().anchoredPosition;
+                //Debug.Log(Vector2.Distance(ap, refVector2));
 
-                //Debug.Log(name + " From " + a + " ->"  + toy + " | Next : " + NextVector2);
+                if (Vector2.Distance(ap, refVector2) > 5f) {
+                    Vector2 toy = new Vector2(refVector2.x, refVector2.y);
+                    //m_transform?.DOAnchorPos(toy, Time.deltaTime);
+
+                    GetComponent<RectTransform>().anchoredPosition = toy;
+
+                }
+
 
                 if (m_transform.localScale != Vector3.one)
                 {

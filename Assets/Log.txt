@@ -314,3 +314,5 @@ File is not found : C:\workspace\MagicWall\Files\shicun\互动魔墙里的酒图
 File is not found : C:\workspace\MagicWall\Files\shicun\互动魔墙里的酒图片\GCC红酒\杜扎克2005.jpg
 日志文件创建的时间:2019/9/26 15:10:17
 File is not found : C:\workspace\MagicWall\Files\shicun\互动魔墙里的酒图片\酒会活动\第七届国际研讨班.jpg
+日志文件创建的时间:2019/9/28 0:50:30
+File is not found : C:\workspace\MagicWall\Files\feiyue\低帮帆布女鞋\4.jpg

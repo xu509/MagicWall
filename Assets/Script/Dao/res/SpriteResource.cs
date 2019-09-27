@@ -52,7 +52,7 @@ namespace MagicWall
                 //texture.filterMode = FilterMode.Point;
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
-                //Debug.Log("address : " + address);
+                Debug.Log("address : " + address);
 
                 Add(address, sprite);
                 return sprite;

@@ -915,6 +915,32 @@ namespace MagicWall
                 }
             }
 
+            for (int i = 0; i < _products2.Count; i++)
+            {
+                var name = _products2[i].Name;
+                if (name.Contains(keys))
+                {
+                    SearchBean bean = new SearchBean();
+                    bean.type = DataTypeEnum.Product;
+                    bean.id = _products2[i].Pro_id;
+                    bean.cover = _products2[i].Image;
+                    beans.Add(bean);
+                }
+            }
+
+            for (int i = 0; i < _wines.Count; i++)
+            {
+                var name = _wines[i].Name;
+                if (name.Contains(keys))
+                {
+                    SearchBean bean = new SearchBean();
+                    bean.type = DataTypeEnum.Wine;
+                    bean.id = _wines[i].Pro_id;
+                    bean.cover = _wines[i].Image;
+                    beans.Add(bean);
+                }
+            }
+
             return beans;
         }
 

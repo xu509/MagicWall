@@ -199,6 +199,7 @@ namespace MagicWall
             {
                 string imageAddress = MagicWallManager.FileDir + address;
                 TextureResource.Instance.GetTexture(imageAddress);
+                SpriteResource.Instance.GetData(imageAddress);
 
             }
 
