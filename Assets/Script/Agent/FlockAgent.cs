@@ -350,7 +350,7 @@ namespace MagicWall
                 var ap = GetComponent<RectTransform>().anchoredPosition;
                 //Debug.Log(Vector2.Distance(ap, refVector2));
 
-                if (Vector2.Distance(ap, refVector2) > 5f) {
+                if (Vector2.Distance(ap, refVector2) > 0.1f) {
                     Vector2 toy = new Vector2(refVector2.x, refVector2.y);
                     //m_transform?.DOAnchorPos(toy, Time.deltaTime);
 
