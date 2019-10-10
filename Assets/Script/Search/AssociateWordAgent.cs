@@ -10,24 +10,30 @@ using UnityEngine.UI;
 //
 //  联想词代理
 //
-public class AssociateWordAgent : MonoBehaviour
+namespace MagicWall
 {
-    [SerializeField] Text text;
+    public class AssociateWordAgent : MonoBehaviour
+    {
+        [SerializeField] Text text;
 
-    Action<string> _OnClickAssociateWord;
+        Action<string> _OnClickAssociateWord;
 
-    public void SetOnClickWord(Action<string> action) {
-        _OnClickAssociateWord = action;
+        public void SetOnClickWord(Action<string> action)
+        {
+            _OnClickAssociateWord = action;
+        }
+
+        public void OnClick()
+        {
+            _OnClickAssociateWord.Invoke(text.text);
+        }
+
+        public void SetText(string str)
+        {
+            text.text = str;
+        }
+
+
+
     }
-
-    public void OnClick() {
-        _OnClickAssociateWord.Invoke(text.text);
-    }
-
-    public void SetText(string str) {
-        text.text = str;
-    }
-
-
-
 }

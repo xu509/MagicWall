@@ -5,76 +5,90 @@ using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-public class QuestionAgent : MonoBehaviour
+namespace MagicWall
 {
-    [SerializeField] Image _image;
-
-    Action _onCloseAction;
-
-    // Start is called before the first frame update
-    void Start()
+    public class QuestionAgent : MonoBehaviour
     {
-        
-    }
+        [SerializeField] Image _image;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        Action _onCloseAction;
 
-    public void Init(Action onCloseAction) {
-        _onCloseAction = onCloseAction;
-    }
-
-    public void ShowReminder(QuestionTypeEnum questionTypeEnum) {
-        UpdateContent(questionTypeEnum);
-        if (!gameObject.activeSelf) {
-            gameObject.SetActive(true);
-        }
-    }
-
-    public void CloseReminder() {
-        gameObject.SetActive(false);
-        _onCloseAction.Invoke();
-    }
-
-    public void DoClose() {
-        CloseReminder();
-    }
-
-
-
-    void UpdateContent(QuestionTypeEnum questionTypeEnum) {
-
-        // 设置图片
-        SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas");
-
-        if (questionTypeEnum == QuestionTypeEnum.CrossCard) {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
-        }
-        else if (questionTypeEnum == QuestionTypeEnum.SliceCard)
+        // Start is called before the first frame update
+        void Start()
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+
         }
-        else if (questionTypeEnum == QuestionTypeEnum.SingleCard)
+
+        // Update is called once per frame
+        void Update()
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+
         }
-        else if (questionTypeEnum == QuestionTypeEnum.SearchPanel)
+
+        public void Init(Action onCloseAction)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            _onCloseAction = onCloseAction;
         }
-        else if (questionTypeEnum == QuestionTypeEnum.SearchResultPanel)
+
+        public void ShowReminder(QuestionTypeEnum questionTypeEnum)
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            UpdateContent(questionTypeEnum);
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+            }
         }
-        else if (questionTypeEnum == QuestionTypeEnum.ScalePanel)
+
+        public void CloseReminder()
         {
-            _image.sprite = spriteAtlas.GetSprite("help-1");
+            gameObject.SetActive(false);
+            _onCloseAction.Invoke();
         }
+
+        public void DoClose()
+        {
+            CloseReminder();
+        }
+
+
+
+        void UpdateContent(QuestionTypeEnum questionTypeEnum)
+        {
+
+            // 设置图片
+            SpriteAtlas spriteAtlas = Resources.Load<SpriteAtlas>("SpriteAtlas/QuestionAtlas");
+
+            if (questionTypeEnum == QuestionTypeEnum.CrossCard)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-crosscard");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.SliceCard)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-slicecard-3");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.SliceCardFour)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-slicecard-4");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.SingleCard)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-singlecard");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.SearchPanel)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-search");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.SearchResultPanel)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-searchresult");
+            }
+            else if (questionTypeEnum == QuestionTypeEnum.ScalePanel)
+            {
+                _image.sprite = spriteAtlas.GetSprite("help-scale");
+            }
+
+        }
+
 
     }
-
-
 }

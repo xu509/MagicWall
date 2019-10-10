@@ -59,8 +59,7 @@ SpriteAtlas:
     - {fileID: 21300000, guid: ad3669500e118d64ba353eb043ed4ccb, type: 3}
     - {fileID: 21300000, guid: d363bec3f78996f4c903d33afa99b887, type: 3}
     - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
-    - {fileID: 21300000, guid: 331e39d2803c325498671aca45200a72, type: 3}
-    totalSpriteSurfaceArea: 6634981
+    totalSpriteSurfaceArea: 3642081
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -70,7 +69,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
   - {fileID: 21300000, guid: 2028939134523294fa20d98976fbccf9, type: 3}
   - {fileID: 21300000, guid: d406db122e2ee7141b486d122d5b4d31, type: 3}
-  - {fileID: 21300000, guid: 331e39d2803c325498671aca45200a72, type: 3}
   - {fileID: 21300000, guid: c7ddb5e2cacf3f849b653d64a41ee8d4, type: 3}
   - {fileID: 21300000, guid: d363bec3f78996f4c903d33afa99b887, type: 3}
   - {fileID: 21300000, guid: f6c966e37644ca149a01469b4767c157, type: 3}
@@ -90,7 +88,6 @@ SpriteAtlas:
   - cursor-mouse-point
   - background-bubble-clear
   - card-cross-background
-  - help-1
   - btn-search
   - reminder-crosscard-arrow
   - btn-list

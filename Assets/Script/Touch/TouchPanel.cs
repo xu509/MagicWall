@@ -5,61 +5,66 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class TouchPanel : MonoBehaviour
+namespace MagicWall
 {
-    [SerializeField] TouchAgent touchAgent;
-    [SerializeField] RectTransform context;
-    [SerializeField] float _createInterval;
+    public class TouchPanel : MonoBehaviour
+    {
+        [SerializeField] TouchAgent touchAgent;
+        [SerializeField] RectTransform context;
+        [SerializeField] float _createInterval;
 
-    private float _lastCreateTime = 0;
+        private float _lastCreateTime = 0;
 
-    public void Update() {
-
-
-        if (Input.touchCount > 0)
+        public void Update()
         {
-            for (int i = 0; i < Input.touchCount; i++)
+
+
+            if (Input.touchCount > 0)
             {
-
-                if (Input.GetTouch(i).phase == TouchPhase.Began)
+                for (int i = 0; i < Input.touchCount; i++)
                 {
-                    Vector2 position = Input.GetTouch(i).position;
-                    CreatePoint(position);
+
+                    if (Input.GetTouch(i).phase == TouchPhase.Began)
+                    {
+                        Vector2 position = Input.GetTouch(i).position;
+                        CreatePoint(position);
+                    }
+
                 }
-
             }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 position = Input.mousePosition;
+                CreatePoint(position);
+            }
+
+
+
+
         }
-        else if (Input.GetMouseButtonDown(0))
+
+
+        public void CreatePoint(Vector2 position)
         {
-            Vector2 position = Input.mousePosition;
-            CreatePoint(position);
+            if (Time.time - _lastCreateTime > _createInterval)
+            {
+                StartCoroutine(show(position));  //开始协程
+                _lastCreateTime = Time.time;
+            }
+
+
+
         }
 
 
 
+        IEnumerator show(Vector2 position)  //协程方法
+        {
+            yield return new WaitForSeconds(0.2f);  //暂停协程，2秒后执行之后的操作
+            TouchAgent agent = Instantiate(touchAgent, context);
+            agent.GetComponent<RectTransform>().anchoredPosition = position;
 
-    }
-
-
-    public void CreatePoint(Vector2 position)
-    {
-        if (Time.time - _lastCreateTime > _createInterval) {
-            StartCoroutine(show(position));  //开始协程
-            _lastCreateTime = Time.time;
         }
 
-
-        
     }
-
-
-
-    IEnumerator show(Vector2 position)  //协程方法
-    {
-        yield return new WaitForSeconds(0.2f);  //暂停协程，2秒后执行之后的操作
-        TouchAgent agent = Instantiate(touchAgent, context);
-        agent.GetComponent<RectTransform>().anchoredPosition = position;
-
-    }
-
 }

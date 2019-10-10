@@ -1,9 +1,15 @@
 ﻿
 
-public enum MagicSceneEnum
+namespace MagicWall
 {
-    Running,
-    RunningComplete,
-    RunningEnd,
-    RunningEndComplete
+    /// <summary>
+    ///     场景状态信息
+    /// </summary>
+    public enum MagicSceneEnum
+    {
+        Running,
+        RunningComplete,
+        RunningEnd,
+        RunningEndComplete
+    }
 }

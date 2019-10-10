@@ -5,8 +5,19 @@ using UnityEngine;
 /// <summary>
 ///     浮动块数据基类
 /// </summary>
-public abstract class FlockData : BaseData
-{
-    public abstract Sprite GetCoverSprite();
 
+namespace MagicWall
+{
+    public abstract class FlockData : BaseData
+    {
+        public abstract Sprite GetCoverSprite();
+
+        public abstract string GetCover();
+
+        public abstract int GetId();
+
+        public abstract DataTypeEnum GetDataType();
+
+
+    }
 }

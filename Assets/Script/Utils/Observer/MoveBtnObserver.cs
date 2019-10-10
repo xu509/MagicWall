@@ -1,7 +1,14 @@
 ﻿/// <summary>
 /// 观察者模式 - 观察者
 /// </summary>
-public interface MoveBtnObserver 
+namespace MagicWall
 {
-    void Update();
+    public interface MoveBtnObserver
+    {
+        void Update();
+
+        void goMove();
+
+        void CancelMove();
+    }
 }

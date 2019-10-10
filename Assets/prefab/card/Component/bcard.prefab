@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3565193267922664630}
   - component: {fileID: 6582259657045542815}
   - component: {fileID: 5720545217744498668}
+  - component: {fileID: 5213784348110503941}
   m_Layer: 11
   m_Name: btn-close
   m_TagString: Untagged
@@ -131,6 +132,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &5213784348110503941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169842328890666274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1
 --- !u!1 &2190121109616516634
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +158,7 @@ GameObject:
   - component: {fileID: 8949973887064553479}
   - component: {fileID: 7566314797637040104}
   - component: {fileID: 2426548320982424378}
+  - component: {fileID: 1566440750751384633}
   m_Layer: 11
   m_Name: btn-return
   m_TagString: Untagged
@@ -262,6 +278,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &1566440750751384633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2190121109616516634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1
 --- !u!1 &3341462099796421157
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +519,7 @@ GameObject:
   - component: {fileID: 2470764820519605554}
   - component: {fileID: 7033120672060220800}
   - component: {fileID: 3672699697995520192}
+  - component: {fileID: 5737629128111346229}
   m_Layer: 11
   m_Name: bcard
   m_TagString: Untagged
@@ -516,7 +547,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 848, y: 0}
-  m_SizeDelta: {x: 810, y: 590}
+  m_SizeDelta: {x: 810, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3939656201184917440
 MonoBehaviour:
@@ -588,6 +619,21 @@ MonoBehaviour:
   _btnNext: {fileID: 6736186052792272969}
   _heightFactor: 0.30208
   _widthFactor: 1.41379
+  size: 
+--- !u!114 &5737629128111346229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5869125911191975995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1.41379
 --- !u!1 &6704765858983157213
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-interface CutEffectDisplayBehavior
+namespace MagicWall
 {
-    void Init(DisplayBehaviorConfig displayBehaviorConfig);
+    interface CutEffectDisplayBehavior
+    {
+        void Init(DisplayBehaviorConfig displayBehaviorConfig);
 
-	void Run();
+        void Run();
+    }
+
 }
-

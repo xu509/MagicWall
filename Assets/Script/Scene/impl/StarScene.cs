@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -7,324 +8,331 @@ using System;
 /// <summary>
 ///     星空场景
 /// </summary>
-public class StarScene : IScene
+namespace MagicWall
 {
-    private MagicWallManager _manager;
-    private IDaoService _daoService;
-    private float _durtime; // 持续时间
-    private DataType _dataType; //  场景内容类型
-    private ItemsFactory _itemFactory;  // 工厂
-    private SceneUtils _sceneUtil;
-
-    private float _startTime;   //  开始时间
-    private bool _isPreparing;   //是否准备完成
-    private bool _isEnding;   // 正在执行关闭动画
-
-    private List<FlockAgent> _activeAgents; //活动的 Agents 
-    private StarSceneStatusEnum _starSceneStatusEnum;   // 状态
-
-    MagicSceneEnum _magicSceneEnumStatus;
-
-
-    Action _onRunCompleted;
-    Action _onRunEndCompleted;
-
-
-    enum StarSceneStatusEnum {
-        Init,
-        InitCompleted,
-        Run,
-        RunCompleted,
-        End,
-        EndCompleted
-    }
-
-
-
-    private void Reset() {
-        _starSceneStatusEnum = StarSceneStatusEnum.Init;
-        _magicSceneEnumStatus = MagicSceneEnum.Running;
-        _isEnding = false;
-        _isPreparing = false;
-        _startTime = Time.time;
-        _activeAgents = new List<FlockAgent>();
-    }
-
-    public DataType GetDataType()
+    public class StarScene : IScene
     {
-        return _dataType;
-    }
+        private MagicWallManager _manager;
+        private IDaoService _daoService;
+        private float _durtime; // 持续时间
+        private DataTypeEnum _dataType; //  场景内容类型
+        //private ItemsFactory _itemFactory;  // 工厂
+        private SceneUtils _sceneUtil;
 
-    public void Init(SceneConfig sceneConfig, MagicWallManager manager)
-    {
-        _manager = manager;
-        _daoService = manager.daoService;
-        _durtime = sceneConfig.durtime;
-        _dataType = sceneConfig.dataType;
-        _itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
-        _sceneUtil = new SceneUtils(_manager);
+        private float _startTime;   //  开始时间
+        private bool _isPreparing;   //是否准备完成
+        private bool _isEnding;   // 正在执行关闭动画
 
-        Reset();
-    }
+        private List<FlockAgent> _activeAgents; //活动的 Agents 
+        private StarSceneStatusEnum _starSceneStatusEnum;   // 状态
 
-    /// <summary>
-    ///  持续运行,主流程处理块
-    /// </summary>
-    /// <returns></returns>
-    public bool Run()
-    {
-        //Debug.Log("_starSceneStatusEnum : " + _starSceneStatusEnum);
-        _magicSceneEnumStatus = MagicSceneEnum.Running;
+        MagicSceneEnum _magicSceneEnumStatus;
 
-        if (_starSceneStatusEnum == StarSceneStatusEnum.Init) {
-            if (!_isPreparing)
+
+        Action _onRunCompleted;
+        Action _onRunEndCompleted;
+
+
+        enum StarSceneStatusEnum
+        {
+            Init,
+            InitCompleted,
+            Run,
+            RunCompleted,
+            End,
+            EndCompleted
+        }
+
+
+
+        private void Reset()
+        {
+            _starSceneStatusEnum = StarSceneStatusEnum.Init;
+            _magicSceneEnumStatus = MagicSceneEnum.Running;
+            _isEnding = false;
+            _isPreparing = false;
+            _startTime = Time.time;
+            _activeAgents = new List<FlockAgent>();
+        }
+
+        public DataTypeEnum GetDataType()
+        {
+            return _dataType;
+        }
+
+        public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+        {
+            _manager = manager;
+            _daoService = manager.daoService;
+            _durtime = sceneConfig.durtime;
+            _dataType = sceneConfig.dataType;
+            //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
+            _sceneUtil = new SceneUtils(_manager);
+
+            Reset();
+        }
+
+        /// <summary>
+        ///  持续运行,主流程处理块
+        /// </summary>
+        /// <returns></returns>
+        public bool Run()
+        {
+            //Debug.Log("_starSceneStatusEnum : " + _starSceneStatusEnum);
+            _magicSceneEnumStatus = MagicSceneEnum.Running;
+
+            if (_starSceneStatusEnum == StarSceneStatusEnum.Init)
             {
-                _isPreparing = true;
-                DoPrepare();
+                if (!_isPreparing)
+                {
+                    _isPreparing = true;
+                    DoPrepare();
+                }
             }
-        }
 
-        if (_starSceneStatusEnum == StarSceneStatusEnum.InitCompleted) {
-            _starSceneStatusEnum = StarSceneStatusEnum.Run;
-        }
-
-        if (_starSceneStatusEnum == StarSceneStatusEnum.Run)
-        {
-            //Debug.Log("[Star] Running");
-
-            DoAnimation();
-        }
-
-        if ((_starSceneStatusEnum == StarSceneStatusEnum.Run) && ((Time.time - _startTime) > _durtime))
-        {
-            //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted;
-            OnRunCompleted();
-        }
-
-
-        return true;
-    }
-
-
-    private void DoPrepare() {
-        //Debug.Log("[Star] Do Prepare | _durtime: " + _durtime + " / _dataType: " + _dataType);
-        _startTime = Time.time;
-
-
-        _manager.starEffectContainer.gameObject.SetActive(true);
-        _manager.starEffectContent.GetComponent<CanvasGroup>().alpha = 0;
-
-
-        // 创建浮动块
-        for (int i = 0; i < _manager.managerConfig.StarEffectAgentsCount; i++)
-        {
-            CreateNewAgent(true);
-        }
-
-        // 显示动画
-        _manager.starEffectContent.GetComponent<CanvasGroup>().DOFade(1, 1f);
-
-
-        // 设置远近关系，Z轴越小越前面
-        _activeAgents.Sort(new FlockCompare());
-        for (int i = 0; i < _activeAgents.Count; i++)
-        {
-            int si = _activeAgents.Count - 1 - i;
-            _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
-        }
-
-        //Debug.Log("[Star] Do Prepare Complete");
-
-        _isPreparing = false;
-        _starSceneStatusEnum = StarSceneStatusEnum.InitCompleted;
-    }
-
-
-    /// <summary>
-    /// 执行动画效果
-    /// </summary>
-    private void DoAnimation()
-    {
-
-        List<FlockAgent> agentsNeedClear = new List<FlockAgent>();
-
-        for (int i = 0; i < _activeAgents.Count; i++)
-        {
-            if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.managerConfig.StarEffectEndPoint)
+            if (_starSceneStatusEnum == StarSceneStatusEnum.InitCompleted)
             {
-                //  清理agent，
-                agentsNeedClear.Add(_activeAgents[i]);
-                //  创建新 agent
-                FlockAgent agent = CreateNewAgent(false);
-                agent.GetComponent<RectTransform>().SetAsFirstSibling();
+                _starSceneStatusEnum = StarSceneStatusEnum.Run;
+            }
+
+            if (_starSceneStatusEnum == StarSceneStatusEnum.Run)
+            {
+                //Debug.Log("[Star] Running");
+
+                DoAnimation();
+            }
+
+            if ((_starSceneStatusEnum == StarSceneStatusEnum.Run) && ((Time.time - _startTime) > _durtime))
+            {
+                //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted;
+                OnRunCompleted();
+            }
+
+
+            return true;
+        }
+
+
+        private void DoPrepare()
+        {
+            //Debug.Log("[Star] Do Prepare | _durtime: " + _durtime + " / _dataType: " + _dataType);
+            _startTime = Time.time;
+
+
+            _manager.starEffectContainer.gameObject.SetActive(true);
+            _manager.starEffectContent.GetComponent<CanvasGroup>().alpha = 0;
+
+
+            // 创建浮动块
+            for (int i = 0; i < _manager.cutEffectConfig.StarEffectAgentsCount; i++)
+            {
+                CreateNewAgent(true);
+            }
+
+            // 显示动画
+            _manager.starEffectContent.GetComponent<CanvasGroup>().DOFade(1, 1f);
+
+
+            // 设置远近关系，Z轴越小越前面
+            _activeAgents.Sort(new FlockCompare());
+            for (int i = 0; i < _activeAgents.Count; i++)
+            {
+                int si = _activeAgents.Count - 1 - i;
+                _activeAgents[i].GetComponent<RectTransform>().SetSiblingIndex(si);
+            }
+
+            //Debug.Log("[Star] Do Prepare Complete");
+
+            _isPreparing = false;
+            _starSceneStatusEnum = StarSceneStatusEnum.InitCompleted;
+
+            //Debug.Log("_activeAgents : " + _activeAgents.Count);
+
+
+        }
+
+
+        /// <summary>
+        /// 执行动画效果
+        /// </summary>
+        private void DoAnimation()
+        {
+
+            List<FlockAgent> agentsNeedClear = new List<FlockAgent>();
+
+            for (int i = 0; i < _activeAgents.Count; i++)
+            {
+
+                if (_activeAgents[i].GetComponent<RectTransform>().anchoredPosition3D.z < _manager.cutEffectConfig.StarEffectEndPoint)
+                {
+                    //  清理agent，
+                    agentsNeedClear.Add(_activeAgents[i]);
+                    //  创建新 agent
+                    FlockAgent agent = CreateNewAgent(false);
+                    agent.GetComponent<RectTransform>().SetAsFirstSibling();
+
+                    //Debug.Log("Create star card!");
+
+                }
+                else
+                {
+                    // 移动
+                    Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.cutEffectConfig.StarEffectMoveFactor));
+                    _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
+
+                    // 更新透明度
+                    UpdateAlpha(_activeAgents[i]);
+                }
+            }
+            //Debug.Log(_activeAgents.Count);
+            for (int i = 0; i < agentsNeedClear.Count; i++)
+            {
+                ClearAgent(agentsNeedClear[i]);
+                //TODO有问题
+                _activeAgents.Remove(agentsNeedClear[i]);
+            }
+
+        }
+
+
+        private FlockAgent CreateNewAgent(bool randomZ)
+        {
+            // 获取数据
+            //FlockData data = _daoService.GetFlockData(_dataType,_manager);
+            FlockData data = _daoService.GetFlockDataByScene(_dataType,_manager.SceneIndex);
+
+            // 获取出生位置
+            Vector2 randomPosition = UnityEngine.Random.insideUnitSphere;
+
+            Vector3 position = new Vector3();
+
+            position.x = (randomPosition.x / 2 + 0.5f) * _manager.GetScreenRect().x;
+            position.y = (randomPosition.y / 2 + 0.5f) * _manager.GetScreenRect().y;
+
+
+            // 获取长宽
+            Sprite logoSprite = data.GetCoverSprite();
+            float width = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).x;
+            float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
+
+            //FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
+            // width, height, data, AgentContainerType.StarContainer);
+            FlockAgent go = FlockAgentFactoryInstance.Generate(_manager,position, AgentContainerType.StarContainer,
+                position.x,position.y,0,0,width,height,data);
+
+            go.UpdateImageAlpha(0);
+
+            // 星空效果不会被物理特效影响
+            //go.CanEffected = false;
+            go.flockStatus = FlockStatusEnum.STAR;
+            go.isStarEffect = true;
+
+            // 设置Z轴
+
+            float z;
+            if (randomZ)
+            {
+                z = Mathf.Lerp(_manager.cutEffectConfig.StarEffectOriginPoint, _manager.cutEffectConfig.StarEffectEndPoint,
+                    UnityEngine.Random.Range(0f, 1f));
             }
             else
             {
-                // 移动
-                Vector3 to = new Vector3(0, 0, -(Time.deltaTime * _manager.managerConfig.StarEffectMoveFactor));
-                _activeAgents[i].GetComponent<RectTransform>().transform.Translate(to);
+                z = _manager.cutEffectConfig.StarEffectOriginPoint;
+            }
 
-                // 更新透明度
-                UpdateAlpha(_activeAgents[i]);
+            go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
+            go.Z = z;
+            go.name = "Agent-" + Mathf.RoundToInt(go.Z);
+
+            _activeAgents.Add(go);
+
+            return go;
+        }
+
+
+
+        /// <summary>
+        ///     清理agent
+        /// </summary>
+        /// <param name="agent"></param>
+        private void ClearAgent(FlockAgent agent)
+        {
+            // 清理出实体袋
+            agent.flockStatus = FlockStatusEnum.OBSOLETE;    
+            
+        }
+
+
+
+        /// <summary>
+        ///     更新透明度
+        /// </summary>
+        /// <param name="agent"></param>
+        private void UpdateAlpha(FlockAgent agent)
+        {
+            float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
+
+            // 判断Z在距离中的位置
+            float distance = Mathf.Abs(_manager.cutEffectConfig.StarEffectOriginPoint - _manager.cutEffectConfig.StarEffectEndPoint);
+            float offset = Mathf.Abs(z - _manager.cutEffectConfig.StarEffectOriginPoint) / distance;
+
+            // 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
+            if (offset < 0.05)
+            {
+                float k = Mathf.Abs(offset - 0.05f);
+                float alpha = Mathf.Lerp(1, 0, k / 0.05f);
+                agent.UpdateImageAlpha(alpha);
+            }
+            else if (offset > 0.95)
+            {
+                float k = Mathf.Abs(1 - offset);
+                float alpha = Mathf.Lerp(0, 1, k / 0.05f);
+                agent.UpdateImageAlpha(alpha);
+            }
+            else
+            {
+                agent.UpdateImageAlpha(1);
             }
         }
 
-        for (int i = 0; i < agentsNeedClear.Count; i++)
+
+        /// <summary>
+        ///     实体比较器
+        /// </summary>
+        class FlockCompare : IComparer<FlockAgent>
         {
-            ClearAgent(agentsNeedClear[i]);
+            public int Compare(FlockAgent x, FlockAgent y)
+            {
+                return x.Z.CompareTo(y.Z);
+            }
         }
 
 
-    }
-
-    //private void DoEnd()
-    //{
-    //    //Debug.Log("Do End");
-
-    //    // 淡出
-    //    _manager.starEffectContent.GetComponent<CanvasGroup>()
-    //        .DOFade(0, 2f)
-    //        .OnComplete(() => {
-    //            _manager.starEffectContainer.gameObject.SetActive(false);
-    //            _manager.Clear();
-    //            OnRunEndCompleted();
-    //            //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-    //        });
-
-    //}
-
-
-    private FlockAgent CreateNewAgent(bool randomZ)
-    {
-        // 获取数据
-        FlockData data = _daoService.GetFlockData(_dataType);
-
-        // 获取出生位置
-        Vector2 randomPosition = UnityEngine.Random.insideUnitSphere;
-
-        Vector3 position;
-
-        position.x = (randomPosition.x / 2 + 0.5f) * _manager.GetScreenRect().x;
-        position.y = (randomPosition.y / 2 + 0.5f) * _manager.GetScreenRect().y;
-
-
-        // 获取长宽
-        Sprite logoSprite = data.GetCoverSprite();
-        float width = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).x;
-        float height = _sceneUtil.ResetTexture(new Vector2(logoSprite.rect.width, logoSprite.rect.height)).y;
-
-        FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
-         width, height, data, AgentContainerType.StarContainer);
-        go.UpdateImageAlpha(0);
-
-        // 星空效果不会被物理特效影响
-        go.CanEffected = false;
-
-        // 设置Z轴
-
-        float z;
-        if (randomZ)
+        public void OnRunCompleted()
         {
-            z = Mathf.Lerp(_manager.managerConfig.StarEffectOriginPoint, _manager.managerConfig.StarEffectEndPoint,
-                UnityEngine.Random.Range(0f, 1f));
-        }
-        else
-        {
-            z = _manager.managerConfig.StarEffectOriginPoint;
+            //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted
+            _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
+            _starSceneStatusEnum = StarSceneStatusEnum.End;
+            //Debug.Log("Do OnRunCompleted Action");
+
+            _onRunCompleted.Invoke();
+
         }
 
-        go.GetComponent<RectTransform>().anchoredPosition3D = go.GetComponent<RectTransform>().anchoredPosition3D + new Vector3(0, 0, z);
-        go.Z = z;
-        go.name = "Agent-" + Mathf.RoundToInt(go.Z);
-
-        _activeAgents.Add(go);
-
-        return go;
-    }
 
 
-
-    /// <summary>
-    ///     清理agent
-    /// </summary>
-    /// <param name="agent"></param>
-    private void ClearAgent(FlockAgent agent)
-    {
-        // 清理出实体袋
-        _activeAgents.Remove(agent);
-        _manager.agentManager.ClearAgent(agent);
-    }
-
-
-
-    /// <summary>
-    ///     更新透明度
-    /// </summary>
-    /// <param name="agent"></param>
-    private void UpdateAlpha(FlockAgent agent)
-    {
-        float z = agent.GetComponent<RectTransform>().anchoredPosition3D.z;
-
-        // 判断Z在距离中的位置
-        float distance = Mathf.Abs(_manager.managerConfig.StarEffectOriginPoint - _manager.managerConfig.StarEffectEndPoint);
-        float offset = Mathf.Abs(z - _manager.managerConfig.StarEffectOriginPoint) / distance;
-
-        // 当OFFSET 位于前 1/10 或后 1/10 时，更新透明度
-        if (offset < 0.05)
+        public void RunEnd()
         {
-            float k = Mathf.Abs(offset - 0.05f);
-            float alpha = Mathf.Lerp(1, 0, k / 0.05f);
-            agent.UpdateImageAlpha(alpha);
-        }
-        else if (offset > 0.95)
-        {
-            float k = Mathf.Abs(1 - offset);
-            float alpha = Mathf.Lerp(0, 1, k / 0.05f);
-            agent.UpdateImageAlpha(alpha);
-        }
-        else
-        {
-            agent.UpdateImageAlpha(1);
-        }
-    }
+            if (!_isEnding)
+            {
+                _isEnding = true;
+                _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
+                //DoEnd();
 
-
-    /// <summary>
-    ///     实体比较器
-    /// </summary>
-    class FlockCompare : IComparer<FlockAgent>
-    {
-        public int Compare(FlockAgent x, FlockAgent y)
-        {
-            return x.Z.CompareTo(y.Z);
-        }
-    }
-
-
-    public void OnRunCompleted()
-    {
-        //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted
-        _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
-        _starSceneStatusEnum = StarSceneStatusEnum.End;
-        //Debug.Log("Do OnRunCompleted Action");
-
-        _onRunCompleted.Invoke();
-
-    }
-
-
-
-    public void RunEnd()
-    {
-        if (!_isEnding)
-        {
-            _isEnding = true;
-            _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
-            //DoEnd();
-
-            _manager.starEffectContent.GetComponent<CanvasGroup>()
-                .DOFade(0, 2f)
-                .OnComplete(() => {
+                _manager.starEffectContent.GetComponent<CanvasGroup>()
+                    .DOFade(0, 2f)
+                    .OnComplete(() =>
+                    {
                         _manager.starEffectContainer.gameObject.SetActive(false);
                         _manager.Clear();
                         OnRunEndCompleted();
@@ -333,33 +341,39 @@ public class StarScene : IScene
                 });
 
 
+            }
         }
-    }
 
-    public void OnRunEndCompleted()
-    {
-        _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-        _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+        public void OnRunEndCompleted()
+        {
+            _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
+            _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
 
-        Reset();
-        _onRunEndCompleted.Invoke();
+            Reset();
+            _onRunEndCompleted.Invoke();
 
-    }
+        }
 
-    public void SetOnRunEndCompleted(Action onRunEndCompleted)
-    {
-        _onRunEndCompleted = onRunEndCompleted;
-    }
+        public void SetOnRunEndCompleted(Action onRunEndCompleted)
+        {
+            _onRunEndCompleted = onRunEndCompleted;
+        }
 
-    public void SetOnRunCompleted(Action onRunCompleted)
-    {
-        _onRunCompleted = onRunCompleted;
-    }
+        public void SetOnRunCompleted(Action onRunCompleted)
+        {
+            _onRunCompleted = onRunCompleted;
+        }
 
-    public MagicSceneEnum GetSceneStatus()
-    {
+        public MagicSceneEnum GetSceneStatus()
+        {
 
-        return _magicSceneEnumStatus;
+            return _magicSceneEnumStatus;
 
+        }
+
+        DataTypeEnum IScene.GetDataType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

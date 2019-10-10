@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: 1833290295965693518}
   - component: {fileID: 3086160077673946377}
   - component: {fileID: 784489557604880584}
+  - component: {fileID: 6772352637515032129}
   m_Layer: 11
   m_Name: VideoScreen
   m_TagString: Untagged
@@ -312,7 +313,8 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5761036986313860176}
   m_Father: {fileID: 7126155037093958887}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -356,6 +358,20 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &6772352637515032129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720866137229376181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1.777
 --- !u!1 &2378456684258053503
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +518,7 @@ MonoBehaviour:
   _btn_muisc_disable: {fileID: 8692931094888801735}
   widthFactorByHeight: 1.2
   heightFactorByScreen: 0.2604
+  _screenAspectRatioFitter: {fileID: 6772352637515032129}
 --- !u!1 &3992152639770484910
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +549,6 @@ RectTransform:
   m_Children:
   - {fileID: 1833290295965693518}
   - {fileID: 898796627036849768}
-  - {fileID: 5761036986313860176}
   - {fileID: 5999138696584386001}
   m_Father: {fileID: 5437693178905202681}
   m_RootOrder: 0
@@ -1066,11 +1082,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7426883519483739156}
-  m_Father: {fileID: 7126155037093958887}
-  m_RootOrder: 2
+  m_Father: {fileID: 1833290295965693518}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.86, y: 0.848}
-  m_AnchorMax: {x: 0.968333, y: 0.97}
+  m_AnchorMin: {x: 0.85, y: 0.85}
+  m_AnchorMax: {x: 0.95, y: 0.95}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1346,7 +1362,7 @@ RectTransform:
   m_Children:
   - {fileID: 4044109580590878611}
   m_Father: {fileID: 7126155037093958887}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.136}

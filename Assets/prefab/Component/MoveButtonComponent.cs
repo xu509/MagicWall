@@ -4,65 +4,81 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveButtonComponent : MonoBehaviour,MoveBtnObserver
+namespace MagicWall
 {
-    [SerializeField] Sprite btn_move_sprite;
-    [SerializeField] Sprite btn_move_sprite_active;
-    [SerializeField] RectTransform btn_container;
-
-    [SerializeField] CardAgent _moveSubject;
-
-    private bool isMoving = false;
-
-    private Action _DoClickAction;
-
-    // Start is called before the first frame update
-    void Start()
+    public class MoveButtonComponent : MonoBehaviour, MoveBtnObserver
     {
-    }
+        [SerializeField] Sprite btn_move_sprite;
+        [SerializeField] Sprite btn_move_sprite_active;
+        [SerializeField] RectTransform btn_container;
 
+        [SerializeField] CardAgent _moveSubject;
 
-    private void OnDestroy()
-    {
-        _moveSubject?.RemoveObserver(this);
-    }
+        private bool isMoving = false;
 
+        private Action _DoClickAction;
 
-    public void Init(Action doClickAction , CardAgent cardAgent) {
-
-
-        _DoClickAction = doClickAction;
-        _moveSubject = cardAgent;
-
-        _moveSubject.AddObserver(this);
-    }
-
-
-    public void DoMove() {
-
-        //UpdateComponentStatus();
-
-        _DoClickAction.Invoke();
-    }
-
-
-    void UpdateComponentStatus() {
-        if (!isMoving)
+        // Start is called before the first frame update
+        void Start()
         {
-            btn_container.GetComponent<Image>().sprite = btn_move_sprite_active;
         }
-        else
+
+
+        private void OnDestroy()
+        {
+            _moveSubject?.RemoveObserver(this);
+        }
+
+
+        public void Init(Action doClickAction, CardAgent cardAgent)
+        {
+
+
+            _DoClickAction = doClickAction;
+            _moveSubject = cardAgent;
+
+            _moveSubject.AddObserver(this);
+        }
+
+
+        public void DoMove()
+        {
+            _DoClickAction.Invoke();
+        }
+
+
+        void UpdateComponentStatus()
+        {
+            if (!isMoving)
+            {
+                btn_container.GetComponent<Image>().sprite = btn_move_sprite_active;
+            }
+            else
+            {
+                btn_container.GetComponent<Image>().sprite = btn_move_sprite;
+            }
+
+            isMoving = !isMoving;
+        }
+
+
+
+        void MoveBtnObserver.Update()
+        {
+            UpdateComponentStatus();
+        }
+
+        public void CancelMove()
         {
             btn_container.GetComponent<Image>().sprite = btn_move_sprite;
+            isMoving = false;
         }
 
-        isMoving = !isMoving;
-    }
+        public void goMove()
+        {
+            btn_container.GetComponent<Image>().sprite = btn_move_sprite_active;
 
-
-
-    void MoveBtnObserver.Update()
-    {
-        UpdateComponentStatus();
+            isMoving = true;
+        }
     }
 }

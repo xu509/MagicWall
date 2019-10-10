@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MagicWallFIve.unity
     guid: 7e7162d896e158344a77251585d80a76
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: da1808200fd251a409d6dee9537bb7d0
   - enabled: 0
@@ -17,4 +17,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CustomScene.unity
     guid: f5a2d2cdabc385247878354532b46f85
+  - enabled: 0
+    path: Assets/Scenes/CustomSceneFive.unity
+    guid: 92cbb347cab60b849b22321269553b2e
+  - enabled: 0
+    path: Assets/Scenes/CustomSceneFiveFeiYue.unity
+    guid: d2692c6f1ca820a44a8b87758ba6126d
+  - enabled: 1
+    path: Assets/Scenes/MagicWallFIveShicun.unity
+    guid: e34cfe0176cb86b488bda60bea4458f6
   m_configObjects: {}

@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
-public class WritePanelConfigAsset
+namespace MagicWall
 {
-    [MenuItem("Assets/Create/MagicWall/WritePanel Config")]
-    public static void CreateAsset()
+    public class WritePanelConfigAsset
     {
-        ScriptableObjectUtility.CreateAsset<WritePanelConfig>();
-    }
+        [MenuItem("Assets/Create/MagicWall/WritePanel Config")]
+        public static void CreateAsset()
+        {
+            ScriptableObjectUtility.CreateAsset<WritePanelConfig>();
+        }
 
+    }
 }

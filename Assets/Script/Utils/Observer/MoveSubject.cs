@@ -1,11 +1,14 @@
 ﻿/// <summary>
 /// 观察者 - 被观察者
 /// </summary>
-public interface MoveSubject 
+namespace MagicWall
 {
-    void AddObserver(MoveBtnObserver observer);
+    public interface MoveSubject
+    {
+        void AddObserver(MoveBtnObserver observer);
 
-    void RemoveObserver(MoveBtnObserver observer);
+        void RemoveObserver(MoveBtnObserver observer);
 
-    void NotifyObserver();
+        void NotifyObserver();
+    }
 }
