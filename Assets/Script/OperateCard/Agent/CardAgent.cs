@@ -9,7 +9,7 @@ using DG.Tweening;
 
 namespace MagicWall
 {
-    public class CardAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
+    public class CardAgent : MonoBehaviour, CollisionEffectAgent, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
     {
         //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
         [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
@@ -1338,8 +1338,45 @@ namespace MagicWall
         }
 
 
+        /* CollisionEffectAgent 实现 */
+
+        public Vector3 GetRefPosition()
+        {            
+            var position = _manager.mainCamera.WorldToScreenPoint(transform.position);
+
+            Debug.Log("get ref position : " + position);
+
+            return position;
+        }
 
 
+        public bool IsEffective()
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetWidth()
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetHeight()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void SetMoveBehavior(ICollisionMoveBehavior moveBehavior)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollisionMoveBehavior GetMoveBehavior()
+        {
+            throw new NotImplementedException();
+        }
+
+        /* CollisionEffectAgent 实现 结束*/
     }
 
 

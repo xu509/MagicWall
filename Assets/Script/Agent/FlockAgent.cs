@@ -7,7 +7,7 @@ using System;
 
 namespace MagicWall
 {
-    public class FlockAgent : MonoBehaviour
+    public class FlockAgent : MonoBehaviour, CollisionMoveBasicAgent
     {
         protected MagicWallManager _manager;
 
@@ -70,8 +70,7 @@ namespace MagicWall
         // 生成的位置
         private Vector2 _genVector2;
 
-        // 下个移动的位置
-        private Vector2 _nextVector2;
+
 
         // 是否被选中
         [SerializeField] private bool _isChoosing = false;
@@ -111,9 +110,20 @@ namespace MagicWall
         private bool _isStarEffect = false;
         public bool isStarEffect { set { _isStarEffect = value; } get { return _isStarEffect; } }
 
-        // 标志位
-        private bool _needAdjustPosition = false;
-        public bool needAdjustPosition { set { _needAdjustPosition = value; } get { return _needAdjustPosition; } }
+        /* collision 相关 */
+
+        /// <summary>
+        /// 下个移动的位置
+        /// https://www.yuque.com/u314548/fc6a5l/yb8hw4#8le6t
+        /// </summary>
+        private Vector2 _nextVector2;        
+        public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
+
+        private bool _moveFlag = false;
+        public bool MoveFlag { set { _moveFlag = value; } get { return _moveFlag; } }
+
+        /* collision 相关结束 */
+
 
 
 
@@ -132,7 +142,6 @@ namespace MagicWall
         public float Height { set { _height = value; } get { return _height; } }
         public Vector2 OriVector2 { set { _oriVector2 = value; } get { return _oriVector2; } }
         public Vector2 GenVector2 { set { _genVector2 = value; } get { return _genVector2; } }
-        public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
         public CardAgent GetCardAgent { get { return _cardAgent; } }
         public int SceneIndex { set { _sceneIndex = value; } get { return _sceneIndex; } }
         #endregion
@@ -748,6 +757,126 @@ namespace MagicWall
 
             return cardGenPosition;
         }
+
+
+
+
+        /* CollisionMoveBasicAgent 相关 */
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="effectAgents"></param>
+        /// <returns></returns>
+        public void CalculateEffectedDestination(List<CollisionEffectAgent> effectAgents)
+        {
+            Vector2 refPosition = GetCollisionRefPosition();
+
+            CollisionEffectAgent targetAgent = null;
+            Vector2 targetPosition; // 目标物位置
+            float distance = 1000f;
+
+            for (int i = 0; i < effectAgents.Count; i++)
+            {
+                var item = effectAgents[i];
+
+                if (!item.IsEffective())
+                {
+                    continue;
+                }
+
+                Vector2 effectPosition = item.GetRefPosition();
+
+                float newDistance = Vector2.Distance(refPosition, effectPosition);
+                if (newDistance < distance)
+                {
+                    distance = newDistance;
+                    targetAgent = item;
+                }
+            }
+
+            float w, h;
+            if (targetAgent != null)
+            {
+                w = targetAgent.GetWidth();
+                h = targetAgent.GetHeight();
+
+            }
+            else
+            {
+                w = 0;
+                h = 0;
+            }
+
+
+            // 获取有效影响范围，是宽度一半以上
+            float effectDistance = (w / 2) + (w / 2) * _manager.flockBehaviorConfig.InfluenceMoveFactor;
+            // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
+            float offset = effectDistance - distance;
+
+            // 进入影响范围
+            if (offset >= 0)
+            {
+                var moveBehavior = targetAgent.GetMoveBehavior();
+                targetPosition = targetAgent.GetRefPosition();
+
+
+                /// 受影响浮块具体实现
+                Vector2 to = moveBehavior.CalculatePosition(refPosition,
+                    targetPosition, distance,
+                    effectDistance, w, h, _manager);
+
+                float sc = moveBehavior.CalculateScale(refPosition,
+                            targetPosition, distance,
+                            effectDistance, w, h, _manager);
+
+
+                // 获取缓动方法
+                Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
+                float k = defaultEasingFunction(offset / effectDistance);
+
+                //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+                UpdateNextPosition(to);
+                //GetComponent<RectTransform>()?.DOAnchorPos(to, Time.deltaTime);
+                //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+                GetComponent<RectTransform>()?.DOScale(sc, Time.deltaTime);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 获取碰撞参考位置
+        /// </summary>
+        /// <returns>屏幕坐标</returns>
+        public Vector3 GetCollisionRefPosition()
+        {
+
+
+
+            throw new NotImplementedException();
+        }
+
+        public void UpdateNextPosition(Vector3 vector)
+        {
+            NextVector2 = vector;
+            MoveFlag = true;
+        }
+
+        public void UpdatePosition(List<CollisionEffectAgent> effectAgents)
+        {
+            // 判断碰撞位置
+            CalculateEffectedDestination(effectAgents);
+
+            if (MoveFlag) {
+                // 移动到下个位置
+                GetComponent<RectTransform>().anchoredPosition = NextVector2;
+                MoveFlag = false;
+            }
+        }
+
+        /* CollisionMoveBasicAgent 相关 结束 */
 
     }
 
