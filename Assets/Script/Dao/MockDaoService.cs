@@ -69,23 +69,7 @@ namespace MagicWall
         //
         public List<Enterprise> GetEnterprises()
         {
-            if (_enterprises == null)
-            {
-                Enterprise env = new Enterprise();
-
-                //  从数据库中获取数据
-                _enterprises = new List<Enterprise>();
-                for (int i = 0; i < 100; i++)
-                {
-                    _enterprises.Add(env.Generator());
-                }
-
-                return _enterprises;
-            }
-            else
-            {
-                return _enterprises;
-            }
+             return _enterprises;
         }
 
         //
@@ -185,23 +169,7 @@ namespace MagicWall
         //
         public List<Activity> GetActivities()
         {
-            if (_activities == null)
-            {
-                Activity activity = new Activity();
-
-                //  从数据库中获取数据
-                _activities = new List<Activity>();
-                for (int i = 0; i < 100; i++)
-                {
-                    _activities.Add(activity.Generator());
-                }
-
                 return _activities;
-            }
-            else
-            {
-                return _activities;
-            }
         }
 
         //
@@ -297,23 +265,7 @@ namespace MagicWall
         //
         public List<Product> GetProducts()
         {
-            if (_products == null)
-            {
-                Product product = new Product();
-
-                //  从数据库中获取数据
-                _products = new List<Product>();
-                for (int i = 0; i < 100; i++)
-                {
-                    _products.Add(product.Generator());
-                }
-
-                return _products;
-            }
-            else
-            {
-                return _products;
-            }
+            return _products;
         }
 
         public Product GetProduct()
@@ -757,7 +709,37 @@ namespace MagicWall
 
         public void InitData()
         {
-            //throw new System.NotImplementedException();
+            if (_enterprises == null)
+            {
+                Enterprise env = new Enterprise();
+
+                _enterprises = new List<Enterprise>();
+                for (int i = 0; i < 100; i++)
+                {
+                    _enterprises.Add(env.Generator());
+                }
+            }
+
+            if (_activities == null) {
+                Activity activity = new Activity();
+
+                _activities = new List<Activity>();
+                for (int i = 0; i < 100; i++)
+                {
+                    _activities.Add(activity.Generator());
+                }
+            }
+
+            if (_products == null) {
+                Product product = new Product();
+
+                _products = new List<Product>();
+                for (int i = 0; i < 100; i++)
+                {
+                    _products.Add(product.Generator());
+                }
+            }
+
         }
 
         public int GetLikes(string path)
@@ -791,12 +773,34 @@ namespace MagicWall
 
         public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
         {
-            throw new System.NotImplementedException();
+            return GetFlockData(type);
+            //throw new System.NotImplementedException();
         }
 
         public List<string> GetMatImageAddresses()
         {
-            throw new System.NotImplementedException();
+            List<string> addresses = new List<string>();
+
+            // _enterprises 
+            // _products
+            // _activities
+
+            for (int i = 0; i < _enterprises.Count; i++) {
+                addresses.Add(_enterprises[i].GetCover());
+            }
+
+            for (int i = 0; i < _products.Count; i++)
+            {
+                addresses.Add(_products[i].GetCover());
+            }
+
+            for (int i = 0; i < _activities.Count; i++)
+            {
+                addresses.Add(_activities[i].GetCover());
+            }
+
+            return addresses;
+            
         }
     }
 }

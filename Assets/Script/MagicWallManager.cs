@@ -109,9 +109,9 @@ namespace MagicWall
 
         // 配置选项
 
-       // public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-         public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+       //  public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
        // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
@@ -244,7 +244,6 @@ namespace MagicWall
             // 初始化实体管理器
             _agentManager.Init(this);
 
-
             //  初始化操作模块
             _operateMode.Init(this);
 
@@ -278,8 +277,6 @@ namespace MagicWall
         private void Awake()
         {
             _hasInit = false;
-
-
         }
 
 
@@ -290,8 +287,6 @@ namespace MagicWall
         }
 
         // Update is called once per frame
-        //private void Update() { 
-
         private void Update()
         {
             if (!_hasInit)
@@ -429,19 +424,6 @@ namespace MagicWall
         {
             return new Vector2(Screen.width, Screen.height);
         }
-
-
-        //IEnumerator ExchangeScene(float waitTime)
-        //{
-        //    yield return new WaitForSeconds(waitTime);
-
-        //    // 加载另一个
-
-        //    // 更换主题
-
-
-        //    Debug.Log("111111111");
-        //}
 
         private void ExchangeTheme() {
             // ExchangeTheme

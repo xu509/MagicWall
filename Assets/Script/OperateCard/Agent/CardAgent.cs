@@ -940,7 +940,7 @@ namespace MagicWall
         {
             DoUpdate();
 
-            Debug.Log("DO MOVE BUTTON");
+            //Debug.Log("DO MOVE BUTTON");
 
 
             // 移动

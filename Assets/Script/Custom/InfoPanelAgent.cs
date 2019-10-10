@@ -29,7 +29,6 @@ namespace MagicWall
         // 所有图片
         List<RawImage> images;
 
-
         private MagicWallManager _magicWallManager;
 
         /// <summary>
@@ -46,9 +45,6 @@ namespace MagicWall
 
             // 初始化最左侧图片
             _leftImages = _dataService.GetCustomImage(CustomImageType.LEFT1);
-
-            //AdjustLayout();
-
             SetLeftImages();
 
             // 初始化中间图片
