@@ -92,7 +92,6 @@ namespace MagicWall
         public void OnBeginDrag(PointerEventData eventData)
         {
             pointIdAndPos.Add(eventData.pointerId, eventData.position);
-            print(pointIdAndPos.Count);
             if (pointIdAndPos.Count == 1)
             {
                 canScroll = true;
