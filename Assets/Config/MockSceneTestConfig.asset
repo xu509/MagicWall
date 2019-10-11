@@ -15,29 +15,29 @@ MonoBehaviour:
   sceneConfigs:
   - _sceneType: 0
     _dataType: 2
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 2
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 0
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 1
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 1
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 0
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 0
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 1
-    _durTime: 5
+    _durTime: 15
   - _sceneType: 0
     _dataType: 2
-    _durTime: 5
+    _durTime: 15
   data: 0

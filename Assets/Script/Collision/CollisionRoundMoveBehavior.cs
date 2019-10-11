@@ -46,7 +46,7 @@ namespace MagicWall
                 Vector2 to = targetPosition + (position - targetPosition).normalized * e;
 
                 //to = to - panelOffset;
-                
+              
                 return to;
             }
         }

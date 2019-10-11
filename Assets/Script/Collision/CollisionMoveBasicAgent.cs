@@ -14,11 +14,19 @@ namespace MagicWall
         // 更新下一个移动位置
         void UpdateNextPosition(Vector3 vector);
 
+        /// <summary>
+        ///  ref : https://www.yuque.com/u314548/fc6a5l/yb8hw4#3PuB2
+        /// </summary>
+        /// <param name="effectAgents"></param>
         void UpdatePosition(List<CollisionEffectAgent> effectAgents);
 
         void CalculateEffectedDestination(List<CollisionEffectAgent> effectAgents);
 
         Vector3 GetCollisionRefPosition();
+
+        void TurnOnHasMovedOffsetFlag();
+
+        void TurnOffHasMovedOffsetFlag();
 
     }
 }

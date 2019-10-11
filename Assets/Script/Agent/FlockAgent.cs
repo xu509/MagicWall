@@ -9,6 +9,10 @@ namespace MagicWall
 {
     public class FlockAgent : MonoBehaviour, CollisionMoveBasicAgent
     {
+        public Vector2 showPosition;
+
+
+
         protected MagicWallManager _manager;
 
         protected FlockTweenerManager _flockTweenerManager;
@@ -64,7 +68,9 @@ namespace MagicWall
         // 高度
         private float _height;
 
-        // 原位
+        /// <summary>
+        /// 原位置，anchor position
+        /// </summary>
         private Vector2 _oriVector2;
 
         // 生成的位置
@@ -121,6 +127,12 @@ namespace MagicWall
 
         private bool _moveFlag = false;
         public bool MoveFlag { set { _moveFlag = value; } get { return _moveFlag; } }
+
+
+        private bool _hasMoveOffset = false;
+
+        public bool hasMoveOffset { set { _hasMoveOffset = value; } get { return _hasMoveOffset; } }
+
 
         /* collision 相关结束 */
 
@@ -761,7 +773,7 @@ namespace MagicWall
 
 
 
-        /* CollisionMoveBasicAgent 相关 */
+        /* CollisionMoveBasicAgent Impl 相关 */
 
         /// <summary>
         /// TODO
@@ -770,92 +782,159 @@ namespace MagicWall
         /// <returns></returns>
         public void CalculateEffectedDestination(List<CollisionEffectAgent> effectAgents)
         {
-            Vector2 refPosition = GetCollisionRefPosition();
+            Debug.Log("=== " + gameObject.name + " LOG START ===");
 
-            CollisionEffectAgent targetAgent = null;
-            Vector2 targetPosition; // 目标物位置
-            float distance = 1000f;
+            bool needReturnPositionFlag = false;
 
-            for (int i = 0; i < effectAgents.Count; i++)
-            {
-                var item = effectAgents[i];
+            if (effectAgents == null || effectAgents.Count == 0){
+                needReturnPositionFlag = true;
+            }
+            else { 
+                Vector2 refPosition = GetCollisionRefPosition();
 
-                if (!item.IsEffective())
+                CollisionEffectAgent targetAgent = null;
+                Vector2 targetPosition; // 目标物位置
+                float distance = 1000f;
+
+                for (int i = 0; i < effectAgents.Count; i++)
                 {
-                    continue;
+                    var item = effectAgents[i];
+
+                    if (!item.IsEffective())
+                    {
+                        continue;
+                    }
+
+                    Vector2 effectPosition = item.GetRefPosition();
+
+                    float newDistance = Vector2.Distance(refPosition, effectPosition);
+
+                    if (newDistance < distance)
+                    {
+                        distance = newDistance;
+                        targetAgent = item;
+                    }
                 }
 
-                Vector2 effectPosition = item.GetRefPosition();
 
-                float newDistance = Vector2.Distance(refPosition, effectPosition);
-                if (newDistance < distance)
+
+                float w, h;
+                if (targetAgent != null)
                 {
-                    distance = newDistance;
-                    targetAgent = item;
+                    w = targetAgent.GetWidth();
+                    h = targetAgent.GetHeight();
+
+                }
+                else
+                {
+                    w = 0;
+                    h = 0;
+                }
+
+                // 获取有效影响范围，是宽度一半以上
+                float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
+                // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
+                float offset = effectDistance - distance;
+
+                Debug.Log(gameObject.name + " - distance: " + distance + " | effectDistance : " + effectDistance + " | offset : " + offset);
+
+
+
+                // 进入影响范围
+                if (offset >= 0)
+                {
+                    TurnOnHasMovedOffsetFlag();
+
+                    var moveBehavior = targetAgent.GetMoveBehavior();
+                    targetPosition = targetAgent.GetRefPosition();
+
+                    /// 受影响浮块具体实现
+                    Vector2 to = moveBehavior.CalculatePosition(refPosition,
+                        targetPosition, distance,
+                        effectDistance, w, h, _manager);
+
+                    // 将屏幕坐标转换为rect 坐标
+                    var localPosition = new Vector2();
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.mainPanel, to, null, out localPosition);
+                    // 获取 main panel 的中心点坐标
+
+                    var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
+                        _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
+                    localPosition += panelAnchorPosition;
+
+                    float sc = moveBehavior.CalculateScale(refPosition,
+                                targetPosition, distance,
+                                effectDistance, w, h, _manager);
+
+                    // 获取缓动方法
+                    Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
+                    float k = defaultEasingFunction(offset / effectDistance);
+
+
+                    Debug.Log(gameObject.name + " - localPosition " + localPosition + "OFFSET: " + offset);
+
+                    //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+                    UpdateNextPosition(localPosition);
+                    //GetComponent<RectTransform>()?.DOAnchorPos(to, Time.deltaTime);
+                    //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+                    GetComponent<RectTransform>()?.DOScale(sc, Time.deltaTime);
+                }
+                else {
+                    Debug.Log(gameObject.name + " - 影响范围外 OFFSET " + offset);
+
+                    needReturnPositionFlag = true;
+                }
+
+            }
+
+
+            if (needReturnPositionFlag) {
+                if (_hasMoveOffset)
+                {
+                    Debug.Log(gameObject.name + " - localPosition " + _oriVector2 + " | " + effectAgents.Count);
+
+
+                    TurnOffHasMovedOffsetFlag();
+                    UpdateNextPosition(_oriVector2);
+                    GetComponent<RectTransform>()?.DOScale(1, Time.deltaTime);
                 }
             }
 
-            float w, h;
-            if (targetAgent != null)
-            {
-                w = targetAgent.GetWidth();
-                h = targetAgent.GetHeight();
-
-            }
-            else
-            {
-                w = 0;
-                h = 0;
-            }
-
-
-            // 获取有效影响范围，是宽度一半以上
-            float effectDistance = (w / 2) + (w / 2) * _manager.flockBehaviorConfig.InfluenceMoveFactor;
-            // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
-            float offset = effectDistance - distance;
-
-            // 进入影响范围
-            if (offset >= 0)
-            {
-                var moveBehavior = targetAgent.GetMoveBehavior();
-                targetPosition = targetAgent.GetRefPosition();
-
-
-                /// 受影响浮块具体实现
-                Vector2 to = moveBehavior.CalculatePosition(refPosition,
-                    targetPosition, distance,
-                    effectDistance, w, h, _manager);
-
-                float sc = moveBehavior.CalculateScale(refPosition,
-                            targetPosition, distance,
-                            effectDistance, w, h, _manager);
-
-
-                // 获取缓动方法
-                Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
-                float k = defaultEasingFunction(offset / effectDistance);
-
-                //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
-                UpdateNextPosition(to);
-                //GetComponent<RectTransform>()?.DOAnchorPos(to, Time.deltaTime);
-                //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
-                GetComponent<RectTransform>()?.DOScale(sc, Time.deltaTime);
-            }
-
-
+            Debug.Log("=== " + gameObject.name + " LOG END ===");
         }
 
 
         /// <summary>
-        /// 获取碰撞参考位置
+        /// 获取碰撞参考位置,此时的参考位置应该是默认存在的位置，而不是被偏移过的位置
         /// </summary>
         /// <returns>屏幕坐标</returns>
         public Vector3 GetCollisionRefPosition()
         {
+            // _oriVector2
+            var refVector2 = new Vector2();
+
+            if (_manager.SceneStatus == WallStatusEnum.Cutting)
+            {
+                // 当前场景正在切换时，参考位置为目标的下个移动位置
+                refVector2 = NextVector2;
+            }
+            else
+            {
+                //当前场景为正常展示时，参考位置为固定位置
+                refVector2 = _oriVector2;
+            }
 
 
+            // refVector2 此时该数据需要进行修改偏移量
 
-            throw new NotImplementedException();
+            Vector2 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
+
+            var screenPosition = RectTransformUtility.WorldToScreenPoint(null, refVector2WithOffset);
+
+
+            showPosition = screenPosition;
+
+            return screenPosition;
         }
 
         public void UpdateNextPosition(Vector3 vector)
@@ -869,11 +948,25 @@ namespace MagicWall
             // 判断碰撞位置
             CalculateEffectedDestination(effectAgents);
 
-            if (MoveFlag) {
+            if (MoveFlag)
+            {
                 // 移动到下个位置
                 GetComponent<RectTransform>().anchoredPosition = NextVector2;
                 MoveFlag = false;
             }
+            else {
+
+            }
+        }
+
+        public void TurnOnHasMovedOffsetFlag()
+        {
+            _hasMoveOffset = true;
+        }
+
+        public void TurnOffHasMovedOffsetFlag()
+        {
+            _hasMoveOffset = false;
         }
 
         /* CollisionMoveBasicAgent 相关 结束 */

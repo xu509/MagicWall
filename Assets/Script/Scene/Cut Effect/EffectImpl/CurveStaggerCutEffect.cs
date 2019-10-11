@@ -78,7 +78,8 @@ namespace MagicWall
                     // 此时可能未走完动画
                     if (!agent.isCreateSuccess)
                     {
-                        agent.NextVector2 = ori_vector2;
+                        agent.UpdateNextPosition(ori_vector2);
+                        //agent.NextVector2 = ori_vector2;
                         agent.isCreateSuccess = true;
                     }
                     continue;
