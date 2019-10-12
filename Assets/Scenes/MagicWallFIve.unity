@@ -296,10 +296,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
         type: 2}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _agentContainer
+      value: 
+      objectReference: {fileID: 553118715}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+--- !u!224 &553118715 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3095498653154776513, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &553118717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 312633187204164506, guid: 66ac6cc2e905c71459c52598e7bb1430,

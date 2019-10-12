@@ -66,6 +66,11 @@ namespace MagicWall
         public CollisionMoveBehaviourFactory collisionMoveBehaviourFactory { get { return _collisionMoveBehaviourFactory; } }
 
 
+        [SerializeField, Header("kinect")] KinectManager _kinectManager;
+        public KinectManager kinectManager { get { return _kinectManager; } }
+
+        [SerializeField] bool _useKinect;
+
         /// 配置面板
         [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
@@ -264,6 +269,11 @@ namespace MagicWall
 
             _musicManager.Play();
 
+            // 初始化kinect
+            if (_useKinect) {
+                _kinectManager.Init(this);
+            }
+           
 
             // 初始化定制服务
             if (managerConfig.IsCustom)
