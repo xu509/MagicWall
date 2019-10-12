@@ -58,7 +58,7 @@ namespace MagicWall {
             _startSuccessAction = StartKinectSuccess;
             _startFailedAction = StartKinectFailed;
 
-            _kinectService.Init(_agentContainer, _kinectAgentPrefab);
+            _kinectService.Init(_agentContainer, _kinectAgentPrefab,_manager);
 
         }
 

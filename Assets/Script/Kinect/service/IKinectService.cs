@@ -10,7 +10,7 @@ namespace MagicWall {
     /// </summary>
     public interface IKinectService
     {
-        void Init(RectTransform container,KinectAgent agentPrefab);
+        void Init(RectTransform container,KinectAgent agentPrefab, MagicWallManager manager);
 
         void StartMonitoring(Action startSuccessAction, Action<string> startFailedAction);
 
