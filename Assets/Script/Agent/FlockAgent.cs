@@ -116,6 +116,11 @@ namespace MagicWall
         private bool _isStarEffect = false;
         public bool isStarEffect { set { _isStarEffect = value; } get { return _isStarEffect; } }
 
+
+
+
+
+
         /* collision 相关 */
 
         /// <summary>
@@ -129,9 +134,20 @@ namespace MagicWall
         public bool MoveFlag { set { _moveFlag = value; } get { return _moveFlag; } }
 
 
+        private bool _hasChangedFlag = false;
+        public bool hasChangedFlag { set { _hasChangedFlag = value; } get { return _hasChangedFlag; } }
+
+
+
         private bool _hasMoveOffset = false;
 
         public bool hasMoveOffset { set { _hasMoveOffset = value; } get { return _hasMoveOffset; } }
+
+        /// <summary>
+        ///  变化中的位置
+        /// </summary>
+        private Vector2 _nextChangedPosition;
+        public Vector2 NextChangedPosition { set { _nextChangedPosition = value; } get { return _nextChangedPosition; } }
 
 
         /* collision 相关结束 */
@@ -782,7 +798,7 @@ namespace MagicWall
         /// <returns></returns>
         public void CalculateEffectedDestination(List<CollisionEffectAgent> effectAgents)
         {
-            Debug.Log("=== " + gameObject.name + " LOG START ===");
+            //Debug.Log("=== " + gameObject.name + " LOG START ===");
 
             bool needReturnPositionFlag = false;
 
@@ -796,10 +812,10 @@ namespace MagicWall
                 CollisionEffectAgent targetAgent = null;
 
                 // target position
-                Vector2 targetPosition;
+                Vector2 targetPosition = new Vector2();
 
 
-                float distance = 1000f;
+                float distance = 2000f;
 
                 for (int i = 0; i < effectAgents.Count; i++)
                 {
@@ -809,16 +825,17 @@ namespace MagicWall
                     {
                         continue;
                     }
+                    else {
+                        targetPosition = item.GetRefPosition();
 
-                    Vector2 effectPosition = item.GetRefPosition();
+                        float newDistance = Vector2.Distance(refPosition, targetPosition);
 
-                    float newDistance = Vector2.Distance(refPosition, effectPosition);
-
-                    if (newDistance < distance)
-                    {
-                        distance = newDistance;
-                        targetAgent = item;
-                    }
+                        if (newDistance < distance)
+                        {
+                            distance = newDistance;
+                            targetAgent = item;
+                        }
+                    }                    
                 }
 
 
@@ -841,6 +858,14 @@ namespace MagicWall
                 // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
                 float offset = effectDistance - distance;
 
+                bool offsetGreater = (offset >= 0);
+
+                //Debug.Log("[" + _manager.SceneStatus + "]" + gameObject.name
+                //    + " | tpos: " + targetPosition + " | rpos: "
+                //    + refPosition + " | effectdis:"
+                //    + effectDistance + " | distance: " + distance + "offsetGreater : " + offsetGreater);
+
+
 
                 // 进入影响范围
                 if (offset >= 0)
@@ -848,7 +873,7 @@ namespace MagicWall
                     TurnOnHasMovedOffsetFlag();
 
                     var moveBehavior = targetAgent.GetMoveBehavior();
-                    targetPosition = targetAgent.GetRefPosition();
+                    //targetPosition = targetAgent.GetRefPosition();
 
                     /// 受影响浮块具体实现
                     Vector2 to = moveBehavior.CalculatePosition(refPosition,
@@ -864,6 +889,10 @@ namespace MagicWall
                         _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
                     localPosition += panelAnchorPosition;
 
+                    SetNextPosition(localPosition);
+
+
+
                     float sc = moveBehavior.CalculateScale(refPosition,
                                 targetPosition, distance,
                                 effectDistance, w, h, _manager);
@@ -873,17 +902,14 @@ namespace MagicWall
                     float k = defaultEasingFunction(offset / effectDistance);
 
 
-                    Debug.Log(gameObject.name + " - localPosition " + localPosition + "OFFSET: " + offset);
+                    //Debug.Log(gameObject.name + " - localPosition " + localPosition + "OFFSET: " + offset);
 
                     //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
-                    UpdateNextPosition(localPosition);
                     //GetComponent<RectTransform>()?.DOAnchorPos(to, Time.deltaTime);
                     //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
                     GetComponent<RectTransform>()?.DOScale(sc, Time.deltaTime);
                 }
                 else {
-                    Debug.Log(gameObject.name + " - 影响范围外 OFFSET " + offset);
-
                     needReturnPositionFlag = true;
                 }
 
@@ -893,16 +919,21 @@ namespace MagicWall
             if (needReturnPositionFlag) {
                 if (_hasMoveOffset)
                 {
-                    Debug.Log(gameObject.name + " - localPosition " + _oriVector2 + " | " + effectAgents.Count);
-
-
                     TurnOffHasMovedOffsetFlag();
-                    UpdateNextPosition(_oriVector2);
+                    RecoverPosition();
                     GetComponent<RectTransform>()?.DOScale(1, Time.deltaTime);
+                }
+                else {
+                    if (_hasChangedFlag) {
+                        _hasChangedFlag = false;
+                        SetNextPosition(_nextChangedPosition);                        
+                    }
+
                 }
             }
 
-            Debug.Log("=== " + gameObject.name + " LOG END ===");
+            //Debug.Log("### " + gameObject.name + " LOG END ###");
+
         }
 
 
@@ -918,7 +949,7 @@ namespace MagicWall
             if (_manager.SceneStatus == WallStatusEnum.Cutting)
             {
                 // 当前场景正在切换时，参考位置为目标的下个移动位置
-                refVector2 = NextVector2;
+                refVector2 = _nextChangedPosition;
             }
             else
             {
@@ -939,26 +970,37 @@ namespace MagicWall
             return screenPosition;
         }
 
-        public void UpdateNextPosition(Vector3 vector)
-        {
-            NextVector2 = vector;
-            MoveFlag = true;
-        }
+
+        //public Vector3 GetNextMovePosition
+
+
+
 
         public void UpdatePosition(List<CollisionEffectAgent> effectAgents)
         {
+            //Debug.Log(gameObject.name + " Start ");
+
+
             // 判断碰撞位置
             CalculateEffectedDestination(effectAgents);
 
             if (MoveFlag)
             {
+                var ap = GetComponent<RectTransform>().anchoredPosition;
+
                 // 移动到下个位置
                 GetComponent<RectTransform>().anchoredPosition = NextVector2;
                 MoveFlag = false;
+
+                //Debug.Log(gameObject.name + " 移动至： " + NextVector2 + " 距离：" + Vector2.Distance(ap,NextVector2) + " 缩放倍数： " + GetComponent<RectTransform>().localScale);
+                //Debug.Log(gameObject.name + " 移动结束！！ ");
+                //Debug.Log(gameObject.name + " ... ");
             }
             else {
 
             }
+
+            //Debug.Log(gameObject.name + " End ");
         }
 
         public void TurnOnHasMovedOffsetFlag()
@@ -969,6 +1011,34 @@ namespace MagicWall
         public void TurnOffHasMovedOffsetFlag()
         {
             _hasMoveOffset = false;
+        }
+
+        public void UpdateChangedPosition(Vector3 vector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetChangedPosition(Vector3 vector)
+        {
+            _nextChangedPosition = vector;
+            _hasChangedFlag = true;
+        }
+
+        public void SetNextPosition(Vector3 vector)
+        {
+            NextVector2 = vector;
+            MoveFlag = true;
+        }
+
+        void RecoverPosition() {
+            if (_hasChangedFlag)
+            {
+                SetNextPosition(_nextChangedPosition);
+            }
+            else {
+                SetNextPosition(_oriVector2);
+            }
+
         }
 
         /* CollisionMoveBasicAgent 相关 结束 */

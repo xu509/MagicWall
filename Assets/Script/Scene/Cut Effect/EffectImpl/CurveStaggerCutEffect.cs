@@ -78,7 +78,10 @@ namespace MagicWall
                     // 此时可能未走完动画
                     if (!agent.isCreateSuccess)
                     {
-                        agent.UpdateNextPosition(ori_vector2);
+                        agent.SetChangedPosition(ori_vector2);
+
+                        //Debug.Log(agent.gameObject.name + " is create success !");
+
                         //agent.NextVector2 = ori_vector2;
                         agent.isCreateSuccess = true;
                     }
@@ -92,7 +95,7 @@ namespace MagicWall
 
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
-                agent.UpdateNextPosition(to);
+                agent.SetChangedPosition(to);
 
                 //agent.NextVector2 = to;
             }

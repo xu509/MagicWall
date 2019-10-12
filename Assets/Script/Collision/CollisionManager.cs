@@ -24,11 +24,17 @@ namespace MagicWall {
         // Update is called once per frame
         void Update()
         {                        
-            // 计算移动
-            for (int i = 0; i < _collisionBasicAgents.Count; i++) {
-                _collisionBasicAgents[i].UpdatePosition(_collisionEffectAgents);                                       
-            }            
+       
         }
+
+        public void Run() {
+            // 计算移动
+            for (int i = 0; i < _collisionBasicAgents.Count; i++)
+            {
+                _collisionBasicAgents[i].UpdatePosition(_collisionEffectAgents);
+            }
+        }
+
 
         public void AddCollisionMoveBasicAgent(CollisionMoveBasicAgent agent) {
             _collisionBasicAgents.Add(agent);

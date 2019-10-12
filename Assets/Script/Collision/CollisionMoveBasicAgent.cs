@@ -11,8 +11,10 @@ namespace MagicWall
     /// </summary>
     public interface CollisionMoveBasicAgent
     {
+        void SetChangedPosition(Vector3 vector);
+
         // 更新下一个移动位置
-        void UpdateNextPosition(Vector3 vector);
+        void SetNextPosition(Vector3 vector);
 
         /// <summary>
         ///  ref : https://www.yuque.com/u314548/fc6a5l/yb8hw4#3PuB2

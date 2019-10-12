@@ -305,6 +305,7 @@ namespace MagicWall
             if (_cardStatus == CardStatusEnum.NORMAL || _cardStatus == CardStatusEnum.MOVE)
             {
                 _recentActiveTime = Time.time;
+                _destoryFirstStageCompleteTime = 0f;
             }
 
             if (_cardStatus == CardStatusEnum.HIDE) {
@@ -314,6 +315,7 @@ namespace MagicWall
             if (_cardStatus == CardStatusEnum.RECOVER)
             {
                 _recentActiveTime = Time.time;
+                _destoryFirstStageCompleteTime = 0f;
             }
 
 
@@ -366,6 +368,9 @@ namespace MagicWall
         private void DoDestoriedForSecondStep()
         {
             _cardStatus = CardStatusEnum.DESTORY;
+
+            _protectAgent.SetDisabled();
+
 
             GetComponent<CircleCollider2D>().radius = 0;
 
@@ -456,9 +461,11 @@ namespace MagicWall
         //  恢复
         //
         private void DoRecover()
-        {
+        {            
             _protectAgent.DoClose();
             _cardStatus = CardStatusEnum.RECOVER;
+
+            DoUpdate();
 
             // 停止销毁动画
             _destory_first_scale_tweener.Kill();

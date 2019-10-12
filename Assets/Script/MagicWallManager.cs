@@ -316,6 +316,8 @@ namespace MagicWall
 
             _agentManager.Run();
 
+            _collisionManager.Run();
+
             //  启动监听
             udpServer.Listening();
             if (_reset)
