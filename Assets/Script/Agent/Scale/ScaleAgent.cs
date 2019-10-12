@@ -11,15 +11,14 @@ namespace MagicWall
     {
         Texture _imageTexture;
 
-        [SerializeField] RawImage image;
+        [SerializeField, Header("图片")] RawImage image;
         [SerializeField] RectTransform tool_box;
-
+        [Header("图片放大最大倍数")]
         public float maxScale = 2.0f;//最大倍数
+        [Header("图片放大次数")]
         public int plusCount = 5;//放大次数
-
-
-        float MAX_WIDTH = 660;
-        float MAX_HEIGHT = 950;
+        [Header("最大高度")]
+        public float MAX_HEIGHT = 950;
 
         Action OnCloseClicked;
         Action _onReturnClicked;
@@ -157,49 +156,54 @@ namespace MagicWall
 
         public void ResetImage()
         {
-            imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
-
+            //imgRtf.sizeDelta = new Vector2(originalSize.x * currentScale, originalSize.y * currentScale);
+            imgRtf.localScale = new Vector3(currentScale, currentScale, currentScale);
         }
 
         private void SizeToScale()
         {
-            // 将图片大小定在指定大小
-            var parent = image.transform.parent.GetComponent<RectTransform>();
-
-
+            //图片原始宽高
             float w = _imageTexture.width, h = _imageTexture.height;
-
-            string str = "";
-
-            if (_imageTexture.width > MAX_WIDTH)
+            float r = w / h;
+            GetComponent<AspectRatioFitter>().aspectRatio = r;
+            RectTransform rtf = GetComponent<RectTransform>();
+            if (rtf.sizeDelta.y > MAX_HEIGHT)
             {
-                float radio = _imageTexture.width / _imageTexture.height;
-                w = MAX_WIDTH;
-                h = w / radio;
-
-                str = "WIDTH > MAX WIDTH";
-            }
-            else
-            {
-                str = "WIDTH < MAX WIDTH";
+                float width = r * MAX_HEIGHT;
+                rtf.sizeDelta = new Vector2(width, MAX_HEIGHT);
             }
 
-            //设置图片原始大小
-            originalSize = new Vector2(w, h);
+            //string str = "";
 
-            // 将mask调整至新的大小
-            //parent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-            //parent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+            //if (_imageTexture.width > MAX_WIDTH)
+            //{
+            //    float radio = _imageTexture.width / _imageTexture.height;
+            //    w = MAX_WIDTH;
+            //    h = w / radio;
 
-            //parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-            //parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+            //    str = "WIDTH > MAX WIDTH";
+            //}
+            //else
+            //{
+            //    str = "WIDTH < MAX WIDTH";
+            //}
+
+            ////设置图片原始大小
+            //originalSize = new Vector2(w, h);
+
+            //// 将mask调整至新的大小
+            ////parent.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+            ////parent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+
+            ////parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+            ////parent.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+
+            ////imgRtf.sizeDelta = originalSize;
+            ////parent.sizeDelta = originalSize;
+            ////parent.parent.GetComponent<RectTransform>().sizeDelta = originalSize;
 
             //imgRtf.sizeDelta = originalSize;
-            //parent.sizeDelta = originalSize;
-            //parent.parent.GetComponent<RectTransform>().sizeDelta = originalSize;
-
-            imgRtf.sizeDelta = originalSize;
-            GetComponent<RectTransform>().sizeDelta = originalSize;
+            //GetComponent<RectTransform>().sizeDelta = originalSize;
 
 
         }

@@ -316,3 +316,5 @@ File is not found : C:\workspace\MagicWall\Files\shicun\互动魔墙里的酒图
 File is not found : C:\workspace\MagicWall\Files\shicun\互动魔墙里的酒图片\酒会活动\第七届国际研讨班.jpg
 日志文件创建的时间:2019/9/28 0:50:30
 File is not found : C:\workspace\MagicWall\Files\feiyue\低帮帆布女鞋\4.jpg
+日志文件创建的时间:2019/10/11 11:09:23
+File is not found : E:\workspace\MagicWall\Files\feiyue\ins风法国版帆布鞋\1.jpg
