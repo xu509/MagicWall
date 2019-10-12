@@ -790,10 +790,15 @@ namespace MagicWall
                 needReturnPositionFlag = true;
             }
             else { 
-                Vector2 refPosition = GetCollisionRefPosition();
+                // basic position
+                Vector2 refPosition = GetCollisionRefPosition();    
 
                 CollisionEffectAgent targetAgent = null;
-                Vector2 targetPosition; // 目标物位置
+
+                // target position
+                Vector2 targetPosition;
+
+
                 float distance = 1000f;
 
                 for (int i = 0; i < effectAgents.Count; i++)
@@ -835,9 +840,6 @@ namespace MagicWall
                 float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
                 // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
                 float offset = effectDistance - distance;
-
-                Debug.Log(gameObject.name + " - distance: " + distance + " | effectDistance : " + effectDistance + " | offset : " + offset);
-
 
 
                 // 进入影响范围

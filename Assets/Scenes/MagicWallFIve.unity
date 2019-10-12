@@ -264,6 +264,11 @@ PrefabInstance:
       propertyPath: _collisionMoveBehaviourFactory
       value: 
       objectReference: {fileID: 518048002}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _useKinect
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive

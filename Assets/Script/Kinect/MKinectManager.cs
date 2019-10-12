@@ -8,7 +8,7 @@ namespace MagicWall {
     /// <summary>
     /// ref : https://www.yuque.com/books/share/4f5397bb-9ecf-4622-bf62-f812a38d2057
     /// </summary>
-    public class KinectManager : MonoBehaviour
+    public class MKinectManager : MonoBehaviour
     {
         [SerializeField, Header("Prefab")] KinectAgent _kinectAgentPrefab;
         [SerializeField, Header("UI")] RectTransform _agentContainer;

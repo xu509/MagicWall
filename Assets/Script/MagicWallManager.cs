@@ -66,8 +66,8 @@ namespace MagicWall
         public CollisionMoveBehaviourFactory collisionMoveBehaviourFactory { get { return _collisionMoveBehaviourFactory; } }
 
 
-        [SerializeField, Header("kinect")] KinectManager _kinectManager;
-        public KinectManager kinectManager { get { return _kinectManager; } }
+        [SerializeField, Header("kinect")] MKinectManager _kinectManager;
+        public MKinectManager kinectManager { get { return _kinectManager; } }
 
         [SerializeField] bool _useKinect;
 
