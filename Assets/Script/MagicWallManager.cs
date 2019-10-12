@@ -56,6 +56,15 @@ namespace MagicWall
         [SerializeField] OperateCardManager _operateCardManager;
         public OperateCardManager operateCardManager { get { return _operateCardManager; } }
 
+        [SerializeField,Header("Collision")] CollisionManager _collisionManager;
+        public CollisionManager collisionManager { get { return _collisionManager; } }
+
+        [SerializeField] CollisionBehaviorConfig _collisionBehaviorConfig;
+        public CollisionBehaviorConfig collisionBehaviorConfig { get { return _collisionBehaviorConfig; } }
+
+        [SerializeField] CollisionMoveBehaviourFactory _collisionMoveBehaviourFactory;
+        public CollisionMoveBehaviourFactory collisionMoveBehaviourFactory { get { return _collisionMoveBehaviourFactory; } }
+
 
         /// 配置面板
         [SerializeField, Header("config")] ManagerConfig _managerConfig;

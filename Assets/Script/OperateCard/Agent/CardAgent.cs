@@ -9,7 +9,7 @@ using DG.Tweening;
 
 namespace MagicWall
 {
-    public class CardAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
+    public class CardAgent : MonoBehaviour, CollisionEffectAgent, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
     {
         //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
         [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
@@ -39,6 +39,11 @@ namespace MagicWall
         private List<ExtraCardData> _extraCardDatas;
         private int _sceneIndex;
 
+
+        /// <summary>
+        ///     碰撞体移动表现器
+        /// </summary>
+        private ICollisionMoveBehavior _collisionMoveBehavior;
 
 
         #region Parameter
@@ -652,19 +657,6 @@ namespace MagicWall
             //TurnOnKeepOpen();
         }
 
-
-
-        //public void TurnOnKeepOpen()
-        //{
-        //    DoUpdate();
-        //    _keepOpen = true;
-        //}
-
-        //public void TurnOffKeepOpen()
-        //{
-        //    DoUpdate();
-        //    _keepOpen = false;
-        //}
 
 
         public void DoOnCreatedCompleted()
@@ -1338,8 +1330,78 @@ namespace MagicWall
         }
 
 
+        /* CollisionEffectAgent impl 实现 */
+
+        public Vector3 GetRefPosition()
+        {            
+            var pos = GetComponent<RectTransform>().position;
+            var screenPosition = RectTransformUtility.WorldToScreenPoint(null, pos);
+
+            //var sposition = _manager.mainCamera.WorldToScreenPoint(pos);
+
+            //Debug.Log(gameObject.name + " | position : " + pos + " - get ref position : " + screenPosition);
+
+            return screenPosition;
+        }
 
 
+        public bool IsEffective()
+        {
+            
+            if (!gameObject.activeSelf)
+            {
+                return false;
+            }
+
+            if (_cardStatus == CardStatusEnum.HIDE
+                || _cardStatus == CardStatusEnum.OBSOLETE)
+            {
+                return false;
+            }
+
+
+            float effect_width = 300f;
+            float effect_height = 300f;
+
+            Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+            float width = GetComponent<RectTransform>().rect.width;
+            float height = GetComponent<RectTransform>().rect.height;
+
+            if (width > effect_width && height > effect_height)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public float GetWidth()
+        {
+
+            Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+            return width * scaleVector3.x;
+        }
+
+        public float GetHeight()
+        {
+            Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+            return height* scaleVector3.y;
+        }
+
+
+        public void SetMoveBehavior(ICollisionMoveBehavior moveBehavior)
+        {            
+            _collisionMoveBehavior = moveBehavior;
+        }
+
+        public ICollisionMoveBehavior GetMoveBehavior()
+        {
+            return _collisionMoveBehavior;
+        }
+
+        /* CollisionEffectAgent 实现 结束*/
     }
 
 

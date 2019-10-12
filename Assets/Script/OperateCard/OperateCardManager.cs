@@ -70,6 +70,7 @@ namespace MagicWall {
 
                     // 从索引中销毁
                     _effectAgents.Remove(agentToDestory);
+                    _manager.collisionManager.RemoveCollisionEffectAgent(agentToDestory);
 
                     // 物理销毁
                     Destroy(agentToDestory.gameObject);
@@ -104,7 +105,6 @@ namespace MagicWall {
                 if (cardToClose != null) {
                     Debug.Log("打开卡片超过限度,关闭：" + cardToClose.name);
 
-
                     // 直接删除
                     cardToClose.DoCloseDirect();
                 }
@@ -132,6 +132,10 @@ namespace MagicWall {
             cardAgent.CardStatus = CardStatusEnum.GENERATE;
 
             EffectAgents.Add(cardAgent);
+
+            cardAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+            _manager.collisionManager.AddCollisionEffectAgent(cardAgent);
+            
             return cardAgent;
         }
 

@@ -45,8 +45,6 @@ namespace MagicWall
 
 
 
-
-
         // 主管理器
         private MagicWallManager _manager;
 
@@ -130,9 +128,7 @@ namespace MagicWall
             agent.Reset();
             _agents.Remove(agent);
 
-
-           
-
+            _manager.collisionManager.RemoveCollisionMoveBasicAgent(agent);
             DestoryAgent(agent);
         }
 
@@ -160,6 +156,8 @@ namespace MagicWall
         public void AddItem(FlockAgent agent)
         {
             _agents.Add(agent);
+
+            _manager.collisionManager.AddCollisionMoveBasicAgent(agent);
         }
 
 
@@ -199,7 +197,7 @@ namespace MagicWall
                             recycleAgents.Add(agent);
                         }
                         else {
-                            agent.updatePosition();
+                            //agent.updatePosition();
                             agent.CheckIsNeedRecycle();
                         }
                     }

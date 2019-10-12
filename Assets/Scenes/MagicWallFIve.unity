@@ -120,6 +120,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &348388764 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 703880140642150519, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73cd97090d644241b6501f31deed3db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!20 &412707996 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3095498653193108985, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &518048002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3617333700194228008, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776af2470ec9e4e4b943c0dd7554fe13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &553118714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -213,6 +243,27 @@ PrefabInstance:
       propertyPath: _mockShicunDaoService
       value: 
       objectReference: {fileID: 838434188}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _collisionManager
+      value: 
+      objectReference: {fileID: 348388764}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _collisionBehaviorConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 2114e26291e14df49af27e4e6629890f,
+        type: 2}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 412707996}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _collisionMoveBehaviourFactory
+      value: 
+      objectReference: {fileID: 518048002}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
