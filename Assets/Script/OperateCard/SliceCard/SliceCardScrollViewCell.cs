@@ -164,7 +164,7 @@ namespace MagicWall
             _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
 
 
-            GetComponent<RectTransform>().SetAsLastSibling();
+            //GetComponent<RectTransform>().SetAsLastSibling();
 
             //// 调用改变描述
             //Context.OnDescriptionChanged.Invoke(cellData.Description);
@@ -241,5 +241,14 @@ namespace MagicWall
             _manager.daoService.UpdateLikes(_cellData.Image);
         }
 
+        public override void SetAsLastPosition()
+        {
+            GetComponent<RectTransform>().SetAsLastSibling();
+        }
+
+        public override void SetAsFirstPosition()
+        {
+            GetComponent<RectTransform>().SetAsFirstSibling();
+        }
     }
 }

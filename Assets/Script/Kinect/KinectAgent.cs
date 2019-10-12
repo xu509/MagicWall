@@ -20,6 +20,11 @@ namespace MagicWall {
             throw new NotImplementedException();
         }
 
+        public string GetName()
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector3 GetRefPosition()
         {
             throw new NotImplementedException();

@@ -98,7 +98,9 @@ namespace MagicWall
 
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
-                agent.NextVector2 = to;
+
+                agent.SetChangedPosition(to);
+
             }
 
         }

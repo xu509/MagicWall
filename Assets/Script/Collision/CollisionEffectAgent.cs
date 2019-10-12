@@ -19,5 +19,7 @@ namespace MagicWall
 
         float GetHeight();
 
+        string GetName();
+
     }
 }

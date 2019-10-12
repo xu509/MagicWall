@@ -188,7 +188,7 @@ namespace MagicWall
             _buttonLikeAgent.Init(_likes, OnClickLike);
 
             // 将 Card 放在最前端
-            GetComponent<RectTransform>().SetAsLastSibling();
+            //GetComponent<RectTransform>().SetAsLastSibling();
 
         }
 

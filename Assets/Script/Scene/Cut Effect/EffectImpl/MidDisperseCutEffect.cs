@@ -77,7 +77,8 @@ namespace MagicWall
                     // 此时可能未走完动画
                     if (!agent.isCreateSuccess)
                     {
-                        agent.NextVector2 = ori_vector2;
+                        agent.SetChangedPosition(ori_vector2);
+
                         agent.isCreateSuccess = true;
                     }
                     continue;
@@ -90,7 +91,8 @@ namespace MagicWall
 
 
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-                agent.NextVector2 = to;
+                agent.SetChangedPosition(to);
+
 
                 // 透明度动画
                 var distance = Vector2.Distance(ori_vector2, to);

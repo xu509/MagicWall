@@ -71,7 +71,9 @@ namespace MagicWall
             scroller.SetTotalCount(items.Count);
 
             // 此时不初始化描述与工具条
-            UpdateComponents();
+            //UpdateComponents();
+
+            InitComponents();
 
         }
 
@@ -127,6 +129,8 @@ namespace MagicWall
                 }
             }
 
+            UpdateSiblingIndex();
+
         }
 
 
@@ -156,6 +160,48 @@ namespace MagicWall
 
             agent.DoVideo(cellData.VideoUrl, cellData.Description, cellData.Image);
         }
+
+
+
+        /// <summary>
+        /// 设置层级代码
+        /// </summary>
+        private void UpdateSiblingIndex()
+        {
+
+            // <int : 插值，int : Pool中索引>
+            Dictionary<int, int> dics = new Dictionary<int, int>();
+
+            for (int i = 0; i < Pool.Count; i++)
+            {
+                int Index = GetCell(i).Index;
+
+                var a = Mathf.Abs(CurrentIndex - Index);
+
+                dics.Add(i, a);
+            }
+
+            List<KeyValuePair<int, int>> lst = new List<KeyValuePair<int, int>>(dics);
+            lst.Sort(delegate (KeyValuePair<int, int> s1, KeyValuePair<int, int> s2)
+            {
+                return s2.Value.CompareTo(s1.Value);
+            });
+
+            foreach (KeyValuePair<int, int> kvp in lst)
+            {
+                Pool[kvp.Key].SetAsLastPosition();
+            }
+        }
+
+        private void InitComponents()
+        {
+            for (int i = 0; i < Pool.Count; i++)
+            {
+                GetCell(i).SetAsFirstPosition();
+            }
+        }
+
+
 
 
     }

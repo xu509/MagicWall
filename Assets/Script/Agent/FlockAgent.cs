@@ -9,7 +9,7 @@ namespace MagicWall
 {
     public class FlockAgent : MonoBehaviour, CollisionMoveBasicAgent
     {
-        public Vector2 showPosition;
+        public string effectAgentName;
 
 
 
@@ -802,7 +802,7 @@ namespace MagicWall
 
             bool needReturnPositionFlag = false;
 
-            if (effectAgents == null || effectAgents.Count == 0){
+            if (effectAgents == null || effectAgents.Count == 0 || (!_canEffected) || (_flockStatus == FlockStatusEnum.STAR)){
                 needReturnPositionFlag = true;
             }
             else { 
@@ -815,7 +815,7 @@ namespace MagicWall
                 Vector2 targetPosition = new Vector2();
 
 
-                float distance = 2000f;
+                float distance = 1000f;
 
                 for (int i = 0; i < effectAgents.Count; i++)
                 {
@@ -826,14 +826,15 @@ namespace MagicWall
                         continue;
                     }
                     else {
-                        targetPosition = item.GetRefPosition();
+                        Vector2 itemPosition = item.GetRefPosition();
 
-                        float newDistance = Vector2.Distance(refPosition, targetPosition);
+                        float newDistance = Vector2.Distance(refPosition, itemPosition);
 
                         if (newDistance < distance)
                         {
                             distance = newDistance;
                             targetAgent = item;
+                            targetPosition = itemPosition;
                         }
                     }                    
                 }
@@ -870,6 +871,9 @@ namespace MagicWall
                 // 进入影响范围
                 if (offset >= 0)
                 {
+                    effectAgentName = targetAgent.GetName();
+                    
+
                     TurnOnHasMovedOffsetFlag();
 
                     var moveBehavior = targetAgent.GetMoveBehavior();
@@ -880,16 +884,19 @@ namespace MagicWall
                         targetPosition, distance,
                         effectDistance, w, h, _manager);
 
-                    // 将屏幕坐标转换为rect 坐标
-                    var localPosition = new Vector2();
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.mainPanel, to, null, out localPosition);
-                    // 获取 main panel 的中心点坐标
 
-                    var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
-                        _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
-                    localPosition += panelAnchorPosition;
+                    var toLocalPosition = TransformScreenPositionToRectPosition(to);
 
-                    SetNextPosition(localPosition);
+                    //// 将屏幕坐标转换为rect 坐标
+                    //var localPosition = new Vector2();
+                    //RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.mainPanel, to, null, out localPosition);
+                    //// 获取 main panel 的中心点坐标
+
+                    //var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
+                    //    _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
+                    //localPosition += panelAnchorPosition;
+
+                    SetNextPosition(toLocalPosition);
 
 
 
@@ -957,15 +964,31 @@ namespace MagicWall
                 refVector2 = _oriVector2;
             }
 
+            Vector2 refVector2WithOffset;
+
+
+            if (_agentContainerType == AgentContainerType.MainPanel)
+            {
+                refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
+            }
+            else if (_agentContainerType == AgentContainerType.BackPanel) {
+                refVector2WithOffset = refVector2 - new Vector2(_manager.PanelBackOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
+
+            }
+            else
+            {
+                refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
+
+            }
+
+
+
 
             // refVector2 此时该数据需要进行修改偏移量
 
-            Vector2 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
 
             var screenPosition = RectTransformUtility.WorldToScreenPoint(null, refVector2WithOffset);
 
-
-            showPosition = screenPosition;
 
             return screenPosition;
         }
@@ -980,6 +1003,10 @@ namespace MagicWall
         {
             //Debug.Log(gameObject.name + " Start ");
 
+            // 隐藏中的agent不需要修改位置
+            if (_flockStatus == FlockStatusEnum.HIDE) {
+                return;
+            }
 
             // 判断碰撞位置
             CalculateEffectedDestination(effectAgents);
@@ -1013,11 +1040,6 @@ namespace MagicWall
             _hasMoveOffset = false;
         }
 
-        public void UpdateChangedPosition(Vector3 vector)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetChangedPosition(Vector3 vector)
         {
             _nextChangedPosition = vector;
@@ -1040,6 +1062,34 @@ namespace MagicWall
             }
 
         }
+
+        Vector2 TransformScreenPositionToRectPosition(Vector2 screenPosition) {
+            RectTransform container;
+
+            if (_agentContainerType == AgentContainerType.MainPanel)
+            {
+                container = _manager.mainPanel;
+            }
+            else if (_agentContainerType == AgentContainerType.BackPanel)
+            {
+                container = _manager.backPanel;
+            }
+            else {
+                container = _manager.mainPanel;
+            }
+
+            // 将屏幕坐标转换为rect 坐标
+            var localPosition = new Vector2();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(container, screenPosition, null, out localPosition);
+          
+            var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
+                _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
+            localPosition += panelAnchorPosition;
+
+            return localPosition;
+        }
+
+
 
         /* CollisionMoveBasicAgent 相关 结束 */
 

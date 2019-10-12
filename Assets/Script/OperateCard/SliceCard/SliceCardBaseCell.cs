@@ -61,5 +61,10 @@ namespace MagicWall
 
         public abstract void InitData();
 
+
+        public abstract void SetAsLastPosition();
+
+        public abstract void SetAsFirstPosition();
+
     }
 }

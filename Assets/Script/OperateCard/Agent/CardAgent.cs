@@ -390,7 +390,10 @@ namespace MagicWall
                     RectTransform cardRect = GetComponent<RectTransform>();
 
                     //  移到后方、缩小、透明
-                    Tweener t = cardRect.DOScale(0.2f, 1f);
+                    Tweener t = cardRect.DOScale(0.1f, 1f);
+
+
+                    
                     //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
 
                     //  获取位置
@@ -1406,6 +1409,11 @@ namespace MagicWall
         public ICollisionMoveBehavior GetMoveBehavior()
         {
             return _collisionMoveBehavior;
+        }
+
+        public string GetName()
+        {
+            return gameObject.name;
         }
 
         /* CollisionEffectAgent 实现 结束*/

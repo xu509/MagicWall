@@ -60,7 +60,7 @@ namespace MagicWall
             scroller.SetTotalCount(items.Count);
 
             // 此时第一次更新数据
-            UpdateComponents();
+            InitComponents();
 
         }
 
@@ -89,6 +89,9 @@ namespace MagicWall
 
         protected override void UpdateComponents()
         {
+            // 调整前后关系
+
+
             List<int> lis = new List<int>();
             int d = 0;
 
@@ -106,20 +109,15 @@ namespace MagicWall
                 {
                     GetCell(i).ClearComponentStatus();
                 }
-
+                
                 // 调整一次位置
                 int dis = Mathf.Abs(Index - CurrentIndex);
                 lis.Add(dis);
+
+                //GetCell(i).SetAsLastPosition();
             }
 
-            // 略微调整下位置
-            lis.Sort((a, b) => b.CompareTo(a));
-
-            if (Pool.Count > 5)
-            {
-                GetCell(lis[1]).SetAsLastPosition();
-                GetCell(lis[0]).SetAsLastPosition();
-            }
+            UpdateSiblingIndex();
 
         }
 
@@ -144,5 +142,47 @@ namespace MagicWall
             str = GetCell(_currentIndex)?.GetData().Description;
             return str;
         }
+
+
+
+        private void InitComponents() {
+            for (int i = 0; i < Pool.Count; i++)
+            {
+                GetCell(i).SetAsLastPosition();
+            }
+        }
+
+
+
+        /// <summary>
+        /// 设置层级代码
+        /// </summary>
+        private void UpdateSiblingIndex() {
+
+            // <int : 插值，int : Pool中索引>
+            Dictionary<int, int> dics = new Dictionary<int, int>();
+
+            for (int i = 0; i < Pool.Count; i++)
+            {
+                int Index = GetCell(i).Index;                
+
+                var a = Mathf.Abs(CurrentIndex - Index);
+                
+                dics.Add(i, a);
+            }
+
+            List<KeyValuePair<int, int>> lst = new List<KeyValuePair<int, int>>(dics);
+            lst.Sort(delegate (KeyValuePair<int, int> s1, KeyValuePair<int, int> s2)
+            {
+                return s1.Value.CompareTo(s2.Value);
+            });
+
+            foreach (KeyValuePair<int, int> kvp in lst) {
+                Pool[kvp.Key].SetAsLastPosition();
+            }
+        }
+
+
+
     }
 }
