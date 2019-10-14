@@ -60,6 +60,8 @@ namespace MagicWall {
 
             _kinectService.Init(_agentContainer, _kinectAgentPrefab,_manager);
 
+            StartMonitoring();
+
         }
 
 
