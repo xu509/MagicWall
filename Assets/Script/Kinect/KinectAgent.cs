@@ -26,6 +26,24 @@ namespace MagicWall {
             return 800f;
         }
 
+        private float _width;
+        public float width
+        {
+            get
+            {
+                return GetComponent<RectTransform>().rect.width;
+            }
+        }
+        private float _height;
+        public float height
+        {
+            get
+            {
+                return GetComponent<RectTransform>().rect.height;
+            }
+        }
+
+
         public ICollisionMoveBehavior GetMoveBehavior()
         {
             return _collisionMoveBehavior;

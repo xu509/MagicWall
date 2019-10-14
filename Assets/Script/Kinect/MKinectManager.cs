@@ -79,7 +79,7 @@ namespace MagicWall {
 
 
 
-            // 创建实体
+            // 模拟创建实体，实际使用kinect需注释
             KinectAgent _kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
 
             _kinectAgent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
@@ -91,8 +91,9 @@ namespace MagicWall {
             _manager.collisionManager.AddCollisionEffectAgent(_kinectAgent);
 
             _kinectAgents.Add(_kinectAgent);
+            // 模拟创建实体，实际使用kinect需注释  结束
 
-
+            StartMonitoring();
 
         }
 
