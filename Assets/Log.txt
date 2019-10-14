@@ -322,3 +322,5 @@ File is not found : E:\workspace\MagicWall\Files\feiyue\ins风法国版帆布鞋
 File is not found : E:\workspace\MagicWall\Files\logo\29.png
 日志文件创建的时间:2019/10/12 17:31:33
 File is not found : C:\workspace\MagicWall\Files\logo\14.png
+日志文件创建的时间:2019/10/14 12:22:07
+File is not found : C:\workspace\MagicWall\Files\logo\20.png

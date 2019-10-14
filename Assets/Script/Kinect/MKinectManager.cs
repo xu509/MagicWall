@@ -16,6 +16,12 @@ namespace MagicWall {
 
         [SerializeField] KinectType _kinectType;
 
+
+        private List<KinectAgent> _kinectAgents;
+        public List<KinectAgent> kinectAgents { get { return _kinectAgents; } }
+
+
+
         private bool isMonitoring = false;
 
         private IKinectService _kinectService;
@@ -29,7 +35,7 @@ namespace MagicWall {
         // Start is called before the first frame update
         void Start()
         {
-        
+
         }
 
         // Update is called once per frame
@@ -38,6 +44,14 @@ namespace MagicWall {
             if (_manager != null) {
                 _kinectService.Monitoring();
             }
+
+
+            //if (Input.GetMouseButton(1)) {
+
+            //    Debug.Log("Click Right Button");
+
+            //}
+
             
         }
 
@@ -55,10 +69,30 @@ namespace MagicWall {
                 // 缺失 kinect 3
             }
 
+            _kinectAgents = new List<KinectAgent>();
+
+
             _startSuccessAction = StartKinectSuccess;
             _startFailedAction = StartKinectFailed;
 
             _kinectService.Init(_agentContainer, _kinectAgentPrefab,_manager);
+
+
+
+            // 创建实体
+            KinectAgent _kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
+
+            _kinectAgent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+            var factoryBehavior = _manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType);
+
+            _kinectAgent.SetMoveBehavior(factoryBehavior);
+
+            _manager.collisionManager.AddCollisionEffectAgent(_kinectAgent);
+
+            _kinectAgents.Add(_kinectAgent);
+
+
 
         }
 

@@ -34,6 +34,7 @@ namespace MagicWall
         private string _data_img;    //背景图片
         private int _data_id; // id
         private DataTypeEnum _dataType;
+        public DataTypeEnum dataTypeEnum { get { return _dataType; } }
 
         private AgentContainerType _agentContainerType;
 
@@ -252,158 +253,158 @@ namespace MagicWall
 
         }
 
-        /// <summary>
-        ///     位置更新状态依据： https://www.yuque.com/docs/share/244127ea-46a4-4fe8-baca-55e4d333ffc1
-        /// </summary>
+        ///// <summary>
+        /////     位置更新状态依据： https://www.yuque.com/docs/share/244127ea-46a4-4fe8-baca-55e4d333ffc1
+        ///// </summary>
         #region 更新位置
-        public void updatePosition()
-        {
-            // 如果是被选中，并打开的
-            if (_flockStatus == FlockStatusEnum.RUNIN || _flockStatus == FlockStatusEnum.NORMAL)
-            {
-                // 当需要判断位置时
-                if (NeedAdjustPostion())
-                {
-                    UpdatePositionEffect();
-                }
-                else {
-                    //Debug.Log("No Need To Adjust Position");
+        //public void updatePosition()
+        //{
+        //    // 如果是被选中，并打开的
+        //    if (_flockStatus == FlockStatusEnum.RUNIN || _flockStatus == FlockStatusEnum.NORMAL)
+        //    {
+        //        // 当需要判断位置时
+        //        if (NeedAdjustPostion())
+        //        {
+        //            UpdatePositionEffect();
+        //        }
+        //        else {
+        //            //Debug.Log("No Need To Adjust Position");
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        private void UpdatePositionEffect()
-        {
+        //private void UpdatePositionEffect()
+        //{
 
-            Vector2 refVector2; // 参照的目标位置
-            if (_manager.SceneStatus == WallStatusEnum.Cutting)
-            {
-                // 当前场景正在切换时，参考位置为目标的下个移动位置
-                refVector2 = NextVector2;
-            }
-            else
-            {
-                //当前场景为正常展示时，参考位置为固定位置
-                refVector2 = _oriVector2;
-            }
-            Vector2 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
+        //    Vector2 refVector2; // 参照的目标位置
+        //    if (_manager.SceneStatus == WallStatusEnum.Cutting)
+        //    {
+        //        // 当前场景正在切换时，参考位置为目标的下个移动位置
+        //        refVector2 = NextVector2;
+        //    }
+        //    else
+        //    {
+        //        //当前场景为正常展示时，参考位置为固定位置
+        //        refVector2 = _oriVector2;
+        //    }
+        //    Vector2 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
 
-            // 此时的坐标位置可能已处于偏移状态
-            RectTransform m_transform = GetComponent<RectTransform>();
+        //    // 此时的坐标位置可能已处于偏移状态
+        //    RectTransform m_transform = GetComponent<RectTransform>();
 
-            if (m_transform == null)
-            {
-                return;
-            }
-
-
-            // 获取施加影响的目标物
-            //  判断是否有多个影响体，如有多个，取距离最近的那个
-            List<CardAgent> transforms = _manager.operateCardManager.EffectAgents;
-
-            CardAgent targetAgent = null;
-            Vector2 targetVector2; // 目标物位置
-            float distance = 1000f;
-
-            foreach (CardAgent item in transforms)
-            {
-                // 判断大小，如果item还过小则不认为是影响的
-                if (!IsEffectiveTarget(item))
-                {
-                    continue;
-                }
-
-                Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
-
-                float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
-                if (newDistance < distance)
-                {
-                    distance = newDistance;
-                    targetAgent = item;
-                }
-            }
-            float w, h;
-            if (targetAgent != null)
-            {
-                Vector3 scaleVector3 = targetAgent.GetComponent<RectTransform>().localScale;
-                w = targetAgent.width * scaleVector3.x;
-                h = targetAgent.height * scaleVector3.y;
-
-            }
-            else
-            {
-                w = 0;
-                h = 0;
-            }
-            // 判断结束
-
-            // 获取有效影响范围，是宽度一半以上
-            float effectDistance = (w / 2) + (w / 2) * _manager.flockBehaviorConfig.InfluenceMoveFactor;
-            // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
-            float offset = effectDistance - distance;
-
-            // 进入影响范围
-            if (offset >= 0)
-            {
-                targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
-
-                _flockAgentMoveBehavior = _manager.moveBehaviourFactory
-                    .GetMoveBehavior(_manager.flockBehaviorConfig.MoveBehaviourType);
-
-                //_flockAgentMoveBehavior = _manager.moveBehaviourType
+        //    if (m_transform == null)
+        //    {
+        //        return;
+        //    }
 
 
-                /// 受影响浮块具体实现
-                Vector2 to = _flockAgentMoveBehavior.CalculatePosition(refVector2, refVector2WithOffset,
-                    targetVector2, distance,
-                    effectDistance, w, h, _manager);
+        //    // 获取施加影响的目标物
+        //    //  判断是否有多个影响体，如有多个，取距离最近的那个
+        //    List<CardAgent> transforms = _manager.operateCardManager.EffectAgents;
 
-                float sc = _flockAgentMoveBehavior.CalculateScale(refVector2, refVector2WithOffset,
-                            targetVector2, distance,
-                            effectDistance, w, h, _manager);
+        //    CardAgent targetAgent = null;
+        //    Vector2 targetVector2; // 目标物位置
+        //    float distance = 1000f;
+
+        //    foreach (CardAgent item in transforms)
+        //    {
+        //        // 判断大小，如果item还过小则不认为是影响的
+        //        if (!IsEffectiveTarget(item))
+        //        {
+        //            continue;
+        //        }
+
+        //        Vector2 effectPosition = item.GetComponent<RectTransform>().anchoredPosition;
+
+        //        float newDistance = Vector2.Distance(refVector2WithOffset, effectPosition);
+        //        if (newDistance < distance)
+        //        {
+        //            distance = newDistance;
+        //            targetAgent = item;
+        //        }
+        //    }
+        //    float w, h;
+        //    if (targetAgent != null)
+        //    {
+        //        Vector3 scaleVector3 = targetAgent.GetComponent<RectTransform>().localScale;
+        //        w = targetAgent.width * scaleVector3.x;
+        //        h = targetAgent.height * scaleVector3.y;
+
+        //    }
+        //    else
+        //    {
+        //        w = 0;
+        //        h = 0;
+        //    }
+        //    // 判断结束
+
+        //    // 获取有效影响范围，是宽度一半以上
+        //    float effectDistance = (w / 2) + (w / 2) * _manager.flockBehaviorConfig.InfluenceMoveFactor;
+        //    // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
+        //    float offset = effectDistance - distance;
+
+        //    // 进入影响范围
+        //    if (offset >= 0)
+        //    {
+        //        targetVector2 = targetAgent.GetComponent<RectTransform>().anchoredPosition;
+
+        //        _flockAgentMoveBehavior = _manager.moveBehaviourFactory
+        //            .GetMoveBehavior(_manager.flockBehaviorConfig.MoveBehaviourType);
+
+        //        //_flockAgentMoveBehavior = _manager.moveBehaviourType
 
 
-                // 获取缓动方法
-                Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
-                float k = defaultEasingFunction(offset / effectDistance);
+        //        /// 受影响浮块具体实现
+        //        Vector2 to = _flockAgentMoveBehavior.CalculatePosition(refVector2, refVector2WithOffset,
+        //            targetVector2, distance,
+        //            effectDistance, w, h, _manager);
 
-                //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
-                m_transform?.DOAnchorPos(to, Time.deltaTime);
-                //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
-                m_transform?.DOScale(sc, Time.deltaTime);
-
-                // 记录影响的数据
-                if (!_effectLastFlag)
-                {
-                    _lastEffectTime = Time.time;
-                    _lastEffectAgent = targetAgent;
-                }
-
-            }
-            else
-            // 未进入影响范围
-            {
-                var ap = GetComponent<RectTransform>().anchoredPosition;
-                //Debug.Log(Vector2.Distance(ap, refVector2));
-
-                if (Vector2.Distance(ap, refVector2) > 0.1f) {
-                    Vector2 toy = new Vector2(refVector2.x, refVector2.y);
-                    //m_transform?.DOAnchorPos(toy, Time.deltaTime);
-
-                    GetComponent<RectTransform>().anchoredPosition = toy;
-
-                }
+        //        float sc = _flockAgentMoveBehavior.CalculateScale(refVector2, refVector2WithOffset,
+        //                    targetVector2, distance,
+        //                    effectDistance, w, h, _manager);
 
 
-                if (m_transform.localScale != Vector3.one)
-                {
-                    m_transform?.DOScale(1, Time.deltaTime);
-                }
-            }
+        //        // 获取缓动方法
+        //        Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
+        //        float k = defaultEasingFunction(offset / effectDistance);
+
+        //        //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
+        //        m_transform?.DOAnchorPos(to, Time.deltaTime);
+        //        //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
+        //        m_transform?.DOScale(sc, Time.deltaTime);
+
+        //        // 记录影响的数据
+        //        if (!_effectLastFlag)
+        //        {
+        //            _lastEffectTime = Time.time;
+        //            _lastEffectAgent = targetAgent;
+        //        }
+
+        //    }
+        //    else
+        //    // 未进入影响范围
+        //    {
+        //        var ap = GetComponent<RectTransform>().anchoredPosition;
+        //        //Debug.Log(Vector2.Distance(ap, refVector2));
+
+        //        if (Vector2.Distance(ap, refVector2) > 0.1f) {
+        //            Vector2 toy = new Vector2(refVector2.x, refVector2.y);
+        //            //m_transform?.DOAnchorPos(toy, Time.deltaTime);
+
+        //            GetComponent<RectTransform>().anchoredPosition = toy;
+
+        //        }
 
 
-        }
+        //        if (m_transform.localScale != Vector3.one)
+        //        {
+        //            m_transform?.DOScale(1, Time.deltaTime);
+        //        }
+        //    }
+
+
+        //}
         #endregion
 
         #region 点击选择
@@ -411,85 +412,28 @@ namespace MagicWall
         public void DoChoose()
         {
 
-            if (CanChoose())
-            {
-                _flockStatus = FlockStatusEnum.TOHIDE;
+            _manager.agentManager.agentChooseBehavior.DoChoose(this);
 
-                //_isChoosing = true;
-
-                //  先缩小（向后退）
-                RectTransform rect = GetComponent<RectTransform>();
-                Vector2 positionInMainPanel = rect.anchoredPosition;
-
-                //  移到后方、缩小、透明
-                //rect.DOScale(0.1f, 0.3f);
-                Vector3 to = new Vector3(0.2f,0.2f,0.7f);
-
-                var _cardGenPos = GetCardGeneratePosition();
-
-                // 完成缩小与移动后创建十字卡片
-                rect.DOScale(0.5f, 0.3f).OnComplete(() =>
-                {
-                    _flockStatus = FlockStatusEnum.HIDE;
-                    gameObject.SetActive(false);
-
-                    //Debug.Log("chose :" + _data_id);
-
-                    _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, _cardGenPos, this);
-
-
-                    //靠近四周边界需要偏移
-                    float w = _cardAgent.GetComponent<RectTransform>().rect.width;
-                    float h = _cardAgent.GetComponent<RectTransform>().rect.height;
-
-                    // 如果点击时,出生位置在最左侧
-                    if (_cardGenPos.x < w / 2)
-                    {
-                        _cardGenPos.x = w / 2;
-                    }
-
-                    // 出身位置在最右侧
-                    if (_cardGenPos.x > _manager.OperationPanel.rect.width - w / 2)
-                    {
-                        _cardGenPos.x = _manager.OperationPanel.rect.width - w / 2;
-                    }
-
-                    // 出生位置在最下侧
-                    if (_cardGenPos.y < h / 2)
-                    {
-                        _cardGenPos.y = h / 2;
-                    }
-
-                    // 出生位置在最上侧
-                    if (_cardGenPos.y > _manager.OperationPanel.rect.height - h / 2)
-                    {
-                        _cardGenPos.y = _manager.OperationPanel.rect.height - h / 2;
-                    }
-
-                    _cardAgent.GetComponent<RectTransform>().anchoredPosition = _cardGenPos;
-
-                    _cardAgent.GoToFront();
-
-                });
-
-
-            }
         }
 
         #endregion
 
         #region 恢复
 
-        public void DoRecoverAfterChoose()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position">world position</param>
+        public void DoRecoverAfterChoose(Vector3 position)
         {
+            Debug.Log("DoRecoverAfterChoose");
+
 
             if (_flockStatus != FlockStatusEnum.HIDE) {
                 return;
             }
 
             //gameObject == null;
-            Debug.Log("status : " + _flockStatus);
-
             _flockStatus = FlockStatusEnum.RECOVER;
 
             //// 如果组件已不在原场景，则不进行恢复
@@ -502,14 +446,20 @@ namespace MagicWall
 
             //  将原组件启用
             gameObject.SetActive(true);
+            
+            transform.SetParent(GetParentContainer());
+
 
             // 调整位置
             RectTransform rect = GetComponent<RectTransform>();
-            RectTransform cardRect = _cardAgent.GetComponent<RectTransform>();
+            //RectTransform cardRect = _cardAgent.GetComponent<RectTransform>();
 
-            rect.anchoredPosition3D = new Vector3(cardRect.anchoredPosition3D.x + _manager.PanelOffsetX,
-                cardRect.anchoredPosition3D.y + _manager.PanelOffsetY,
-                cardRect.anchoredPosition3D.z);
+
+            rect.position = position;
+
+            //rect.anchoredPosition3D = new Vector3(cardRect.anchoredPosition3D.x + _manager.PanelOffsetX,
+            //    cardRect.anchoredPosition3D.y + _manager.PanelOffsetY,
+            //    cardRect.anchoredPosition3D.z);
 
             // 恢复原位
             Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
@@ -747,6 +697,10 @@ namespace MagicWall
         }
 
 
+        /// <summary>
+        /// 获取生成的位置
+        /// </summary>
+        /// <returns></returns>
         private Vector3 GetCardGeneratePosition() {
             Vector3 position = new Vector3();
 
@@ -880,6 +834,11 @@ namespace MagicWall
                     //targetPosition = targetAgent.GetRefPosition();
 
                     /// 受影响浮块具体实现
+                    /// 
+                    if (moveBehavior == null) {
+                        Debug.Log("target agent name : " + targetAgent.GetName());
+                    }
+
                     Vector2 to = moveBehavior.CalculatePosition(refPosition,
                         targetPosition, distance,
                         effectDistance, w, h, _manager);
@@ -973,12 +932,10 @@ namespace MagicWall
             }
             else if (_agentContainerType == AgentContainerType.BackPanel) {
                 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelBackOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
-
             }
             else
             {
                 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
-
             }
 
 
@@ -1092,6 +1049,24 @@ namespace MagicWall
 
 
         /* CollisionMoveBasicAgent 相关 结束 */
+
+        private Transform GetParentContainer() {
+            if (_agentContainerType == AgentContainerType.MainPanel)
+            {
+                return _manager.mainPanel;
+            }
+            else if (_agentContainerType == AgentContainerType.BackPanel)
+            {
+                return _manager.backPanel;
+            }
+            else {
+                return _manager.starEffectContainer;
+            }
+
+
+        }
+
+
 
     }
 

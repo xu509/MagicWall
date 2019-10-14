@@ -120,7 +120,11 @@ namespace MagicWall {
         /// <param name="dataId">数据ID</param>
         /// <param name="dataType">数据类型</param>
         public CardAgent CreateNewOperateCard(int dataId, DataTypeEnum dataType,Vector3 position,FlockAgent refAgent)
-        {            
+        {
+            Debug.Log("Kinect : " + _manager.useKinect);
+            
+
+
             CloseCardWhenOverNumber();
 
 

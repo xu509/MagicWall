@@ -70,6 +70,7 @@ namespace MagicWall
         public MKinectManager kinectManager { get { return _kinectManager; } }
 
         [SerializeField] bool _useKinect;
+        public bool useKinect { set { _useKinect = value; } get { return _useKinect; } }
 
         /// 配置面板
         [SerializeField, Header("config")] ManagerConfig _managerConfig;
@@ -104,6 +105,11 @@ namespace MagicWall
         public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
 
 
+        [SerializeField] private ScreenTypeEnum _screenType;
+        public ScreenTypeEnum screenTypeEnum { set { _screenType = value; } get { return _screenType; } }
+
+
+
         #endregion
 
         #region 非配置属性
@@ -123,9 +129,9 @@ namespace MagicWall
 
         // 配置选项
 
-        //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-       public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+      // public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
        // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
@@ -193,6 +199,9 @@ namespace MagicWall
             // 设置项目最高帧率（对编辑器无效）
             Application.targetFrameRate = 60;
             _isLimitFps = true;
+
+            // 识别屏幕状态
+            RecognizeScreenType();
 
 
             // 初始化数据连接服务
@@ -522,6 +531,21 @@ namespace MagicWall
             }
         }
 
+
+        /// <summary>
+        ///     识别屏幕类型
+        /// </summary>
+        private void RecognizeScreenType() {
+            var height = Screen.height;
+
+            if (height < 1300)
+            {
+                _screenType = ScreenTypeEnum.Screen720P;
+            }
+            else {
+                _screenType = ScreenTypeEnum.Screen1080P;
+            }
+        }
 
 
 

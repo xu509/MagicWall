@@ -10,39 +10,55 @@ namespace MagicWall {
     /// </summary>
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
+        private ICollisionMoveBehavior _collisionMoveBehavior;
+
+        private CardAgent _refCardAgent;
+        public CardAgent refCardAgent { set { _refCardAgent = value; } get { return _refCardAgent; } }
+
+
+
+
         public float GetHeight()
         {
-            throw new NotImplementedException();
+            var height = GetComponent<RectTransform>().rect.height;
+
+            Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+            return 800f;
         }
 
         public ICollisionMoveBehavior GetMoveBehavior()
         {
-            throw new NotImplementedException();
+            return _collisionMoveBehavior;
         }
 
         public string GetName()
         {
-            throw new NotImplementedException();
+            return "kinect";
         }
 
         public Vector3 GetRefPosition()
         {
-            throw new NotImplementedException();
+            var pos = GetComponent<RectTransform>().position;
+            var screenPosition = RectTransformUtility.WorldToScreenPoint(null, pos);
+            return screenPosition;
         }
 
         public float GetWidth()
         {
-            throw new NotImplementedException();
+            var width = GetComponent<RectTransform>().rect.width;
+
+            Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+            return 800f;
         }
 
         public bool IsEffective()
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void SetMoveBehavior(ICollisionMoveBehavior moveBehavior)
         {
-            throw new NotImplementedException();
+            _collisionMoveBehavior = moveBehavior;
         }
     }
 

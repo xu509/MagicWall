@@ -43,6 +43,9 @@ namespace MagicWall
         ///// </summary>
         //[SerializeField] RectTransform _cardContainer;
 
+        [SerializeField] AgentChooseBehavior _agentChooseBehavior;
+        public AgentChooseBehavior agentChooseBehavior { set { _agentChooseBehavior = value; } get { return _agentChooseBehavior; } }
+
 
 
         // 主管理器
@@ -98,6 +101,8 @@ namespace MagicWall
             _agents = new List<FlockAgent>();
             _manager = manager;
 
+            _agentChooseBehavior.Init(_manager);
+
             PrepareAgentPool();
         }
 
@@ -138,8 +143,15 @@ namespace MagicWall
         public void ClearAll()
         {
             for (int i = 0; i < _agents.Count; i++) {
+                var flockStatus = _agents[i].flockStatus;
 
-                _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                if (flockStatus != FlockStatusEnum.TOHIDE) {
+                    _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                }
+
+
+
+                //_agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
 
 
                 //if (!(_agents[i].flockStatus == FlockStatusEnum.HIDE

@@ -14,7 +14,7 @@ namespace MagicWall {
 
         public void Play() {
 
-            _audioSource.Play();
+          //  _audioSource.Play();
         }
 
 

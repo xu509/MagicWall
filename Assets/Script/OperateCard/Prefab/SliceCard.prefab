@@ -330,10 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9a1feb7e9f52824a90a51f99443bd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destoryForSpaceTime: 2
   _protectAgent: {fileID: 3005480866002882649}
   _cardStatus: 0
-  _heightFactor: 0.45
+  _heightFactor: 0.51
   _main_container: {fileID: 5680126866508557221}
   _tool_bottom_container: {fileID: 7719139451170563042}
   _tool_bottom_three_container: {fileID: 680480626588561159}
@@ -2350,7 +2349,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2870092347631951461, guid: 1756148a935a84845be20feebb4faeea,
+    - target: {fileID: 8410637306457466100, guid: 1756148a935a84845be20feebb4faeea,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606231346880791140, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -2360,12 +2364,7 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8410637306457466100, guid: 1756148a935a84845be20feebb4faeea,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3606231346880791140, guid: 1756148a935a84845be20feebb4faeea,
+    - target: {fileID: 2870092347631951461, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0

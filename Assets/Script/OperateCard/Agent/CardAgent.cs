@@ -195,11 +195,11 @@ namespace MagicWall
             //InitBase(manager, dataId, dataType, true);
             _manager = manager;
             _dataId = dataId;
-            
+
 
             // 初始化框体长宽
-            float rectHeight = manager.mainPanel.rect.height * _heightFactor;
-            GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+            UpdateUI();
+
 
             //  命名
             if (originAgent != null)
@@ -406,8 +406,8 @@ namespace MagicWall
                         cardRect.DOAnchorPos3D(to, 1f)
                              .OnComplete(() =>
                              {
-                             // 恢复
-                             _originAgent.DoRecoverAfterChoose();
+                                 // 恢复
+                                 _originAgent.DoRecoverAfterChoose(cardRect.position);
                                  _cardStatus = CardStatusEnum.OBSOLETE;
                              });
                     }
@@ -1338,6 +1338,33 @@ namespace MagicWall
         private void OnBusinessCardUpdated() {
             DoUpdate();
         }
+
+
+        /* UI 设置 */
+        private void UpdateUI() {
+
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
+                Debug.Log("Screen1080P");
+
+                float rectHeight = _manager.mainPanel.rect.height * _heightFactor;
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+
+            }
+            else {
+                Debug.Log("Screen720P");
+                float rectHeight = _manager.mainPanel.rect.height * _heightFactor;
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+            }
+
+
+            //// 初始化框体长宽
+            //float rectHeight = manager.mainPanel.rect.height * _heightFactor;
+            //GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+        }
+
+
+
 
 
         /* CollisionEffectAgent impl 实现 */

@@ -79,6 +79,7 @@ namespace MagicWall
                     if (!agent.isCreateSuccess)
                     {
                         agent.SetChangedPosition(ori_vector2);
+                        //agent.SetNextPosition(ori_vector2);
 
                         //Debug.Log(agent.gameObject.name + " is create success !");
 
@@ -96,6 +97,7 @@ namespace MagicWall
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
                 agent.SetChangedPosition(to);
+                //agent.SetNextPosition(to);
 
                 //agent.NextVector2 = to;
             }
