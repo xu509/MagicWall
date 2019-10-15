@@ -27,6 +27,8 @@ namespace MagicWall
 
         public SliceCardCellData cellData { set { _cellData = value; } get { return _cellData; } }
 
+        [SerializeField] RectTransform _coverContainer;
+
         [SerializeField] RawImage _cover;
         [SerializeField] Animator _animator;
         [SerializeField] float _position;
@@ -56,6 +58,9 @@ namespace MagicWall
 
         public override void UpdateContent(SliceCardCellData cellData)
         {
+            //Debug.Log("Width : " + _coverContainer.rect.width + " | Height : " + _coverContainer.rect.height);
+
+
             SetupData(cellData);
 
             _manager = cellData.magicWallManager;

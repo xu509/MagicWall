@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
+  _coverContainer: {fileID: 7660787093410292841}
   _cover: {fileID: 4365977581071077396}
   _animator: {fileID: 5463534574190590278}
   _position: 0

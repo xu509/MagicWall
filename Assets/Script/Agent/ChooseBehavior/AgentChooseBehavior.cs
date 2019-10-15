@@ -58,8 +58,6 @@ namespace MagicWall {
                     }
                 }
 
-                Debug.Log(targetKinectAgent.transform == null);
-
                 if (targetKinectAgent.refCardAgent != null)
                 {
                     targetKinectAgent.refCardAgent.DoCloseDirect();

@@ -68,7 +68,7 @@ namespace MagicWall
         public void DoClickNext()
         {
 
-            Debug.Log("DoClickNext");
+            //Debug.Log("DoClickNext");
 
             if (!_doingNext)
             {

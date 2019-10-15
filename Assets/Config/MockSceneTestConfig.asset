@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneConfigs:
   - _sceneType: 0
-    _dataType: 2
+    _dataType: 0
     _durTime: 15
   - _sceneType: 4
     _dataType: 0
