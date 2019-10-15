@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MagicWall {
+namespace MagicWall
+{
 
     /// <summary>
     ///   体感实体
     /// </summary>
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
-        private ICollisionMoveBehavior _collisionMoveBehavior;
 
+
+        private ICollisionMoveBehavior _collisionMoveBehavior;
         private CardAgent _refCardAgent;
         public CardAgent refCardAgent { set { _refCardAgent = value; } get { return _refCardAgent; } }
-
-
 
 
         public float GetHeight()
@@ -78,6 +75,7 @@ namespace MagicWall {
         {
             _collisionMoveBehavior = moveBehavior;
         }
+
     }
 
 }

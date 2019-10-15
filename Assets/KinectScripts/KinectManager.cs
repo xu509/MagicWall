@@ -207,10 +207,24 @@ public class KinectManager : MonoBehaviour
 	private bool kinectReaderRunning = false;
 
 
-	/// <summary>
-	/// Gets the single KinectManager instance.
-	/// </summary>
-	/// <value>The KinectManager instance.</value>
+    //新增
+    Action<long> addUser;
+    Action<long> removeUser;
+
+    public void SetAddUserAction(Action<long> action)
+    {
+        addUser = action;
+    }
+
+    public void SetRemoveUserAction(Action<long> action)
+    {
+        removeUser = action;
+    }
+
+    /// <summary>
+    /// Gets the single KinectManager instance.
+    /// </summary>
+    /// <value>The KinectManager instance.</value>
     public static KinectManager Instance
     {
         get
@@ -3177,7 +3191,8 @@ public class KinectManager : MonoBehaviour
 //					}
 //				}
 
-				Debug.Log("Adding user " + uidIndex + ", ID: " + userId + ", Body: " + bodyIndex);
+				//Debug.Log("Adding user " + uidIndex + ", ID: " + userId + ", Body: " + bodyIndex);
+                addUser(userId);
 				dictUserIdToIndex[userId] = bodyIndex;
 
 				if(uidIndex >= 0)
@@ -3242,8 +3257,8 @@ public class KinectManager : MonoBehaviour
 	{
 		//int uidIndex = alUserIds.IndexOf(userId);
 		int uidIndex = Array.IndexOf(aUserIndexIds, userId);
-		Debug.Log("Removing user " + uidIndex + ", ID: " + userId + ", Body: " + dictUserIdToIndex[userId]);
-		
+		//Debug.Log("Removing user " + uidIndex + ", ID: " + userId + ", Body: " + dictUserIdToIndex[userId]);
+        removeUser(userId);
 		for(int i = 0; i < avatarControllers.Count; i++)
 		{
 			AvatarController avatar = avatarControllers[i];
