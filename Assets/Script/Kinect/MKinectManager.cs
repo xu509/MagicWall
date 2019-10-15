@@ -136,21 +136,94 @@ namespace MagicWall {
         }
 
 
-
-        public KinectAgent calScreenPositionIsAvailable(Vector2 screenPosition) {
+        /// <summary>
+        ///     ref ： https://www.yuque.com/u314548/fc6a5l/zqi1iq
+        ///     对应生成体感卡片
+        /// </summary>
+        /// <param name="screenPosition">屏幕的位置</param>
+        /// <returns></returns>
+        public bool CalScreenPositionIsAvailable(Vector2 screenPosition) {
             var position = Camera.main.ScreenToWorldPoint(screenPosition);
-            KinectAgent targetKinectAgent = null;
+
+            bool isAvailable = true;
 
             for (int i = 0; i < _kinectAgents.Count; i++) {
                 var agent = _kinectAgents[i];
                 var distance = Vector2.Distance(agent.transform.position, position);
                 if (distance < safeDistance) {
-                    targetKinectAgent = agent;
+                    isAvailable = false;
                 }
-            }            
+            }
+
+            for (int i = 0; i < _manager.operateCardManager.EffectAgents.Count; i++)
+            {
+                var agent = _manager.operateCardManager.EffectAgents[i];
+                var distance = Vector2.Distance(agent.transform.position, position);
+                if (distance < safeDistance)
+                {
+                    isAvailable = false;
+                }
+            }
+
+            return isAvailable;
+        }
+
+        /// <summary>
+        ///     进入了点开卡片的影响范围
+        /// </summary>
+        /// <param name="kinectAgent"></param>
+        /// <returns></returns>
+        public bool HasEnterCardRange(KinectAgent kinectAgent)
+        {
+            var screenPosition = kinectAgent.GetRefPosition();
+            var position = Camera.main.ScreenToWorldPoint(screenPosition);
+
+
+            bool isAvailable = true;
+
+            for (int i = 0; i < _manager.operateCardManager.EffectAgents.Count; i++)
+            {
+                var agent = _manager.operateCardManager.EffectAgents[i];
+                var distance = Vector2.Distance(agent.transform.position, position);
+                if (distance < safeDistance)
+                {
+                    isAvailable = false;
+                }
+            }
+
+            return isAvailable;
+        }
+
+
+        /// <summary>
+        ///     进入了体感卡片的影响范围
+        /// </summary>
+        /// <param name="kinectAgent"></param>
+        /// <returns></returns>
+        public KinectAgent HasEnterKinectCardRange(KinectAgent kinectAgent)
+        {
+            var screenPosition = kinectAgent.GetRefPosition();
+            var position = Camera.main.ScreenToWorldPoint(screenPosition);
+
+            KinectAgent targetKinectAgent = null;
+
+            for (int i = 0; i < _kinectAgents.Count; i++)
+            {
+                var agent = _kinectAgents[i];
+
+                if (agent != kinectAgent) {
+                    var distance = Vector2.Distance(agent.transform.position, position);
+                    if (distance < safeDistance)
+                    {
+                        targetKinectAgent = agent;
+                    }
+                }
+            }
 
             return targetKinectAgent;
         }
+
+
 
 
 

@@ -106,7 +106,7 @@ namespace MagicWall
         /// <summary>
         /// 关闭
         /// </summary>
-        public void close() {
+        public void Close() {
 
             // 关闭动画
 
