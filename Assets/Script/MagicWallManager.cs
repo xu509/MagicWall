@@ -113,7 +113,7 @@ namespace MagicWall
         #endregion
 
         #region 非配置属性
-        int _row = 6;   //  列数
+        int _row = 12;   //  列数
 
         // 面板的差值
         float panelOffsetX = 0f;

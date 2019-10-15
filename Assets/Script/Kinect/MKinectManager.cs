@@ -150,6 +150,7 @@ namespace MagicWall {
             for (int i = 0; i < _kinectAgents.Count; i++) {
                 var agent = _kinectAgents[i];
                 var distance = Vector2.Distance(agent.transform.position, position);
+
                 if (distance < safeDistance) {
                     isAvailable = false;
                 }
@@ -159,6 +160,7 @@ namespace MagicWall {
             {
                 var agent = _manager.operateCardManager.EffectAgents[i];
                 var distance = Vector2.Distance(agent.transform.position, position);
+
                 if (distance < safeDistance)
                 {
                     isAvailable = false;
@@ -179,7 +181,7 @@ namespace MagicWall {
             var position = Camera.main.ScreenToWorldPoint(screenPosition);
 
 
-            bool isAvailable = true;
+            bool hasEnter = false;
 
             for (int i = 0; i < _manager.operateCardManager.EffectAgents.Count; i++)
             {
@@ -187,11 +189,11 @@ namespace MagicWall {
                 var distance = Vector2.Distance(agent.transform.position, position);
                 if (distance < safeDistance)
                 {
-                    isAvailable = false;
+                    hasEnter = true;
                 }
             }
 
-            return isAvailable;
+            return hasEnter;
         }
 
 
@@ -231,24 +233,55 @@ namespace MagicWall {
         /// 增加一个新的体感卡片
         /// </summary>
         /// <param name="kinectAgent"></param>
-        public KinectAgent AddKinectAgents(Vector2 screenPosition) {          
-            // 屏幕坐标转UI坐标
-            Vector2 rectPosition = new Vector2();
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_agentContainer, screenPosition, null, out rectPosition);
+        public KinectAgent AddKinectAgents(Vector2 screenPosition,long userId) {
 
-            KinectAgent kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
-            kinectAgent.GetComponent<RectTransform>().anchoredPosition = rectPosition;
-            kinectAgent.Init();
-            _kinectAgents.Add(kinectAgent);
+            var item = GetAgentById(userId);
 
-            return kinectAgent;
+            if (item != null)
+            {
+                return null;
+            }
+            else {
+                // 屏幕坐标转UI坐标
+                Vector2 rectPosition = new Vector2();
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(_agentContainer, screenPosition, null, out rectPosition);
+
+                KinectAgent kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
+                kinectAgent.GetComponent<RectTransform>().anchoredPosition = rectPosition;
+                kinectAgent.Init(userId);
+                kinectAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+
+                _manager.collisionManager.AddCollisionEffectAgent(kinectAgent);
+                _kinectAgents.Add(kinectAgent);
+
+                print("_kinectAgents add new" + _kinectAgents.Count);
+
+
+                return kinectAgent;
+            }            
         }
 
 
         public void RemoveKinectAgents(KinectAgent kinectAgent) {
+            _manager.collisionManager.RemoveCollisionEffectAgent(kinectAgent);
             _kinectAgents.Remove(kinectAgent);
-            Destroy(kinectAgent);
+
+            Debug.Log("_kinectAgents size : " + _kinectAgents.Count);
+
+            Destroy(kinectAgent.gameObject);
         }
+
+
+        public KinectAgent GetAgentById(long userId) {
+            for (int i = 0; i < _kinectAgents.Count; i++) {
+                if (_kinectAgents[i].userId == userId) {
+                    return _kinectAgents[i];
+                }
+            }
+            return null;
+        }
+
+
 
 
     }
