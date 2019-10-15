@@ -15,7 +15,7 @@ MonoBehaviour:
   sceneConfigs:
   - _sceneType: 0
     _dataType: 2
-    _durTime: 15
+    _durTime: 100
   - _sceneType: 4
     _dataType: 0
     _durTime: 15

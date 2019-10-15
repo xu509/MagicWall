@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,17 +81,17 @@ namespace MagicWall {
 
 
             // 模拟创建实体，实际使用kinect需注释
-            KinectAgent _kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
+            //KinectAgent _kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
 
-            _kinectAgent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            //_kinectAgent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
-            var factoryBehavior = _manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType);
+            //var factoryBehavior = _manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType);
 
-            _kinectAgent.SetMoveBehavior(factoryBehavior);
+            //_kinectAgent.SetMoveBehavior(factoryBehavior);
 
-            _manager.collisionManager.AddCollisionEffectAgent(_kinectAgent);
+            //_manager.collisionManager.AddCollisionEffectAgent(_kinectAgent);
 
-            _kinectAgents.Add(_kinectAgent);
+            //_kinectAgents.Add(_kinectAgent);
             // 模拟创建实体，实际使用kinect需注释  结束
 
             StartMonitoring();
@@ -131,7 +132,17 @@ namespace MagicWall {
             isMonitoring = false;
         }
 
-
+        public KinectAgent GenerateKinectAgent(Transform parent, Vector2 bornPos)
+        {
+            GameObject agent = Instantiate(gameObject, parent) as GameObject;
+            RectTransform rtf = agent.GetComponent<RectTransform>();
+            rtf.anchoredPosition = bornPos;
+            rtf.localScale = Vector3.zero;
+            rtf.DOScale(1, 0.5f);
+            //添加至移动模块
+            _manager.collisionManager.AddCollisionEffectAgent(agent.GetComponent<KinectAgent>());
+            agent.GetComponent<KinectAgent>().SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+        }
     }
 
 }
