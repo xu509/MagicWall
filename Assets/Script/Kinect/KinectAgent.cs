@@ -11,7 +11,8 @@ namespace MagicWall
         private float _createTime;
         public float createTime { get { return _createTime; } }
 
-
+        private KinectAgentStatusEnum _status;
+        public KinectAgentStatusEnum status { get { return _status; } }
 
 
         private ICollisionMoveBehavior _collisionMoveBehavior;
