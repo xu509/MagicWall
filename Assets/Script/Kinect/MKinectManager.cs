@@ -11,6 +11,9 @@ namespace MagicWall {
     /// </summary>
     public class MKinectManager : MonoBehaviour
     {
+        [SerializeField] float safeDistance = 500f;
+
+
         [SerializeField, Header("Prefab")] KinectAgent _kinectAgentPrefab;
         [SerializeField, Header("UI")] RectTransform _agentContainer;
         [SerializeField, Header("Service")] KinectService _kinect2Service;
@@ -132,17 +135,49 @@ namespace MagicWall {
             isMonitoring = false;
         }
 
-        public KinectAgent GenerateKinectAgent(Transform parent, Vector2 bornPos)
-        {
-            GameObject agent = Instantiate(gameObject, parent) as GameObject;
-            RectTransform rtf = agent.GetComponent<RectTransform>();
-            rtf.anchoredPosition = bornPos;
-            rtf.localScale = Vector3.zero;
-            rtf.DOScale(1, 0.5f);
-            //添加至移动模块
-            _manager.collisionManager.AddCollisionEffectAgent(agent.GetComponent<KinectAgent>());
-            agent.GetComponent<KinectAgent>().SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+
+
+        public KinectAgent calScreenPositionIsAvailable(Vector2 screenPosition) {
+            var position = Camera.main.ScreenToWorldPoint(screenPosition);
+            KinectAgent targetKinectAgent = null;
+
+            for (int i = 0; i < _kinectAgents.Count; i++) {
+                var agent = _kinectAgents[i];
+                var distance = Vector2.Distance(agent.transform.position, position);
+                if (distance < safeDistance) {
+                    targetKinectAgent = agent;
+                }
+            }            
+
+            return targetKinectAgent;
         }
+
+
+
+        /// <summary>
+        /// 增加一个新的体感卡片
+        /// </summary>
+        /// <param name="kinectAgent"></param>
+        public KinectAgent AddKinectAgents(Vector2 screenPosition) {          
+            // 屏幕坐标转UI坐标
+            Vector2 rectPosition = new Vector2();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_agentContainer, screenPosition, null, out rectPosition);
+
+            KinectAgent kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
+            kinectAgent.GetComponent<RectTransform>().anchoredPosition = rectPosition;
+            kinectAgent.Init();
+            _kinectAgents.Add(kinectAgent);
+
+            return kinectAgent;
+        }
+
+
+        public void RemoveKinectAgents(KinectAgent kinectAgent) {
+            _kinectAgents.Remove(kinectAgent);
+            Destroy(kinectAgent);
+        }
+
+
     }
 
 }

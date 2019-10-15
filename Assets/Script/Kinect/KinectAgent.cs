@@ -8,11 +8,24 @@ namespace MagicWall
     /// </summary>
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
+        private float _createTime;
+        public float createTime { get { return _createTime; } }
+
+
 
 
         private ICollisionMoveBehavior _collisionMoveBehavior;
         private CardAgent _refCardAgent;
         public CardAgent refCardAgent { set { _refCardAgent = value; } get { return _refCardAgent; } }
+
+
+
+        void Awake() {
+            _createTime = Time.time;
+
+            // 生成动画
+
+        }
 
 
         public float GetHeight()
@@ -75,6 +88,37 @@ namespace MagicWall
         {
             _collisionMoveBehavior = moveBehavior;
         }
+
+
+        /// <summary>
+        /// 生成动画
+        /// </summary>
+        public void Init() {
+
+
+        }
+
+
+
+
+
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        public void close() {
+
+            // 关闭动画
+
+            // 关闭
+
+            // 动画完成后           
+            var MKinectManager = GameObject.Find("kinect").GetComponent<MKinectManager>();
+            MKinectManager.RemoveKinectAgents(this);
+
+        }
+
+
 
     }
 
