@@ -9,7 +9,7 @@ namespace MagicWall
     /// <summary>
     ///  
     /// </summary>
-    public class CollisionRoundMoveBehavior : ICollisionMoveBehavior
+    public class CollisionKinectRoundMoveBehavior : ICollisionMoveBehavior
     {
         /// <summary>
         ///  将影响范围内的点直接衍生至已影响范围的半径
@@ -26,7 +26,7 @@ namespace MagicWall
         public Vector2 CalculatePosition(Vector2 position, Vector2 targetPosition, float distance,
             float effectDistance, float width, float height, MagicWallManager manager)
         {
-            Func<float, float> easeFun = EasingFunction.Get(manager.collisionBehaviorConfig.RoundEaseEnum);
+            Func<float, float> easeFun = EasingFunction.Get(manager.collisionBehaviorConfig.KinectRoundEaseEnum);
             //Vector2 panelOffset = positionWithOffset - position;
 
             if (distance > effectDistance)
@@ -37,7 +37,7 @@ namespace MagicWall
             {
                 // positionWithOffset 原位置
                 // targetPosition 目标位置
-                float k = manager.collisionBehaviorConfig.RoundOffsetInfluenceFactor;
+                float k = manager.collisionBehaviorConfig.KinectRoundOffsetInfluenceFactor;
                 k = easeFun(k);
 
                 float e = (effectDistance - distance) * k + distance;
@@ -53,7 +53,7 @@ namespace MagicWall
 
         public float CalculateScale(Vector2 position, Vector2 targetPosition, float distance, float effectDistance, float width, float height, MagicWallManager manager)
         {
-            Func<float, float> easeFun = EasingFunction.Get(manager.collisionBehaviorConfig.RoundEaseEnum);
+            Func<float, float> easeFun = EasingFunction.Get(manager.collisionBehaviorConfig.KinectRoundScaleEaseEnum);
 
             //Vector2 panelOffset = positionWithOffset - position;
 
