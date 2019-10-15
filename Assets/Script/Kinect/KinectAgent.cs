@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 namespace MagicWall
 {
@@ -8,6 +9,11 @@ namespace MagicWall
     /// </summary>
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
+        private long _userId;
+        public long userId { get { return _userId; } }
+
+
+
         private float _createTime;
         public float createTime { get { return _createTime; } }
 
@@ -61,7 +67,7 @@ namespace MagicWall
 
         public string GetName()
         {
-            return "kinect";
+            return "kinectobj";
         }
 
         public Vector3 GetRefPosition()
@@ -93,20 +99,17 @@ namespace MagicWall
         /// <summary>
         /// 生成动画
         /// </summary>
-        public void Init() {
-
-
+        public void Init(long userId) {
+            _userId = userId;
         }
-
-
-
-
-
 
         /// <summary>
         /// 关闭
         /// </summary>
         public void Close() {
+
+            Debug.Log(gameObject.name + "delete!");
+
 
             // 关闭动画
 
@@ -118,7 +121,11 @@ namespace MagicWall
 
         }
 
-
+        public void UpdatePos(Vector2 anchPos)
+        {
+            //GetComponent<RectTransform>().DOMoveX(anchPos.x, Time.deltaTime);
+            GetComponent<RectTransform>().anchoredPosition = anchPos;
+        }
 
     }
 

@@ -12,12 +12,12 @@ namespace MagicWall
     /// </summary>
     public class KinectService : MonoBehaviour, IKinectService
     {
-        [SerializeField, Header("设备到人距离m")]
-        private float distance = 3f;
         [SerializeField, Header("屏幕实际尺寸m")]
         private Vector2 physicalSize = new Vector2(4.102f, 1.21f);
         [SerializeField, Header("基准值m")]
         private float basicDistance = 3f;
+        [SerializeField, Header("m")]
+        private float safeZ = 1f;
         RectTransform _parentRectTransform;
         GameObject _kinectAgentPrefab;
         MagicWallManager _manager;
@@ -27,10 +27,6 @@ namespace MagicWall
 
         private bool isInit;
 
-        //最大宽度的一半
-        private float absMaxX;
-        //最大高度的一半
-        private float absMaxY;
 
         public void Init(RectTransform container, KinectAgent agentPrefab, MagicWallManager manager)
         {
@@ -40,33 +36,16 @@ namespace MagicWall
             kinectManager = KinectManager.Instance;
             userAndAgents = new Dictionary<long, KinectAgent>();
             //print("KinectService Init");
-            absMaxX = distance / basicDistance * physicalSize.x / 2;
-            absMaxY = distance / basicDistance * physicalSize.y / 2;
-            kinectManager.SetAddUserAction(AddUserAction);
-            kinectManager.SetRemoveUserAction(RemoveUserAction);
+
         }
-
-        private void AddUserAction(long userId)
-        {
-            print("新增用户：" + userId);
-        }
-
-        private void RemoveUserAction(long userId)
-        {
-            print("删除用户：" + userId);
-        }
-
-
-
 
         public void Monitoring()
         {
-            return;
+
             if (!isInit)
                 return;
 
-            //bool isInit = kinectManager.IsInitialized(); //首先要对设备进行实例化和初始化，之后才能进行后续的操作
-
+            //生成体感卡片
             List<long> ids = kinectManager.GetAllUserIds();
             for (int i = 0; i < ids.Count; i++)
             {
@@ -75,47 +54,51 @@ namespace MagicWall
                 Vector3 userPos = kinectManager.GetUserPosition(userid);
                 //kinect在背后，x正负值颠倒
                 userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
+                float absMaxX = userPos.z / basicDistance * physicalSize.x / 2;
+                float absMaxY = userPos.z / basicDistance * physicalSize.y / 2;
+
+                if (!InEffectiveRange(userPos, absMaxX))
+                {
+                    continue;
+                }
+
+                KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / absMaxY * Screen.height);
-                Vector2 anchPos = new Vector2(userScreenPos.x - origin.x, userScreenPos.y - origin.y);
+                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / absMaxY * Screen.height + 400); // 正式环境删除400
 
-                if (!userAndAgents.ContainsKey(userid) && userPos.z > distance && userAndAgents.Count < 3)
+                if (kinectAgent == null)
                 {
-                    // 生成新实体
-                    GameObject agent = Instantiate(_kinectAgentPrefab, _parentRectTransform) as GameObject;
-                    RectTransform rtf = agent.GetComponent<RectTransform>();
-                    rtf.anchoredPosition = anchPos;
-                    rtf.localScale = Vector3.zero;
-                    rtf.DOScale(1, 0.5f);
-                    //添加至移动模块
-                    _manager.collisionManager.AddCollisionEffectAgent(agent.GetComponent<KinectAgent>());
-                    agent.GetComponent<KinectAgent>().SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
-                    userAndAgents.Add(userid, agent.GetComponent<KinectAgent>());
-                }
-                else
-                {
-                    if (userAndAgents.ContainsKey(userid))
+                    if (_manager.kinectManager.CalScreenPositionIsAvailable(userScreenPos))
                     {
-                        //print("Y" + userPos.y);
-                        userAndAgents[userid].GetComponent<RectTransform>().anchoredPosition = anchPos;
+                        _manager.kinectManager.AddKinectAgents(userScreenPos, userid);
                     }
                 }
+                else {
+                    //移动体感卡片，不进行上下移动
+                    Vector2 rectPosition = new Vector2();
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRectTransform, userScreenPos, null, out rectPosition);
 
-            }
-            Dictionary<long, KinectAgent> keyValuePairs = userAndAgents;
-            foreach (var userid in keyValuePairs.Keys)
-            {
-                if (!ids.Exists(t => t == userid))
-                {
-                    KinectAgent agent = userAndAgents[userid];
-                    agent.GetComponent<RectTransform>().DOScale(0, 0.5f).OnComplete(() => {
-                        _manager.collisionManager.RemoveCollisionEffectAgent(agent);
-                        Destroy(userAndAgents[userid].gameObject);
-                        userAndAgents.Remove(userid);
-                    });
+                    //var to = new Vector2(rectPosition.x, kinectAgent.GetComponent<RectTransform>().anchoredPosition.y);
+                    //kinectAgent.UpdatePos(to);
+                    kinectAgent.UpdatePos(rectPosition);
+
+                    if (_manager.kinectManager.HasEnterCardRange(kinectAgent))
+                    {
+                        kinectAgent.Close();
+                    }
+                    KinectAgent target = _manager.kinectManager.HasEnterKinectCardRange(kinectAgent);
+                    if (target)
+                    {
+                        if (kinectAgent.createTime < target.createTime)
+                        {
+                            kinectAgent.Close();
+                        }
+                    }
+
                 }
             }
+
         }
 
 
@@ -136,6 +119,20 @@ namespace MagicWall
         public void StopMonitoring()
         {
 
+        }
+
+        /// <summary>
+        /// 在有效范围内
+        /// </summary>
+        bool InEffectiveRange(Vector3 pos, float absMaxX)
+        {
+            if (pos.z < safeZ)
+                return false;
+            if (Mathf.Abs(pos.x) > absMaxX)
+            {
+                return false;
+            }
+            return true;
         }
     }
 
