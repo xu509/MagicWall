@@ -65,7 +65,7 @@ namespace MagicWall
                 float absMaxY = userPos.z / basicDistance * physicalSize.y / 2;
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / absMaxY * Screen.height + 400); // 正式环境删除400
+                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / physicalSize.y / 2 * Screen.height + 400); // 正式环境删除400
                 KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
 
                 if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z), absMaxX))
@@ -78,7 +78,7 @@ namespace MagicWall
                     continue;
                 }
 
-
+                //添加逻辑
                 if (kinectAgent == null)
                 {
                     if (_manager.kinectManager.CalScreenPositionIsAvailable(userScreenPos))
@@ -107,9 +107,24 @@ namespace MagicWall
                             kinectAgent.Close();
                         }
                     }
+                }                
+            }
 
+
+            // 那 ids 去进行校对，返回需要删除的遮罩
+            var existAgents = _manager.kinectManager.kinectAgents;
+            // 比对ids 和 existagents.userid
+            foreach (var item in existAgents)
+            {
+                if (!ids.Contains(item.userId) && item.status != KinectAgentStatusEnum.Destoring && item.status != KinectAgentStatusEnum.Obsolete)
+                {
+                    print("目标被移除:" + item.userId);
+                    item.Close();
                 }
             }
+            // 得出结果，调用kinectAgent.Close();
+
+
 
         }
 
