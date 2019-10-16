@@ -65,7 +65,7 @@ namespace MagicWall
                 float absMaxY = userPos.z / basicDistance * physicalSize.y / 2;
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / physicalSize.y / 2 * Screen.height + 400); // 正式环境删除400
+                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / physicalSize.x / 2 * Screen.width, origin.y + userPos.y / physicalSize.y / 2 * Screen.height + 400); // 正式环境删除400
                 KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
 
                 if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z), absMaxX))
