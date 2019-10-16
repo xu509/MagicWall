@@ -570,32 +570,26 @@ namespace MagicWall
                 }
 
 
-
+                float effectDistance;
                 float w, h;
                 if (targetAgent != null)
                 {
                     w = targetAgent.GetWidth();
                     h = targetAgent.GetHeight();
+                    effectDistance = targetAgent.GetEffectDistance();
 
                 }
                 else
                 {
                     w = 0;
                     h = 0;
+                    effectDistance = 0;
                 }
-
-                // 获取有效影响范围，是宽度一半以上
-                float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
+                                
                 // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
                 float offset = effectDistance - distance;
 
                 bool offsetGreater = (offset >= 0);
-
-                //Debug.Log("[" + _manager.SceneStatus + "]" + gameObject.name
-                //    + " | tpos: " + targetPosition + " | rpos: "
-                //    + refPosition + " | effectdis:"
-                //    + effectDistance + " | distance: " + distance + "offsetGreater : " + offsetGreater);
-
 
 
                 // 进入影响范围
@@ -621,19 +615,8 @@ namespace MagicWall
 
 
                     var toLocalPosition = TransformScreenPositionToRectPosition(to);
-
-                    //// 将屏幕坐标转换为rect 坐标
-                    //var localPosition = new Vector2();
-                    //RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.mainPanel, to, null, out localPosition);
-                    //// 获取 main panel 的中心点坐标
-
-                    //var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
-                    //    _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
-                    //localPosition += panelAnchorPosition;
-
+;
                     SetNextPosition(toLocalPosition);
-
-
 
                     float sc = moveBehavior.CalculateScale(refPosition,
                                 targetPosition, distance,
@@ -643,12 +626,6 @@ namespace MagicWall
                     Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.flockBehaviorConfig.CommonEaseEnum);
                     float k = defaultEasingFunction(offset / effectDistance);
 
-
-                    //Debug.Log(gameObject.name + " - localPosition " + localPosition + "OFFSET: " + offset);
-
-                    //m_transform?.DOAnchorPos(Vector2.Lerp(refVector2, to, k), Time.deltaTime);
-                    //GetComponent<RectTransform>()?.DOAnchorPos(to, Time.deltaTime);
-                    //m_transform?.DOScale(Mathf.Lerp(1f, 0.1f, k), Time.deltaTime);
                     GetComponent<RectTransform>()?.DOScale(sc, Time.deltaTime);
                 }
                 else {

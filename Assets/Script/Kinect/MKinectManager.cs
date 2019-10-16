@@ -49,14 +49,23 @@ namespace MagicWall {
                 _kinectService.Monitoring();
             }
 
+            List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
 
-            //if (Input.GetMouseButton(1)) {
+            for (int i = 0; i < _kinectAgents.Count; i++) {
+                if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete) {
+                    needDestoryAgents.Add(_kinectAgents[i]);
+                }
+            }
 
-            //    Debug.Log("Click Right Button");
+            for (int i = 0; i < needDestoryAgents.Count; i++)
+            {
+                var agent = needDestoryAgents[i];
+                _manager.collisionManager.RemoveCollisionEffectAgent(agent);
+                _kinectAgents.Remove(agent);
+                Destroy(agent.gameObject);
+            }
 
-            //}
-
-            
+            needDestoryAgents.Clear();
         }
 
         /// <summary>
@@ -149,11 +158,18 @@ namespace MagicWall {
 
             for (int i = 0; i < _kinectAgents.Count; i++) {
                 var agent = _kinectAgents[i];
-                var distance = Vector2.Distance(agent.transform.position, position);
 
-                if (distance < safeDistance) {
-                    isAvailable = false;
+                if (agent.status == KinectAgentStatusEnum.Normal) {
+
+                    var distance = Vector2.Distance(agent.transform.position, position);
+
+                    if (distance < safeDistance)
+                    {
+                        isAvailable = false;
+                    }
+
                 }
+
             }
 
             for (int i = 0; i < _manager.operateCardManager.EffectAgents.Count; i++)
@@ -213,7 +229,7 @@ namespace MagicWall {
             {
                 var agent = _kinectAgents[i];
 
-                if (agent != kinectAgent) {
+                if ((agent.userId != kinectAgent.userId) && agent.status == KinectAgentStatusEnum.Normal) {
                     var distance = Vector2.Distance(agent.transform.position, position);
                     if (distance < safeDistance)
                     {
@@ -224,8 +240,6 @@ namespace MagicWall {
 
             return targetKinectAgent;
         }
-
-
 
 
 
@@ -262,14 +276,7 @@ namespace MagicWall {
         }
 
 
-        public void RemoveKinectAgents(KinectAgent kinectAgent) {
-            _manager.collisionManager.RemoveCollisionEffectAgent(kinectAgent);
-            _kinectAgents.Remove(kinectAgent);
 
-            Debug.Log("_kinectAgents size : " + _kinectAgents.Count);
-
-            Destroy(kinectAgent.gameObject);
-        }
 
 
         public KinectAgent GetAgentById(long userId) {

@@ -14,7 +14,9 @@ namespace MagicWall
 
         [SerializeField] public CollisionMoveBehaviourType behaviourType;
 
-        [Range(0f, 10f), Header(" 影响移动距离系数")]
+        [SerializeField,Range(0f,5f), Header("KinectCard Effect range")] public float kinectCardInfluenceMoveFactor;
+
+        [Range(0f, 10f), Header("Card Effect range")]
         public float InfluenceMoveFactor = 0.5f;
 
         [Header("[Common] 动画效果")]

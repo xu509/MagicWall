@@ -29,8 +29,12 @@ namespace MagicWall
 
         void Awake() {
             _createTime = Time.time;
+            GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
 
             // 生成动画
+            GetComponent<RectTransform>().DOScale(1f, 1f).OnComplete(()=> {
+                _status = KinectAgentStatusEnum.Normal;
+            });
 
         }
 
@@ -83,7 +87,7 @@ namespace MagicWall
             var width = GetComponent<RectTransform>().rect.width;
 
             Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
-            return 800f;
+            return width * scaleVector3.x;
         }
 
         public bool IsEffective()
@@ -102,32 +106,45 @@ namespace MagicWall
         /// </summary>
         public void Init(long userId) {
             _userId = userId;
+            _status = KinectAgentStatusEnum.Creating;
         }
 
         /// <summary>
         /// 关闭
         /// </summary>
         public void Close() {
+            _status = KinectAgentStatusEnum.Destoring;
 
-            Debug.Log(gameObject.name + "delete!");
+            GetComponent<RectTransform>().DOScale(0.1f, 0.5f)
+                .OnComplete(() =>
+                {
+                    _status = KinectAgentStatusEnum.Obsolete;
+                    Debug.Log(gameObject.name + "delete!");
 
-
+                });
             // 关闭动画
 
-            // 关闭
+            //// 关闭
 
-            // 动画完成后           
-            var MKinectManager = GameObject.Find("kinect").GetComponent<MKinectManager>();
-            MKinectManager.RemoveKinectAgents(this);
+            //// 动画完成后           
+            //var MKinectManager = GameObject.Find("kinect").GetComponent<MKinectManager>();
+            //MKinectManager.RemoveKinectAgents(this);
 
         }
 
         public void UpdatePos(Vector2 anchPos)
         {
-            //GetComponent<RectTransform>().DOMoveX(anchPos.x, Time.deltaTime);
-            GetComponent<RectTransform>().anchoredPosition = anchPos;
+            if (_status == KinectAgentStatusEnum.Normal || _status == KinectAgentStatusEnum.Creating) {
+                GetComponent<RectTransform>().anchoredPosition = anchPos;
+            }
+
         }
 
+        public float GetEffectDistance()
+        {
+            var magicWallManager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+            return GetWidth() * magicWallManager.collisionBehaviorConfig.kinectCardInfluenceMoveFactor;
+        }
     }
 
 }
