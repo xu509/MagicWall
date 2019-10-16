@@ -50,22 +50,34 @@ namespace MagicWall
             for (int i = 0; i < ids.Count; i++)
             {
                 long userid = ids[i];
+                //获取关节
+                int jointIndex = (int)KinectInterop.JointType.Head;
+                if (!kinectManager.IsJointTracked(userid, jointIndex))
+                {
+                    continue;
+                }
                 //当检测到用户时，就获取到用户的位置信息
-                Vector3 userPos = kinectManager.GetUserPosition(userid);
+                //Vector3 userPos = kinectManager.GetUserPosition(userid);
+                Vector3 userPos = kinectManager.GetJointKinectPosition(userid, jointIndex);
                 //kinect在背后，x正负值颠倒
                 userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
                 float absMaxX = userPos.z / basicDistance * physicalSize.x / 2;
                 float absMaxY = userPos.z / basicDistance * physicalSize.y / 2;
-
-                if (!InEffectiveRange(userPos, absMaxX))
-                {
-                    continue;
-                }
-
-                KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
                 Vector2 userScreenPos = new Vector2(origin.x + userPos.x / absMaxX * Screen.width, origin.y + userPos.y / absMaxY * Screen.height + 400); // 正式环境删除400
+                KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
+
+                if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z), absMaxX))
+                {
+                    //print("超出边界");
+                    if (kinectAgent != null)
+                    {
+                        kinectAgent.Close();
+                    }
+                    continue;
+                }
+
 
                 if (kinectAgent == null)
                 {
@@ -128,7 +140,7 @@ namespace MagicWall
         {
             if (pos.z < safeZ)
                 return false;
-            if (Mathf.Abs(pos.x) > absMaxX)
+            if (pos.x < 0 || pos.x > Screen.width || pos.y < 0 || pos.y > Screen.height)
             {
                 return false;
             }

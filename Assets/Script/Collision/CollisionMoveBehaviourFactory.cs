@@ -13,6 +13,7 @@ namespace MagicWall
 
         private ICollisionMoveBehavior _commonMoveBehavior;
         private ICollisionMoveBehavior _roundMoveBehavior;
+        private ICollisionMoveBehavior _kinectRoundMoveBehavior;
 
         // Start is called before the first frame update
         void Start()
@@ -27,6 +28,7 @@ namespace MagicWall
         void Init() {
             _roundMoveBehavior = new CollisionRoundMoveBehavior();
             _commonMoveBehavior = new CollisionRoundMoveBehavior();
+            _kinectRoundMoveBehavior = new CollisionKinectRoundMoveBehavior();
             _hasInit = true;
 
         }
@@ -50,6 +52,9 @@ namespace MagicWall
             else if (moveBehaviourType == CollisionMoveBehaviourType.Round)
             {
                 return _roundMoveBehavior;
+            }
+            else if (moveBehaviourType == CollisionMoveBehaviourType.KinectRound) {
+                return _kinectRoundMoveBehavior;
             }
             else
             {

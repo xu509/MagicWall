@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: CollisionMoveBehaviorConfig
   m_EditorClassIdentifier: 
   behaviourType: 1
-  InfluenceMoveFactor: 0.52
+  InfluenceMoveFactor: 0.06
   CommonEaseEnum: 17
   CommonScaleEaseEnum: 0
   CommonOffsetInfluenceFactor: 0
   RoundEaseEnum: 0
-  RoundScaleEaseEnum: 0
-  RoundOffsetInfluenceFactor: 1
+  RoundScaleEaseEnum: 17
+  RoundOffsetInfluenceFactor: 0.759
+  RoundOffsetInfluenceOffset: 0
   EffectTiredTime: 0.5
+  KinectRoundEaseEnum: 17
+  KinectRoundScaleEaseEnum: 0
+  KinectRoundOffsetInfluenceFactor: 0.185

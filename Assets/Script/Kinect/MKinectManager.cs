@@ -249,7 +249,7 @@ namespace MagicWall {
                 KinectAgent kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
                 kinectAgent.GetComponent<RectTransform>().anchoredPosition = rectPosition;
                 kinectAgent.Init(userId);
-                kinectAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+                kinectAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound));
 
                 _manager.collisionManager.AddCollisionEffectAgent(kinectAgent);
                 _kinectAgents.Add(kinectAgent);
