@@ -1443,6 +1443,13 @@ namespace MagicWall
             return gameObject.name;
         }
 
+        public float GetEffectDistance()
+        {
+            float w = GetWidth();
+            float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
+            return effectDistance;
+        }
+
         /* CollisionEffectAgent 实现 结束*/
     }
 
