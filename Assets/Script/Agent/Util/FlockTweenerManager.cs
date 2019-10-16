@@ -24,6 +24,20 @@ namespace MagicWall
         public static string StarEffect_Starting_DOFade_AtStart = "StarEffectStartingDOFadeAtStart";
         public static string StarEffect_Starting_DOFade_AtEnd = "StarEffectStartingDOFadeAtEnd";
 
+        /// <summary>
+        ///  体感 点击相关
+        /// </summary>
+        public static string Kinnect_Choose_Move = "KinnectChooseMove";
+        public static string Kinnect_Choose_Scale = "KinnectChooseScale";
+
+        /// <summary>
+        ///  操作卡片 相关
+        /// </summary>
+        public static string Card_GoToFront_Move = "CardGoToFrontMove";
+        public static string Card_GoToFront_Scale = "CardGoToFrontScale";
+
+
+
         private Dictionary<string, Tweener> _tweenerMap;
 
         public FlockTweenerManager()
@@ -44,6 +58,17 @@ namespace MagicWall
             }
         }
 
+        public Tweener Get(string key)
+        {
+            if (_tweenerMap.ContainsKey(key))
+            {
+                return _tweenerMap[key];
+            }
+            else
+            {
+                return null;
+            }
+        }
 
 
 

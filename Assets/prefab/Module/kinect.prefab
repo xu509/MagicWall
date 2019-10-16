@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 466271685534559709}
   - component: {fileID: 8044092294529385863}
   - component: {fileID: 5415575151763497637}
+  - component: {fileID: 9090307578114894712}
   m_Layer: 0
   m_Name: kinect
   m_TagString: Untagged
@@ -44,10 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96380d94f22753a45af96dbc513f1ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  safeDistance: 500
+  isMock: 0
   _kinectAgentPrefab: {fileID: 7804226956777464205, guid: 02b7e2b8f53103547b2f0003a3b64404,
     type: 3}
   _agentContainer: {fileID: 0}
   _kinect2Service: {fileID: 5415575151763497637}
+  _kinectCardObserver: {fileID: 9090307578114894712}
   _kinectType: 0
 --- !u!114 &5415575151763497637
 MonoBehaviour:
@@ -59,5 +63,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af19460f848c54c4c8c845c5668711af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  physicalSize: {x: 4.102, y: 1.21}
+  basicDistance: 3
+  safeZ: 1
+--- !u!114 &9090307578114894712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929307915849466058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222168acebef85742911a583e89bcf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

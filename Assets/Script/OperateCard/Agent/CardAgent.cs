@@ -14,7 +14,8 @@ namespace MagicWall
         //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
         [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
 
-
+        protected FlockTweenerManager _tweenerManager;
+        public FlockTweenerManager flockTweenerManager { get { return _tweenerManager; } }
 
 
         protected MagicWallManager _manager;
@@ -95,6 +96,8 @@ namespace MagicWall
         private List<MoveBtnObserver> _moveBtnObservers;    // 移动按钮的观察者
 
         private bool _disableEffect = false;
+        private bool _hasReplace = false;
+        public bool hasReplace { get { return _hasReplace; } }
 
 
         public CardStatusEnum _cardStatus;   // 状态   
@@ -109,7 +112,6 @@ namespace MagicWall
         [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
         [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
         [SerializeField] RectTransform normalContainer; // 正常显示的框体
-
 
         [SerializeField, Header("Scale")] RectTransform _scale_container;    //  缩放容器
         [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
@@ -134,13 +136,7 @@ namespace MagicWall
         [SerializeField, Header("Physics"), Range(0, 500)] int _physicesEffectFactor;
 
 
-        //public FlockStatusEnum fs = _originAgent.flockStatus;
-
-
-
-
         Action OnCreatedCompletedAction;
-
         Action OnGoToFrontFinsihed;
 
         /// <summary>
@@ -194,6 +190,8 @@ namespace MagicWall
             Vector3 genPosition, FlockAgent originAgent)
         {
             //InitBase(manager, dataId, dataType, true);
+            _tweenerManager = new FlockTweenerManager();
+
             _manager = manager;
             _dataId = dataId;
 
@@ -509,7 +507,7 @@ namespace MagicWall
             // 点击关闭
             if (CardStatus == CardStatusEnum.NORMAL)
             {
-                DoDestoriedForFirstStep();
+                DoDestoriedForSecondStep();
             }                
         }
 
@@ -821,11 +819,12 @@ namespace MagicWall
             gameObject.SetActive(true);
 
             Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
-            GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+            var cardGoToFrontMoveAni = GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+            _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Move, cardGoToFrontMoveAni);
 
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
-            GetComponent<RectTransform>()
+            var cardGoToFrontScaleAni = GetComponent<RectTransform>()
                 .DOScale(scaleVector3, 0.5f)
                 .OnUpdate(() =>
                 {
@@ -846,6 +845,18 @@ namespace MagicWall
                     onFinsihed.Invoke();
 
                 }).SetEase(Ease.OutBack);
+            _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Scale, cardGoToFrontScaleAni);
+        }
+
+        public void CancelGoToFront(Action onFinsihed)
+        {
+            var cardGoToFrontMoveAni = _tweenerManager.Get(FlockTweenerManager.Card_GoToFront_Move);
+            var cardGoToFrontScaleAni = _tweenerManager.Get(FlockTweenerManager.Card_GoToFront_Scale);
+
+            cardGoToFrontMoveAni.Kill();
+            cardGoToFrontScaleAni.Kill();
+            _cardStatus = CardStatusEnum.NORMAL;
+
         }
 
         /// <summary>
@@ -1348,19 +1359,15 @@ namespace MagicWall
 
             if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
-                Debug.Log("Screen1080P");
-
-                float rectHeight = _manager.mainPanel.rect.height * _heightFactor;
+                //800 
+                float rectHeight = 800f;
                 GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
-
             }
             else {
                 Debug.Log("Screen720P");
                 float rectHeight = _manager.mainPanel.rect.height * _heightFactor;
                 GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
             }
-
-
             //// 初始化框体长宽
             //float rectHeight = manager.mainPanel.rect.height * _heightFactor;
             //GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
@@ -1421,6 +1428,9 @@ namespace MagicWall
         {
 
             Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+
+            //Debug.Log("card Agent width : " + width + " / scale : " + scaleVector3);
+
             return width * scaleVector3.x;
         }
 
@@ -1448,8 +1458,11 @@ namespace MagicWall
 
         public float GetEffectDistance()
         {
-            float w = GetWidth();
-            float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
+
+            CollisionMoveBehaviourFactory collisionMoveBehaviourFactory = GameObject.Find("Collision").GetComponent<CollisionMoveBehaviourFactory>();
+            var influenceMoveFactor =  collisionMoveBehaviourFactory.GetMoveEffectDistance();
+
+            var effectDistance = GetWidth() * influenceMoveFactor;
             return effectDistance;
         }
 
@@ -1459,6 +1472,12 @@ namespace MagicWall
         }
 
         /* CollisionEffectAgent 实现 结束*/
+
+
+        public void ChangeHasReplace(bool hasReplace) {
+            _hasReplace = hasReplace;
+        }
+
     }
 
 

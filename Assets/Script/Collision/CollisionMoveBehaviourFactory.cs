@@ -15,6 +15,8 @@ namespace MagicWall
         private ICollisionMoveBehavior _roundMoveBehavior;
         private ICollisionMoveBehavior _kinectRoundMoveBehavior;
 
+        private MagicWallManager _manager;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -24,14 +26,49 @@ namespace MagicWall
 
         }
 
-
         void Init() {
             _roundMoveBehavior = new CollisionRoundMoveBehavior();
             _commonMoveBehavior = new CollisionRoundMoveBehavior();
             _kinectRoundMoveBehavior = new CollisionKinectRoundMoveBehavior();
             _hasInit = true;
 
+            _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+
+
         }
+
+
+        /// <summary>
+        /// 获取影响范围
+        /// </summary>
+        /// <returns></returns>
+        public float GetMoveEffectDistance() {
+            if (_manager.useKinect)
+            {
+                return _manager.collisionBehaviorConfig.kinectCardInfluenceMoveFactor;
+            }
+            else {
+                return _manager.collisionBehaviorConfig.InfluenceMoveFactor;
+            }
+        }
+
+        /// <summary>
+        /// 获取动画效果
+        /// </summary>
+        /// <returns></returns>
+        public float GetOffsetEffectDistance()
+        {
+            if (_manager.useKinect)
+            {
+                return _manager.collisionBehaviorConfig.KinectRoundOffsetInfluenceFactor;
+            }
+            else
+            {
+                return _manager.collisionBehaviorConfig.RoundOffsetInfluenceFactor;
+            }
+        }
+
+
 
 
 
@@ -43,23 +80,26 @@ namespace MagicWall
 
 
 
-            if (moveBehaviourType == CollisionMoveBehaviourType.Common)
+            if (_manager.useKinect)
             {
-                Debug.Log(11);
-
-                return _commonMoveBehavior;
-            }
-            else if (moveBehaviourType == CollisionMoveBehaviourType.Round)
-            {
-                return _roundMoveBehavior;
-            }
-            else if (moveBehaviourType == CollisionMoveBehaviourType.KinectRound) {
                 return _kinectRoundMoveBehavior;
             }
-            else
-            {
-                return null;
+            else {
+
+                if (moveBehaviourType == CollisionMoveBehaviourType.Common)
+                {
+                    return _commonMoveBehavior;
+                }
+                else if (moveBehaviourType == CollisionMoveBehaviourType.Round)
+                {
+                    return _roundMoveBehavior;
+                }
+                else {
+                    return null;
+                }
+
             }
+
         }
     }
 

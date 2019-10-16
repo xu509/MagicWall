@@ -9,25 +9,29 @@ namespace MagicWall
     /// </summary>
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
+        [SerializeField] RectTransform _rectBg;
+        [SerializeField] RectTransform _rectRemind;       
+
+
         private long _userId;
         public long userId { get { return _userId; } }
-
-
 
         private float _createTime;
         public float createTime { get { return _createTime; } }
 
         private KinectAgentStatusEnum _status;
-        public KinectAgentStatusEnum status { get { return _status; } }
+        public KinectAgentStatusEnum status { get { return _status; } set { _status = value; } }
 
 
         private ICollisionMoveBehavior _collisionMoveBehavior;
         private CardAgent _refCardAgent;
         public CardAgent refCardAgent { set { _refCardAgent = value; } get { return _refCardAgent; } }
 
+        private FlockAgent _refFlockAgent;
+        public FlockAgent refFlockAgent { set { _refFlockAgent = value; } get { return _refFlockAgent; } }
 
         private bool _disableEffect = false;
-
+        private MagicWallManager _manager;
 
         void Awake() {
             _createTime = Time.time;
@@ -36,6 +40,8 @@ namespace MagicWall
             // 生成动画
             GetComponent<RectTransform>().DOScale(1f, 1f).OnComplete(()=> {
                 _status = KinectAgentStatusEnum.Normal;
+
+                Debug.Log("Width : " + GetWidth());
             });
 
         }
@@ -89,6 +95,9 @@ namespace MagicWall
             var width = GetComponent<RectTransform>().rect.width;
 
             Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+
+            //Debug.Log("Kinect Agent width : " + width + " / scale : " + scaleVector3);
+
             return width * scaleVector3.x;
         }
 
@@ -115,6 +124,9 @@ namespace MagicWall
             if (_status == KinectAgentStatusEnum.Obsolete)
                 return false;
 
+            if (_status == KinectAgentStatusEnum.Small)
+                return true;
+
             return false;
         }
 
@@ -127,9 +139,16 @@ namespace MagicWall
         /// <summary>
         /// 生成动画
         /// </summary>
-        public void Init(long userId) {
+        public void Init(long userId,MagicWallManager magicWallManager) {
             _userId = userId;
+            _manager = magicWallManager;
+
+            SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound));
+            
             _status = KinectAgentStatusEnum.Creating;
+
+
+            InitUI();
         }
 
         /// <summary>
@@ -151,8 +170,6 @@ namespace MagicWall
                 .OnComplete(() =>
                 {
                     _status = KinectAgentStatusEnum.Obsolete;
-                    Debug.Log(gameObject.name + "delete!");
-
                 });
             // 关闭动画
 
@@ -174,14 +191,53 @@ namespace MagicWall
 
         public float GetEffectDistance()
         {
-            var magicWallManager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
-            return GetWidth() * magicWallManager.collisionBehaviorConfig.kinectCardInfluenceMoveFactor;
+
+            CollisionMoveBehaviourFactory collisionMoveBehaviourFactory = GameObject.Find("Collision").GetComponent<CollisionMoveBehaviourFactory>();
+            var influenceMoveFactor = collisionMoveBehaviourFactory.GetMoveEffectDistance();
+            var effectDistance = GetWidth() * influenceMoveFactor;
+
+            return effectDistance;
         }
 
         public void SetDisableEffect(bool disableEffect)
         {
             _disableEffect = disableEffect;            
         }
+
+
+
+        /// <summary>
+        ///     初始化 UI
+        /// </summary>
+        private void InitUI() {
+            var rect = GetComponent<RectTransform>();
+
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
+                rect.sizeDelta = new Vector2(800, 800);
+                _rectBg.sizeDelta = new Vector2(1400,1400);
+                _rectRemind.sizeDelta = new Vector2(251,135);
+
+            }
+            else {
+                rect.sizeDelta = new Vector2(800, 800);
+                _rectBg.sizeDelta = new Vector2(1400, 1400);
+                _rectRemind.sizeDelta = new Vector2(251, 135);
+            }
+           
+        }
+
+
+        public void RecoverColliderEffect() {
+            _disableEffect = false;
+            if (GetComponent<RectTransform>().localScale != Vector3.one) {
+                GetComponent<RectTransform>().DOScale(1, 0.5f);
+            }
+        }
+
+
+
+
     }
 
 }

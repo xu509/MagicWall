@@ -102,6 +102,7 @@ namespace MagicWall
 
         // 卡片代理
         CardAgent _cardAgent;
+        public CardAgent cardAgent { set { _cardAgent = value; } }
 
         // 能被影响
         private bool _canEffected = true;
@@ -309,36 +310,47 @@ namespace MagicWall
             //    cardRect.anchoredPosition3D.z);
 
             // 恢复原位
-            Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
-            Tweener t2 = rect.DOAnchorPos3D(to, 0.3f);
-            _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
+            RecoverToOriginPosition();
 
-            // 放大至原大小
-            Vector3 scaleVector3 = Vector3.one;
+        }
 
-            // 在放大动画开始前，标记该组件为不被选择的
+        /// <summary>
+        /// 恢复原位
+        /// </summary>
+        public void RecoverToOriginPosition() {
+            if (_manager.SceneIndex == SceneIndex) {
+                Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
+                Tweener t2 = GetComponent<RectTransform>().DOAnchorPos3D(to, 0.3f);
+                _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
 
-            Tweener t = GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
-               .OnUpdate(() =>
-               {
-                   Width = GetComponent<RectTransform>().sizeDelta.x;
-                   Height = GetComponent<RectTransform>().sizeDelta.y;
-               }).OnComplete(() =>
-               {
-                   flockStatus = FlockStatusEnum.NORMAL;
+                // 放大至原大小
+                Vector3 scaleVector3 = Vector3.one;
 
-                   Debug.Log("放大动画 completed");
+                // 在放大动画开始前，标记该组件为不被选择的
 
-               }).OnKill(() =>
-               {
+                Tweener t = GetComponent<RectTransform>().DOScale(scaleVector3, 1f)
+                   .OnUpdate(() =>
+                   {
+                       Width = GetComponent<RectTransform>().sizeDelta.x;
+                       Height = GetComponent<RectTransform>().sizeDelta.y;
+                   }).OnComplete(() =>
+                   {
+                       flockStatus = FlockStatusEnum.NORMAL;
+
+                       Debug.Log("放大动画 completed");
+
+                   }).OnKill(() =>
+                   {
                    //flockStatus = FlockStatusEnum.OBSOLETE;
 
                    //Debug.Log("放大动画 kill");
                });
 
-            _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
-
+                _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);
+            }
         }
+
+
 
 
         #endregion

@@ -12,11 +12,13 @@ namespace MagicWall {
     public class MKinectManager : MonoBehaviour
     {
         [SerializeField] float safeDistance = 500f;
-
+        [SerializeField] bool isMock = false;
 
         [SerializeField, Header("Prefab")] KinectAgent _kinectAgentPrefab;
         [SerializeField, Header("UI")] RectTransform _agentContainer;
         [SerializeField, Header("Service")] KinectService _kinect2Service;
+        [SerializeField, Header("Observer")] KinectCardObserver _kinectCardObserver;
+        
 
         [SerializeField] KinectType _kinectType;
 
@@ -49,6 +51,9 @@ namespace MagicWall {
                 _kinectService.Monitoring();
             }
 
+            _kinectCardObserver.Observering();
+
+
             List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
 
             for (int i = 0; i < _kinectAgents.Count; i++) {
@@ -66,6 +71,18 @@ namespace MagicWall {
             }
 
             needDestoryAgents.Clear();
+
+
+            if (isMock)
+            {
+                if (_kinectAgents.Count == 0) {
+                    // 模拟创建实体，实际使用kinect需注释
+                    var screenPosition = new Vector2(2000, 960);
+                    AddKinectAgents(screenPosition, 111);
+                }                              
+                // 模拟创建实体，实际使用kinect需注释  结束
+            }
+
         }
 
         /// <summary>
@@ -84,29 +101,21 @@ namespace MagicWall {
 
             _kinectAgents = new List<KinectAgent>();
 
-
             _startSuccessAction = StartKinectSuccess;
             _startFailedAction = StartKinectFailed;
 
-            _kinectService.Init(_agentContainer, _kinectAgentPrefab,_manager);
+            _kinectCardObserver.Init(_manager);
 
+            if (isMock)
+            {
+                Debug.Log("开启 kinect 模拟模式。");
 
-
-            // 模拟创建实体，实际使用kinect需注释
-            //KinectAgent _kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
-
-            //_kinectAgent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-
-            //var factoryBehavior = _manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType);
-
-            //_kinectAgent.SetMoveBehavior(factoryBehavior);
-
-            //_manager.collisionManager.AddCollisionEffectAgent(_kinectAgent);
-
-            //_kinectAgents.Add(_kinectAgent);
-            // 模拟创建实体，实际使用kinect需注释  结束
-
-            StartMonitoring();
+                // 模拟创建实体，实际使用kinect需注释  结束
+            }
+            else {
+                _kinectService.Init(_agentContainer, _kinectAgentPrefab, _manager);
+                StartMonitoring();
+            }
 
         }
 
@@ -262,14 +271,11 @@ namespace MagicWall {
 
                 KinectAgent kinectAgent = Instantiate(_kinectAgentPrefab, _agentContainer);
                 kinectAgent.GetComponent<RectTransform>().anchoredPosition = rectPosition;
-                kinectAgent.Init(userId);
-                kinectAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound));
-
+                kinectAgent.Init(userId,_manager);
                 _manager.collisionManager.AddCollisionEffectAgent(kinectAgent);
                 _kinectAgents.Add(kinectAgent);
 
                 print("_kinectAgents add new" + _kinectAgents.Count);
-
 
                 return kinectAgent;
             }            

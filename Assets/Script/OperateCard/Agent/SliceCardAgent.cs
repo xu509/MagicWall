@@ -21,9 +21,7 @@ namespace MagicWall
         [SerializeField] RectTransform _buttomTool;
 
         private List<string> _envCards = new List<string>();
-
         private OperateCardDataSlide _operateCardDataSlide;
-
 
 
         void Awake()
@@ -109,23 +107,10 @@ namespace MagicWall
             // 从透明到不透明，向下移动
             _description.text = description;
 
-            //_description.GetComponent<RectTransform>().anchoredPosition = Description_Origin_Position;
-            //_description.DOFade(0, 0f);
-
-            //_description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
-            //_description.DOFade(1, 0.5f);
-
         }
 
         private void UpdateToolComponent()
         {
-
-
-            //_buttomTool.GetComponent<RectTransform>().anchoredPosition = ButtomTool_Origin_Position;
-            //_buttomTool.GetComponent<CanvasGroup>().DOFade(0, Time.deltaTime);
-
-            //_buttomTool.GetComponent<RectTransform>().DOAnchorPos(ButtomTool_Go_Position, 0.5f);
-            //_buttomTool.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
 
 
         }
@@ -164,7 +149,6 @@ namespace MagicWall
 
         private void InitUI() {
             MagicWallManager manager =  GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
-            Debug.Log(manager.screenTypeEnum);
 
             var position = _titleContainer.anchoredPosition;
             //Debug.Log("position : " + position);

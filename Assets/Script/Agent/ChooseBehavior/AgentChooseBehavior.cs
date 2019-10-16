@@ -33,6 +33,10 @@ namespace MagicWall {
         }
 
 
+        /// <summary>
+        /// REF： https://www.yuque.com/u314548/fc6a5l/dozp0e
+        /// </summary>
+        /// <param name="flockAgent"></param>
         private void DoChooseForKinect(FlockAgent flockAgent) {
             int _data_id = flockAgent.DataId;
             var _dataType = flockAgent.dataTypeEnum;
@@ -43,7 +47,6 @@ namespace MagicWall {
                 flockAgent.flockStatus = FlockStatusEnum.TOHIDE;
 
                 var flockAgentPosition = flockAgent.GetComponent<RectTransform>().transform.position;
-
                 RectTransform flockRect = flockAgent.GetComponent<RectTransform>();
 
                 // 获取kinect obj 的位置
@@ -60,40 +63,59 @@ namespace MagicWall {
                     }
                 }
 
-                if (targetKinectAgent.refCardAgent != null)
+                /// 遮罩中存在贴附的卡片
+                if (targetKinectAgent.refFlockAgent != null)
                 {
-                    targetKinectAgent.SetDisableEffect(false);
-                    targetKinectAgent.refCardAgent.DoCloseDirect();
+                    var refFlockAgent = targetKinectAgent.refFlockAgent;
+                    targetKinectAgent.RecoverColliderEffect();
+
+                    // 此逻辑需要优化
+                    RemoveRefCard(targetKinectAgent.refFlockAgent);
+                    //cardAgent.SetDisableEffect(true);
+                    //cardAgent.DoCloseDirect();
                 }
 
+                if (targetKinectAgent.status == KinectAgentStatusEnum.Small) {
+                    // 恢复大小并打开检测
+                    targetKinectAgent.SetDisableEffect(false);
+                    targetKinectAgent.status = KinectAgentStatusEnum.Recovering;
+                    targetKinectAgent.GetComponent<RectTransform>().DOScale(1f, 0.5f).OnComplete(
+                        () => {
+                            targetKinectAgent.status = KinectAgentStatusEnum.Hide;
+                        }
+                        );
+                }
+
+                // 点击的卡片移动至遮罩位置，生成卡片并放大
+                targetKinectAgent.refFlockAgent = flockAgent;
+
                 var ani_time = 1.5f;
-                flockAgent.transform.SetParent(_manager.OperationPanel);
-                flockAgent.transform.DOScale(new Vector3(0.2f, 0.2f, 0.2f), ani_time - 0.2f);
-                flockAgent.transform.DOMove(targetKinectAgent.transform.position, ani_time)
-                    .OnUpdate(()=> {
-                        //Debug.Log(flockAgent.GetComponent<RectTransform>().localScale);
+                var scaleAni = flockAgent.transform.DOScale(new Vector3(0.2f, 0.2f, 0.2f), ani_time - 0.2f);
+                var moveAni = flockAgent.transform.DOMove(targetKinectAgent.transform.position, ani_time)
+                    .OnUpdate(()=> {})
+                    .OnComplete(()=> {
 
-                }).OnComplete(()=> {
+                    flockAgent.transform.SetParent(_manager.OperationPanel);
 
-                    //targetKinectAgent.status = KinectAgentStatusEnum.Hiding;
                     targetKinectAgent.Hide();
-
                     flockAgent.flockStatus = FlockStatusEnum.HIDE;
+                    Debug.Log(flockAgent.gameObject.name + " status : " + flockAgent.flockStatus);
+
+
                     flockAgent.gameObject.SetActive(false);
 
                     var _cardGenPos = flockAgent.GetComponent<RectTransform>().anchoredPosition;
 
                     // 创建卡片
                     _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, _cardGenPos, flockAgent);
-                    _cardAgent.SetDisableEffect(true);
 
                     _cardAgent.GoToFront(()=> {
-                        _cardAgent.SetDisableEffect(false);
                         targetKinectAgent.SetDisableEffect(true);
                     });
-
-                    targetKinectAgent.refCardAgent = _cardAgent;
                 });
+
+                flockAgent.flockTweenerManager.Add(FlockTweenerManager.Kinnect_Choose_Scale, scaleAni);
+                flockAgent.flockTweenerManager.Add(FlockTweenerManager.Kinnect_Choose_Move, moveAni);
 
             }
         }
@@ -170,14 +192,6 @@ namespace MagicWall {
         }
 
 
-
-
-
-
-
-
-
-
         private bool CanChoose(FlockAgent flockAgent) {
             bool canChoose = false;
 
@@ -235,6 +249,43 @@ namespace MagicWall {
         }
 
 
+
+
+
+
+        /// <summary>
+        ///     移除依附的卡片
+        ///     ref ： https://www.yuque.com/u314548/fc6a5l/dozp0e
+        /// </summary>
+        /// <param name="flockAgent"></param>
+        private void RemoveRefCard(FlockAgent flockAgent) {
+            if (flockAgent.flockStatus == FlockStatusEnum.TOHIDE)
+            {
+                // 停止移动与缩小动画
+
+                flockAgent.flockTweenerManager.Get(FlockTweenerManager.Kinnect_Choose_Move).Kill();
+                flockAgent.flockTweenerManager.Get(FlockTweenerManager.Kinnect_Choose_Scale).Kill();                
+                flockAgent.RecoverToOriginPosition();
+
+                //Debug.Log(flockAgent.gameObject.name + " status TOHIDE: " + flockAgent.flockStatus);
+
+            }
+            else if (flockAgent.flockStatus == FlockStatusEnum.HIDE) {
+                if (flockAgent.GetCardAgent.CardStatus == CardStatusEnum.GENERATE)
+                {
+                    // 停止放大动画并关闭
+                    flockAgent.GetCardAgent.SetDisableEffect(true);
+                    flockAgent.GetCardAgent.CancelGoToFront(() => { });
+                    flockAgent.GetCardAgent.DoCloseDirect();
+                    Debug.Log(2);
+                }
+                else {
+                    flockAgent.GetCardAgent.SetDisableEffect(true);
+                    flockAgent.GetCardAgent.DoCloseDirect();
+                    Debug.Log(3);
+                }
+            }
+        }
 
 
 

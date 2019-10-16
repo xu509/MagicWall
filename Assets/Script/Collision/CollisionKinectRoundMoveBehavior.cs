@@ -35,9 +35,12 @@ namespace MagicWall
             }
             else
             {
+                CollisionMoveBehaviourFactory collisionMoveBehaviourFactory = GameObject.Find("Collision").GetComponent<CollisionMoveBehaviourFactory>();
+
                 // positionWithOffset 原位置
                 // targetPosition 目标位置
-                float k = manager.collisionBehaviorConfig.KinectRoundOffsetInfluenceFactor;
+                float k = collisionMoveBehaviourFactory.GetOffsetEffectDistance();
+                    //manager.collisionBehaviorConfig.KinectRoundOffsetInfluenceFactor;
                 k = easeFun(k);
 
                 float e = (effectDistance - distance) * k + distance;
@@ -46,8 +49,7 @@ namespace MagicWall
                 Vector2 to = targetPosition + (position - targetPosition).normalized * e;
 
                 //to = to - panelOffset;
-              
-                return to;
+                 return to;
             }
         }
 

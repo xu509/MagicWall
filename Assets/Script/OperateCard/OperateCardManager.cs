@@ -127,6 +127,7 @@ namespace MagicWall {
 
             CardAgent cardAgent = OperateCardFactoryInstance.
                 Generate(_manager, position, _container,dataId, dataType, refAgent);
+            refAgent.cardAgent = cardAgent;
 
             Vector3 scaleVector3 = new Vector3(0.1f, 0.1f, 0.1f);
             cardAgent.GetComponent<RectTransform>().localScale = scaleVector3;

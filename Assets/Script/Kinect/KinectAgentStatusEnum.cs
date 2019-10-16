@@ -9,7 +9,9 @@ namespace MagicWall
     /// </summary>
     public enum KinectAgentStatusEnum
     {
-        Creating,Normal,Hiding,Hide,Destoring,Obsolete
+        
+
+        Creating,Normal,Hiding,Hide,Destoring,Obsolete,Small,Recovering
     }
 
 }
