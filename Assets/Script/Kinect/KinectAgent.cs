@@ -26,6 +26,8 @@ namespace MagicWall
         public CardAgent refCardAgent { set { _refCardAgent = value; } get { return _refCardAgent; } }
 
 
+        private bool _disableEffect = false;
+
 
         void Awake() {
             _createTime = Time.time;
@@ -92,7 +94,28 @@ namespace MagicWall
 
         public bool IsEffective()
         {
-            return true;
+            if (_disableEffect)
+                return false;
+
+            if (_status == KinectAgentStatusEnum.Normal)
+                return true;
+
+            if (_status == KinectAgentStatusEnum.Creating)
+                return true;
+
+            if (_status == KinectAgentStatusEnum.Hiding)
+                return false;
+
+            if (_status == KinectAgentStatusEnum.Hide)
+                return false;
+
+            if (_status == KinectAgentStatusEnum.Destoring)
+                return true;
+
+            if (_status == KinectAgentStatusEnum.Obsolete)
+                return false;
+
+            return false;
         }
 
         public void SetMoveBehavior(ICollisionMoveBehavior moveBehavior)
@@ -108,6 +131,15 @@ namespace MagicWall
             _userId = userId;
             _status = KinectAgentStatusEnum.Creating;
         }
+
+        /// <summary>
+        ///  隐藏动画
+        /// </summary>
+        public void Hide() {
+
+        }
+
+
 
         /// <summary>
         /// 关闭
@@ -144,6 +176,11 @@ namespace MagicWall
         {
             var magicWallManager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
             return GetWidth() * magicWallManager.collisionBehaviorConfig.kinectCardInfluenceMoveFactor;
+        }
+
+        public void SetDisableEffect(bool disableEffect)
+        {
+            _disableEffect = disableEffect;            
         }
     }
 

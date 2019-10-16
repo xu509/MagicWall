@@ -94,6 +94,8 @@ namespace MagicWall
 
         private List<MoveBtnObserver> _moveBtnObservers;    // 移动按钮的观察者
 
+        private bool _disableEffect = false;
+
 
         public CardStatusEnum _cardStatus;   // 状态   
         protected FlockAgent _originAgent;  // 原组件
@@ -101,9 +103,6 @@ namespace MagicWall
         protected bool _hasListBtn;  //  有列表按钮
         protected bool hasInitBusinessCard = false; // 是否已生成business card
         protected BusinessCardAgent businessCardAgent;
-
-
-
 
         [SerializeField, Range(0f, 1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
         [SerializeField, Header("UI")] RectTransform _main_container;    //  主框体
@@ -141,6 +140,8 @@ namespace MagicWall
 
 
         Action OnCreatedCompletedAction;
+
+        Action OnGoToFrontFinsihed;
 
         /// <summary>
         /// 卡片恢复状态
@@ -813,7 +814,7 @@ namespace MagicWall
         /// <summary>
         /// 卡片走向前台
         /// </summary>
-        public void GoToFront()
+        public void GoToFront(Action onFinsihed)
         {
             RectTransform rectTransfrom = GetComponent<RectTransform>();
 
@@ -841,6 +842,8 @@ namespace MagicWall
                     DoOnCreatedCompleted();
 
                     CardStatus = CardStatusEnum.NORMAL;
+
+                    onFinsihed.Invoke();
 
                 }).SetEase(Ease.OutBack);
         }
@@ -1391,7 +1394,7 @@ namespace MagicWall
             }
 
             if (_cardStatus == CardStatusEnum.HIDE
-                || _cardStatus == CardStatusEnum.OBSOLETE)
+                || _cardStatus == CardStatusEnum.OBSOLETE || _disableEffect)
             {
                 return false;
             }
@@ -1448,6 +1451,11 @@ namespace MagicWall
             float w = GetWidth();
             float effectDistance = (w / 2) + (w / 2) * _manager.collisionBehaviorConfig.InfluenceMoveFactor;
             return effectDistance;
+        }
+
+        public void SetDisableEffect(bool disableEffect)
+        {
+            _disableEffect = disableEffect;            
         }
 
         /* CollisionEffectAgent 实现 结束*/
