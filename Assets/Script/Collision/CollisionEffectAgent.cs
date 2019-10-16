@@ -23,5 +23,7 @@ namespace MagicWall
 
         string GetName();
 
+        void SetDisableEffect(bool disableEffect);
+
     }
 }

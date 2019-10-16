@@ -402,7 +402,9 @@ namespace MagicWall
             CardAgent cardAgent = _manager.operateCardManager.CreateNewOperateCard(searchBean.id,searchBean.type,genVector3,_cardAgent.OriginAgent);
 
            //itemsFactory.GenerateCardAgent(genVector3, null, searchBean.id, true);
-            cardAgent.GoToFront();
+            cardAgent.GoToFront(()=> {
+
+            });
 
         }
 

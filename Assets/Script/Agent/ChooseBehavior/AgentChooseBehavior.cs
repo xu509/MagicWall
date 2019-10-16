@@ -6,6 +6,9 @@ using DG.Tweening;
 
 namespace MagicWall {
 
+    /// <summary>
+    /// ref : https://www.yuque.com/u314548/fc6a5l/pvvetv
+    /// </summary>
     public class AgentChooseBehavior : MonoBehaviour
     {
         MagicWallManager _manager;
@@ -36,7 +39,6 @@ namespace MagicWall {
 
             CardAgent _cardAgent;
 
-
             if (CanChoose(flockAgent)) {
                 flockAgent.flockStatus = FlockStatusEnum.TOHIDE;
 
@@ -60,6 +62,7 @@ namespace MagicWall {
 
                 if (targetKinectAgent.refCardAgent != null)
                 {
+                    targetKinectAgent.SetDisableEffect(false);
                     targetKinectAgent.refCardAgent.DoCloseDirect();
                 }
 
@@ -72,6 +75,9 @@ namespace MagicWall {
 
                 }).OnComplete(()=> {
 
+                    //targetKinectAgent.status = KinectAgentStatusEnum.Hiding;
+                    targetKinectAgent.Hide();
+
                     flockAgent.flockStatus = FlockStatusEnum.HIDE;
                     flockAgent.gameObject.SetActive(false);
 
@@ -79,11 +85,14 @@ namespace MagicWall {
 
                     // 创建卡片
                     _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, _cardGenPos, flockAgent);
+                    _cardAgent.SetDisableEffect(true);
 
-                    _cardAgent.GoToFront();
+                    _cardAgent.GoToFront(()=> {
+                        _cardAgent.SetDisableEffect(false);
+                        targetKinectAgent.SetDisableEffect(true);
+                    });
 
                     targetKinectAgent.refCardAgent = _cardAgent;
-
                 });
 
             }
@@ -153,7 +162,8 @@ namespace MagicWall {
 
                     _cardAgent.GetComponent<RectTransform>().anchoredPosition = _cardGenPos;
 
-                    _cardAgent.GoToFront();
+                    _cardAgent.GoToFront(()=> {
+                    });
 
                 });
             }

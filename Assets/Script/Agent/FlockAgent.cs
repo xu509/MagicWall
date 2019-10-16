@@ -473,51 +473,6 @@ namespace MagicWall
         }
 
 
-        /// <summary>
-        /// 获取生成的位置
-        /// </summary>
-        /// <returns></returns>
-        private Vector3 GetCardGeneratePosition() {
-            Vector3 position = new Vector3();
-
-            var rect = GetComponent<RectTransform>();
-
-
-            //  获取卡片生成位置
-            Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f,
-                    rect.anchoredPosition.y - _manager.PanelOffsetY - 1f,
-                    200);
-
-            if (_agentContainerType == AgentContainerType.MainPanel)
-            {
-                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
-            }
-            else if (_agentContainerType == AgentContainerType.BackPanel)
-            {
-                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
-            }
-            else if (_agentContainerType == AgentContainerType.StarContainer)
-            {
-                // 获取屏幕坐标
-                Vector2 v = RectTransformUtility.WorldToScreenPoint(_manager.starCamera, transform.position);
-
-                // 需要屏幕坐标转为某UGUI容器内的坐标
-
-                Vector2 refp;
-
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(_manager.OperationPanel, v, null, out refp);
-
-                refp = new Vector2(refp.x + _manager.OperationPanel.rect.width / 2, refp.y + _manager.OperationPanel.rect.height / 2);
-
-                cardGenPosition = refp;
-            }
-
-
-            return cardGenPosition;
-        }
-
-
-
 
         /* CollisionMoveBasicAgent Impl 相关 */
 
@@ -727,9 +682,6 @@ namespace MagicWall
                 GetComponent<RectTransform>().anchoredPosition = NextVector2;
                 MoveFlag = false;
 
-                //Debug.Log(gameObject.name + " 移动至： " + NextVector2 + " 距离：" + Vector2.Distance(ap,NextVector2) + " 缩放倍数： " + GetComponent<RectTransform>().localScale);
-                //Debug.Log(gameObject.name + " 移动结束！！ ");
-                //Debug.Log(gameObject.name + " ... ");
             }
             else {
 
