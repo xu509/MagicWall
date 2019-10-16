@@ -140,25 +140,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensorHeight: 0
   sensorAngle: 0
-  autoHeightAngle: 3
-  computeUserMap: 1
+  autoHeightAngle: 2
+  computeUserMap: 3
   computeColorMap: 0
   computeInfraredMap: 0
   displayUserMap: 0
-  displayColorMap: 0
+  displayColorMap: 1
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
   minUserDistance: 0.1
   maxUserDistance: 0
   maxLeftRightDistance: 0
-  maxTrackedUsers: 2
+  maxTrackedUsers: 6
   showTrackedUsersOnly: 1
   detectClosestUser: 1
   ignoreInferredJoints: 0
   ignoreZCoordinates: 0
   lateUpdateAvatars: 0
-  smoothing: 1
+  smoothing: 3
   useBoneOrientationConstraints: 0
   allowTurnArounds: 0
   allowedHandRotations: 1
