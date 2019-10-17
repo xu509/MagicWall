@@ -12,11 +12,9 @@ namespace MagicWall
     /// </summary>
     public class KinectService : MonoBehaviour, IKinectService
     {
-        [SerializeField, Header("屏幕实际尺寸m")]
-        private Vector2 physicalSize = new Vector2(4.102f, 1.21f);
-        [SerializeField, Header("基准值m")]
+        [SerializeField, Header("基准值m"), Tooltip("调整Kinect位置到刚好显示大屏两端")]
         private float basicDistance = 3f;
-        [SerializeField, Header("m")]
+        [SerializeField, Header("Kinect距人最近距离m")]
         private float safeZ = 1f;
         RectTransform _parentRectTransform;
         GameObject _kinectAgentPrefab;
@@ -59,19 +57,21 @@ namespace MagicWall
                 //当检测到用户时，就获取到用户的位置信息
                 //Vector3 userPos = kinectManager.GetUserPosition(userid);
                 Vector3 userPos = kinectManager.GetJointKinectPosition(userid, jointIndex);
-                //kinect在背后，x正负值颠倒，y保留2位小数
-                float y = float.Parse(decimal.Round(decimal.Parse(userPos.y.ToString()), 2).ToString());
-                //float y = userPos.z / basicDistance * physicalSize.y;
-                userPos = new Vector3(-userPos.x, y, userPos.z);
-                //print(userPos.y);
-                float absMaxX = userPos.z / basicDistance * physicalSize.x / 2;
-                float absMaxY = userPos.z / basicDistance * physicalSize.y / 2;
+                //kinect在背后，x正负值颠倒y
+                userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
+                //保留两位小数
+                
+                float x = float.Parse(string.Format("{0:f2}", userPos.x));
+                float y = float.Parse(string.Format("{0:f2}", userPos.y));
+
+
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / physicalSize.x / 2 * Screen.width, origin.y + userPos.y / physicalSize.y / 2 * Screen.height); // 正式环境删除400
+                //Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * userPos.x * Screen.width / 2, origin.y + basicDistance / userPos.z * userPos.y * Screen.height / 2 + 300); // 正式环境删除400
+                Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * x * Screen.width / 2, origin.y + basicDistance / userPos.z * y * Screen.height / 2 + 300); // 正式环境删除400
                 KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
 
-                if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z), absMaxX))
+                if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z)))
                 {
                     //print("超出边界");
                     if (kinectAgent != null)
@@ -94,9 +94,9 @@ namespace MagicWall
                     Vector2 rectPosition = new Vector2();
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRectTransform, userScreenPos, null, out rectPosition);
 
-                    //var to = new Vector2(rectPosition.x, kinectAgent.GetComponent<RectTransform>().anchoredPosition.y);
-                    //kinectAgent.UpdatePos(to);
-                    kinectAgent.UpdatePos(rectPosition);
+                    var to = new Vector2(rectPosition.x, kinectAgent.GetComponent<RectTransform>().anchoredPosition.y);
+                    kinectAgent.UpdatePos(to);
+                    //kinectAgent.UpdatePos(rectPosition);
 
                     if (_manager.kinectManager.HasEnterCardRange(kinectAgent))
                     {
@@ -154,11 +154,21 @@ namespace MagicWall
         /// <summary>
         /// 在有效范围内
         /// </summary>
-        bool InEffectiveRange(Vector3 pos, float absMaxX)
+        bool InEffectiveRange(Vector3 pos)
         {
+            float kinectAgentMaskWidth = 0;
+
+            //if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            //{
+            //    kinectAgentMaskWidth = 1400;
+            //}
+            //else {
+            //    kinectAgentMaskWidth = 933;
+            //}
+
             if (pos.z < safeZ)
                 return false;
-            if (pos.x < 0 || pos.x > Screen.width || pos.y < 0 || pos.y > Screen.height)
+            if (pos.x < kinectAgentMaskWidth || pos.x > Screen.width - kinectAgentMaskWidth || pos.y < kinectAgentMaskWidth || pos.y > Screen.height - kinectAgentMaskWidth)
             {
                 return false;
             }

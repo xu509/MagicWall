@@ -2,3 +2,5 @@
 File is not found : C:\workspace\MagicWall\Files\logo\15.png
 日志文件创建的时间:2019/10/16 15:52:29
 File is not found : C:\workspace\MagicWall\Files\logo\1.png
+日志文件创建的时间:2019/10/17 9:19:49
+File is not found : E:\workspace\MagicWall\Files\logo\9.png
