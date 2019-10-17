@@ -69,11 +69,10 @@ namespace MagicWall {
                     var refFlockAgent = targetKinectAgent.refFlockAgent;
                     targetKinectAgent.RecoverColliderEffect();
 
-                    // 此逻辑需要优化
                     RemoveRefCard(targetKinectAgent.refFlockAgent);
-                    //cardAgent.SetDisableEffect(true);
-                    //cardAgent.DoCloseDirect();
                 }
+
+                targetKinectAgent.refFlockAgent = flockAgent;
 
                 if (targetKinectAgent.status == KinectAgentStatusEnum.Small) {
                     // 恢复大小并打开检测
@@ -86,8 +85,15 @@ namespace MagicWall {
                         );
                 }
 
+                if (targetKinectAgent.status == KinectAgentStatusEnum.Destoring) {
+                    targetKinectAgent.SetDisableEffect(false);
+                    targetKinectAgent.CancelClose();
+                }
+
                 // 点击的卡片移动至遮罩位置，生成卡片并放大
-                targetKinectAgent.refFlockAgent = flockAgent;
+               
+                targetKinectAgent.status = KinectAgentStatusEnum.WaitingHiding;
+                targetKinectAgent.SetDisableEffect(false);
 
                 var ani_time = 1.5f;
                 var scaleAni = flockAgent.transform.DOScale(new Vector3(0.2f, 0.2f, 0.2f), ani_time - 0.2f);
@@ -99,18 +105,17 @@ namespace MagicWall {
 
                     targetKinectAgent.Hide();
                     flockAgent.flockStatus = FlockStatusEnum.HIDE;
-                    //Debug.Log(flockAgent.gameObject.name + " status : " + flockAgent.flockStatus);
-
-
                     flockAgent.gameObject.SetActive(false);
 
                     var _cardGenPos = flockAgent.GetComponent<RectTransform>().anchoredPosition;
 
                     // 创建卡片
                     _cardAgent = _manager.operateCardManager.CreateNewOperateCard(_data_id, _dataType, _cardGenPos, flockAgent);
+                    _cardAgent.SetDisableEffect(true);
 
                     _cardAgent.GoToFront(()=> {
-                        targetKinectAgent.SetDisableEffect(true);
+                        _cardAgent.SetDisableEffect(false);
+                        //targetKinectAgent.SetDisableEffect(true);
                     });
                 });
 
@@ -249,16 +254,17 @@ namespace MagicWall {
         }
 
 
-
-
-
-
         /// <summary>
         ///     移除依附的卡片
         ///     ref ： https://www.yuque.com/u314548/fc6a5l/dozp0e
         /// </summary>
         /// <param name="flockAgent"></param>
         private void RemoveRefCard(FlockAgent flockAgent) {
+            Debug.Log("移除依附的卡片： " + flockAgent.gameObject + " status : " + flockAgent.flockStatus);
+
+            // 会出现flockAgent为normal的情况
+
+
             if (flockAgent.flockStatus == FlockStatusEnum.TOHIDE)
             {
                 // 停止移动与缩小动画
@@ -273,12 +279,14 @@ namespace MagicWall {
             else if (flockAgent.flockStatus == FlockStatusEnum.HIDE) {
                 if (flockAgent.GetCardAgent.CardStatus == CardStatusEnum.GENERATE)
                 {
+                    Debug.Log(flockAgent.GetCardAgent.gameObject.name + " 正在生成中，进行销毁");
                     // 停止放大动画并关闭
                     flockAgent.GetCardAgent.SetDisableEffect(true);
                     flockAgent.GetCardAgent.CancelGoToFront(() => { });
                     flockAgent.GetCardAgent.DoCloseDirect();
                 }
                 else {
+                    Debug.Log(flockAgent.GetCardAgent.gameObject.name + " 其他状态，进行销毁 - " + flockAgent.GetCardAgent.CardStatus);
                     flockAgent.GetCardAgent.SetDisableEffect(true);
                     flockAgent.GetCardAgent.DoCloseDirect();
                 }

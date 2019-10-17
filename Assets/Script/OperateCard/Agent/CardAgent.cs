@@ -12,7 +12,7 @@ namespace MagicWall
     public class CardAgent : MonoBehaviour, CollisionEffectAgent, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
     {
         //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
-        [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
+        [SerializeField, Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
 
         protected FlockTweenerManager _tweenerManager;
         public FlockTweenerManager flockTweenerManager { get { return _tweenerManager; } }
@@ -96,6 +96,7 @@ namespace MagicWall
         private List<MoveBtnObserver> _moveBtnObservers;    // 移动按钮的观察者
 
         private bool _disableEffect = false;
+        public bool disableEffect{ get { return _disableEffect; } }
         private bool _hasReplace = false;
         public bool hasReplace { get { return _hasReplace; } }
 
@@ -283,7 +284,7 @@ namespace MagicWall
             }
 
             // 第二次缩小
-            if (_cardStatus == CardStatusEnum.TODESTORY)
+            if (_cardStatus == CardStatusEnum.DestoryFirstCompleted)
             {
                 if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
                 {
@@ -344,7 +345,7 @@ namespace MagicWall
 
             //  缩放
             Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
-            _cardStatus = CardStatusEnum.TODESTORY;
+            _cardStatus = CardStatusEnum.DESTORYINGFIRST;
 
             _destory_first_scale_tweener = GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
                 .OnUpdate(() =>
@@ -354,12 +355,21 @@ namespace MagicWall
                      _hasChangeSize = true;
                  }).OnComplete(() =>
                  {
-                     //IsRecovering = false;
-                     //IsChoosing = true;
-
                      // 设置第一次缩小的点
                      _destoryFirstStageCompleteTime = Time.time;
+
+                     _cardStatus = CardStatusEnum.DestoryFirstCompleted;
+
+                     //Debug.Log(_originAgent.flockStatus);
+
                  }).OnKill(() => {});
+
+
+            _tweenerManager.Add("d", _destory_first_scale_tweener);
+
+            
+
+            Debug.Log(gameObject.name + " 第一次销毁结束，增加了tweener。");
 
         }
 
@@ -368,13 +378,10 @@ namespace MagicWall
         //
         private void DoDestoriedForSecondStep()
         {
-            Debug.Log(gameObject.name + " 进行第二次销毁。");
 
-
-            _cardStatus = CardStatusEnum.DESTORY;
+            _cardStatus = CardStatusEnum.DESTORYINGSECOND;
 
             _protectAgent.SetDisabled();
-
 
             GetComponent<CircleCollider2D>().radius = 0;
 
@@ -395,34 +402,22 @@ namespace MagicWall
 
                     //  移到后方、缩小、透明
                     Tweener t = cardRect.DOScale(0.1f, 1f);
-
                    
-                    //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
-
                     //  获取位置
                     Vector3 to = new Vector3(_originAgent.OriVector2.x - _manager.PanelOffsetX
                         , _originAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
+                    cardRect.DOAnchorPos3D(to, 1f)
+                       .OnComplete(() =>
+                       {
+                           if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null)) { 
+                               // 恢复
+                               _originAgent.DoRecoverAfterChoose(cardRect.position);
 
-                    if (_originAgent.SceneIndex == _manager.SceneIndex)
-                    {
-                        cardRect.DOAnchorPos3D(to, 1f)
-                             .OnComplete(() =>
-                             {
-                                 // 恢复
-                                 _originAgent.DoRecoverAfterChoose(cardRect.position);
-                                 _cardStatus = CardStatusEnum.OBSOLETE;
-                             });
-                    }
-                    else
-                    {
-                        _cardStatus = CardStatusEnum.OBSOLETE;
+                            }                            
+                           _cardStatus = CardStatusEnum.OBSOLETE;
+                       });
 
-                        if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
-                        {
-                            _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
-                        }
-                    }
                 }
                 //  直接消失
                 else
@@ -430,8 +425,6 @@ namespace MagicWall
                     Close();
                 }
             }
-
-
         }
 
 
@@ -472,6 +465,7 @@ namespace MagicWall
             DoUpdate();
 
             // 停止销毁动画
+            Debug.Log("kill 第一次销毁动画");
             _destory_first_scale_tweener.Kill();
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
@@ -519,10 +513,13 @@ namespace MagicWall
         public void DoCloseDirect()
         {
             // 直接关闭的逻辑
-            if (_cardStatus == CardStatusEnum.NORMAL) {
-                DoDestoriedForSecondStep();
-            }
-            
+            //if (_cardStatus == CardStatusEnum.NORMAL) {
+            //    DoDestoriedForSecondStep();
+            //}
+            _tweenerManager.Reset();
+
+            DoDestoriedForSecondStep();
+
         }
 
 

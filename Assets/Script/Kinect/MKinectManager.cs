@@ -17,7 +17,6 @@ namespace MagicWall {
         [SerializeField, Header("Prefab")] KinectAgent _kinectAgentPrefab;
         [SerializeField, Header("UI")] RectTransform _agentContainer;
         [SerializeField, Header("Service")] KinectService _kinect2Service;
-        [SerializeField, Header("Observer")] KinectCardObserver _kinectCardObserver;
         
 
         [SerializeField] KinectType _kinectType;
@@ -45,11 +44,11 @@ namespace MagicWall {
         }
 
         // Update is called once per frame
-        void Update()
+        public void Run()
         {
             if (_manager != null) {
                 _kinectService.Monitoring();
-                _kinectCardObserver.Observering();
+                //_kinectCardObserver.Observering();
             }
 
             if (_kinectAgents != null) {
@@ -58,6 +57,8 @@ namespace MagicWall {
 
                 for (int i = 0; i < _kinectAgents.Count; i++)
                 {
+                    _kinectAgents[i].UpdateBehaviour();
+
                     if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete)
                     {
                         needDestoryAgents.Add(_kinectAgents[i]);
@@ -110,7 +111,6 @@ namespace MagicWall {
             _startSuccessAction = StartKinectSuccess;
             _startFailedAction = StartKinectFailed;
 
-            _kinectCardObserver.Init(_manager);
 
             if (isMock)
             {

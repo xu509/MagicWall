@@ -113,7 +113,12 @@ namespace MagicWall
             DisplayBehavior.Init(_displayBehaviorConfig);
 
             for (int i = 0; i < _manager.agentManager.Agents.Count; i++) {
-                _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+
+                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN) {
+                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                }
+
+                
             }           
         }
 
@@ -223,10 +228,6 @@ namespace MagicWall
             }
 
             StartingDurTime += _maxDelayTime;
-
-            Debug.Log("_maxDelayTime : " + _maxDelayTime);
-            Debug.Log("StartingDurTime : " + StartingDurTime);
-
 
         }
 

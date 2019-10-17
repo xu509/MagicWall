@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace MagicWall
 {
@@ -10,7 +11,11 @@ namespace MagicWall
     public class KinectAgent : MonoBehaviour, CollisionEffectAgent
     {
         [SerializeField] RectTransform _rectBg;
-        [SerializeField] RectTransform _rectRemind;       
+        [SerializeField] RectTransform _rectRemind;
+
+        private FlockTweenerManager _flockTweenerManager;
+        public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
+
 
 
         private long _userId;
@@ -36,6 +41,8 @@ namespace MagicWall
         private MagicWallManager _manager;
 
         void Awake() {
+            _flockTweenerManager = new FlockTweenerManager();
+
             _createTime = Time.time;
             GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
 
@@ -115,10 +122,10 @@ namespace MagicWall
                 return true;
 
             if (_status == KinectAgentStatusEnum.Hiding)
-                return false;
+                return true;
 
             if (_status == KinectAgentStatusEnum.Hide)
-                return false;
+                return true;
 
             if (_status == KinectAgentStatusEnum.Destoring)
                 return true;
@@ -127,6 +134,9 @@ namespace MagicWall
                 return false;
 
             if (_status == KinectAgentStatusEnum.Small)
+                return true;
+
+            if (_status == KinectAgentStatusEnum.WaitingHiding)
                 return true;
 
             return false;
@@ -149,7 +159,6 @@ namespace MagicWall
             
             _status = KinectAgentStatusEnum.Creating;
 
-
             InitUI();
         }
 
@@ -157,43 +166,64 @@ namespace MagicWall
         ///  隐藏动画
         /// </summary>
         public void Hide() {
+            _status = KinectAgentStatusEnum.Hiding;
 
+            _status = KinectAgentStatusEnum.Hide;
+
+            //// 隐藏动画
+            //_rectRemind.GetComponent<Image>().DOFade(0, 1f)
+            //    .OnComplete(()=> {
+            //        _status = KinectAgentStatusEnum.Hide;
+            //    });
         }
-
 
 
         /// <summary>
         /// 关闭
         /// </summary>
         public void Close() {
-            _status = KinectAgentStatusEnum.Destoring;
+            if (_status != KinectAgentStatusEnum.Destoring) {
+                _status = KinectAgentStatusEnum.Destoring;
 
-            GetComponent<RectTransform>().DOScale(0.1f, 0.5f)
+                var closeAnimi = GetComponent<RectTransform>().DOScale(0.1f, 0.5f)
+                    .OnComplete(() =>
+                    {
+                        _status = KinectAgentStatusEnum.Obsolete;
+                    });
+
+                _flockTweenerManager.Add(FlockTweenerManager.Kinnect_Close, closeAnimi);
+            }
+        }
+
+        public void CancelClose() {
+            _status = KinectAgentStatusEnum.Recovering;
+
+            _flockTweenerManager.Get(FlockTweenerManager.Kinnect_Close).Kill();
+
+            var canelClose = GetComponent<RectTransform>().DOScale(1f, 0.5f)
                 .OnComplete(() =>
                 {
-                    _status = KinectAgentStatusEnum.Obsolete;
+                    _status = KinectAgentStatusEnum.Normal;
+
+                    Debug.Log("取消关闭成功");
+
                 });
-            // 关闭动画
-
-            //// 关闭
-
-            //// 动画完成后           
-            //var MKinectManager = GameObject.Find("kinect").GetComponent<MKinectManager>();
-            //MKinectManager.RemoveKinectAgents(this);
+            _flockTweenerManager.Add(FlockTweenerManager.Kinnect_Close_Cancel, canelClose);
 
         }
+
 
         public void UpdatePos(Vector2 anchPos)
         {
             if (_status == KinectAgentStatusEnum.Normal || _status == KinectAgentStatusEnum.Creating) {
                 GetComponent<RectTransform>().anchoredPosition = anchPos;
+                //Debug.Log("update pos : " + _status);
             }
 
         }
 
         public float GetEffectDistance()
         {
-
             CollisionMoveBehaviourFactory collisionMoveBehaviourFactory = GameObject.Find("Collision").GetComponent<CollisionMoveBehaviourFactory>();
             var influenceMoveFactor = collisionMoveBehaviourFactory.GetMoveEffectDistance();
             var effectDistance = GetWidth() * influenceMoveFactor;
@@ -203,6 +233,10 @@ namespace MagicWall
 
         public void SetDisableEffect(bool disableEffect)
         {
+            if (disableEffect) {
+                print(gameObject.name + " Set Disabled false - " + status);
+            }
+            
             _disableEffect = disableEffect;            
         }
 
@@ -237,6 +271,57 @@ namespace MagicWall
             }
         }
 
+
+
+        /// <summary>
+        /// 实现功能：
+        /// 跟随依附卡片变化大小
+        /// 跟随依附卡片移动
+        /// 当卡片消失时，跟随小时
+        /// 
+        /// </summary>
+        public void UpdateBehaviour() {
+
+            if (refFlockAgent == null) {
+                if (disableEffect) {
+                    Close();
+                }                
+            }
+
+            // 存在点开的卡片
+            if ((refFlockAgent != null) && (refFlockAgent.GetCardAgent != null))
+            {
+                var cardAgent = refFlockAgent.GetCardAgent;
+                //Debug.Log(cardAgent.name + " status :" + cardAgent._cardStatus);
+
+                if (cardAgent._cardStatus == CardStatusEnum.DESTORYINGFIRST)
+                {
+                    var cardScale = cardAgent.GetComponent<RectTransform>().localScale;
+                    GetComponent<RectTransform>().localScale = cardScale;
+                    status = KinectAgentStatusEnum.Small;
+                }
+
+                if (cardAgent._cardStatus == CardStatusEnum.RECOVER)
+                {
+                    var cardScale = cardAgent.GetComponent<RectTransform>().localScale;
+                    GetComponent<RectTransform>().localScale = cardScale;
+                    status = KinectAgentStatusEnum.Recovering;
+                }
+
+                if (cardAgent._cardStatus == CardStatusEnum.DESTORYINGSECOND)
+                {
+                    Close();
+                }
+
+                if (cardAgent._cardStatus == CardStatusEnum.MOVE)
+                {
+                    transform.position = cardAgent.transform.position;
+                }
+            }
+
+
+
+        }
 
 
 

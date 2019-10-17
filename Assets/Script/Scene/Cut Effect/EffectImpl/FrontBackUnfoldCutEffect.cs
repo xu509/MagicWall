@@ -92,9 +92,7 @@ namespace MagicWall
 
                 float t = time / run_time;
                 Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.CurveStaggerDisplayEaseEnum);
-
                 t = defaultEasingFunction(t);
-
 
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
@@ -117,7 +115,10 @@ namespace MagicWall
 
             for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
             {
-                _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
+                {
+                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                }
             }
 
         }

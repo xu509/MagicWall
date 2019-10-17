@@ -111,7 +111,11 @@ namespace MagicWall
 
             for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
             {
-                _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+
+                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
+                {
+                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                }
             }
         }
 

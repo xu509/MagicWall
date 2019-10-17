@@ -12,9 +12,10 @@ namespace MagicWall {
     {   
         GENERATE, // 生成中
         NORMAL, // 正常
-        TODESTORY, // 销毁动画中(第一次)
+        DESTORYINGFIRST, // 销毁动画中(第一次)
+        DestoryFirstCompleted, // 第一次销毁完成
         RECOVER,    // 恢复动画中
-        DESTORY, // 进行第二次动画中
+        DESTORYINGSECOND, // 进行第二次动画中
         OBSOLETE, // 废弃的
         HIDE, // 隐藏中
         MOVE    // 移动中

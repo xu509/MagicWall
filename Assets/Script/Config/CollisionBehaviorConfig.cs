@@ -35,12 +35,6 @@ namespace MagicWall
         [Range(0f, 2f), Header("位移影响参数")]
         public float RoundOffsetInfluenceFactor;
 
-        [Range(0f, 1000f), Header("位移变量")]
-        public float RoundOffsetInfluenceOffset;
-
-        [Range(0f, 10f), Header("影响疲劳时间")]
-        public float EffectTiredTime;
-
         [Header("[KinectRound] 动画效果")]
         public EaseEnum KinectRoundEaseEnum;
 

@@ -339,6 +339,10 @@ namespace MagicWall
             // 开启场景效果
             _magicSceneManager.Run();
 
+            if (_useKinect) { 
+                _kinectManager.Run();
+            }
+
             _agentManager.Run();
 
             _collisionManager.Run();

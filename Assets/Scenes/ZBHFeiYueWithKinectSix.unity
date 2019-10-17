@@ -386,7 +386,7 @@ PrefabInstance:
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: isMock
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -401,6 +401,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+    - {fileID: 5035228855224239254, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
 --- !u!224 &553118715 stripped
 RectTransform:

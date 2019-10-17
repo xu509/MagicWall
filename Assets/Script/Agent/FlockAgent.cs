@@ -281,16 +281,7 @@ namespace MagicWall
                 return;
             }
 
-            //gameObject == null;
             _flockStatus = FlockStatusEnum.RECOVER;
-
-            //// 如果组件已不在原场景，则不进行恢复
-            //if (_sceneIndex != _manager.SceneIndex)
-            //{
-            //    gameObject.SetActive(false);
-            //    DestoryAgency();
-            //    return;
-            //}
 
             //  将原组件启用
             gameObject.SetActive(true);
@@ -300,14 +291,9 @@ namespace MagicWall
 
             // 调整位置
             RectTransform rect = GetComponent<RectTransform>();
-            //RectTransform cardRect = _cardAgent.GetComponent<RectTransform>();
-
 
             rect.position = position;
 
-            //rect.anchoredPosition3D = new Vector3(cardRect.anchoredPosition3D.x + _manager.PanelOffsetX,
-            //    cardRect.anchoredPosition3D.y + _manager.PanelOffsetY,
-            //    cardRect.anchoredPosition3D.z);
 
             // 恢复原位
             RecoverToOriginPosition();
@@ -318,7 +304,7 @@ namespace MagicWall
         /// 恢复原位
         /// </summary>
         public void RecoverToOriginPosition() {
-            if (_manager.SceneIndex == SceneIndex) {
+            if (_manager.SceneIndex == _sceneIndex) {
                 Vector3 to = new Vector3(OriVector2.x, OriVector2.y, 0);
                 Tweener t2 = GetComponent<RectTransform>().DOAnchorPos3D(to, 0.3f);
                 _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOAnchorPos3D, t2);
@@ -341,9 +327,7 @@ namespace MagicWall
 
                    }).OnKill(() =>
                    {
-                   //flockStatus = FlockStatusEnum.OBSOLETE;
 
-                   //Debug.Log("放大动画 kill");
                });
 
                 _flockTweenerManager.Add(FlockTweenerManager.FlockAgent_DoRecoverAfterChoose_DOScale, t);

@@ -29,6 +29,8 @@ namespace MagicWall
         /// </summary>
         public static string Kinnect_Choose_Move = "KinnectChooseMove";
         public static string Kinnect_Choose_Scale = "KinnectChooseScale";
+        public static string Kinnect_Close = "KinnectClose";
+        public static string Kinnect_Close_Cancel = "KinnectCloseCancel";
 
         /// <summary>
         ///  操作卡片 相关
@@ -79,6 +81,8 @@ namespace MagicWall
             {
                 if (kvp.Value.IsActive())
                 {
+                    Debug.Log(kvp.Key + " kill!");
+
                     kvp.Value.Kill();
                 }
             }

@@ -8,10 +8,10 @@ namespace MagicWall
     ///   ref : https://www.yuque.com/u314548/fc6a5l/mnxg3w
     /// </summary>
     public enum KinectAgentStatusEnum
-    {
-        
-
-        Creating,Normal,Hiding,Hide,Destoring,Obsolete,Small,Recovering
+    {       
+        Creating,Normal,
+        WaitingHiding,
+        Hiding,Hide,Destoring,Obsolete,Small,Recovering
     }
 
 }

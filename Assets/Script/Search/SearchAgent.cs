@@ -171,7 +171,7 @@ namespace MagicWall
         // 联想词点击事件
         private void OnClickAssociateWord(string str)
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -285,7 +285,7 @@ namespace MagicWall
         // 退格功能
         public void DoBackspace()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -308,7 +308,7 @@ namespace MagicWall
         // 搜索功能
         public void DoSearch()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -347,7 +347,7 @@ namespace MagicWall
         // 点击回退
         public void DoReturn()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -442,7 +442,7 @@ namespace MagicWall
         #region 提示内容
         public void DoQuestion()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
