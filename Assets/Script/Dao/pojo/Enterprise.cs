@@ -25,10 +25,6 @@ namespace MagicWall
         private string _name;
         public string Name { set { _name = value; } get { return _name; } }
 
-        // catalog
-        private string _catalog;
-        public string Catalog { set { _catalog = value; } get { return _catalog; } }
-
         private bool _isCustom;
         public bool IsCustom { set { _isCustom = value; } get { return _isCustom; } }
 

@@ -31,7 +31,7 @@ namespace MagicWall
 
         #region Data Parameter 
         private bool _data_iscustom; // 是定制的
-        private string _data_img;    //背景图片
+        [SerializeField] private string _data_img;    //背景图片
         private int _data_id; // id
         private DataTypeEnum _dataType;
         public DataTypeEnum dataTypeEnum { get { return _dataType; } }
@@ -431,7 +431,7 @@ namespace MagicWall
             var result = false;
 
             // 如果在运行中的 flock，已经远远离开屏幕，则进行销毁
-            if (_flockStatus == FlockStatusEnum.NORMAL && _manager.SceneStatus != WallStatusEnum.Cutting)
+            if (_flockStatus == FlockStatusEnum.NORMAL && (_manager.SceneStatus != WallStatusEnum.Cutting)                )
             {
 
                 //Vector3 position = Camera.main.WorldToScreenPoint(GetComponent<RectTransform>().transform.position);
@@ -460,10 +460,9 @@ namespace MagicWall
             }
 
             if (result) {
+                //Debug.Log(gameObject.name + " 废弃 - " + _flockStatus);
                 _flockStatus = FlockStatusEnum.OBSOLETE;
             }
-
-
 
             return result;
         }

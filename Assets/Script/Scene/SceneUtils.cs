@@ -63,7 +63,7 @@ namespace MagicWall
         /// <returns></returns>
         public int GetFixedItemHeight()
         {
-            int gap = GetGap();
+            int gap = GetGap() / 2;
             float h = (_screen_height - gap) / _row - gap;
             return Mathf.RoundToInt(h);
         }
@@ -150,7 +150,7 @@ namespace MagicWall
         /// <returns></returns>
         public float GetYPositionByFixedHeight(int itemHeight, int row)
         {
-            int gap = GetGap();
+            int gap = GetGap() / 2;
             float y = row * (itemHeight + gap) + itemHeight / 2 + gap;
             return y;
         }

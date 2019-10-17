@@ -332,6 +332,8 @@ namespace MagicWall
         /// </summary>
         private void DoDestoriedForFirstStep()
         {
+            Debug.Log(gameObject.name + " 进行第一次销毁。");
+
             // 如果当前处于移动中，则将移动关闭
             if (_cardStatus == CardStatusEnum.MOVE)
             {
@@ -366,6 +368,9 @@ namespace MagicWall
         //
         private void DoDestoriedForSecondStep()
         {
+            Debug.Log(gameObject.name + " 进行第二次销毁。");
+
+
             _cardStatus = CardStatusEnum.DESTORY;
 
             _protectAgent.SetDisabled();
@@ -391,8 +396,7 @@ namespace MagicWall
                     //  移到后方、缩小、透明
                     Tweener t = cardRect.DOScale(0.1f, 1f);
 
-
-                    
+                   
                     //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
 
                     //  获取位置
@@ -446,14 +450,12 @@ namespace MagicWall
                 {
                     _cardStatus = CardStatusEnum.OBSOLETE;
 
-
                     if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
                     {
                         _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
                     }
 
                     Debug.Log("直接删除");
-
                 });
 
         }

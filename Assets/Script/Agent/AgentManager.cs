@@ -145,7 +145,7 @@ namespace MagicWall
             for (int i = 0; i < _agents.Count; i++) {
                 var flockStatus = _agents[i].flockStatus;
 
-                if (flockStatus != FlockStatusEnum.TOHIDE) {
+                if (flockStatus != FlockStatusEnum.TOHIDE && flockStatus != FlockStatusEnum.HIDE) {
                     _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
                 }
 
@@ -215,6 +215,7 @@ namespace MagicWall
                     }
 
                     for (int i = 0; i < recycleAgents.Count; i++) {
+                        //Debug.Log(recycleAgents[i].gameObject + " - Delete");
                         RecycleAgent(recycleAgents[i]);
                     }
 

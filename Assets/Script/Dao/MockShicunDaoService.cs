@@ -532,7 +532,7 @@ namespace MagicWall
                     productDetail.Type = 0;
                     productDetail.Pro_id = pro_id;
                     productDetail.Description = name;
-                    productDetail.Image = mat;
+                    productDetail.Image = mat;                   
                     productDetails.Add(productDetail);
                 }
 

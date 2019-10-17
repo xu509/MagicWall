@@ -80,9 +80,9 @@ namespace MagicWall {
                     targetKinectAgent.SetDisableEffect(false);
                     targetKinectAgent.status = KinectAgentStatusEnum.Recovering;
                     targetKinectAgent.GetComponent<RectTransform>().DOScale(1f, 0.5f).OnComplete(
-                        () => {
-                            targetKinectAgent.status = KinectAgentStatusEnum.Hide;
-                        }
+                            () => {
+                                targetKinectAgent.status = KinectAgentStatusEnum.Hide;
+                            }
                         );
                 }
 
@@ -99,7 +99,7 @@ namespace MagicWall {
 
                     targetKinectAgent.Hide();
                     flockAgent.flockStatus = FlockStatusEnum.HIDE;
-                    Debug.Log(flockAgent.gameObject.name + " status : " + flockAgent.flockStatus);
+                    //Debug.Log(flockAgent.gameObject.name + " status : " + flockAgent.flockStatus);
 
 
                     flockAgent.gameObject.SetActive(false);
@@ -277,12 +277,10 @@ namespace MagicWall {
                     flockAgent.GetCardAgent.SetDisableEffect(true);
                     flockAgent.GetCardAgent.CancelGoToFront(() => { });
                     flockAgent.GetCardAgent.DoCloseDirect();
-                    Debug.Log(2);
                 }
                 else {
                     flockAgent.GetCardAgent.SetDisableEffect(true);
                     flockAgent.GetCardAgent.DoCloseDirect();
-                    Debug.Log(3);
                 }
             }
         }

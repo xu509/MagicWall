@@ -27,16 +27,11 @@ namespace MagicWall
             _agentManager = manager.agentManager;
             _daoService = manager.daoService;
 
-
             //  获取持续时间
             //StartingDurTime = 2f;
             StartingDurTime = manager.cutEffectConfig.LeftRightDisplayDurTime;
             _startingTimeWithOutDelay = StartingDurTime;
             DestoryDurTime = 0.5f;
-
-            ////  设置显示的时间
-            //string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_LeftRightAdjust).Value;
-            //DisplayDurTime = AppUtils.ConvertToFloat(t);
 
             // 获取Display的动画
             DisplayBehavior = new GoLeftDisplayBehavior();
@@ -67,8 +62,14 @@ namespace MagicWall
                 // 当前总运行的时间;
                 float time = Time.time - StartTime;
 
-                // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
-                if (time > StartingDurTime)
+
+                float aniTime = Time.time - StartTime - delay_time;
+
+                if (aniTime < 0)
+                {
+                    continue;
+                }
+                else if (aniTime > _startingTimeWithOutDelay)
                 {
                     // 此时可能未走完动画
                     if (!agent.isCreateSuccess)
@@ -80,27 +81,30 @@ namespace MagicWall
 
                     continue;
                 }
-                else if (time <= delay_time)
-                {
-                    // 此时该 Agent 还在持续时间内
-                    continue;
+                else {
+                    float t = aniTime / _startingTimeWithOutDelay;
+
+                    Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.LeftRightDisplayEaseEnum);
+
+                    t = defaultEasingFunction(t);
+
+                    Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
+
+                    agent.SetChangedPosition(to);
+
+
+
                 }
 
-                float t = (time - delay_time) / run_time;
-
-                Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.LeftRightDisplayEaseEnum);
-
-                t = defaultEasingFunction(t);
-
-                Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-
-                agent.SetChangedPosition(to);
             }
         }
 
         public override void OnStartingCompleted()
         {
             //  初始化表现形式
+            Debug.Log("OnStartingCompleted");
+
+
 
             _displayBehaviorConfig.dataType = dataType;
             _displayBehaviorConfig.DisplayTime = DisplayDurTime;
@@ -129,6 +133,9 @@ namespace MagicWall
 
             int _nearColumn = Mathf.RoundToInt(_manager.mainPanel.rect.width / (_itemHeight + gap));
             float w = _manager.mainPanel.rect.width;
+
+            float _maxDelayTime = 0f;
+
 
             // 从上至下，生成
             for (int row = 0; row < _row; row++)
@@ -160,7 +167,7 @@ namespace MagicWall
                     int ori_x = Mathf.RoundToInt(gen_x_position + itemWidth / 2 + gap / 2);
 
                     // 获取参照点
-                    int middleY = _row / 2;
+                    int middleY = _row  / 2;
                     int middleX = _nearColumn / 2;
 
                     // 定义出生位置
@@ -168,32 +175,43 @@ namespace MagicWall
 
                     // 计算出生位置与延时时间
                     float delay;
+
+                    int maxYOffset = System.Math.Abs(middleY - _row);
+                    int nowYOffset;
+
                     if (row < middleY)
                     {
-                        delay = (System.Math.Abs(middleY - row)) * 0.3f;
+                        nowYOffset = System.Math.Abs(middleY - row);
+                        //delay = (System.Math.Abs(middleY - row)) * _manager.cutEffectConfig.LeftRightGapTime;
                         gen_x = ori_x + w;
                     }
                     else
                     {
-                        delay = (System.Math.Abs(middleY - row) + 1) * 0.3f;
+                        nowYOffset = System.Math.Abs(middleY - row) + 1;
+                        //delay = (System.Math.Abs(middleY - row) + 1) * _manager.cutEffectConfig.LeftRightGapTime;
                         gen_x = ori_x - w - 500;
                     }
+
+                    float f = (float )nowYOffset / (float) maxYOffset;
+                    //Debug.Log("f : " + f);
+                    Func<float, float> lrfun = EasingFunction.Get(_manager.cutEffectConfig.LeftRightGapEaseEnum);
+                    f = lrfun(f);
+
+                    delay = Mathf.Lerp(0, maxYOffset * _manager.cutEffectConfig.LeftRightGapTime, f);
+
                     gen_y = ori_y; //纵坐标不变
 
                     //生成 agent
-                    //FlockAgent go = ItemsFactory.Generate(gen_x, gen_y, ori_x, ori_y, row, column,
-                    //    itemWidth, _itemHeight, data, AgentContainerType.MainPanel);
-
                     Vector2 genPosition = new Vector2(gen_x, gen_y);
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, genPosition, AgentContainerType.MainPanel
                         , ori_x, ori_y, row, column, itemWidth, _itemHeight, data);
                     go.flockStatus = FlockStatusEnum.RUNIN;
 
-
                     go.Delay = delay;
                     go.DelayTime = delay;
-                    //go.NextVector2 = new Vector2(gen_x, gen_y);
 
+                    if (delay > _maxDelayTime)
+                        _maxDelayTime = delay;
 
                     gen_x_position = Mathf.RoundToInt(gen_x_position + itemWidth + gap / 2);
                     _displayBehaviorConfig.rowAgentsDic[row].xposition = gen_x_position;
@@ -204,7 +222,11 @@ namespace MagicWall
                 }
             }
 
-            //StartingDurTime += _startDelayTime;
+            StartingDurTime += _maxDelayTime;
+
+            Debug.Log("_maxDelayTime : " + _maxDelayTime);
+            Debug.Log("StartingDurTime : " + StartingDurTime);
+
 
         }
 

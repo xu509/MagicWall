@@ -37,6 +37,9 @@ namespace MagicWall
 
         [SerializeField, Header("LeftRightAdjust")] public EaseEnum LeftRightDisplayEaseEnum;
         [Range(0f, 10f)] public float LeftRightDisplayDurTime;
+        [Range(0f, 10f),Tooltip("间隔时间")] public float LeftRightGapTime = 0.3f;
+        [SerializeField] public EaseEnum LeftRightGapEaseEnum;
+
 
         [SerializeField, Header("UpDownAdjustCutEffect")] public EaseEnum UpDownDisplayEaseEnum;
         [Range(0f, 10f)] public float UpDownDisplayDurTime;

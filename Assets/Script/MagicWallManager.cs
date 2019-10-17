@@ -19,7 +19,10 @@ namespace MagicWall
         protected MagicWallManager() { }
 
         #region 可配置项
-        public bool switchMode = false;        
+        public bool switchMode = false;
+
+        [SerializeField] int _row = 12;   //  列数
+
 
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
@@ -80,6 +83,8 @@ namespace MagicWall
 
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
+        [SerializeField,Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
+        [SerializeField,Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] DaoService _realDaoService;
@@ -97,6 +102,10 @@ namespace MagicWall
 
         [SerializeField] bool _isMockFeiyueData;
 
+        [SerializeField] bool _isMockZBHFeiyueData;
+
+        [SerializeField] bool _isMockZBHFengxianData;
+
         [SerializeField] bool _isMockZhichengData;
 
         [SerializeField] bool _isMockShicunData;
@@ -113,7 +122,6 @@ namespace MagicWall
         #endregion
 
         #region 非配置属性
-        int _row = 12;   //  列数
 
         // 面板的差值
         float panelOffsetX = 0f;
@@ -225,7 +233,15 @@ namespace MagicWall
                     {
                         _daoService = _mockFeiyueDaoService;
                     }
-                    else if (_isMockShicunData) {
+                    else if (_isMockZBHFengxianData) {
+                        _daoService = _mockZBHFengxianDaoService;
+                    }
+                    else if (_isMockZBHFeiyueData)
+                    {
+                        _daoService = _mockZBHFeiyueDaoService;
+                    }
+                    else if (_isMockShicunData)
+                    {
                         _daoService = _mockShicunDaoService;
                     }
                     else

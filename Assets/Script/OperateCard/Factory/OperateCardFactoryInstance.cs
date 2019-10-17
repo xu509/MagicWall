@@ -15,12 +15,10 @@ namespace MagicWall {
         public static CardAgent Generate(MagicWallManager magicWallManager, Vector3 position
             , Transform parent, int dataId, DataTypeEnum dataType,FlockAgent refFlockAgent)
         {
-
             IDaoService daoService = magicWallManager.daoService;
 
             OperateCardData cardData = null;
             CardAgent cardPrefab = null ;
-
 
             //magicWallManager.daoService.getac
             if (dataType == DataTypeEnum.Enterprise)
@@ -34,15 +32,12 @@ namespace MagicWall {
                     .Transfer(enterprise, activities, products, videos, catalogs);
                 //Debug.Log(operateCardDataCross.ToString());
 
-
                 if (CheckIsSimple(operateCardDataCross))
                 {
                     cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
                     cardData = operateCardDataCross;
 
                     Debug.Log("Generate 单个企业卡片");
-
-
                 }
                 else
                 {
@@ -72,8 +67,6 @@ namespace MagicWall {
                 cardPrefab = magicWallManager.operateCardManager.sliceCardPrefab;
                 cardData = operateCardDataSlide;
             }
-
-
 
             CardAgent cardAgent = Instantiate(cardPrefab, parent);
             cardAgent.GetComponent<Transform>().position = position;

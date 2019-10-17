@@ -49,39 +49,45 @@ namespace MagicWall {
         {
             if (_manager != null) {
                 _kinectService.Monitoring();
+                _kinectCardObserver.Observering();
             }
 
-            _kinectCardObserver.Observering();
+            if (_kinectAgents != null) {
 
+                List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
 
-            List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
+                for (int i = 0; i < _kinectAgents.Count; i++)
+                {
+                    if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete)
+                    {
+                        needDestoryAgents.Add(_kinectAgents[i]);
+                    }
+                }
 
-            for (int i = 0; i < _kinectAgents.Count; i++) {
-                if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete) {
-                    needDestoryAgents.Add(_kinectAgents[i]);
+                for (int i = 0; i < needDestoryAgents.Count; i++)
+                {
+                    var agent = needDestoryAgents[i];
+                    _manager.collisionManager.RemoveCollisionEffectAgent(agent);
+                    _kinectAgents.Remove(agent);
+                    Destroy(agent.gameObject);
+                }
+
+                needDestoryAgents.Clear();
+
+                if (isMock)
+                {
+                    if (_kinectAgents.Count == 0)
+                    {
+                        // 模拟创建实体，实际使用kinect需注释
+                        var screenPosition = new Vector2(2000, 960);
+                        AddKinectAgents(screenPosition, 111);
+                    }
+                    // 模拟创建实体，实际使用kinect需注释  结束
                 }
             }
 
-            for (int i = 0; i < needDestoryAgents.Count; i++)
-            {
-                var agent = needDestoryAgents[i];
-                _manager.collisionManager.RemoveCollisionEffectAgent(agent);
-                _kinectAgents.Remove(agent);
-                Destroy(agent.gameObject);
-            }
+            
 
-            needDestoryAgents.Clear();
-
-
-            if (isMock)
-            {
-                if (_kinectAgents.Count == 0) {
-                    // 模拟创建实体，实际使用kinect需注释
-                    var screenPosition = new Vector2(2000, 960);
-                    AddKinectAgents(screenPosition, 111);
-                }                              
-                // 模拟创建实体，实际使用kinect需注释  结束
-            }
 
         }
 
@@ -274,9 +280,6 @@ namespace MagicWall {
                 kinectAgent.Init(userId,_manager);
                 _manager.collisionManager.AddCollisionEffectAgent(kinectAgent);
                 _kinectAgents.Add(kinectAgent);
-
-                print("_kinectAgents add new" + _kinectAgents.Count);
-
                 return kinectAgent;
             }            
         }

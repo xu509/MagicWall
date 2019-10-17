@@ -34,9 +34,22 @@ namespace MagicWall {
             {
                 var kinectAgent = kinectAgents[i];
 
+                if (kinectAgent.refFlockAgent != null)
+                {
+                    //Debug.Log("Flock name :" + kinectAgent.refFlockAgent.gameObject.name + " Status - " + kinectAgent.refFlockAgent.flockStatus);
+                }
+                else {
+                    if (kinectAgent.disableEffect)
+                    {
+                        kinectAgent.Close();
+                    }
+                }
+               
                 // 存在点开的卡片
                 if (kinectAgent.refFlockAgent !=null && kinectAgent.refFlockAgent.GetCardAgent != null) {
                     var cardAgent = kinectAgent.refFlockAgent.GetCardAgent;
+                    //Debug.Log(cardAgent.name + " status :" + cardAgent._cardStatus);
+
                     if(cardAgent._cardStatus == CardStatusEnum.TODESTORY)
                     {
                         var cardScale = cardAgent.GetComponent<RectTransform>().localScale;
@@ -45,12 +58,12 @@ namespace MagicWall {
 
                     if (cardAgent._cardStatus == CardStatusEnum.DESTORY)
                     {
+                        //Debug.Log("kinect agent close!");
                         kinectAgent.Close();
                     }
 
                     if (cardAgent._cardStatus == CardStatusEnum.MOVE)
                     {
-                        //kinectAgent.Close();
                         kinectAgent.transform.position = cardAgent.transform.position;
                     }
                 }

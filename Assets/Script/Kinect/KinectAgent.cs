@@ -31,6 +31,8 @@ namespace MagicWall
         public FlockAgent refFlockAgent { set { _refFlockAgent = value; } get { return _refFlockAgent; } }
 
         private bool _disableEffect = false;
+        public bool disableEffect { get { return _disableEffect; } }
+
         private MagicWallManager _manager;
 
         void Awake() {
@@ -41,7 +43,7 @@ namespace MagicWall
             GetComponent<RectTransform>().DOScale(1f, 1f).OnComplete(()=> {
                 _status = KinectAgentStatusEnum.Normal;
 
-                Debug.Log("Width : " + GetWidth());
+                //Debug.Log("Width : " + GetWidth());
             });
 
         }

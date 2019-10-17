@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3420545643153478132}
   - component: {fileID: 2832751157394946037}
   - component: {fileID: 9153692842147029854}
+  - component: {fileID: 185451957475055991}
+  - component: {fileID: 4388011717209578255}
   m_Layer: 0
   m_Name: Dao
   m_TagString: Untagged
@@ -99,3 +101,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mockSceneConfig: {fileID: 11400000, guid: bc3f3af9e4f9580408fd9080d1fb2a6f, type: 2}
+--- !u!114 &185451957475055991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295579063051274837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45cda5006e5e7134987cc649e0566041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mockSceneConfig: {fileID: 11400000, guid: e47e4bccca6022b41843e475e1e71498, type: 2}
+--- !u!114 &4388011717209578255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295579063051274837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae493ce8e61800a4598a3c14f45db7e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mockSceneConfig: {fileID: 11400000, guid: bd47f2ae6f4f1be4e9c4eb96c12f9592, type: 2}

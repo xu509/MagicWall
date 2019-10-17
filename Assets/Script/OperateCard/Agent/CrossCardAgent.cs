@@ -77,12 +77,41 @@ namespace MagicWall {
 
             //// 判断几个类型
 
-            
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.CataLog))
+            {
+                _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
+            }
+            else {
+                _hasCatalog = false;
+            }
 
-            _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
-            _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
-            _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
-            _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Product))
+            {
+                _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
+            }
+            else
+            {
+                _hasProduct = false;
+            }
+
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Activity))
+            {
+                _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
+            }
+            else
+            {
+                _hasActivity = false;
+            }
+
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Video))
+            {
+                _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
+            }
+            else
+            {
+                _hasVideo = false;
+            }
+
 
             int index = 0;
 
@@ -192,6 +221,8 @@ namespace MagicWall {
                 //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
             }
 
+
+            Debug.Log("_cellDatas : " + _cellDatas.Count);
 
 
 
