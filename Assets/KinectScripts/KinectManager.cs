@@ -3156,29 +3156,29 @@ public class KinectManager : MonoBehaviour
 
 				// check if to add or insert the new id
 				bool bInsertId = false;
-//				for(int i = 0; i < avatarControllers.Count; i++)
-//				{
-//					AvatarController avatar = avatarControllers[i];
-//					
-//					if(avatar && avatar.playerId != 0)
-//					{
-//						for(int u = 0; u < alUserIds.Count; u++)
-//						{
-//							if(avatar.playerId == alUserIds[u] && avatar.playerIndex > u)
-//							{
-//								bInsertId = true;
-//								uidIndex = 0;
-//								break;
-//							}
-//						}
-//
-//						if(bInsertId)
-//							break;
-//					}
-//				}
+                //				for(int i = 0; i < avatarControllers.Count; i++)
+                //				{
+                //					AvatarController avatar = avatarControllers[i];
+                //					
+                //					if(avatar && avatar.playerId != 0)
+                //					{
+                //						for(int u = 0; u < alUserIds.Count; u++)
+                //						{
+                //							if(avatar.playerId == alUserIds[u] && avatar.playerIndex > u)
+                //							{
+                //								bInsertId = true;
+                //								uidIndex = 0;
+                //								break;
+                //							}
+                //						}
+                //
+                //						if(bInsertId)
+                //							break;
+                //					}
+                //				}
 
-				//Debug.Log("Adding user " + uidIndex + ", ID: " + userId + ", Body: " + bodyIndex);
-				dictUserIdToIndex[userId] = bodyIndex;
+                Debug.Log("Adding user " + uidIndex + ", ID: " + userId + ", Body: " + bodyIndex);
+                dictUserIdToIndex[userId] = bodyIndex;
 
 				if(uidIndex >= 0)
 				{
@@ -3242,9 +3242,9 @@ public class KinectManager : MonoBehaviour
 	{
 		//int uidIndex = alUserIds.IndexOf(userId);
 		int uidIndex = Array.IndexOf(aUserIndexIds, userId);
-		//Debug.Log("Removing user " + uidIndex + ", ID: " + userId + ", Body: " + dictUserIdToIndex[userId]);
-		
-		for(int i = 0; i < avatarControllers.Count; i++)
+        Debug.Log("Removing user " + uidIndex + ", ID: " + userId + ", Body: " + dictUserIdToIndex[userId]);
+
+        for (int i = 0; i < avatarControllers.Count; i++)
 		{
 			AvatarController avatar = avatarControllers[i];
 
