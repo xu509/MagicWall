@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MagicWall
 {
-    interface CutEffectDestoryBehavior
+    public interface CutEffectDestoryBehavior
     {
-        void Init(MagicWallManager manager, float destoryDurTime);
+        void Init(MagicWallManager manager, Action onDestoryCompleted);
 
         void Run();
     }

@@ -333,7 +333,7 @@ namespace MagicWall
         /// </summary>
         private void DoDestoriedForFirstStep()
         {
-            Debug.Log(gameObject.name + " 进行第一次销毁。");
+            //Debug.Log(gameObject.name + " 进行第一次销毁。");
 
             // 如果当前处于移动中，则将移动关闭
             if (_cardStatus == CardStatusEnum.MOVE)
@@ -365,12 +365,8 @@ namespace MagicWall
                  }).OnKill(() => {});
 
 
-            _tweenerManager.Add("d", _destory_first_scale_tweener);
-
-            
-
-            Debug.Log(gameObject.name + " 第一次销毁结束，增加了tweener。");
-
+            _tweenerManager.Add("d", _destory_first_scale_tweener);           
+            //Debug.Log(gameObject.name + " 第一次销毁结束，增加了tweener。");
         }
 
         //

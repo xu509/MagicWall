@@ -317,7 +317,6 @@ namespace MagicWall
             /// 已修改为编辑器配置方式
             ///  -》 config / MockSceneConfig 
 
-
             List<SceneConfig> items = new List<SceneConfig>();
 
             var sceneConfigs = _mockSceneConfig.sceneConfigs;
@@ -544,7 +543,7 @@ namespace MagicWall
                 print("初始化文件夹不存在");
             }
 
-            Debug.Log("产品总数： " + _products.Count);
+            //Debug.Log("产品总数： " + _products.Count);
 
         }
 
@@ -725,20 +724,6 @@ namespace MagicWall
             for (int i = 0; i < _products.Count; i++) {
                 result.Add(_products[i].Image);
             }
-
-            //var c1 = GetCustomImage(CustomImageType.LEFT1);
-            //var c2 = GetCustomImage(CustomImageType.RIGHT);
-
-            //for (int i = 0; i < c1.Count; i++)
-            //{
-            //    result.Add(c1[i]);
-            //}
-
-            //for (int i = 0; i < c2.Count; i++)
-            //{
-            //    result.Add(c2[i]);
-            //}
-
 
             return result;
         }

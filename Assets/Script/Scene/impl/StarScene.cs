@@ -326,8 +326,7 @@ namespace MagicWall
             if (!_isEnding)
             {
                 _isEnding = true;
-                _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
-                //DoEnd();
+                //_magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
 
                 _manager.starEffectContent.GetComponent<CanvasGroup>()
                     .DOFade(0, 2f)
@@ -347,7 +346,7 @@ namespace MagicWall
         public void OnRunEndCompleted()
         {
             _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-            _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+            //_magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
 
             Reset();
             _onRunEndCompleted.Invoke();

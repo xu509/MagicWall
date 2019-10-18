@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MagicWall
 {
-    interface CutEffectDisplayBehavior
+    public interface CutEffectDisplayBehavior
     {
         void Init(DisplayBehaviorConfig displayBehaviorConfig);
 

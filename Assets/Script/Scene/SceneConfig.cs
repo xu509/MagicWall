@@ -22,19 +22,30 @@ namespace MagicWall
         [SerializeField]
         private float _durTime; // 持续时间
 
+        [SerializeField]
+        private DisplayBehaviorEnum _displayBehavior;   //移动
+
+        [SerializeField]
+        private DestoryBehaviorEnum _destoryBehavior;   // 销毁
+
 
         public SceneTypeEnum sceneType { set { _sceneType = value; } get { return _sceneType; } }
         public DataTypeEnum dataType { set { _dataType = value; } get { return _dataType; } }
         public float durtime { set { _durTime = value; } get { return _durTime; } }
+        public DisplayBehaviorEnum displayBehavior { set { _displayBehavior = value; } get { return _displayBehavior; } }
+        public DestoryBehaviorEnum destoryBehavior { set { _destoryBehavior = value; } get { return _destoryBehavior; } }
 
 
         public SceneConfig() { }
 
-        public SceneConfig(SceneTypeEnum sceneTypeEnum, DataTypeEnum dataType, float durTime)
+        public SceneConfig(SceneTypeEnum sceneTypeEnum, DataTypeEnum dataType, 
+            DisplayBehaviorEnum displayBehavior, DestoryBehaviorEnum destoryBehavior,float durTime)
         {
             _sceneType = sceneTypeEnum;
             _dataType = dataType;
             _durTime = durTime;
+            _displayBehavior = displayBehavior;
+            _destoryBehavior = destoryBehavior;
         }
 
 
@@ -47,6 +58,10 @@ namespace MagicWall
             str += " | Data Type : " + _dataType;
 
             str += " | _durTime : " + _durTime;
+
+            str += " | display Behavior : " + displayBehavior;
+
+            str += " | destory Behavior : " + _destoryBehavior;
 
             return str;
 

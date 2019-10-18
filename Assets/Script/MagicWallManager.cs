@@ -137,9 +137,9 @@ namespace MagicWall
 
         // 配置选项
 
-        //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+      //  public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
        // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
@@ -399,6 +399,26 @@ namespace MagicWall
             }
             //Debug.Log("OFFSET IS " + PanelOffset);
         }
+
+        public void updateOffsetOfCanvasDirect()
+        {
+            Vector2 mainPanelPosition = mainPanel.anchoredPosition;
+            Vector2 operationPanelPosition = _operationPanel.anchoredPosition;
+            Vector2 backPanelPosition = backPanel.anchoredPosition;
+
+            PanelOffsetX = operationPanelPosition.x - mainPanelPosition.x;
+            PanelBackOffsetX = (operationPanelPosition - backPanelPosition - mainPanelPosition).x;
+            PanelOffsetY = operationPanelPosition.y - mainPanelPosition.y;
+        }
+
+        public void RecoverFromFade() {
+            if (mainPanel.GetComponent<CanvasGroup>().alpha < 1) {
+                mainPanel.GetComponent<CanvasGroup>().alpha = 1;
+            }
+        }
+
+
+
         #endregion
 
 

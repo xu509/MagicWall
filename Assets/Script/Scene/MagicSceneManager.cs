@@ -100,19 +100,12 @@ namespace MagicWall
             for (int i = 0; i < _scenes.Count; i++)
             {
                 _scenes[i].SetOnRunCompleted(OnRunCompleted);
-                _scenes[i].SetOnRunEndCompleted(OnRunEndCompleted);
             }
 
 
             _hasInit = true;
         }
 
-
-
-        //
-        //  Constructor
-        //
-        protected MagicSceneManager() { }
 
 
         //
@@ -123,35 +116,29 @@ namespace MagicWall
             // 背景始终运行
             _manager.backgroundManager.run();
 
-
             if (!_hasInit && _scenes != null)
             {
                 return;
             }
 
-            //return;
-
             if (_sceneStatus == MagicSceneEnum.Running)
             {
                 _scenes[_index].Run();
             }
-
             else if (_sceneStatus == MagicSceneEnum.RunningComplete)
             {
-                _sceneStatus = MagicSceneEnum.RunningEnd;
-            }
+                _sceneStatus = MagicSceneEnum.Reset;
 
-            else if (_sceneStatus == MagicSceneEnum.RunningEnd)
-            {
-                _scenes[_index].RunEnd();
+                // do reset
+                _manager.Clear();
+                _sceneStatus = MagicSceneEnum.ResetComplete;
             }
-
-            else if (_sceneStatus == MagicSceneEnum.RunningEndComplete)
+            else if (_sceneStatus == MagicSceneEnum.Reset)
             {
+            }
+            else if (_sceneStatus == MagicSceneEnum.ResetComplete) {
                 GoNext();
-                _sceneStatus = MagicSceneEnum.Running;
             }
-
 
         }
 
@@ -166,27 +153,27 @@ namespace MagicWall
         }
 
 
-        /// <summary>
-        ///  调整为下一个
-        /// </summary>
-        public void TurnToNext()
-        {
-            if (_sceneStatus == MagicSceneEnum.Running)
-            {
-                _sceneStatus = MagicSceneEnum.RunningEnd;
-            }
-        }
+        ///// <summary>
+        /////  调整为下一个
+        ///// </summary>
+        //public void TurnToNext()
+        //{
+        //    if (_sceneStatus == MagicSceneEnum.Running)
+        //    {
+        //        _sceneStatus = MagicSceneEnum.RunningEnd;
+        //    }
+        //}
 
-        /// <summary>
-        /// 调整至上一个场景
-        /// </summary>
-        public void TurnToPrevious()
-        {
-            if (_sceneStatus == MagicSceneEnum.Running)
-            {
-                _sceneStatus = MagicSceneEnum.RunningEnd;
-            }
-        }
+        ///// <summary>
+        ///// 调整至上一个场景
+        ///// </summary>
+        //public void TurnToPrevious()
+        //{
+        //    if (_sceneStatus == MagicSceneEnum.Running)
+        //    {
+        //        _sceneStatus = MagicSceneEnum.RunningEnd;
+        //    }
+        //}
 
 
 
@@ -197,7 +184,6 @@ namespace MagicWall
                 _onStartCompleted.Invoke();
 
             }
-
 
             if (_index == _scenes.Count - 1)
             {
@@ -218,22 +204,24 @@ namespace MagicWall
 
             _manager.SceneIndex = _manager.SceneIndex + 1;
             _manager.CurrentScene = _scenes[_index];
+
+            _sceneStatus = MagicSceneEnum.Running;
         }
 
-        private void GoPrevious()
-        {
-            if (_index == 0)
-            {
-                _index = _scenes.Count - 1;
-            }
-            else
-            {
-                _index--;
-            }
+        //private void GoPrevious()
+        //{
+        //    if (_index == 0)
+        //    {
+        //        _index = _scenes.Count - 1;
+        //    }
+        //    else
+        //    {
+        //        _index--;
+        //    }
 
-            _manager.SceneIndex = _manager.SceneIndex + 1;
-            _manager.CurrentScene = _scenes[_index];
-        }
+        //    _manager.SceneIndex = _manager.SceneIndex + 1;
+        //    _manager.CurrentScene = _scenes[_index];
+        //}
 
 
         private void OnRunCompleted()
@@ -241,10 +229,6 @@ namespace MagicWall
             _sceneStatus = MagicSceneEnum.RunningComplete;
         }
 
-        private void OnRunEndCompleted()
-        {
-            _sceneStatus = MagicSceneEnum.RunningEndComplete;
-        }
 
     }
 }

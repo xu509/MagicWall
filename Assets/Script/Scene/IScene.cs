@@ -16,14 +16,6 @@ namespace MagicWall
 
         void SetOnRunCompleted(Action onRunCompleted);
 
-        void OnRunCompleted();
-
-        void RunEnd();
-
-        void SetOnRunEndCompleted(Action onRunEndCompleted);
-
-        void OnRunEndCompleted();
-
         //
         //  获取内容类型
         //

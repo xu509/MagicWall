@@ -138,7 +138,7 @@ namespace MagicWall
             {
                 // 切换卡片受影响模式
 
-                _magicSceneManager.TurnToNext();
+                //_magicSceneManager.TurnToNext();
 
                 _messageAgent.UpdateMessage("切换场景中", 3f);
             }

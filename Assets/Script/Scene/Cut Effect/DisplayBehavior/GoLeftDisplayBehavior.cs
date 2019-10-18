@@ -36,7 +36,7 @@ namespace MagicWall
             _manager.mainPanel.transform.Translate(to);
 
             // 调整panel的差值
-            _manager.updateOffsetOfCanvas();
+            _manager.updateOffsetOfCanvasDirect();
 
             UpdateAgents();
         }
@@ -63,6 +63,8 @@ namespace MagicWall
 
             int row = 0;    // 最短行长的行值
             int last_x = int.MaxValue;
+
+
             ItemPositionInfoBean bean = new ItemPositionInfoBean();
             foreach (KeyValuePair<int, ItemPositionInfoBean> keyValuePair in rowDic)
             {
@@ -73,6 +75,7 @@ namespace MagicWall
                     bean = keyValuePair.Value;
                 }
             }
+
 
             float deviationValue = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight() / 2;
 

@@ -452,22 +452,6 @@ namespace MagicWall
         }
 
 
-        /// <summary>
-        /// 判断可以被选择
-        /// </summary>
-        /// <returns></returns>
-        private bool CanChoose() {
-            bool canChoose = false;
-
-            if (_flockStatus == FlockStatusEnum.NORMAL
-                || _flockStatus == FlockStatusEnum.RUNIN
-                || _flockStatus == FlockStatusEnum.STAR) {
-                canChoose = true;
-            }
-            return canChoose;
-        }
-
-
 
         /* CollisionMoveBasicAgent Impl 相关 */
 
@@ -613,16 +597,24 @@ namespace MagicWall
             // _oriVector2
             var refVector2 = new Vector2();
 
-            if (_manager.SceneStatus == WallStatusEnum.Cutting)
-            {
-                // 当前场景正在切换时，参考位置为目标的下个移动位置
-                refVector2 = _nextChangedPosition;
-            }
-            else
+            if (isCreateSuccess)
             {
                 //当前场景为正常展示时，参考位置为固定位置
                 refVector2 = _oriVector2;
             }
+            else {
+                // 当前场景正在切换时，参考位置为目标的下个移动位置
+                refVector2 = _nextChangedPosition;
+            }
+
+            //if (_manager.SceneStatus == WallStatusEnum.Cutting)
+            //{
+
+            //}
+            //else
+            //{
+
+            //}
 
             Vector2 refVector2WithOffset;
 

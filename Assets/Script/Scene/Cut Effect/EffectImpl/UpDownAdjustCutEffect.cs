@@ -20,28 +20,27 @@ namespace MagicWall
         //
         //  Init
         //
-        public override void Init(MagicWallManager manager)
+        public override void Init(MagicWallManager manager, SceneConfig sceneConfig)
         {
             _manager = manager;
             _agentManager = manager.agentManager;
             _daoService = manager.daoService;
 
+            DisplayDurTime = sceneConfig.durtime;
 
             //  获取持续时间
             StartingDurTime = manager.cutEffectConfig.UpDownDisplayDurTime;
             _startingTimeWithOutDelay = StartingDurTime;
             DestoryDurTime = 0.5f;
 
-            ////  设置显示的时间
-            //string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_UpDownAdjust).Value;
-            //DisplayDurTime = AppUtils.ConvertToFloat(t);
-
             // 获取Display的动画
-            DisplayBehavior = new GoUpDisplayBehavior();
+            DisplayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
 
             // 获取销毁的动画
-            DestoryBehavior = new FadeOutDestoryBehavior();
-            DestoryBehavior.Init(_manager, DestoryDurTime);
+            DestoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
+            DestoryBehavior.Init(_manager, ()=> {
+                // on destory completed
+            });
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();

@@ -44,13 +44,8 @@ namespace MagicWall
 
         internal CutEffectDestoryBehavior DestoryBehavior { get { return destoryBehavior; } set { destoryBehavior = value; } }
 
-        public abstract void Init(MagicWallManager manager);
+        public abstract void Init(MagicWallManager manager,SceneConfig sceneConfig);
 
-        //protected abstract void CreateActivity();
-
-        //protected abstract void CreateProduct();
-
-        //protected abstract void CreateLogo();
 
         protected abstract void CreateAgents(DataTypeEnum dataType);
 
@@ -60,16 +55,17 @@ namespace MagicWall
         //
         public void Create(DataTypeEnum dataType)
         {
+            Debug.Log("Create Effect : " + GetID());
+
             _daoService = _manager.daoService;
 
-            Init(_manager);
+            //Init(_manager);
 
             _sceneUtil = new SceneUtils(_manager);
 
             CreateAgents(dataType);
 
             _dataType = dataType;
-
 
 
             // 初始化完成后更新时间

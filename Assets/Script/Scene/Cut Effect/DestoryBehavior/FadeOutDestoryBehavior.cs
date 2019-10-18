@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +11,20 @@ namespace MagicWall
 
         bool hasInit = false;
         float startTime;
-        float totalTime;
+        float totalTime = 1f;
 
-        public void Init(MagicWallManager manager, float destoryDurTime)
+        Action _onDestoryCompleted;
+
+        //public void Init(MagicWallManager manager, float destoryDurTime)
+        //{
+        //    totalTime = destoryDurTime;
+        //    _manager = manager;
+        //}
+
+        public void Init(MagicWallManager manager, Action onDestoryCompleted)
         {
-            totalTime = destoryDurTime;
             _manager = manager;
+            _onDestoryCompleted = onDestoryCompleted;
         }
 
         public void Run()
@@ -29,6 +38,10 @@ namespace MagicWall
             float a = Mathf.Lerp(1, 0, time / totalTime);
             _manager.mainPanel.GetComponent<CanvasGroup>().alpha = a;
             //_manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = a;
+
+            if (time >= totalTime) {
+                _onDestoryCompleted.Invoke();
+            }
 
         }
     }

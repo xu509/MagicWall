@@ -14,6 +14,8 @@ namespace MagicWall
         //public SceneConfig[] _sceneConfigs;
         private static float _effect_width = 100f;
         private static float _type_width = 80f;
+        private static float _move_width = 80f;
+        private static float _destory_width = 80f;
         private static float _durtime_width = 50f;
         private static float _tool_width = 50f;
 
@@ -49,6 +51,8 @@ namespace MagicWall
                 Rect r = EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("effect", GUILayout.Width(_effect_width));
                 EditorGUILayout.LabelField("type", GUILayout.Width(_type_width));
+                EditorGUILayout.LabelField("moveB", GUILayout.Width(_move_width));
+                EditorGUILayout.LabelField("destoryB", GUILayout.Width(_destory_width));
                 EditorGUILayout.LabelField("durtime", GUILayout.Width(_durtime_width));
                 EditorGUILayout.LabelField("tool", GUILayout.Width(_tool_width));
                 EditorGUILayout.LabelField("up", GUILayout.Width(_tool_width));
@@ -67,6 +71,8 @@ namespace MagicWall
                     r.height = EditorGUIUtility.singleLineHeight * 1.2f;
                     config.sceneType = (SceneTypeEnum)EditorGUILayout.EnumPopup(config.sceneType, GUILayout.Width(_effect_width));
                     config.dataType = (DataTypeEnum)EditorGUILayout.EnumPopup(config.dataType, GUILayout.Width(_type_width));
+                    config.displayBehavior = (DisplayBehaviorEnum)EditorGUILayout.EnumPopup(config.displayBehavior, GUILayout.Width(_move_width));
+                    config.destoryBehavior = (DestoryBehaviorEnum)EditorGUILayout.EnumPopup(config.destoryBehavior, GUILayout.Width(_destory_width));
                     config.durtime = EditorGUILayout.FloatField(config.durtime, GUILayout.Width(_durtime_width));
 
                     if (GUILayout.Button("DEL", GUILayout.Width(_tool_width)))
@@ -145,7 +151,8 @@ namespace MagicWall
                 //newWeights[i] = cb.weights[i];
             }
 
-            SceneConfig n = new SceneConfig(SceneTypeEnum.CurveStagger, DataTypeEnum.Activity, 5f);
+            SceneConfig n = new SceneConfig(SceneTypeEnum.CurveStagger, DataTypeEnum.Activity
+                ,DisplayBehaviorEnum.GoLeft,DestoryBehaviorEnum.Fade, 5f);
 
             configs.Add(n);
 

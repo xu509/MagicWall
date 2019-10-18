@@ -22,12 +22,14 @@ namespace MagicWall
         //
         //  Init
         //
-        public override void Init(MagicWallManager manager)
+        public override void Init(MagicWallManager manager, SceneConfig sceneConfig)
         {
             //  初始化 manager
             _manager = manager;
             _agentManager = manager.agentManager;
             _daoService = manager.daoService;
+
+            DisplayDurTime = sceneConfig.durtime;
 
             //  获取持续时间
             StartingDurTime = manager.cutEffectConfig.FrontBackDisplayDurTime;
@@ -39,11 +41,13 @@ namespace MagicWall
             //DisplayDurTime = AppUtils.ConvertToFloat(t);
 
             // 获取Display的动画
-            DisplayBehavior = new FrontBackGoLeftDisplayBehavior();
+            DisplayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
 
             // 获取销毁的动画
-            DestoryBehavior = new FadeOutDestoryBehavior();
-            DestoryBehavior.Init(_manager, DestoryDurTime);
+            DestoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
+            DestoryBehavior.Init(_manager, () => {
+                //on destory completed
+            });
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();

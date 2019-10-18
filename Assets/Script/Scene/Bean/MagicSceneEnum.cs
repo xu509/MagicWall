@@ -9,7 +9,11 @@ namespace MagicWall
     {
         Running,
         RunningComplete,
-        RunningEnd,
-        RunningEndComplete
+        Reset,
+        ResetComplete
+
+
+        //RunningEnd,
+        //RunningEndComplete
     }
 }
