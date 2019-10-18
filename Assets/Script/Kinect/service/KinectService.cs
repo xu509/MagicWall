@@ -21,7 +21,6 @@ namespace MagicWall
         MagicWallManager _manager;
 
         KinectManager kinectManager;
-        Dictionary<long, KinectAgent> userAndAgents;
 
         private bool isInit;
 
@@ -32,7 +31,6 @@ namespace MagicWall
             _kinectAgentPrefab = agentPrefab.gameObject;
             _manager = manager;
             kinectManager = KinectManager.Instance;
-            userAndAgents = new Dictionary<long, KinectAgent>();
             //print("KinectService Init");
 
         }
@@ -59,15 +57,12 @@ namespace MagicWall
                 Vector3 userPos = kinectManager.GetJointKinectPosition(userid, jointIndex);
                 //kinect在背后，x正负值颠倒y
                 userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
-                //保留两位小数
-                
-                float x = float.Parse(string.Format("{0:f2}", userPos.x));
-                float y = float.Parse(string.Format("{0:f2}", userPos.y));
-
+                //保留?位小数
+                float x = float.Parse(string.Format("{0:f3}", userPos.x));
+                float y = float.Parse(string.Format("{0:f3}", userPos.y));
 
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                //Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * userPos.x * Screen.width / 2, origin.y + basicDistance / userPos.z * userPos.y * Screen.height / 2 + 300); // 正式环境删除400
                 Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * x * Screen.width / 2, origin.y + basicDistance / userPos.z * y * Screen.height / 2 + 300); // 正式环境删除400
                 KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
 
@@ -93,8 +88,8 @@ namespace MagicWall
                     //移动体感卡片，不进行上下移动
                     Vector2 rectPosition = new Vector2();
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRectTransform, userScreenPos, null, out rectPosition);
-
-                    var to = new Vector2(rectPosition.x, kinectAgent.GetComponent<RectTransform>().anchoredPosition.y);
+                    float currentY = kinectAgent.GetComponent<RectTransform>().anchoredPosition.y;
+                    var to = new Vector2(rectPosition.x, currentY);
                     kinectAgent.UpdatePos(to);
                     //kinectAgent.UpdatePos(rectPosition);
 

@@ -142,7 +142,7 @@ MonoBehaviour:
   sensorAngle: 0
   autoHeightAngle: 2
   computeUserMap: 3
-  computeColorMap: 0
+  computeColorMap: 1
   computeInfraredMap: 0
   displayUserMap: 0
   displayColorMap: 1
@@ -158,7 +158,7 @@ MonoBehaviour:
   ignoreInferredJoints: 0
   ignoreZCoordinates: 0
   lateUpdateAvatars: 0
-  smoothing: 3
+  smoothing: 1
   useBoneOrientationConstraints: 0
   allowTurnArounds: 0
   allowedHandRotations: 1
@@ -346,6 +346,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 003ae51fe042be249bffb48f6deeb7a0,
         type: 2}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _screenType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _isMockFeiyueData
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -388,6 +398,21 @@ PrefabInstance:
       propertyPath: isMock
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: moveDelayTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: agentMoveTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: agentMoveDelayTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentChooseBehavior
@@ -397,6 +422,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: ignoreValue
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}

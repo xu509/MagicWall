@@ -13,6 +13,13 @@ namespace MagicWall
         [SerializeField] RectTransform _rectBg;
         [SerializeField] RectTransform _rectRemind;
 
+
+        /// <summary>
+        /// 上一次移动的时间点
+        /// </summary>
+        private float _lastMoveTime = -1f;
+
+
         private FlockTweenerManager _flockTweenerManager;
         public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
@@ -39,6 +46,9 @@ namespace MagicWall
         public bool disableEffect { get { return _disableEffect; } }
 
         private MagicWallManager _manager;
+        private float _ignoreValue;
+        private float _moveDelayTime;
+
 
         void Awake() {
             _flockTweenerManager = new FlockTweenerManager();
@@ -54,7 +64,6 @@ namespace MagicWall
             });
 
         }
-
 
         public float GetHeight()
         {
@@ -154,7 +163,8 @@ namespace MagicWall
         public void Init(long userId,MagicWallManager magicWallManager) {
             _userId = userId;
             _manager = magicWallManager;
-
+            _ignoreValue = FindObjectOfType<MKinectManager>().ignoreValue;
+            _moveDelayTime = FindObjectOfType<MKinectManager>().agentMoveDelayTime;
             SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound));
             
             _status = KinectAgentStatusEnum.Creating;
@@ -216,8 +226,23 @@ namespace MagicWall
         public void UpdatePos(Vector2 anchPos)
         {
             if (_status == KinectAgentStatusEnum.Normal || _status == KinectAgentStatusEnum.Creating) {
-                GetComponent<RectTransform>().anchoredPosition = anchPos;
+                float currentX = GetComponent<RectTransform>().anchoredPosition.x;
+                //if (Mathf.Abs(currentX-anchPos.x) < _ignoreValue)
+                //{
+                //    return;
+                //}
+                //GetComponent<RectTransform>().anchoredPosition = anchPos;
+                if (Time.time - _lastMoveTime > _moveDelayTime)
+                {
+                    _lastMoveTime = Time.time;
+
+                    GetComponent<RectTransform>().DOAnchorPosX(anchPos.x, _moveDelayTime).OnComplete(() =>
+                    {
+                    });
+                    //GetComponent<RectTransform>().anchoredPosition = anchPos;
+                }
                 //Debug.Log("update pos : " + _status);
+
             }
 
         }

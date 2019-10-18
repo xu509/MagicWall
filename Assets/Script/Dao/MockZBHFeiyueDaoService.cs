@@ -584,18 +584,23 @@ namespace MagicWall
             int index = 0;
             for (int i = 0; i < fileInfos.Length; i++)
             {
-                var fileName = fileInfos[i].Name.Replace(fileInfos[i].Extension, "");
+                if (fileInfos[i].Extension.Contains("jpg") || fileInfos[i].Extension.Contains("png"))
+                {
+                    var fileName = fileInfos[i].Name.Replace(fileInfos[i].Extension, "");
 
-                ProductDetail productDetail = new ProductDetail();
-                productDetail.Id = i;
-                productDetail.Pro_id = proId;
-                productDetail.Type = 0;
-                productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfo.Name; ;
-                productDetail.Description = fileName;
-                productDetails.Add(productDetail);
+                    ProductDetail productDetail = new ProductDetail();
+                    productDetail.Id = i;
+                    productDetail.Pro_id = proId;
+                    productDetail.Type = 0;
+                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;
+                    print(productDetail.Image);
+                    productDetail.Description = fileName;
+                    productDetails.Add(productDetail);
 
-                if (fileInfo == fileInfos[i]) {
-                    index = i;
+                    if (fileInfo == fileInfos[i])
+                    {
+                        index = i;
+                    }
                 }
             }
 

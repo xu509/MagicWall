@@ -146,7 +146,9 @@ namespace MagicWall
         }
 
 
-
+        /// <summary>
+        /// 调整卡片UI
+        /// </summary>
         private void InitUI() {
             MagicWallManager manager =  GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
 
@@ -157,7 +159,7 @@ namespace MagicWall
             if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 // 调整标题位置，标题大小
-                var titlePosition1080 = new Vector2(0.0f, -250.0f);
+                var titlePosition1080 = new Vector2(0.0f, -165.0f);
                 var titleFontSize = 40;
                 _titleContainer.anchoredPosition = titlePosition1080;
                 _title.fontSize = titleFontSize;
