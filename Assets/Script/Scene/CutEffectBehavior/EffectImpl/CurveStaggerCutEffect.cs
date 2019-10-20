@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,68 +13,42 @@ namespace MagicWall
     {
         MagicWallManager _manager;
 
-        private float _displayTime;
         private float _entranceDisplayTime;
         private float _startTime;
 
-        private CutEffectDisplayBehavior _displayBehavior;
-        private CutEffectDestoryBehavior _destoryBehavior;
         private SceneUtils _sceneUtil;
         private DataTypeEnum _dataTypeEnum;
         private CutEffectStatus _cutEffectStatus;
 
-
         private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
         private float _startDelayTime = 0f;  //启动的延迟时间
         private float _startingTimeWithOutDelay;
-        private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
 
-        private Action _onStartCompleted;
-        private Action _onEffectEnd;
+        private Action _onEffectCompleted;
         private Action _onDisplayStart;
-        private Action _onDestoryStart;
-        private Action _onDestoryCompleted;
+        private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
 
+        private bool _hasCallDisplay = false;
 
-        public void Init(MagicWallManager manager, SceneConfig sceneConfig, 
-            Action OnEffectEnd, Action OnDisplayStart, Action OnStartCompleted,
-            Action OnDestoryStart,Action OnDestoryCompleted)
+        public void Init(MagicWallManager manager, SceneConfig sceneConfig,
+            Action<DisplayBehaviorConfig> OnCreateAgentCompleted,
+            Action OnEffectCompleted, Action OnDisplayStart
+            )
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             //  初始化 manager
             _manager = manager;
-            _displayTime = sceneConfig.durtime;
             _dataTypeEnum = sceneConfig.dataType;
 
-            _onEffectEnd = OnEffectEnd;
+            _onCreateAgentCompleted = OnCreateAgentCompleted;
+            _onEffectCompleted = OnEffectCompleted;
             _onDisplayStart = OnDisplayStart;
-            _onStartCompleted = OnStartCompleted;
-            _onDestoryStart = OnDestoryStart;
-            _onDestoryCompleted = OnDestoryCompleted;
 
             //  获取持续时间
             _entranceDisplayTime = manager.cutEffectConfig.CurveStaggerDisplayDurTime;
             _startingTimeWithOutDelay = _entranceDisplayTime;
-
-            // 获取Display的动画
-            _displayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
-
-            // 获取销毁的动画
-            _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            _destoryBehavior.Init(_manager, () =>
-            {
-                //结束时
-                _cutEffectStatus = CutEffectStatus.Init;
-                _onDestoryCompleted.Invoke();
-            });
-
-            //  初始化 config
-            _displayBehaviorConfig = new DisplayBehaviorConfig();
-
-            _sceneUtil = new SceneUtils(_manager);
-            _cutEffectStatus = CutEffectStatus.PreparingCompleted;
 
             sw.Stop();
         }
@@ -82,6 +56,10 @@ namespace MagicWall
 
         private void CreateItem(DataTypeEnum dataType)
         {
+            //  初始化 config
+            _displayBehaviorConfig = new DisplayBehaviorConfig();
+            _sceneUtil = new SceneUtils(_manager);
+
 
             // 固定高度
             int _row = _manager.Row;
@@ -173,7 +151,11 @@ namespace MagicWall
 
             _entranceDisplayTime += _startDelayTime;
 
-            OnCreateCompleted();
+            _displayBehaviorConfig.dataType = _dataTypeEnum;
+            _displayBehaviorConfig.Manager = _manager;
+            _displayBehaviorConfig.sceneUtils = _sceneUtil;
+
+            _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
         }
 
 
@@ -209,53 +191,28 @@ namespace MagicWall
                     Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
                     agent.SetChangedPosition(to);
                 }
+            }
 
-                //if ((time - _entranceDisplayTime * 0.8f) > 0) {
-                //    _onDisplayStart.Invoke();
-                //}
+            if ((time - _entranceDisplayTime * 0.8f) > 0)
+            {
+                if (!_hasCallDisplay) {
+                    _hasCallDisplay = true;
+                    _onDisplayStart.Invoke();
+                }
             }
 
             if ((time - _entranceDisplayTime) > 0) {
-                _onDisplayStart.Invoke();
-                _onStartCompleted.Invoke();
-                Debug.Log("_onStartCompleted completed");
-
+                Reset();
+                _onEffectCompleted.Invoke();
             }
         }
         #endregion
 
-        public void OnCreateCompleted()
-        {
-            //  初始化表现形式
-            _displayBehaviorConfig.dataType = _dataTypeEnum;
-            _displayBehaviorConfig.DisplayTime = _displayTime;
-            _displayBehaviorConfig.Manager = _manager;
-            _displayBehaviorConfig.sceneUtils = _sceneUtil;
-            _displayBehavior.Init(_displayBehaviorConfig);
 
-            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
-            {
-                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
-                {
-                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
-                }
-            }
-
-            Debug.Log("_displayBehavior init completed");
-
-        }
-
-
-
-        public void RunEntrance()
+        public void Run()
         {
             if (_cutEffectStatus == CutEffectStatus.Init) {
                 _cutEffectStatus = CutEffectStatus.Preparing;
-
-                _displayBehaviorConfig = new DisplayBehaviorConfig();
-
-                Debug.Log("RecoverFromFade");
-
                 _manager.RecoverFromFade();
                 _cutEffectStatus = CutEffectStatus.PreparingCompleted;
             }
@@ -273,35 +230,19 @@ namespace MagicWall
             if (_cutEffectStatus == CutEffectStatus.Creating) {
                 Starting();
             }
-
         }
 
-        public void RunDisplaying()
-        {
-            _displayBehavior.Run();
-        }
-
-        public void RunDestoring()
-        {
-            _destoryBehavior.Run();            
-        }
 
         public SceneTypeEnum GetSceneType()
         {
             return SceneTypeEnum.CurveStagger;
         }
 
-        public void Run()
+        private void Reset()
         {
-            var runTime = Time.time - _startTime;
-            var time = _entranceDisplayTime + _displayTime;
-
-            if ((runTime - time) > 0) {
-                // 开始结束动画
-                _onDestoryStart.Invoke();
-            }            
+            _hasCallDisplay = false;
+            _cutEffectStatus = CutEffectStatus.Init;
         }
-
 
     }
 }

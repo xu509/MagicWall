@@ -11,8 +11,6 @@ namespace MagicWall
     {
         public string effectAgentName;
 
-
-
         protected MagicWallManager _manager;
 
         protected FlockTweenerManager _flockTweenerManager;
@@ -119,6 +117,8 @@ namespace MagicWall
         public bool isStarEffect { set { _isStarEffect = value; } get { return _isStarEffect; } }
 
 
+        private float _fallDownStartTime = 0f;
+        public float fallDwonStartTime { set { _fallDownStartTime = value; } get { return _fallDownStartTime; } }
 
 
 
@@ -597,15 +597,23 @@ namespace MagicWall
             // _oriVector2
             var refVector2 = new Vector2();
 
-            if (isCreateSuccess)
+            if (hasChangedFlag)
+            {
+                refVector2 = _nextChangedPosition;
+            }
+            else if (isCreateSuccess)
             {
                 //当前场景为正常展示时，参考位置为固定位置
                 refVector2 = _oriVector2;
             }
+            
             else {
                 // 当前场景正在切换时，参考位置为目标的下个移动位置
                 refVector2 = _nextChangedPosition;
             }
+
+
+
 
             //if (_manager.SceneStatus == WallStatusEnum.Cutting)
             //{
@@ -755,7 +763,6 @@ namespace MagicWall
 
 
         }
-
 
 
     }

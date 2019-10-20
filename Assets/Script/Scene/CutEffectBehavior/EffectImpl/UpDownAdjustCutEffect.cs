@@ -9,60 +9,66 @@ using EasingUtil;
 // 过场效果 4，上下校准
 namespace MagicWall
 {
-    public class UpDownAdjustCutEffect : CutEffect
+    public class UpDownAdjustCutEffect : ICutEffect
     {
 
-        private float _startingTimeWithOutDelay;
-        private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
+        MagicWallManager _manager;
+
+        private float _entranceDisplayTime;
+        private float _startTime;
+
+        private SceneUtils _sceneUtil;
+        private DataTypeEnum _dataTypeEnum;
+        private CutEffectStatus _cutEffectStatus;
 
         private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
+        private float _startDelayTime = 0f;  //启动的延迟时间
+        private float _startingTimeWithOutDelay;
+
+        private Action _onEffectCompleted;
+        private Action _onDisplayStart;
+        private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
+
+        private bool _hasCallDisplay = false;
 
         //
         //  Init
         //
-        public override void Init(MagicWallManager manager, SceneConfig sceneConfig)
+        public void Init(MagicWallManager manager, SceneConfig sceneConfig,
+            Action<DisplayBehaviorConfig> OnCreateAgentCompleted,
+            Action OnEffectCompleted, Action OnDisplayStart
+            )
         {
+            //  初始化 manager
             _manager = manager;
-            _agentManager = manager.agentManager;
-            _daoService = manager.daoService;
+            _dataTypeEnum = sceneConfig.dataType;
 
-            DisplayDurTime = sceneConfig.durtime;
+
+            _onCreateAgentCompleted = OnCreateAgentCompleted;
+            _onEffectCompleted = OnEffectCompleted;
+            _onDisplayStart = OnDisplayStart;
 
             //  获取持续时间
-            StartingDurTime = manager.cutEffectConfig.UpDownDisplayDurTime;
-            _startingTimeWithOutDelay = StartingDurTime;
-            DestoryDurTime = 0.5f;
-
-            // 获取Display的动画
-            DisplayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
-
-            // 获取销毁的动画
-            DestoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            DestoryBehavior.Init(_manager, ()=> {
-                // on destory completed
-            });
-
-            //  初始化 config
-            _displayBehaviorConfig = new DisplayBehaviorConfig();
+            _entranceDisplayTime = manager.cutEffectConfig.UpDownDisplayDurTime;
+            _startingTimeWithOutDelay = _entranceDisplayTime;
         }
 
 
-        public override void Starting()
+        public void Starting()
         {
-            for (int i = 0; i < _agentManager.Agents.Count; i++)
+            float time = Time.time - _startTime;  // 当前已运行的时间;
+
+            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
             {
-                FlockAgent agent = _agentManager.Agents[i];
+                FlockAgent agent = _manager.agentManager.Agents[i];
                 Vector2 agent_vector2 = agent.GenVector2;
                 Vector2 ori_vector2 = agent.OriVector2;
 
                 // 获取此 agent 需要的动画时间
-                float run_time = StartingDurTime - _timeBetweenStartAndDisplay;
-
-                // 当前总运行的时间;
-                float time = Time.time - StartTime;
+                float aniTime = time;
 
                 // 如果总动画时间超出 agent 需要的动画时间，则不进行处理
-                if (time > run_time)
+                if (aniTime > _entranceDisplayTime)
                 {
                     // 此时可能未走完动画
                     if (!agent.isCreateSuccess)
@@ -70,51 +76,48 @@ namespace MagicWall
                         agent.SetChangedPosition(ori_vector2);
                         agent.isCreateSuccess = true;
                     }
-
-                    continue;
                 }
+                else {
+                    float t = aniTime / _entranceDisplayTime;
+                    Func<float, float> ef = EasingFunction.Get(_manager.cutEffectConfig.UpDownDisplayEaseEnum);
+                    t = ef(t);
 
-                float t = (Time.time - StartTime) / run_time;
-                Func<float, float> ef = EasingFunction.Get(_manager.cutEffectConfig.UpDownDisplayEaseEnum);
-                t = ef(t);
-
-
-                Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
-                float a = Mathf.Lerp(0f, 1f, t);
-                agent.GetComponent<Image>().color = new Color(1, 1, 1, a);
-                agent.SetChangedPosition(to);
-
+                    Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
+                    float a = Mathf.Lerp(0f, 1f, t);
+                    agent.GetComponent<Image>().color = new Color(1, 1, 1, a);
+                    agent.SetChangedPosition(to);
+                }
             }
 
-
-        }
-
-        public override void OnStartingCompleted()
-        {
-            //  初始化表现形式
-
-            _displayBehaviorConfig.dataType = dataType;
-            _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-            _displayBehaviorConfig.Manager = _manager;
-            _displayBehaviorConfig.sceneUtils = _sceneUtil;
-            DisplayBehavior.Init(_displayBehaviorConfig);
-
-            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
+            if ((time - _entranceDisplayTime * 0.5f) > 0)
             {
-                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
+                if (!_hasCallDisplay)
                 {
-                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                    _hasCallDisplay = true;
+                    _onDisplayStart.Invoke();
                 }
             }
 
+            if ((time - _entranceDisplayTime) > 0)
+            {
+                Reset();
+                _onEffectCompleted.Invoke();
+            }
+
+
         }
+
 
 
         /// <summary>
         /// 创建代理
         /// </summary>
-        private void CreateAgency(DataTypeEnum dataType)
+        private void CreateItem(DataTypeEnum dataType)
         {
+            //  初始化 config
+            _displayBehaviorConfig = new DisplayBehaviorConfig();
+            _sceneUtil = new SceneUtils(_manager);
+
             int _column = _manager.managerConfig.Column;
             int _itemWidth = _sceneUtil.GetFixedItemWidth();
             float gap = _sceneUtil.GetGap();
@@ -142,7 +145,8 @@ namespace MagicWall
                 {
                     // 获取数据
                     //FlockData data = _daoService.GetFlockData(dataType);
-                    FlockData data = _daoService.GetFlockDataByScene(dataType, _manager.SceneIndex);
+                    FlockData data = _manager.daoService
+                        .GetFlockDataByScene(dataType, _manager.SceneIndex);
 
                     Sprite coverSprite = data.GetCoverSprite();
                     float itemHeigth = AppUtils.GetSpriteHeightByWidth(coverSprite, _itemWidth);
@@ -182,16 +186,51 @@ namespace MagicWall
                     row++;
                 }
             }
+
+            _displayBehaviorConfig.dataType = _dataTypeEnum;
+            _displayBehaviorConfig.Manager = _manager;
+            _displayBehaviorConfig.sceneUtils = _sceneUtil;
+
+            _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
         }
 
-        public override string GetID()
+        public void Run()
         {
-            return "UpDownAdjustCutEffect";
+            if (_cutEffectStatus == CutEffectStatus.Init)
+            {
+                _cutEffectStatus = CutEffectStatus.Preparing;
+                _manager.RecoverFromFade();
+                _cutEffectStatus = CutEffectStatus.PreparingCompleted;
+            }
+
+            if (_cutEffectStatus == CutEffectStatus.PreparingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+                CreateItem(_dataTypeEnum);
+                _cutEffectStatus = CutEffectStatus.CreatingCompleted;
+            }
+            if (_cutEffectStatus == CutEffectStatus.CreatingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+
+                _startTime = Time.time;
+            }
+            if (_cutEffectStatus == CutEffectStatus.Creating)
+            {
+                Starting();
+            }
         }
 
-        protected override void CreateAgents(DataTypeEnum dataType)
+        public SceneTypeEnum GetSceneType()
         {
-            CreateAgency(dataType);
+            return SceneTypeEnum.UpDownAdjustCutEffect;
+        }
+
+
+        private void Reset()
+        {
+            _hasCallDisplay = false;
+            _cutEffectStatus = CutEffectStatus.Init;
         }
     }
 }

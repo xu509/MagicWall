@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: MockCBHFeiyueSceneConfig
   m_EditorClassIdentifier: 
   sceneConfigs:
-  - _sceneType: 0
-    _dataType: 1
-    _durTime: 5
-    _displayBehavior: 2
-    _destoryBehavior: 0
-  - _sceneType: 0
-    _dataType: 1
-    _durTime: 5
-    _displayBehavior: 2
-    _destoryBehavior: 0
-  - _sceneType: 0
-    _dataType: 1
-    _durTime: 5
-    _displayBehavior: 1
-    _destoryBehavior: 0
-  - _sceneType: 0
+  - _sceneType: 3
     _dataType: 1
     _durTime: 5
     _displayBehavior: 3
-    _destoryBehavior: 0
+    _destoryBehavior: 1
+  - _sceneType: 3
+    _dataType: 1
+    _durTime: 5
+    _displayBehavior: 3
+    _destoryBehavior: 1
+  - _sceneType: 3
+    _dataType: 1
+    _durTime: 5
+    _displayBehavior: 1
+    _destoryBehavior: 1
+  - _sceneType: 3
+    _dataType: 1
+    _durTime: 5
+    _displayBehavior: 1
+    _destoryBehavior: 1
   data: 0

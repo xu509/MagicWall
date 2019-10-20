@@ -19,8 +19,9 @@ MonoBehaviour:
   MidDisperseAlphaEaseEnum: 0
   MidDisperseHeightFactor: 1
   LeftRightDisplayEaseEnum: 14
-  LeftRightDisplayDurTime: 1.5
-  LeftRightGapTime: 0.14
+  LeftRightDisplayDurTime: 3
+  LeftRightGapTime: 0.05
+  LeftRightGapEaseEnum: 0
   UpDownDisplayEaseEnum: 14
   UpDownDisplayDurTime: 1.5
   FrontBackDisplayEaseEnum: 27
@@ -31,3 +32,4 @@ MonoBehaviour:
   StarEffectMoveFactor: 15
   StarEffectOriginPoint: 1000
   StarEffectEndPoint: -2500
+  FallDownFactor: 9

@@ -3,7 +3,7 @@
 namespace MagicWall {
     public enum DestoryBehaviorEnum
     {
-        Fade
+        Fade,FallDown
     }
 
 }

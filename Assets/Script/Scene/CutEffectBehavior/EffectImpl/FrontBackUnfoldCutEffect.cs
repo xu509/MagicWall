@@ -9,8 +9,17 @@ using System;
 // 过场效果 前后层展开
 namespace MagicWall
 {
-    public class FrontBackUnfoldCutEffect : CutEffect
+    public class FrontBackUnfoldCutEffect : ICutEffect
     {
+        MagicWallManager _manager;
+
+        private float _entranceDisplayTime;
+        private float _startTime;
+
+        private SceneUtils _sceneUtil;
+        private DataTypeEnum _dataTypeEnum;
+        private CutEffectStatus _cutEffectStatus;
+
         private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
         private float _startDelayTime = 0f;  //启动的延迟时间
         private float _startingTimeWithOutDelay;
@@ -19,57 +28,44 @@ namespace MagicWall
         private int _row;   // 总共的行数
         private int _column;    //总共的列数
 
+        private Action _onEffectCompleted;
+        private Action _onDisplayStart;
+        private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
+
+        private bool _hasCallDisplay = false;
+
         //
         //  Init
         //
-        public override void Init(MagicWallManager manager, SceneConfig sceneConfig)
+        public void Init(MagicWallManager manager, SceneConfig sceneConfig,
+            Action<DisplayBehaviorConfig> OnCreateAgentCompleted,
+            Action OnEffectCompleted, Action OnDisplayStart)
         {
             //  初始化 manager
             _manager = manager;
-            _agentManager = manager.agentManager;
-            _daoService = manager.daoService;
+            _dataTypeEnum = sceneConfig.dataType;
 
-            DisplayDurTime = sceneConfig.durtime;
+            _onCreateAgentCompleted = OnCreateAgentCompleted;
+            _onEffectCompleted = OnEffectCompleted;
+            _onDisplayStart = OnDisplayStart;
 
             //  获取持续时间
-            StartingDurTime = manager.cutEffectConfig.FrontBackDisplayDurTime;
-            _startingTimeWithOutDelay = StartingDurTime;
-            DestoryDurTime = 0.5f;
-
-            ////  设置显示的时间
-            //string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_FrontBackUnfold).Value;
-            //DisplayDurTime = AppUtils.ConvertToFloat(t);
-
-            // 获取Display的动画
-            DisplayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
-
-            // 获取销毁的动画
-            DestoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            DestoryBehavior.Init(_manager, () => {
-                //on destory completed
-            });
+            _entranceDisplayTime = manager.cutEffectConfig.FrontBackDisplayDurTime;
+            _startingTimeWithOutDelay = _entranceDisplayTime;
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
 
         }
 
-        //
-        private void CutEffectUpdateCallback(FlockAgent go)
-        {
-            if (go.name == "Agent(1,1)")
-            {
-                Debug.Log(go.GetComponent<RectTransform>().anchoredPosition);
-            }
-            //		go.updatePosition ();
-        }
 
-
-        public override void Starting()
+        public void Starting()
         {
-            for (int i = 0; i < _agentManager.Agents.Count; i++)
+            float time = Time.time - _startTime;  // 当前已运行的时间;
+
+            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
             {
-                FlockAgent agent = _agentManager.Agents[i];
+                FlockAgent agent = _manager.agentManager.Agents[i];
                 Vector2 agent_vector2 = agent.GenVector2;
                 Vector2 ori_vector2 = agent.OriVector2;
 
@@ -77,22 +73,11 @@ namespace MagicWall
                 float run_time = (_startingTimeWithOutDelay - agent.DelayX + agent.DelayY) - _timeBetweenStartAndDisplay; // 动画运行的总时间
 
                 //Ease.InOutQuad
-                float time = Time.time - StartTime;  // 当前已运行的时间;
 
                 if (time > run_time)
                 {
                     continue;
                 }
-
-                // 模拟 DOTWEEN InOutQuad
-                //if ((time /= run_time * 0.5f) < 1f)
-                //{
-                //    time = 0.5f * time * time;
-                //}
-                //else
-                //{
-                //    time = -0.5f * ((time -= 1f) * (time - 2f) - 1f);
-                //}
 
                 float t = time / run_time;
                 Func<float, float> defaultEasingFunction = EasingFunction.Get(_manager.cutEffectConfig.CurveStaggerDisplayEaseEnum);
@@ -100,39 +85,36 @@ namespace MagicWall
 
                 Vector2 to = Vector2.Lerp(agent_vector2, ori_vector2, t);
 
-
                 agent.SetChangedPosition(to);
-
             }
 
-        }
-
-        public override void OnStartingCompleted()
-        {
-            //  初始化表现形式
-
-            _displayBehaviorConfig.dataType = dataType;
-            _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-            _displayBehaviorConfig.Manager = _manager;
-            _displayBehaviorConfig.sceneUtils = _sceneUtil;
-            DisplayBehavior.Init(_displayBehaviorConfig);
-
-            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
+            if ((time - _entranceDisplayTime * 0.8f) > 0)
             {
-                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
+                if (!_hasCallDisplay)
                 {
-                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                    _hasCallDisplay = true;
+                    _onDisplayStart.Invoke();
                 }
             }
 
+            if ((time - _entranceDisplayTime) > 0)
+            {
+                Reset();
+                _onEffectCompleted.Invoke();
+            }
         }
+
 
 
         /// <summary>
         ///     创建的代理
         /// </summary>
-        private void CreateAgency(DataTypeEnum type)
+        private void CreateItem(DataTypeEnum type)
         {
+
+            //  初始化 config
+            _displayBehaviorConfig = new DisplayBehaviorConfig();
+            _sceneUtil = new SceneUtils(_manager);
 
             _row = _manager.Row;
             int itemHeight = _sceneUtil.GetFixedItemHeight();
@@ -160,7 +142,7 @@ namespace MagicWall
 
                     //  获取要创建的内容
                     //FlockData agent = _daoService.GetFlockData(type);
-                    FlockData agent = _daoService.GetFlockDataByScene(type,_manager.SceneIndex);
+                    FlockData agent = _manager.daoService.GetFlockDataByScene(type,_manager.SceneIndex);
                     Sprite coverSprite = agent.GetCoverSprite();
                     float imageWidth = coverSprite.rect.width;
                     float imageHeight = coverSprite.rect.height;
@@ -239,18 +221,53 @@ namespace MagicWall
             _displayBehaviorConfig.ColumnInBack = column;
 
             // 调整启动动画的时间
-            StartingDurTime += _startDelayTime;
+            _entranceDisplayTime += _startDelayTime;
+
+            // 创建结束
+            _displayBehaviorConfig.dataType = _dataTypeEnum;
+            _displayBehaviorConfig.Manager = _manager;
+            _displayBehaviorConfig.sceneUtils = _sceneUtil;
+
+            _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
 
         }
 
-        public override string GetID()
+        public void Run()
         {
-            return "FrontBackUnfoldCutEffect";
+            if (_cutEffectStatus == CutEffectStatus.Init)
+            {
+                _cutEffectStatus = CutEffectStatus.Preparing;
+                _manager.RecoverFromFade();
+                _cutEffectStatus = CutEffectStatus.PreparingCompleted;
+            }
+
+            if (_cutEffectStatus == CutEffectStatus.PreparingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+                CreateItem(_dataTypeEnum);
+                _cutEffectStatus = CutEffectStatus.CreatingCompleted;
+            }
+            if (_cutEffectStatus == CutEffectStatus.CreatingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+
+                _startTime = Time.time;
+            }
+            if (_cutEffectStatus == CutEffectStatus.Creating)
+            {
+                Starting();
+            }
         }
 
-        protected override void CreateAgents(DataTypeEnum dataType)
+        public SceneTypeEnum GetSceneType()
         {
-            CreateAgency(dataType);
+            return SceneTypeEnum.FrontBackUnfold;
+        }
+
+        private void Reset()
+        {
+            _hasCallDisplay = false;
+            _cutEffectStatus = CutEffectStatus.Init;
         }
     }
 }

@@ -63,7 +63,8 @@ namespace MagicWall
         [SerializeField, Range(-5000f, 5000f), Header("[星空效果] 动画终点")]
         public float StarEffectEndPoint;
 
-
+        [SerializeField, Range(0f, 500f), Header("下坠效果")]
+        public float FallDownFactor;
 
     }
 }

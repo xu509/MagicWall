@@ -591,8 +591,7 @@ namespace MagicWall
                     productDetail.Id = i;
                     productDetail.Pro_id = proId;
                     productDetail.Type = 0;
-                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;
-                    print(productDetail.Image);
+                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;                    
                     productDetail.Description = fileName;
                     productDetails.Add(productDetail);
 

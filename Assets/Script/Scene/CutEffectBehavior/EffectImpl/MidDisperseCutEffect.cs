@@ -9,72 +9,65 @@ using EasingUtil;
 // 过场效果 2 中间散开 
 namespace MagicWall
 {
-    public class MidDisperseCutEffect : CutEffect
+    public class MidDisperseCutEffect : ICutEffect
     {
+        MagicWallManager _manager;
 
+        private float _entranceDisplayTime;
+        private float _startTime;
 
-        private float _startDelayTime = 0f;  //启动的延迟时间
-        private float _startingTimeWithOutDelay;
-        private float _timeBetweenStartAndDisplay = 0.05f; //完成启动动画与表现动画之间的时间
+        private SceneUtils _sceneUtil;
+        private DataTypeEnum _dataTypeEnum;
+        private CutEffectStatus _cutEffectStatus;
 
         private DisplayBehaviorConfig _displayBehaviorConfig;   //  Display Behavior Config
+        private float _startDelayTime = 0f;  //启动的延迟时间
+        private float _startingTimeWithOutDelay;
+
+        private Action _onEffectCompleted;
+        private Action _onDisplayStart;
+        private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
+
+        private bool _hasCallDisplay = false;
 
 
         //
         //  Init
         //
-        public override void Init(MagicWallManager manager, SceneConfig sceneConfig)
+        public void Init(MagicWallManager manager, SceneConfig sceneConfig,
+            Action<DisplayBehaviorConfig> OnCreateAgentCompleted,
+            Action OnEffectCompleted, Action OnDisplayStart
+            )
         {
             //  初始化 manager
             _manager = manager;
-            _agentManager = manager.agentManager;
-            _daoService = manager.daoService;
+            _dataTypeEnum = sceneConfig.dataType;
 
-            DisplayDurTime = sceneConfig.durtime;
+
+            _onCreateAgentCompleted = OnCreateAgentCompleted;
+            _onEffectCompleted = OnEffectCompleted;
+            _onDisplayStart = OnDisplayStart;
 
             //  获取持续时间
-            //StartingDurTime = 0.35f;
-            StartingDurTime = manager.cutEffectConfig.MidDisperseDisplayTime;
-            _startingTimeWithOutDelay = StartingDurTime;
-            DestoryDurTime = 0.5f;
-
-            ////  设置显示的时间
-            //string t = _daoService.GetConfigByKey(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust).Value;
-            //DisplayDurTime = AppUtils.ConvertToFloat(t);
-
-            // 获取Display的动画
-            DisplayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
-
-            // 获取销毁的动画
-            DestoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            DestoryBehavior.Init(_manager, ()=> {
-                //on destory completed
-            });
-
-            //  初始化 config
-            _displayBehaviorConfig = new DisplayBehaviorConfig();
-
-
-            InitConfig();
+            _entranceDisplayTime = manager.cutEffectConfig.LeftRightDisplayDurTime;
+            _startingTimeWithOutDelay = _entranceDisplayTime;
         }
 
 
-        public override void Starting()
+        public void Starting()
         {
 
-            //DisplayBehavior.Run();
+            float time = Time.time - _startTime;  // 当前已运行的时间;
 
-            for (int i = 0; i < _agentManager.Agents.Count; i++)
+            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
             {
-                FlockAgent agent = _agentManager.Agents[i];
+                FlockAgent agent = _manager.agentManager.Agents[i];
                 Vector2 agent_vector2 = agent.GenVector2;
                 Vector2 ori_vector2 = agent.OriVector2;
 
                 // 获取总运行时间
                 float run_time = _startingTimeWithOutDelay + agent.Delay;
 
-                // 当前已运行的时间;
-                float time = Time.time - StartTime;
 
                 if (time > run_time)
                 {
@@ -82,6 +75,7 @@ namespace MagicWall
                     if (!agent.isCreateSuccess)
                     {
                         agent.SetChangedPosition(ori_vector2);
+                        agent.flockStatus = FlockStatusEnum.NORMAL;
 
                         agent.isCreateSuccess = true;
                     }
@@ -116,34 +110,34 @@ namespace MagicWall
                     float newAlpha = Mathf.Lerp(max_alpha, min_alpha, k);
                     agent.UpdateImageAlpha(newAlpha);
                 }
-
             }
 
-        }
-
-        public override void OnStartingCompleted()
-        {
-            //  初始化表现形式
-            _displayBehaviorConfig.dataType = dataType;
-            _displayBehaviorConfig.DisplayTime = DisplayDurTime;
-            _displayBehaviorConfig.Manager = _manager;
-            _displayBehaviorConfig.sceneUtils = _sceneUtil;
-            DisplayBehavior.Init(_displayBehaviorConfig);
-
-            for (int i = 0; i < _manager.agentManager.Agents.Count; i++)
+            if ((time - _entranceDisplayTime * 0.5f) > 0)
             {
-                if (_manager.agentManager.Agents[i].flockStatus == FlockStatusEnum.RUNIN)
+                if (!_hasCallDisplay)
                 {
-                    _manager.agentManager.Agents[i].flockStatus = FlockStatusEnum.NORMAL;
+                    _hasCallDisplay = true;
+                    _onDisplayStart.Invoke();
                 }
             }
 
+            if ((time - _entranceDisplayTime) > 0)
+            {
+                Reset();
+                _onEffectCompleted.Invoke();
+            }
+
+
         }
 
 
 
-        private void CreateAgency(DataTypeEnum dataType)
+        private void CreateItem(DataTypeEnum dataType)
         {
+            //  初始化 config
+            _displayBehaviorConfig = new DisplayBehaviorConfig();
+            _sceneUtil = new SceneUtils(_manager);
+
             List<FlockAgent> agents = new List<FlockAgent>();
             _displayBehaviorConfig.dataType = dataType;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
@@ -179,13 +173,11 @@ namespace MagicWall
                 {
                     // 获取数据
                     //FlockData data = _daoService.GetFlockData(dataType);
-                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
+                    FlockData data = _manager.daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite coverSprite = data.GetCoverSprite();
                     float itemHeigth = AppUtils.GetSpriteHeightByWidth(coverSprite, _itemWidth);
 
                     int ori_y = Mathf.RoundToInt(gen_y_position + itemHeigth / 2);
-
-                    //float delay = System.Math.Abs(middleX - j) * 0.05f;
 
                     float minDelay = 0;
                     //float maxDelay = middleX * 0.05f;
@@ -198,14 +190,6 @@ namespace MagicWall
 
                     //float delay = Mathf.Lerp(minDelay, maxDelay, k);
                     float delay = 0;
-
-                    if (delay > _timeBetweenStartAndDisplay)
-                    {
-                        _timeBetweenStartAndDisplay = delay;
-                    }
-
-                    //Debug.Log("delay ater : " + delay);
-
                     float gen_x, gen_y;
 
                     gen_x = middleX * (_itemWidth + gap) + (_itemWidth / 2);
@@ -252,32 +236,54 @@ namespace MagicWall
             }
 
 
-
             // 调整启动动画的时间
-            StartingDurTime = _startingTimeWithOutDelay + _startDelayTime + 0.05f;
-            //Debug.Log("StartingDurTime : " + StartingDurTime);
-            //Debug.Log("_startDelayTime : " + _startDelayTime);
-            //Debug.Log("_startingTimeWithOutDelay : " + _startingTimeWithOutDelay);
-        }
+            _entranceDisplayTime = _startingTimeWithOutDelay + _startDelayTime + 0.05f;
 
-        public override string GetID()
-        {
-            return "MidDisperseCutEffect";
-        }
-
-
-        private void InitConfig()
-        {
-            _displayBehaviorConfig.dataType = dataType;
-            //_displayBehaviorConfig.DisplayTime = DisplayDurTime;
+            _displayBehaviorConfig.dataType = _dataTypeEnum;
             _displayBehaviorConfig.Manager = _manager;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
-            DisplayBehavior.Init(_displayBehaviorConfig);
+
+            _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
+
         }
 
-        protected override void CreateAgents(DataTypeEnum dataType)
+        public void Run()
         {
-            CreateAgency(dataType);
+            if (_cutEffectStatus == CutEffectStatus.Init)
+            {
+                _cutEffectStatus = CutEffectStatus.Preparing;
+                _manager.RecoverFromFade();
+                _cutEffectStatus = CutEffectStatus.PreparingCompleted;
+            }
+
+            if (_cutEffectStatus == CutEffectStatus.PreparingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+                CreateItem(_dataTypeEnum);
+                _cutEffectStatus = CutEffectStatus.CreatingCompleted;
+            }
+            if (_cutEffectStatus == CutEffectStatus.CreatingCompleted)
+            {
+                _cutEffectStatus = CutEffectStatus.Creating;
+
+                _startTime = Time.time;
+            }
+            if (_cutEffectStatus == CutEffectStatus.Creating)
+            {
+                Starting();
+            }
+        }
+
+        public SceneTypeEnum GetSceneType()
+        {
+            return SceneTypeEnum.MidDisperse;
+        }
+
+
+        private void Reset()
+        {
+            _hasCallDisplay = false;
+            _cutEffectStatus = CutEffectStatus.Init;
         }
     }
 }

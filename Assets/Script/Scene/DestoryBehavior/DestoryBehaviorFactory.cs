@@ -12,7 +12,11 @@ namespace MagicWall {
             {
                 return new FadeOutDestoryBehavior();
             }
-            else {
+            else if (displayBehaviorEnum == DestoryBehaviorEnum.FallDown) {
+                return new FallDownDestoryBehavior();
+            }
+            else
+            {
                 return null;
             }
         }

@@ -32,6 +32,9 @@ namespace MagicWall
         Action _onRunCompleted;
         Action _onRunEndCompleted;
 
+        Action _onSceneCompleted;
+
+
 
         enum StarSceneStatusEnum
         {
@@ -60,7 +63,7 @@ namespace MagicWall
             return _dataType;
         }
 
-        public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+        public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
             _daoService = manager.daoService;
@@ -68,6 +71,8 @@ namespace MagicWall
             _dataType = sceneConfig.dataType;
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
             _sceneUtil = new SceneUtils(_manager);
+
+            _onSceneCompleted = onSceneCompleted;
 
             Reset();
         }
@@ -353,15 +358,7 @@ namespace MagicWall
 
         }
 
-        public void SetOnRunEndCompleted(Action onRunEndCompleted)
-        {
-            _onRunEndCompleted = onRunEndCompleted;
-        }
 
-        public void SetOnRunCompleted(Action onRunCompleted)
-        {
-            _onRunCompleted = onRunCompleted;
-        }
 
         public MagicSceneEnum GetSceneStatus()
         {

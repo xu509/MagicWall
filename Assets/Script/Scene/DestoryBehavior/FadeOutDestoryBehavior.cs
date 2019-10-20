@@ -21,7 +21,7 @@ namespace MagicWall
         //    _manager = manager;
         //}
 
-        public void Init(MagicWallManager manager, Action onDestoryCompleted)
+        public void Init(MagicWallManager manager, CommonScene commonScene, Action onDestoryCompleted)
         {
             _manager = manager;
             _onDestoryCompleted = onDestoryCompleted;

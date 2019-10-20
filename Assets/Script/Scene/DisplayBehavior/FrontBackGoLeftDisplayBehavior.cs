@@ -36,7 +36,7 @@ namespace MagicWall
             _manager.backPanel.transform.Translate(backTo);
 
             // 调整panel的差值
-            _manager.updateOffsetOfCanvas();
+            _manager.updateOffsetOfCanvasDirect();
 
 
             //  检测每行的数据，当半数行都小的时候，重新开始创建一定数量

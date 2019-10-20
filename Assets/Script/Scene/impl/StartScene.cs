@@ -16,29 +16,15 @@ namespace MagicWall
 
         private bool _doLoadResourse = false;
 
-        private float _StartTime = 0f;
-
         MagicSceneEnum _magicSceneEnumStatus;
-
         private StartSceneStatus _startSceneStatus;
-
         private static bool LOG = true;
-
-
-        float RunTime
-        {
-            get
-            {
-                return Time.time - _StartTime;
-            }
-        }
-
-
         private IDaoService _daoService;
         private MagicWallManager _manager;
 
         Action _onRunCompleted;
         Action _onRunEndCompleted;
+        Action _onSceneCompleted;
 
 
         enum StartSceneStatus {
@@ -52,26 +38,13 @@ namespace MagicWall
         }
 
 
-
-        public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+        public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
             _daoService = manager.daoService;
-
             _startSceneStatus = StartSceneStatus.Init;
-
-            Reset();
+            _onSceneCompleted = onSceneCompleted;
         }
-
-
-        private void Reset()
-        {
-            _StartTime = Time.time;
-
-            _magicSceneEnumStatus = MagicSceneEnum.Running;
-
-        }
-
 
 
         public bool Run()
@@ -113,31 +86,13 @@ namespace MagicWall
 
             if (_startSceneStatus == StartSceneStatus.HideUICompleted)
             {
-                _onRunCompleted.Invoke();
+                _onSceneCompleted.Invoke();
                 _startSceneStatus = StartSceneStatus.Init;
             }
 
 
             return true;
         }
-
-        private void Awake()
-        {
-            Debug.Log("Load Start Scene now !");
-
-            // 加载 Config.xml
-            Debug.Log("加载 Config.xml 成功");
-
-            // 根据 tid 获取信息
-            Debug.Log("根据 tid 获取信息列表成功 ");
-
-            // 加载关联资源
-            Debug.Log("加载关联的资源");
-
-            // 完成数据加载, 提供字典
-            Debug.Log("完成数据加载,提供字典");
-        }
-
 
         private void LoadResource()
         {
@@ -174,11 +129,6 @@ namespace MagicWall
 
         }
 
-
-        public void SetOnRunCompleted(Action onRunCompleted)
-        {
-            _onRunCompleted = onRunCompleted;
-        }
 
         public MagicSceneEnum GetSceneStatus()
         {
