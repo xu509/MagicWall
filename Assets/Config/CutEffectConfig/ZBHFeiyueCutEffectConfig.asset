@@ -32,4 +32,4 @@ MonoBehaviour:
   StarEffectMoveFactor: 15
   StarEffectOriginPoint: 1000
   StarEffectEndPoint: -2500
-  FallDownFactor: 9
+  FallDownFactor: 2.67
