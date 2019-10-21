@@ -494,6 +494,8 @@ namespace MagicWall
 
         public Vector2 GetScreenRect()
         {
+            Debug.Log(1);
+
             return new Vector2(Screen.width, Screen.height);
         }
 
