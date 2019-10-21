@@ -15,7 +15,7 @@ MonoBehaviour:
   sceneConfigs:
   - _sceneType: 3
     _dataType: 1
-    _durTime: 5
+    _durTime: 1
     _displayBehavior: 3
     _destoryBehavior: 1
   - _sceneType: 3

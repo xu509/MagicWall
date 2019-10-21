@@ -17,6 +17,9 @@ namespace MagicWall
     {
         private MagicWallManager _manager;
 
+        [SerializeField,Tooltip("运行背景")] bool _runBackground = true;
+
+
         //
         //  paramater
         //
@@ -105,7 +108,9 @@ namespace MagicWall
         public void Run()
         {
             // 背景始终运行
-            _manager.backgroundManager.run();
+            if (_runBackground) {
+                _manager.backgroundManager.run();
+            }            
 
             if (!_hasInit && _scenes != null)
             {

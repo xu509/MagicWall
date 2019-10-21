@@ -46,6 +46,7 @@ namespace MagicWall
 
         /// 背景中的图片logo
         [SerializeField] RectTransform _bg_logo; //背景图中的logo
+        [SerializeField] Sprite _customLogoSprite;//
 
         // 场景管理器
         [SerializeField, Header("子控制器")] MagicSceneManager _magicSceneManager;
@@ -137,11 +138,11 @@ namespace MagicWall
 
         // 配置选项
 
-        //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
       //  public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+       // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
@@ -173,6 +174,7 @@ namespace MagicWall
         public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
         public RectTransform OperationPanel { get { return _operationPanel; } }
         public RectTransform BgLogo { get { return _bg_logo; } }
+        public Sprite CustomLogoSprite { get { return _customLogoSprite; } }
         public int Row { get { return _row; } }
         public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
         public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }

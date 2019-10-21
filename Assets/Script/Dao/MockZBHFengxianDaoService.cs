@@ -490,9 +490,16 @@ namespace MagicWall
             return new MWConfig();
         }
 
+        /// <summary>
+        /// 【网盘链接】https://pan.baidu.com/s/10bKtdl9sWjM437p8xFWCZA&shfl=sharepset 
+        //【提取码】puri
+        /// </summary>
         public void InitData()
         {
             print("Init Data");
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
 
 
             _enterpriseMap = new Dictionary<int, Enterprise>();
@@ -501,16 +508,22 @@ namespace MagicWall
             _productByEidMap = new Dictionary<int, List<Product>>();
             _catalogByEidMap = new Dictionary<int, List<Catalog>>();
 
-             string[] names = {
-                "01（乡伴集团）朱胜萱工作室",
-                "02 上海艾樱健康科技股份有限公司"
-             };
+            string enterprisePath = "ZBH\\fengxian\\";
+
+            if (Directory.Exists(MagicWallManager.FileDir + enterprisePath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + enterprisePath);
+                DirectoryInfo[] directoryInfos = dirInfo.GetDirectories();
 
 
-            for (int i = 0; i < names.Length; i++) {
-                int entId = i + 1;
-                AddEnterprise(names[i], entId);
+                for (int i = 0; i < directoryInfos.Length; i++) {
+                    string name = directoryInfos[i].Name;
+                    AddEnterprise(name, i + 1);
+                }
             }
+
+            sw.Stop();
+            Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
             print("Init Data End");
 
@@ -521,31 +534,73 @@ namespace MagicWall
         private void AddEnterprise(string name,int ent_id) {
             Enterprise enterprise = new Enterprise();
             enterprise.Ent_id = ent_id;
+            enterprise.Name = name;
 
-            string logoPath = "ZBH\\fengxian\\" + name + "\\logo.png";            
-            string businessCardPath = "ZBH\\fengxian\\" + name + "\\bcard.png";
+            //string logoPath = "ZBH\\fengxian\\" + name + "\\logo.png";            
+            //string businessCardPath = "ZBH\\fengxian\\" + name + "\\bcard.png";
 
             // logo path
-            enterprise.Logo = logoPath;
+            //enterprise.Logo = logoPath;
+            bool hasLogo = AddEnterpriseLogo(name, enterprise);
 
-            // 公司卡片 path
-            enterprise.Business_card = businessCardPath;
+            if (hasLogo) {
+                // Add Catalog
+                AddCatalogByEnterprise(name, ent_id);
 
-            // Add Catalog
-            AddCatalogByEnterprise(name, ent_id);
+                // Add Product
+                AddProductByEnterprise(name, ent_id);
 
-            // Add Product
-            AddProductByEnterprise(name, ent_id);
+                // Add Activity
+                AddActivityByEnterprise(name, ent_id);
 
-            //增加公司名片
-            AddBusinessCard(name, enterprise);            
+                // add Category
+                AddCategoryByEnterprise(name, ent_id);
 
-            _enterpriseMap.Add(ent_id, enterprise);
-            _enterprises.Add(enterprise);
+                //增加公司名片
+                AddBusinessCard(name, enterprise);
+
+                _enterpriseMap.Add(ent_id, enterprise);
+                _enterprises.Add(enterprise);
+            }
+
+        }
+
+        private bool AddEnterpriseLogo(string name, Enterprise enterprise) {
+            bool hasLogo = false;
+            string enterprisePath = "ZBH\\fengxian\\" + name ;
+
+            if (Directory.Exists(MagicWallManager.FileDir + enterprisePath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + enterprisePath);
+                FileInfo[] files = dirInfo.GetFiles();
+
+                List<string> bcards = new List<string>();
+                string logoPath = "";
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (files[i].Extension.Contains("png")) {
+                        var fileName = files[i].Name;
+                        logoPath = enterprisePath + "\\" + fileName;
+                        hasLogo = true;
+                    }
+                }
+
+                if (hasLogo)
+                {
+                    enterprise.Logo = logoPath;
+                }
+                else {
+                    Debug.Log(name + " 没有logo图");
+                }
+            }
+            return hasLogo;
 
         }
 
         private void AddCatalogByEnterprise(string name, int ent_id) {
+            bool hasCatalog = false;
+
             string catalogDirPath = "ZBH\\fengxian\\" + name + "\\catalog";
 
             //print("PATH :" + (MagicWallManager.FileDir + catalogDirPath));
@@ -557,22 +612,34 @@ namespace MagicWall
                 List<Catalog> catalogs = new List<Catalog>();
                 for (int i = 0; i < files.Length; i++) {
                     var fileName = files[i].Name;
-                    var fileNameWithoutExt = fileName.Replace(files[i].Extension,"");
 
-                    Catalog catalog = new Catalog();
-                    catalog.Ent_id = ent_id;
-                    catalog.Description = fileNameWithoutExt;
-                    catalog.Id = i;
-                    catalog.Img = catalogDirPath + "\\" + fileName;
+                    if (files[i].Extension.Contains("png"))
+                    {
+                        hasCatalog = true;
 
-                    catalogs.Add(catalog);
+                        var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
+                        Catalog catalog = new Catalog();
+                        catalog.Ent_id = ent_id;
+                        catalog.Description = fileNameWithoutExt;
+                        catalog.Id = i;
+                        catalog.Img = catalogDirPath + "\\" + fileName;
+                        catalogs.Add(catalog);
+                    }
+
+
                 }
-                _catalogByEidMap.Add(ent_id, catalogs);
+
+                if (hasCatalog) {
+                    _catalogByEidMap.Add(ent_id, catalogs);
+                }
+
             } 
         }
 
         private void AddProductByEnterprise(string name, int ent_id)
         {
+            bool hasProduct = false;
+
             string catalogDirPath = "ZBH\\fengxian\\" + name + "\\产品";
 
             if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
@@ -584,23 +651,105 @@ namespace MagicWall
                 for (int i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i].Name;
-                    var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
+                    if (fileName.Contains(".png")) {
+                        hasProduct = true;
 
-                    Product product = new Product();
-                    product.Ent_id = ent_id;
-                    product.Description = fileNameWithoutExt;
-                    product.Image = catalogDirPath + "\\" + fileName;
-                    product.Pro_id = i;
-                    product.Name = fileNameWithoutExt;
-                    products.Add(product);
+                        var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
+
+                        Product product = new Product();
+                        product.Ent_id = ent_id;
+                        product.Description = fileNameWithoutExt;
+                        product.Image = catalogDirPath + "\\" + fileName;
+                        product.Pro_id = i;
+                        product.Name = fileNameWithoutExt;
+                        products.Add(product);
+                    }
                 }
-                _productByEidMap.Add(ent_id, products);
+
+                if (hasProduct) {
+                    _productByEidMap.Add(ent_id, products);
+                }
+            }
+        }
+
+        private void AddActivityByEnterprise(string name, int ent_id)
+        {
+            bool hasActivity = false;
+
+            string activityDirPath = "ZBH\\fengxian\\" + name + "\\活动";
+
+            if (Directory.Exists(MagicWallManager.FileDir + activityDirPath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + activityDirPath);
+                FileInfo[] files = dirInfo.GetFiles();
+
+                List<Activity> activities = new List<Activity>();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    var fileName = files[i].Name;
+                    if (fileName.Contains(".png"))
+                    {
+                        hasActivity = true;
+
+                        var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
+
+                        Activity activity = new Activity();
+                        activity.Ent_id = ent_id;
+                        activity.Id = i;
+                        activity.Image = activityDirPath + "\\" + fileName;
+                        activity.Name = fileNameWithoutExt;
+                        activity.Description = fileNameWithoutExt;
+                        activities.Add(activity);
+                    }
+                }
+
+                if (hasActivity)
+                {
+                    _activityByEidMap.Add(ent_id, activities);
+                }
+            }
+        }
+
+        private void AddCategoryByEnterprise(string name, int ent_id)
+        {
+            bool hasCatalog = false;
+
+            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\catalog";
+
+            if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + catalogDirPath);
+                FileInfo[] files = dirInfo.GetFiles();
+
+                List<Catalog> catalogs = new List<Catalog>();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    var fileName = files[i].Name;
+                    if (fileName.Contains(".png"))
+                    {
+                        hasCatalog = true;
+
+                        var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
+
+                        Catalog catalog = new Catalog();
+                        catalog.Ent_id = ent_id;
+                        catalog.Id = i;
+                        catalog.Img = hasCatalog + "\\" + fileName;
+                        catalog.Description = fileNameWithoutExt;
+                        catalogs.Add(catalog);
+                    }
+                }
+
+                if (hasCatalog)
+                {
+                    _catalogByEidMap.Add(ent_id, catalogs);
+                }
             }
         }
 
         private void AddBusinessCard(string name, Enterprise enterprise)
         {
-            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\公司名片";
+            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\企业名片";
 
             if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
             {
@@ -608,15 +757,17 @@ namespace MagicWall
                 FileInfo[] files = dirInfo.GetFiles();
 
                 List<string> bcards = new List<string>();
+                string busincessCarcdPath = "";
+
+
                 for (int i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i].Name;
                     var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
-                    var p = catalogDirPath + "\\" + fileName;
-                    bcards.Add(p);
+                    busincessCarcdPath = catalogDirPath + "\\" + fileName;
                 }
 
-                enterprise.EnvCards = bcards;                
+                enterprise.Business_card = busincessCarcdPath;
             }
         }
 
@@ -659,10 +810,44 @@ namespace MagicWall
         {
             var result = new List<string>();
 
-            //for (int i = 0; i < _products.Count; i++)
-            //{
-            //    result.Add(_products[i].Image);
-            //}
+            for (int i = 0; i < _enterprises.Count; i++)
+            {
+                var e = _enterprises[i];
+
+                result.Add(e.Logo);
+
+                if (e.Business_card != null && e.Business_card.Length > 0) {
+                    result.Add(e.Business_card);
+                    //Debug.Log("Enterprise : " + e.Name + " bcard : " + e.Business_card + " length : " + e.Business_card.Length);
+
+                }
+
+                // add products
+                if (_productByEidMap.ContainsKey(e.Ent_id)){
+                    var products = _productByEidMap[e.Ent_id];
+                    for (int j = 0; j < products.Count; j++)
+                    {
+                        result.Add(products[j].Image);
+
+                        //Debug.Log("Product : " + products[j].Name + " - " + products[j].Image);
+
+                    }
+                }
+
+                if (_activityByEidMap.ContainsKey(e.Ent_id))
+                {
+                    // add activies
+                    var activies = _activityByEidMap[e.Ent_id];
+                    for (int j = 0; j < activies.Count; j++)
+                    {
+                        result.Add(activies[j].Image);
+
+                        //Debug.Log("Activity : " + activies[j].Name + " - " + activies[j].Image);
+
+                    }
+                }
+
+            }
 
             //var c1 = GetCustomImage(CustomImageType.LEFT1);
             //var c2 = GetCustomImage(CustomImageType.RIGHT);
