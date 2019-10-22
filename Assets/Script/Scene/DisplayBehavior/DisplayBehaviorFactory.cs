@@ -23,7 +23,11 @@ namespace MagicWall {
             {
                 return new GoUpDisplayBehavior();
             }
-            else {
+            else if (displayBehaviorEnum == DisplayBehaviorEnum.Stay) {
+                return new StayDisplayBehavior();
+            }
+            else
+            {
                 return null;
             }
         }

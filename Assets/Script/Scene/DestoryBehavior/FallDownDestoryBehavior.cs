@@ -59,6 +59,9 @@ namespace MagicWall
                 fadeTime = _manager.cutEffectConfig.FallDownLogoFadeTime;
                 totalTime = fallTotalTime + fadeTime;
 
+                isShow = false;
+                isHide = false;
+
                 startTime = Time.time;
                 _commonScene.runDisplay = false;
 
@@ -110,6 +113,9 @@ namespace MagicWall
                 _manager.BgLogo.GetComponent<Image>().sprite = logoOriginalSprite;
                 _manager.BgLogo.sizeDelta = logoOriginalSize;
                 _manager.BgLogo.GetComponent<Image>().color = logoOriginalColor;
+
+                _manager.BgLogo.GetComponent<Image>().CrossFadeAlpha(1, 0, true);
+
                 _onDestoryCompleted.Invoke();
                 hasInit = false;
             }
