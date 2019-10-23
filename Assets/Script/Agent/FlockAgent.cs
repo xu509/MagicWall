@@ -102,6 +102,9 @@ namespace MagicWall
 
         #endregion
 
+        private DaoTypeEnum _daoTypeEnum;
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; }  get { return _daoTypeEnum; } }
+
 
         private float _lastEffectTime;
         private CardAgent _lastEffectAgent;    // 上一个影响的 agent
@@ -188,13 +191,14 @@ namespace MagicWall
         /// <param name="dataId"></param>
         /// <param name="type"></param>
         /// <param name="isCard"></param>
-        protected void InitBase(MagicWallManager manager, int dataId, DataTypeEnum dataType)
+        protected void InitBase(MagicWallManager manager, int dataId, DataTypeEnum dataType, DaoTypeEnum daoTypeEnum)
         {
             //Debug.Log("Init Base : " + dataId);
 
             _manager = manager;
             _data_id = dataId;
             _dataType = dataType;
+            _daoTypeEnum = daoTypeEnum;
 
             _flockTweenerManager = new FlockTweenerManager();
             _flockStatus = FlockStatusEnum.NORMAL;
@@ -216,9 +220,9 @@ namespace MagicWall
         /// <param name="dataIsCustom"></param>
         /// <param name="dataType"></param>
         public virtual void Initialize(MagicWallManager manager, Vector2 originVector, Vector2 genVector, int row,
-            int column, float width, float height, int dataId, string dataImg, bool dataIsCustom, DataTypeEnum dataTypeEnum, AgentContainerType agentContainerType)
+            int column, float width, float height, int dataId, string dataImg, bool dataIsCustom, DataTypeEnum dataTypeEnum, AgentContainerType agentContainerType, DaoTypeEnum daoTypeEnum)
         {
-            InitBase(manager, dataId, dataTypeEnum);
+            InitBase(manager, dataId, dataTypeEnum,daoTypeEnum);
             _manager = manager;
             OriVector2 = originVector;
 

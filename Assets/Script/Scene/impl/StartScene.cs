@@ -128,7 +128,11 @@ namespace MagicWall
                 SpriteResource.Instance.GetData(imageAddress);
 
                 watch.Stop();
-                //Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
+
+                if ((watch.ElapsedMilliseconds / 1000f) > 0.5f) {
+                    Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
+                }
+
             }
 
             // 加载其他资源

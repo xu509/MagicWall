@@ -356,6 +356,11 @@ PrefabInstance:
       propertyPath: _mockZBHTubuDaoService
       value: 
       objectReference: {fileID: 1587436870}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _unitySceneManager
+      value: 
+      objectReference: {fileID: 553118716}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -413,6 +418,11 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _runBackground
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
@@ -424,6 +434,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 553118714}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &553118716 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1239835790909924962, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db8f91ee68787240b12d4be5a374991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &553118717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 312633187204164506, guid: 66ac6cc2e905c71459c52598e7bb1430,

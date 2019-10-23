@@ -82,7 +82,7 @@ namespace MagicWall
             _scenes.Add(startScene);
 
             // - 加载普通场景
-            List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
+            List<SceneConfig> sceneConfigs = manager.daoServiceFactory.GetShowConfigs();
             for (int i = 0; i < sceneConfigs.Count; i++)
             {
                 //Debug.Log(sceneConfigs[i].ToString());
@@ -166,15 +166,21 @@ namespace MagicWall
 
             if (_index == _scenes.Count - 1)
             {
-                
-                if (!_manager.switchMode)
-                {
-                    _index = 0;
-                }
-                else {
-                    _onSceneEnterLoop.Invoke();
-                    return;
-                }
+
+                _index = 0;
+
+                //_onSceneEnterLoop.Invoke();
+
+
+
+                //if (!_manager.switchMode)
+                //{
+                //    _index = 0;
+                //}
+                //else {
+                //    _onSceneEnterLoop.Invoke();
+                //    return;
+                //}
             }
             else
             {

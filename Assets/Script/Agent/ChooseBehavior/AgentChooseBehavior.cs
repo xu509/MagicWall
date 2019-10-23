@@ -57,11 +57,18 @@ namespace MagicWall {
                     var kinectPosition = agents[i].GetComponent<RectTransform>().transform.position;
                     var d = Vector2.Distance(kinectPosition, flockAgentPosition);
 
-                    if (d < distance) {
+                    // 添加了安全距离
+                    if (d < distance && d < 1500f) {
                         targetKinectAgent = agents[i];
                         distance = d;
                     }
                 }
+
+
+                if (targetKinectAgent == null) {
+                    DoChooseForCommon(flockAgent);
+                }
+
 
                 /// 遮罩中存在贴附的卡片
                 if (targetKinectAgent.refFlockAgent != null)

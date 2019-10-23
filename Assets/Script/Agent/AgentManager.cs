@@ -269,18 +269,38 @@ namespace MagicWall
 
         public FlockAgent GetFlockAgent(AgentContainerType type)
         {
+            Transform parentContainer;
             if (type == AgentContainerType.MainPanel)
             {
-                return _flockAgentPool.GetObj();
+                parentContainer = _flockContainer;
             }
             else if (type == AgentContainerType.BackPanel)
             {
-                return _flockAgentInBackPool.GetObj();
+                parentContainer = _backContainer;
             }
             else
             {
-                return _flockAgentInStarPool.GetObj();
+                parentContainer = _starContainer;
             }
+
+
+            FlockAgent agent = Instantiate(_flockAgentPrefab, parentContainer);
+            return agent;
+
+
+
+            //if (type == AgentContainerType.MainPanel)
+            //{
+            //    return _flockAgentPool.GetObj();
+            //}
+            //else if (type == AgentContainerType.BackPanel)
+            //{
+            //    return _flockAgentInBackPool.GetObj();
+            //}
+            //else
+            //{
+            //    return _flockAgentInStarPool.GetObj();
+            //}
         }
 
 

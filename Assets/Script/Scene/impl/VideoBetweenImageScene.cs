@@ -17,6 +17,9 @@ namespace MagicWall
         private MagicWallManager _manager;
         private MagicSceneManager _magicSceneManager;
 
+        private CutEffectDestoryBehavior _destoryBehavior;
+
+
         Action _onSceneCompleted;
 
         /// <summary>
@@ -47,6 +50,10 @@ namespace MagicWall
             _magicSceneManager = GameObject.Find("Scene").GetComponent<MagicSceneManager>();
             _magicSceneManager._videoBetweenImageController.Init(manager);
 
+            // 销毁
+            _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
+            _destoryBehavior.Init(_manager, null, OnDestoryCompleted);
+
         }
 
         /// <summary>
@@ -76,11 +83,12 @@ namespace MagicWall
 
             if ((Time.time - _startTime) > _durTime) {
                _hasInit = false;
-                _onSceneCompleted.Invoke();
+
+                // 淡出
+
+                _destoryBehavior.Run();
+
             }
-
-
-            
 
 
             return true;
@@ -97,6 +105,10 @@ namespace MagicWall
             return _magicSceneEnumStatus;
         }
 
+        void OnDestoryCompleted() {
+            _magicSceneManager._videoBetweenImageController.StopPlay();
+            _onSceneCompleted.Invoke();
+        }
 
     }
 }

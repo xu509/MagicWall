@@ -16,7 +16,7 @@ namespace MagicWall
         public void Init(MagicWallManager manager)
         {
             _manager = manager;
-            var config = _manager.daoService.GetConfig();
+            var config = _manager.daoServiceFactory.GetConfig();
             SetMWConfig(config);
 
         }

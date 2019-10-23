@@ -13,6 +13,10 @@ namespace MagicWall
     {
 
         MagicWallManager _manager;
+        private IDaoService _daoService;
+        private SceneConfig _sceneConfig;
+
+
 
         private float _entranceDisplayTime;
         private float _startTime;
@@ -41,7 +45,10 @@ namespace MagicWall
         {
             //  初始化 manager
             _manager = manager;
+            _sceneConfig = sceneConfig;
+
             _dataTypeEnum = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
 
 
             _onCreateAgentCompleted = OnCreateAgentCompleted;
@@ -119,7 +126,20 @@ namespace MagicWall
             _displayBehaviorConfig = new DisplayBehaviorConfig();
             _sceneUtil = new SceneUtils(_manager);
 
-            int _column = _manager.managerConfig.Column;
+            //int _column = _manager.managerConfig.Column;
+
+
+            int _column = 0;
+            if (_sceneConfig.isKinect == 0)
+            {
+                _column = 15;
+            }
+            else
+            {
+                _column = 30;
+            }
+
+
             int _itemWidth = _sceneUtil.GetFixedItemWidth();
             float gap = _sceneUtil.GetGap();
 
@@ -146,7 +166,7 @@ namespace MagicWall
                 {
                     // 获取数据
                     //FlockData data = _daoService.GetFlockData(dataType);
-                    FlockData data = _manager.daoService
+                    FlockData data = _daoService
                         .GetFlockDataByScene(dataType, _manager.SceneIndex);
 
                     Sprite coverSprite = data.GetCoverSprite();
@@ -176,7 +196,7 @@ namespace MagicWall
                     //         _itemWidth, itemHeigth, data, AgentContainerType.MainPanel);
                     //go.NextVector2 = new Vector2(gen_x, gen_y);
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x, gen_y), AgentContainerType.MainPanel
-, ori_x, ori_y, row, j, _itemWidth, itemHeigth, data);
+, ori_x, ori_y, row, j, _itemWidth, itemHeigth, data, _sceneConfig.daoTypeEnum);
                     go.flockStatus = FlockStatusEnum.RUNIN;
 
                     gen_y_position = Mathf.RoundToInt(gen_y_position + itemHeigth + gap);
@@ -191,6 +211,7 @@ namespace MagicWall
             _displayBehaviorConfig.dataType = _dataTypeEnum;
             _displayBehaviorConfig.Manager = _manager;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
+            _displayBehaviorConfig.sceneConfig = _sceneConfig;
 
             _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
         }

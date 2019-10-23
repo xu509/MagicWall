@@ -29,23 +29,31 @@ namespace MagicWall
         private DestoryBehaviorEnum _destoryBehavior;   // 销毁
 
 
+        private DaoTypeEnum _daoTypeEnum;   // dao
+
+        private int _isKinect;
+
+
         public SceneTypeEnum sceneType { set { _sceneType = value; } get { return _sceneType; } }
         public DataTypeEnum dataType { set { _dataType = value; } get { return _dataType; } }
         public float durtime { set { _durTime = value; } get { return _durTime; } }
         public DisplayBehaviorEnum displayBehavior { set { _displayBehavior = value; } get { return _displayBehavior; } }
         public DestoryBehaviorEnum destoryBehavior { set { _destoryBehavior = value; } get { return _destoryBehavior; } }
-
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; } get { return _daoTypeEnum; } }
+        public int isKinect { set { _isKinect = value; } get { return _isKinect; } }
 
         public SceneConfig() { }
 
         public SceneConfig(SceneTypeEnum sceneTypeEnum, DataTypeEnum dataType, 
-            DisplayBehaviorEnum displayBehavior, DestoryBehaviorEnum destoryBehavior,float durTime)
+            DisplayBehaviorEnum displayBehavior, DestoryBehaviorEnum destoryBehavior,DaoTypeEnum daoTypeEnum,float durTime)
         {
             _sceneType = sceneTypeEnum;
             _dataType = dataType;
             _durTime = durTime;
             _displayBehavior = displayBehavior;
             _destoryBehavior = destoryBehavior;
+            _daoTypeEnum = daoTypeEnum;
+            isKinect = 0;
         }
 
 

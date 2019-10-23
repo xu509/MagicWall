@@ -59,6 +59,9 @@ public class VideoBetweenImageController : MonoBehaviour
 
     public void StopPlay()
     {
+        videoPlayer.Stop();
+
+
         //GetComponent<CanvasGroup>().alpha = 0;
         //CancelInvoke();
 

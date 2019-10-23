@@ -223,7 +223,7 @@ namespace MagicWall
             //FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
             // width, height, data, AgentContainerType.StarContainer);
             FlockAgent go = FlockAgentFactoryInstance.Generate(_manager,position, AgentContainerType.StarContainer,
-                position.x,position.y,0,0,width,height,data);
+                position.x,position.y,0,0,width,height,data,DaoTypeEnum.CBHAiqigu);
 
             go.UpdateImageAlpha(0);
 

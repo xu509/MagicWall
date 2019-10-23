@@ -12,6 +12,9 @@ namespace MagicWall
     public class FrontBackUnfoldCutEffect : ICutEffect
     {
         MagicWallManager _manager;
+        private SceneConfig _sceneConfig;
+
+
 
         private float _entranceDisplayTime;
         private float _startTime;
@@ -43,6 +46,8 @@ namespace MagicWall
         {
             //  初始化 manager
             _manager = manager;
+            _sceneConfig = sceneConfig;
+
             _dataTypeEnum = sceneConfig.dataType;
 
             _onCreateAgentCompleted = OnCreateAgentCompleted;
@@ -179,7 +184,7 @@ namespace MagicWall
                         //    imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x,gen_y), AgentContainerType.MainPanel
-    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent);
+    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent,DaoTypeEnum.CBHAiqigu);
 
                     }
                     else
@@ -196,7 +201,7 @@ namespace MagicWall
 
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x, gen_y), AgentContainerType.BackPanel
-    , ori_x, ori_y, i, column, width, height, agent);
+    , ori_x, ori_y, i, column, width, height, agent, DaoTypeEnum.CBHAiqigu);
                     }
                     //go.NextVector2 = new Vector2(gen_x, gen_y);
 

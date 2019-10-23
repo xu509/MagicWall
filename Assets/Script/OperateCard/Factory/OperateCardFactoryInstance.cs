@@ -15,7 +15,7 @@ namespace MagicWall {
         public static CardAgent Generate(MagicWallManager magicWallManager, Vector3 position
             , Transform parent, int dataId, DataTypeEnum dataType,FlockAgent refFlockAgent)
         {
-            IDaoService daoService = magicWallManager.daoService;
+            IDaoService daoService = magicWallManager.daoServiceFactory.GetDaoService(refFlockAgent.daoTypeEnum);
 
             OperateCardData cardData = null;
             CardAgent cardPrefab = null ;

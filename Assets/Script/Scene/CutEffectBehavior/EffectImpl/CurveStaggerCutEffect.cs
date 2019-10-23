@@ -28,6 +28,10 @@ namespace MagicWall
         private Action _onDisplayStart;
         private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
 
+
+        private IDaoService _daoService;
+        private SceneConfig _sceneConfig;
+
         private bool _hasCallDisplay = false;
 
         public void Init(MagicWallManager manager, SceneConfig sceneConfig,
@@ -40,11 +44,15 @@ namespace MagicWall
 
             //  初始化 manager
             _manager = manager;
+            _sceneConfig = sceneConfig;
             _dataTypeEnum = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
 
             _onCreateAgentCompleted = OnCreateAgentCompleted;
             _onEffectCompleted = OnEffectCompleted;
             _onDisplayStart = OnDisplayStart;
+
+
 
             sw.Stop();
         }
@@ -92,7 +100,7 @@ namespace MagicWall
                 {
                     // 获取数据
                     //FlockData data = _daoService.GetFlockData(dataType);
-                    FlockData data = _manager.daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
+                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite coverSprite = data.GetCoverSprite();
                     float itemWidth = AppUtils.GetSpriteWidthByHeight(coverSprite, _itemHeight);
 
@@ -124,7 +132,7 @@ namespace MagicWall
                     //生成 agent
                     Vector2 genPosition = new Vector2(gen_x, gen_y);
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, genPosition, AgentContainerType.MainPanel
-                        , ori_x, ori_y, row, column, itemWidth, _itemHeight, data);
+                        , ori_x, ori_y, row, column, itemWidth, _itemHeight, data, _sceneConfig.daoTypeEnum);
                     go.flockStatus = FlockStatusEnum.RUNIN;
 
                     // 装载延迟参数
@@ -154,6 +162,7 @@ namespace MagicWall
             _displayBehaviorConfig.dataType = _dataTypeEnum;
             _displayBehaviorConfig.Manager = _manager;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
+            _displayBehaviorConfig.sceneConfig = _sceneConfig;
 
             _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
         }

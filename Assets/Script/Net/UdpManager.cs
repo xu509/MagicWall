@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 namespace MagicWall
 {
@@ -16,6 +17,9 @@ namespace MagicWall
 
         private float lastReceiveTime = 0f;
         private bool _hasInit = false;
+
+        private bool _receMsg = false;
+        public bool receMsg { get { return _receMsg; } }
 
 
         //以下默认都是私有的成员
@@ -29,6 +33,8 @@ namespace MagicWall
         int recvLen; //接收的数据长度
 
 
+        private Queue<int> _changeSceneQueue;
+
         //委托队列
         private Queue<Action> asyncQueue = new Queue<Action>();
         private Queue<Action> mainQueue = new Queue<Action>();
@@ -41,8 +47,13 @@ namespace MagicWall
 
 
         void Awake() {
+            _changeSceneQueue = new Queue<int>();
+
+
+            var obj = GameObject.Find("UdpHandler");
+
             InitSocket(); //在这里初始化
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
 
         /// <summary>
@@ -50,21 +61,31 @@ namespace MagicWall
         /// </summary>
         void InitSocket()
         {
-            //定义侦听端口,侦听任何IP
-            ipEnd = new IPEndPoint(IPAddress.Any, 9999);
-            //定义套接字类型,在主线程中定义
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            //服务端需要绑定ip
-            socket.Bind(ipEnd);
-            //定义客户端
-            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-            clientEnd = (EndPoint)sender;
-            print("初始化socket！");
+            Debug.Log("Init Socket!");
 
-            ////开启一个线程连接，必须的，否则主线程卡死
-            connectThread = new Thread(new ThreadStart(SocketReceive));
-            connectThread.Start();
-            _hasInit = true;
+            if (!_hasInit) {
+                //定义侦听端口,侦听任何IP
+                ipEnd = new IPEndPoint(IPAddress.Any, 9999);
+
+                //定义套接字类型,在主线程中定义
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                //服务端需要绑定ip
+                socket.Bind(ipEnd);
+                //定义客户端
+                IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+                clientEnd = (EndPoint)sender;
+                print("初始化socket！");
+
+                ////开启一个线程连接，必须的，否则主线程卡死
+                connectThread = new Thread(new ThreadStart(SocketReceive));
+                connectThread.Start();
+
+                _hasInit = true;
+            }
+
+            Debug.Log("Init Socket End !");
+
+
         }
 
 
@@ -82,6 +103,15 @@ namespace MagicWall
                 recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
                 print(recvStr);
 
+                int rnumber = -1;
+
+                int.TryParse(recvStr, out rnumber);//2
+
+                if (rnumber > 0) {
+                    AddSceneIndex(rnumber);
+                }
+
+
                 // TODO 当受到制定信息，则进行处理
                 //if (true)
                 //{
@@ -93,6 +123,26 @@ namespace MagicWall
             ////将接收到的数据经过处理再发送出去
             //sendStr = "From Server: " + recvStr;
             //SocketSend(sendStr);
+
+        }
+
+        private void Update()
+        {
+
+            if (_changeSceneQueue.Count > 0) {
+                int si = _changeSceneQueue.Dequeue();
+
+                var number = SceneManager.sceneCount;
+                var lastScene = SceneManager.GetSceneAt(number - 1);
+
+                Debug.Log("lastScene : " + lastScene.name);
+
+                SceneManager.UnloadSceneAsync(lastScene,UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+                SceneManager.LoadScene(si,LoadSceneMode.Additive);
+
+                _receMsg = false;
+            }
 
         }
 
@@ -206,6 +256,19 @@ namespace MagicWall
                 }
             }
         }
+
+
+        private void AddSceneIndex(int sindex) {
+            _receMsg = true;
+            _changeSceneQueue.Enqueue(sindex);
+        }
+
+
+        private void OnDestroy()
+        {
+            socket.Close();
+        }
+
 
     }
 }

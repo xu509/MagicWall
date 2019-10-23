@@ -336,6 +336,11 @@ PrefabInstance:
       propertyPath: _unitySceneManager
       value: 
       objectReference: {fileID: 752610244}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mockDaoType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentChooseBehavior

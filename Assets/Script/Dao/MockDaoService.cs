@@ -14,6 +14,9 @@ namespace MagicWall
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
 
+        [SerializeField]
+        DaoServiceFactory _daoServiceFactory;
+
         public MockSceneConfig mockSceneConfig
         {
             set

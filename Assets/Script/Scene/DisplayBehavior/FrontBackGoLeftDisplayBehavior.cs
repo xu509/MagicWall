@@ -123,7 +123,7 @@ namespace MagicWall
                         //    imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(ori_x, ori_y), AgentContainerType.MainPanel
-    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent);
+    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent, DaoTypeEnum.CBHAiqigu);
 
                         go.flockStatus = FlockStatusEnum.NORMAL;
 
@@ -201,7 +201,7 @@ namespace MagicWall
                         //go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
                         //    width, height, agent, AgentContainerType.BackPanel);
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(ori_x, ori_y), AgentContainerType.BackPanel
-, ori_x, ori_y, i, column, width, height, agent);
+, ori_x, ori_y, i, column, width, height, agent,DaoTypeEnum.CBHAiqigu);
 
                         go.flockStatus = FlockStatusEnum.NORMAL;
 

@@ -62,7 +62,7 @@ namespace MagicWall
         [SerializeField] OperateCardManager _operateCardManager;
         public OperateCardManager operateCardManager { get { return _operateCardManager; } }
 
-        [SerializeField,Header("Collision")] CollisionManager _collisionManager;
+        [SerializeField, Header("Collision")] CollisionManager _collisionManager;
         public CollisionManager collisionManager { get { return _collisionManager; } }
 
         [SerializeField] CollisionBehaviorConfig _collisionBehaviorConfig;
@@ -86,11 +86,11 @@ namespace MagicWall
 
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
-        [SerializeField,Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
-        [SerializeField,Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
+        [SerializeField, Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
+        [SerializeField, Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
         [SerializeField, Tooltip("智博会 - 土布")] MockZBHTubuDaoService _mockZBHTubuDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
-        [SerializeField] MockShicunDaoService _mockShicunDaoService;        
+        [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] DaoService _realDaoService;
 
         [SerializeField, Header("Music")] MusicManager _musicManager;
@@ -106,9 +106,11 @@ namespace MagicWall
         [SerializeField] DaoTypeEnum _mockDaoType;
 
 
-        [SerializeField,Header("Sceen")] private ScreenTypeEnum _screenType;
+        [SerializeField, Header("Sceen")] private ScreenTypeEnum _screenType;
         public ScreenTypeEnum screenTypeEnum { set { _screenType = value; } get { return _screenType; } }
 
+        [SerializeField]
+        private UnitySceneManager _unitySceneManager;
 
 
         #endregion
@@ -131,14 +133,14 @@ namespace MagicWall
 
         //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+        //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 
         private int themeCounter = 0; // 主题计数器
-        public int ThemeCounter { get { return themeCounter; }}
+        public int ThemeCounter { get { return themeCounter; } }
 
 
         #endregion
@@ -185,6 +187,9 @@ namespace MagicWall
 
         public Camera starCamera { get { return _starCamera; } }
 
+
+        [SerializeField] DaoServiceFactory _daoServiceFactory;
+        public DaoServiceFactory daoServiceFactory { get { return _daoServiceFactory; } }
 
         // 获取文件地址
         #endregion
@@ -270,13 +275,18 @@ namespace MagicWall
 
 
             // 初始化场景管理器
-            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
+            _magicSceneManager.Init(this,
+                OnSceneEnterLoop, 
+                OnStartSceneCompleted);
 
             // 初始化背景管理器, 此时对象池完成
             _backgroundManager.Init(this);
 
             // 初始化实体管理器
+            Debug.Log("init agent manager");
             _agentManager.Init(this);
+            Debug.Log("init agent manager end");
+
 
             //  初始化操作模块
             _operateMode.Init(this);
@@ -477,73 +487,86 @@ namespace MagicWall
 
         public Vector2 GetScreenRect()
         {
-            Debug.Log(1);
+            //Debug.Log(1);
 
             return new Vector2(Screen.width, Screen.height);
         }
 
-        private void ExchangeTheme() {
+        private void OnSceneEnterLoop() {
             // ExchangeTheme
 
+            // 十村定制屏逻辑 开始
 
-            System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
-            sw2.Start();
+            //System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+            //sw2.Start();
 
-            //Debug.Log("修改主题");
-            infoPanelAgent.Hide();
+            ////Debug.Log("修改主题");
+            //infoPanelAgent.Hide();
 
-            _hasInit = false;
-            themeCounter++;
+            //_hasInit = false;
+            //themeCounter++;
 
+            //ExchangeThemeInit();
 
-            ExchangeThemeInit();
+            //sw2.Stop();
+            ////Debug.Log(" ExchangeTheme init : " + sw2.ElapsedMilliseconds / 1000f);
 
-            sw2.Stop();
-            //Debug.Log(" ExchangeTheme init : " + sw2.ElapsedMilliseconds / 1000f);
+            //_hasInit = true;
 
-
-            _hasInit = true;
-
-        }
+            // 十村定制屏逻辑 结束
 
 
-        private void ExchangeThemeInit() {
+            // 创博会逻辑
 
-            // 初始化数据服务
-            if (_isMockData)
-            {
-                if (switchMode)
-                {
-                    if (themeCounter % 2 == 0)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else
-                    {
-                        _daoService = _mockZhichengDaoService;
-                    }
-                }
-            }
+            Debug.Log("Scene 进入循环底");
 
-            // 初始化 Global Data
-            _globalData.Init(this);
+            //_unitySceneManager.DoChange();
 
-            ResetMainPanel(); //主面板归位
+            Debug.Log("Scene 进入循环底 End");
 
-            PanelOffsetX = 0f;   // 清理两个panel偏移量
-            PanelBackOffsetX = 0f;
-            PanelOffsetY = 0f;   // 清理两个panel偏移量
+            //SceneManager.LoadScene("CBHMain");
 
-            // 初始化场景管理器
-            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
-
-            // 初始化定制服务
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Init(this);
-            }
 
         }
+
+
+        //private void ExchangeThemeInit() {
+
+        //    // 初始化数据服务
+        //    if (_isMockData)
+        //    {
+        //        if (switchMode)
+        //        {
+        //            if (themeCounter % 2 == 0)
+        //            {
+        //                _daoService = _mockFeiyueDaoService;
+        //            }
+        //            else
+        //            {
+        //                _daoService = _mockZhichengDaoService;
+        //            }
+        //        }
+        //    }
+
+        //    // 初始化 Global Data
+        //    _globalData.Init(this);
+
+        //    ResetMainPanel(); //主面板归位
+
+        //    PanelOffsetX = 0f;   // 清理两个panel偏移量
+        //    PanelBackOffsetX = 0f;
+        //    PanelOffsetY = 0f;   // 清理两个panel偏移量
+
+        //    // 初始化场景管理器
+        //    _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
+
+        //    // 初始化定制服务
+        //    if (managerConfig.IsCustom)
+        //    {
+        //        infoPanelAgent.Init(this);
+        //    }
+
+        //}
 
 
 

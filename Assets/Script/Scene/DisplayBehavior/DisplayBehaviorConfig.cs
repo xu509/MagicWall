@@ -22,6 +22,9 @@ namespace MagicWall
         private int _page = 0;
         private float _displayTime;
         private SceneUtils _sceneUtils;
+        private SceneConfig _sceneConfig;
+
+        public SceneConfig sceneConfig { set { _sceneConfig = value; } get { return _sceneConfig; } }
 
         /// <summary>
         /// 根据行数的数据字典
