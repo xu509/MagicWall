@@ -199,8 +199,6 @@ namespace MagicWall
         #endregion
 
 
-        UdpServer udpServer;
-
         private bool _hasInit = false;
 
         private void Init()
@@ -261,10 +259,6 @@ namespace MagicWall
 
             // 初始化 Global Data
             _globalData.Init(this);
-
-            // 初始化监听服务
-            udpServer = UdpServer.Instance;
-            udpServer.SetManager(this);
 
             // 设置 Dotween 插件
             DOTween.logBehaviour = LogBehaviour.ErrorsOnly;
@@ -348,13 +342,6 @@ namespace MagicWall
             _agentManager.Run();
 
             _collisionManager.Run();
-
-            //  启动监听
-            udpServer.Listening();
-            if (_reset)
-            {
-                Reset();
-            }
 
             // 自定义屏幕状态更新
             if (managerConfig.IsCustom)
@@ -447,9 +434,6 @@ namespace MagicWall
 
                 //  初始化背景库
                 //_backgroundManager.Reset();
-
-                //  初始化 SOCKET 接收器
-                UdpServer.Instance.Reset();
 
                 //Init();
 
