@@ -335,6 +335,12 @@ PrefabInstance:
       propertyPath: _row
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _cutEffectConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 11a1c38f49ec18547ba6f513b9e45270,
+        type: 2}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -395,6 +401,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+    - {fileID: 5035228855224239254, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
 --- !u!224 &553118715 stripped
 RectTransform:

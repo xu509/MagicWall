@@ -356,6 +356,12 @@ PrefabInstance:
       propertyPath: _isMockFeiyueData
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _customLogoSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 39905ab8d32d5324cbf73aa53f767b29,
+        type: 3}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -427,6 +433,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ignoreValue
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _runBackground
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}

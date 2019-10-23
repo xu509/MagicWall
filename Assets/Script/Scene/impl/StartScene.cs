@@ -100,11 +100,20 @@ namespace MagicWall
 
             var addresses = _manager.daoService.GetMatImageAddresses();
 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
             foreach (string address in addresses)
             {
+                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+
                 string imageAddress = MagicWallManager.FileDir + address;
-                //TextureResource.Instance.GetTexture(imageAddress);
+                //TextureResource.Instance.GetTexture(imageAddress);               
                 SpriteResource.Instance.GetData(imageAddress);
+
+                watch.Stop();
+                //Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
             }
 
             // 加载其他资源
@@ -116,6 +125,9 @@ namespace MagicWall
             TextureResource.Instance.Add(TextureResource.Write_Pad_Texture_Big, writePanelTotalPanel);
 
             _startSceneStatus = StartSceneStatus.LoadResourceCompleted;
+
+            sw.Stop();
+            Debug.Log("2 Time : " + sw.ElapsedMilliseconds / 1000f);
 
         }
 

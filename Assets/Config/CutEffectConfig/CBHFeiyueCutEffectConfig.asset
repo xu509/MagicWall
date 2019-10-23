@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 697eb86ab20866941a98a75cacf7d8fd, type: 3}
-  m_Name: ZBHFeiyueCutEffectConfig
+  m_Name: CBHFeiyueCutEffectConfig
   m_EditorClassIdentifier: 
   MidDisperseMoveEaseEnum: 14
   MidDisperseDelayMax: 0.75
@@ -32,4 +32,8 @@ MonoBehaviour:
   StarEffectMoveFactor: 15
   StarEffectOriginPoint: 1000
   StarEffectEndPoint: -2500
-  FallDownFactor: 2.67
+  FallDownSpeed: 108
+  FallDownGapTime: 3.14
+  FallDownNoise: 1.24
+  FallDownTotalTime: 11.42
+  FallDownLogoFadeTime: 3

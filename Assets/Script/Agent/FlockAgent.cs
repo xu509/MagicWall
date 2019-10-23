@@ -70,7 +70,7 @@ namespace MagicWall
         /// <summary>
         /// 原位置，anchor position
         /// </summary>
-        private Vector2 _oriVector2;
+        [SerializeField]  private Vector2 _oriVector2;
 
         // 生成的位置
         private Vector2 _genVector2;
@@ -92,12 +92,6 @@ namespace MagicWall
         public bool isCreateSuccess { set { _isCreateSuccess = value; } get { return _isCreateSuccess; } }
 
 
-        /// <summary>
-        ///     flock 移动状态
-        /// </summary>
-        private AgentMoveStatus _agentMoveStatus;
-        public AgentMoveStatus agentMoveStatus { set { _agentMoveStatus = value; } get { return _agentMoveStatus; } }
-
         // 卡片代理
         CardAgent _cardAgent;
         public CardAgent cardAgent { set { _cardAgent = value; } }
@@ -118,10 +112,13 @@ namespace MagicWall
 
 
         private float _fallDownStartTime = 0f;
-        public float fallDwonStartTime { set { _fallDownStartTime = value; } get { return _fallDownStartTime; } }
+        public float fallDownStartTime { set { _fallDownStartTime = value; } get { return _fallDownStartTime; } }
 
+        private float _fallDelayTime;
+        public float fallDelayTime { set { _fallDelayTime = value; } get { return _fallDelayTime; } }
 
-
+        private float _fallSpeed;
+        public float fallSpeed { set { _fallSpeed = value; } get { return _fallSpeed; } }
 
         /* collision 相关 */
 
@@ -129,7 +126,7 @@ namespace MagicWall
         /// 下个移动的位置
         /// https://www.yuque.com/u314548/fc6a5l/yb8hw4#8le6t
         /// </summary>
-        private Vector2 _nextVector2;        
+        [SerializeField] private Vector2 _nextVector2;        
         public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
 
         private bool _moveFlag = false;
@@ -462,8 +459,6 @@ namespace MagicWall
         /// <returns></returns>
         public void CalculateEffectedDestination(List<CollisionEffectAgent> effectAgents)
         {
-            //Debug.Log("=== " + gameObject.name + " LOG START ===");
-
             bool needReturnPositionFlag = false;
 
             if (effectAgents == null || effectAgents.Count == 0 || (!_canEffected) || (_flockStatus == FlockStatusEnum.STAR)){
@@ -477,7 +472,6 @@ namespace MagicWall
 
                 // target position
                 Vector2 targetPosition = new Vector2();
-
 
                 float distance = 1000f;
 
@@ -503,7 +497,6 @@ namespace MagicWall
                     }                    
                 }
 
-
                 float effectDistance;
                 float w, h;
                 if (targetAgent != null)
@@ -511,7 +504,6 @@ namespace MagicWall
                     w = targetAgent.GetWidth();
                     h = targetAgent.GetHeight();
                     effectDistance = targetAgent.GetEffectDistance();
-
                 }
                 else
                 {
@@ -522,9 +514,6 @@ namespace MagicWall
                                 
                 // 获取差值，差值越大，则表明两个物体距离越近，MAX（offsest） = effectDistance
                 float offset = effectDistance - distance;
-
-                bool offsetGreater = (offset >= 0);
-
 
                 // 进入影响范围
                 if (offset >= 0)
@@ -597,9 +586,10 @@ namespace MagicWall
             // _oriVector2
             var refVector2 = new Vector2();
 
-            if (hasChangedFlag)
+            if (_hasChangedFlag)
             {
                 refVector2 = _nextChangedPosition;
+
             }
             else if (isCreateSuccess)
             {
@@ -612,17 +602,6 @@ namespace MagicWall
                 refVector2 = _nextChangedPosition;
             }
 
-
-
-
-            //if (_manager.SceneStatus == WallStatusEnum.Cutting)
-            //{
-
-            //}
-            //else
-            //{
-
-            //}
 
             Vector2 refVector2WithOffset;
 
@@ -639,15 +618,8 @@ namespace MagicWall
                 refVector2WithOffset = refVector2 - new Vector2(_manager.PanelOffsetX, _manager.PanelOffsetY); //获取带偏移量的参考位置
             }
 
-
-
-
             // refVector2 此时该数据需要进行修改偏移量
-
-
             var screenPosition = RectTransformUtility.WorldToScreenPoint(null, refVector2WithOffset);
-
-
             return screenPosition;
         }
 
@@ -766,15 +738,5 @@ namespace MagicWall
 
 
     }
-
-    /// <summary>
-    /// 移动状态
-    /// </summary>
-    public enum AgentMoveStatus
-    {
-        Regular, // 正常
-        Changing // 变化中
-    }
-
 
 }

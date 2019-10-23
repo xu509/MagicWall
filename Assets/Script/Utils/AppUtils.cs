@@ -80,6 +80,8 @@ namespace MagicWall
 
         public static void Log(string Content)
         {
+            Debug.Log("Content : " + Content);
+
             string path = Application.dataPath;
             StreamWriter sw = new StreamWriter(path + "\\Log.txt", true);
             string fileTitle = "日志文件创建的时间:" + System.DateTime.Now.ToString();
