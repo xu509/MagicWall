@@ -15,7 +15,8 @@ namespace MagicWall
         LeftRightAdjust,    // 左右
         MidDisperse,    // 中外
         Stars,  // 星空
-        UpDownAdjustCutEffect   // 上下
+        UpDownAdjustCutEffect,   // 上下
+        VideoBetweenImageSixScene   //6屏，视频在中间
 
     }
 }
