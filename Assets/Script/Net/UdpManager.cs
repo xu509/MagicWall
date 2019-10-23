@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace MagicWall
 {
-    public class UdpServer : Singleton<UdpServer>
+    public class UdpManager : MonoBehaviour
     {
         private MagicWallManager _manager;
 
@@ -40,10 +40,80 @@ namespace MagicWall
         private static int doUpdate = 5;
 
 
-        public void SetManager(MagicWallManager manager)
-        {
-            _manager = manager;
+        void Awake() {
+            InitSocket(); //在这里初始化
+            DontDestroyOnLoad(this);
         }
+
+        /// <summary>
+        ///     初始化 socket 服务器
+        /// </summary>
+        void InitSocket()
+        {
+            //定义侦听端口,侦听任何IP
+            ipEnd = new IPEndPoint(IPAddress.Any, 9999);
+            //定义套接字类型,在主线程中定义
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //服务端需要绑定ip
+            socket.Bind(ipEnd);
+            //定义客户端
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+            clientEnd = (EndPoint)sender;
+            print("waiting for UDP dgram");
+
+            ////开启一个线程连接，必须的，否则主线程卡死
+            connectThread = new Thread(new ThreadStart(SocketReceive));
+            connectThread.Start();
+            _hasInit = true;
+        }
+
+
+        //服务器接收, 每一秒接受一次
+        void SocketReceive()
+        {
+            while (true)
+            {
+                //对data清零
+                recvData = new byte[1024];
+                //获取客户端，获取客户端数据，用引用给客户端赋值
+                recvLen = socket.ReceiveFrom(recvData, ref clientEnd);
+                //print("message from: " + clientEnd.ToString()); //打印客户端信息
+                //输出接收到的数据
+                recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
+                print(recvStr);
+
+                // TODO 当受到制定信息，则进行处理
+                //if (true)
+                //{
+                //    AfterRun();
+                //}
+            }
+
+
+            ////将接收到的数据经过处理再发送出去
+            //sendStr = "From Server: " + recvStr;
+            //SocketSend(sendStr);
+
+        }
+
+
+
+
+        void OnApplicationQuit()
+        {
+            //关闭线程
+            if (connectThread != null)
+            {
+                connectThread.Interrupt();
+                connectThread.Abort();
+            }
+            //最后关闭socket
+            if (socket != null)
+                socket.Close();
+        }
+
+
+
 
 
         public void Listening()
@@ -71,25 +141,7 @@ namespace MagicWall
         }
 
 
-        //初始化
-        void InitSocket()
-        {
-            //定义侦听端口,侦听任何IP
-            ipEnd = new IPEndPoint(IPAddress.Any, 9999);
-            //定义套接字类型,在主线程中定义
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            //服务端需要绑定ip
-            socket.Bind(ipEnd);
-            //定义客户端
-            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-            clientEnd = (EndPoint)sender;
-            print("waiting for UDP dgram");
 
-            ////开启一个线程连接，必须的，否则主线程卡死
-            connectThread = new Thread(new ThreadStart(SocketReceive));
-            connectThread.Start();
-            _hasInit = true;
-        }
 
 
         void SocketSend(string sendStr)
@@ -104,77 +156,6 @@ namespace MagicWall
 
 
 
-        //服务器接收, 每一秒接受一次
-        void SocketReceive()
-        {
-            while (true)
-            {
-                //对data清零
-                recvData = new byte[1024];
-                //获取客户端，获取客户端数据，用引用给客户端赋值
-                recvLen = socket.ReceiveFrom(recvData, ref clientEnd);
-                //print("message from: " + clientEnd.ToString()); //打印客户端信息
-                //输出接收到的数据
-                recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
-                print(recvStr);
-
-                // TODO 当受到制定信息，则进行处理
-                if (true)
-                {
-                    AfterRun();
-                }
-            }
-
-
-            ////将接收到的数据经过处理再发送出去
-            //sendStr = "From Server: " + recvStr;
-            //SocketSend(sendStr);
-
-        }
-
-
-        //连接关闭
-        void SocketQuit()
-        {
-            //关闭线程
-            if (connectThread != null)
-            {
-                connectThread.Interrupt();
-                connectThread.Abort();
-            }
-            //最后关闭socket
-            if (socket != null)
-                socket.Close();
-        }
-
-        // Use this for initialization
-        void Awake()
-        {
-            InitSocket(); //在这里初始化
-
-        }
-
-
-        void OnApplicationQuit()
-        {
-            SocketQuit();
-        }
-
-        // 重置
-        public void Reset()
-        {
-            _hasInit = false;
-
-            // 停止socket 
-            SocketQuit();
-
-            // 参数归零
-            lastReceiveTime = 0f;
-
-            // 重置
-            InitSocket();
-
-        }
 
 
         // 判断是否可接受
