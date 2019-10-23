@@ -698,17 +698,68 @@ namespace MagicWall
 
         public List<string> GetLeftImagesForVBI6S()
         {
-            throw new System.NotImplementedException();
+            List<string> images = new List<string>();
+            string pathDir = "ZBH\\tubu\\left";
+            if (Directory.Exists(MagicWallManager.FileDir + pathDir))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + pathDir);
+                var fileInfos = dirInfo.GetFiles();
+
+                for (int i = 0; i < fileInfos.Length; i++)
+                {
+                    images.Add(pathDir + "\\" + fileInfos[i].Name);
+                }
+                return images;
+            }
+            else
+            {
+                print("初始化文件夹不存在");
+                return null;
+            }
         }
 
         public List<string> GetRigetImagesForVBI6S()
         {
-            throw new System.NotImplementedException();
+            List<string> images = new List<string>();
+            string pathDir = "ZBH\\tubu\\right";
+            if (Directory.Exists(MagicWallManager.FileDir + pathDir))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + pathDir);
+                var fileInfos = dirInfo.GetFiles();
+
+                for (int i = 0; i < fileInfos.Length; i++)
+                {
+                    images.Add(pathDir + "\\" + fileInfos[i].Name);
+                }
+                return images;
+            }
+            else
+            {
+                print("初始化文件夹不存在");
+                return null;
+            }
         }
 
         public List<string> GetVideosForVBI6S()
         {
-            throw new System.NotImplementedException();
+            List<string> videos = new List<string>();
+            string pathDir = "ZBH\\tubu\\video";
+            if (Directory.Exists(MagicWallManager.FileDir + pathDir))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + pathDir);
+                var fileInfos = dirInfo.GetFiles();
+
+                for (int i = 0; i < fileInfos.Length; i++)
+                {
+                    videos.Add(MagicWallManager.FileDir + pathDir + "\\" + fileInfos[i].Name);
+                }
+                return videos;
+            }
+            else
+            {
+                print("初始化文件夹不存在");
+                return null;
+            }
         }
     }
 }

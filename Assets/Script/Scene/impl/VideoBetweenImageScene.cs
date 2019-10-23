@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
 // 6屏幕，视频在中间
 namespace MagicWall
@@ -13,6 +15,7 @@ namespace MagicWall
         //  Parameter
         //
         private MagicWallManager _manager;
+        private MagicSceneManager _magicSceneManager;
 
         Action _onSceneCompleted;
 
@@ -25,6 +28,7 @@ namespace MagicWall
 
 
         private bool _hasInit = false;
+        private float _startTime;
 
 
 
@@ -39,6 +43,10 @@ namespace MagicWall
             _manager = manager;
             _sceneConfig = sceneConfig;
             _onSceneCompleted = onSceneCompleted;
+
+            _magicSceneManager = GameObject.Find("Scene").GetComponent<MagicSceneManager>();
+            _magicSceneManager._videoBetweenImageController.Init(manager);
+
         }
 
         /// <summary>
@@ -46,11 +54,10 @@ namespace MagicWall
         /// </summary>
         private void InitData() {
             _durTime = _sceneConfig.durtime;
+            _magicSceneManager._videoBetweenImageController.StartPlay();
+            _startTime = Time.time;
             _hasInit = true;
         }
-
-
-
 
         //  运行
         public bool Run()
@@ -66,11 +73,19 @@ namespace MagicWall
             // 播放视频
 
             // 当场景结束调用
-            _onSceneCompleted.Invoke();
+
+            if ((Time.time - _startTime) > _durTime) {
+               _hasInit = false;
+                _onSceneCompleted.Invoke();
+            }
+
+
+            
 
 
             return true;
         }
+
 
         public DataTypeEnum GetDataType()
         {

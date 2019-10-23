@@ -22,6 +22,11 @@ namespace MagicWall
         public bool runLogoAni { get { return _runLogoAni; } }
 
         [SerializeField] Sprite _logo;
+
+        [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
+        //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
+
+
         public Sprite logo { get { return _logo; } }
 
 
