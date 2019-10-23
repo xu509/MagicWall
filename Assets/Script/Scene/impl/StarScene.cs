@@ -66,11 +66,11 @@ namespace MagicWall
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
-            _daoService = manager.daoService;
+            //_daoService = manager.daoService;
             _durtime = sceneConfig.durtime;
             _dataType = sceneConfig.dataType;
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
 
             _onSceneCompleted = onSceneCompleted;
 
@@ -368,6 +368,11 @@ namespace MagicWall
         }
 
         DataTypeEnum IScene.GetDataType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RunEnd(Action onEndCompleted)
         {
             throw new NotImplementedException();
         }

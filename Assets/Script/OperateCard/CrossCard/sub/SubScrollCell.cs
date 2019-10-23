@@ -187,7 +187,7 @@ namespace MagicWall
             // 调整 Like 按钮
             //_manager.daoService.
             //_likes = _manager.daoService.GetLikes(_cellData.Id, _cellData.Category);
-            _likes = _manager.daoService.GetLikes(_cellData.Image);
+            _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
 
             // 设置喜欢
             _buttonLikeAgent.Init(_likes, OnClickLike);
@@ -226,7 +226,7 @@ namespace MagicWall
 
         private void OnClickLike()
         {
-            _manager.daoService.UpdateLikes(_cellData.Image);
+            _manager.daoServiceFactory.UpdateLikes(_cellData.Image);
         }
 
 

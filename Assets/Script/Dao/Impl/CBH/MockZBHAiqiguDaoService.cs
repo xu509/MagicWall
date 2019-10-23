@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockZBHTubuDaoService : MonoBehaviour, IDaoService
+    public class MockZBHAiqiguDaoService : MonoBehaviour, IDaoService
     {
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
@@ -46,7 +46,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockZBHTubuDaoService() { }
+        protected MockZBHAiqiguDaoService() { }
 
 
 
@@ -699,9 +699,9 @@ namespace MagicWall
         public List<string> GetLeftImagesForVBI6S()
         {
             List<string> images = new List<string>();
-            string pathDir = "ZBH\\tubu\\土布-第一屏.jpg";
-            string pathDir1 = "ZBH\\tubu\\土布-第一屏1.jpg";
-            string pathDir2 = "ZBH\\tubu\\土布-第一屏2.jpg";
+            string pathDir = "ZBH\\aiqi\\爱企谷 第一屏1.jpg";
+            string pathDir1 = "ZBH\\aiqi\\爱企谷 第一屏2.jpg";
+            string pathDir2 = "ZBH\\aiqi\\爱企谷 第一屏3.jpg";
 
             images.Add(pathDir);
             images.Add(pathDir1);
@@ -713,17 +713,20 @@ namespace MagicWall
         public List<string> GetRigetImagesForVBI6S()
         {
             List<string> images = new List<string>();
-            string pathDir = "ZBH\\tubu\\土布-第六屏.jpg";
-
+            string pathDir = "ZBH\\aiqi\\爱企谷 第六屏1.jpg";
+            string pathDir2 = "ZBH\\aiqi\\爱企谷 第六屏2.jpg";
             images.Add(pathDir);
+            images.Add(pathDir2);
 
             return images;
         }
 
         public List<string> GetVideosForVBI6S()
         {
+            Debug.Log(1);
+
             List<string> videos = new List<string>();
-            string pathDir = "ZBH\\tubu\\2.mp4";
+            string pathDir = "ZBH\\aiqi\\191023_爱企谷宣传片B.mp4";
             videos.Add(pathDir);
             return videos;
         }

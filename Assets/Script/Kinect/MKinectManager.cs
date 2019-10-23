@@ -61,7 +61,7 @@ namespace MagicWall {
                 {
                     _kinectAgents[i].UpdateBehaviour();
 
-                    if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete)
+                    if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete || _manager.useKinect == false)
                     {
                         needDestoryAgents.Add(_kinectAgents[i]);
                     }
@@ -77,7 +77,7 @@ namespace MagicWall {
 
                 needDestoryAgents.Clear();
 
-                if (isMock)
+                if (isMock && _manager.useKinect)
                 {
                     if (_kinectAgents.Count == 0)
                     {

@@ -59,7 +59,7 @@ namespace MagicWall
 
             _id = scrollData.Type;
             _description = scrollData.Description;
-            _likes = _manager.daoService.GetLikes(scrollData.Cover);
+            _likes = _manager.daoServiceFactory.GetLikes(scrollData.Cover);
             _image = scrollData.Cover;
             _type = 0;
             _isImage = scrollData.Type == 0;
@@ -77,7 +77,7 @@ namespace MagicWall
 
             _id = productDetail.Id;
             _description = productDetail.Description;
-            _likes = _manager.daoService.GetLikes(productDetail.Image);
+            _likes = _manager.daoServiceFactory.GetLikes(productDetail.Image);
             _image = productDetail.Image;
             _type = 0;
             _isImage = productDetail.IsImage();
@@ -94,7 +94,7 @@ namespace MagicWall
             _id = activityDetail.Id;
             _isImage = activityDetail.IsImage();
             _description = activityDetail.Description;
-            _likes = _manager.daoService.GetLikes(activityDetail.Image);
+            _likes = _manager.daoServiceFactory.GetLikes(activityDetail.Image);
             _image = activityDetail.Image;
             _type = 1;
 

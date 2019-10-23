@@ -249,7 +249,8 @@ namespace MagicWall {
             crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
 
             // 处理businesscard
-            _hasListBtn = _manager.daoService.GetEnvCards(_dataId).Count > 0;
+            //_hasListBtn = _manager.daoService.GetEnvCards(_dataId).Count > 0;
+            _hasListBtn = false;
             //InitComponents(false);
 
             // 设置完成回调
@@ -340,7 +341,7 @@ namespace MagicWall {
                 up_index = _scrollItemNumber - 1;
             }
 
-            Debug.Log("上一个，当前： " + index + " 目标： " + up_index);
+            //Debug.Log("上一个，当前： " + index + " 目标： " + up_index);
 
             crossCardScrollViewController.SelectCell(up_index);
 
@@ -364,7 +365,7 @@ namespace MagicWall {
 
             crossCardScrollViewController.SelectCell(down_index);
 
-            Debug.Log("下一个，当前： " + index + " 目标： " + down_index);
+           // Debug.Log("下一个，当前： " + index + " 目标： " + down_index);
 
 
             DoUpdate();

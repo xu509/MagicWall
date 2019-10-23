@@ -66,11 +66,16 @@ namespace MagicWall
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, _sceneConfig.isKinect);
 
 
             // 固定高度
-            int _row = _manager.Row;
+            int _row = 6;
+
+            if (_sceneConfig.isKinect == 1) {
+                _row = 12;
+            }
+
             int _itemHeight = _sceneUtil.GetFixedItemHeight();
             float gap = _sceneUtil.GetGap();
 

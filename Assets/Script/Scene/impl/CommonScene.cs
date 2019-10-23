@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 // 普通场景
 namespace MagicWall
@@ -96,6 +97,15 @@ namespace MagicWall
              _displayStartTime = 0;
              _hasCallDestory = false;
              _hasInitData = true;
+
+            if (_sceneConfig.isKinect == 0)
+            {
+                _manager.useKinect = false;
+            }
+            else {
+                _manager.useKinect = true;
+            }
+
         }
 
 
@@ -150,5 +160,20 @@ namespace MagicWall
 
         }
 
+        public void RunEnd(Action onEndCompleted)
+        {
+            // 渐暗，清理
+            _manager.BgLogo.GetComponent<Image>().sprite = _manager.magicSceneManager.logo;
+
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _hasInitData = false;
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+            });
+
+
+
+        }
     }
 }

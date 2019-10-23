@@ -17,6 +17,9 @@ public class VideoBetweenImageController : MonoBehaviour
     private List<string> leftImages;
     private List<string> rightImages;
     private List<string> videos;
+
+    private DaoTypeEnum _daoTypeEnum;
+
     // 所有图片
     List<RawImage> images;
 
@@ -26,25 +29,34 @@ public class VideoBetweenImageController : MonoBehaviour
 
     private MagicWallManager _manager;
 
-    public void Init(MagicWallManager manager)
+    public void Init(MagicWallManager manager,DaoTypeEnum daoTypeEnum)
     {
         _manager = manager;
+        _daoTypeEnum = daoTypeEnum;
     }
     public void StartPlay()
     {
+        gameObject.SetActive(true);
+
+        var daoService = _manager.daoServiceFactory.GetDaoService(_daoTypeEnum);
+
         //获取视频
-        videos = _manager.daoService.GetVideosForVBI6S();
+        videos = daoService.GetVideosForVBI6S();
         videoPlayer.loopPointReached += LoopPointReached;
+
+        videoPlayer.url = MagicWallManager.FileDir + videos[0];
+        videoPlayer.Prepare();
+
         StartCoroutine(PlayVideo());
 
         images = new List<RawImage>();
 
         // 初始化最左侧图片
-        leftImages = _manager.daoService.GetLeftImagesForVBI6S();
+        leftImages = daoService.GetLeftImagesForVBI6S();
         SetLeftImages();
 
         // 初始化右侧图片
-        rightImages = _manager.daoService.GetRigetImagesForVBI6S();
+        rightImages = daoService.GetRigetImagesForVBI6S();
         SetRightImages();
 
         if (leftImages.Count > 1)
@@ -60,7 +72,7 @@ public class VideoBetweenImageController : MonoBehaviour
     public void StopPlay()
     {
         videoPlayer.Stop();
-
+        gameObject.SetActive(false);
 
         //GetComponent<CanvasGroup>().alpha = 0;
         //CancelInvoke();
@@ -141,16 +153,22 @@ public class VideoBetweenImageController : MonoBehaviour
     }
     IEnumerator PlayVideo()
     {
-        videoPlayer.url = videos[0];
-        videoPlayer.Prepare();
+
+
         while (!videoPlayer.isPrepared)
         {
             yield return new WaitForSeconds(1);
             break;
         }
+
+        Debug.Log("视频准备完毕");
+
         // 将texture 赋值 (必须等准备好才能赋值)
         videoPlayerHolder.texture = videoPlayer.texture;
+
         videoPlayer.Play();
+        videoPlayer.SetDirectAudioMute(0, false);
+
         /*
         float screenW = Screen.width;
         float screenH = Screen.height;
