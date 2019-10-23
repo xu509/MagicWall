@@ -74,6 +74,10 @@ public class VideoBetweenImageController : MonoBehaviour
         videoPlayer.Stop();
         gameObject.SetActive(false);
 
+        CancelInvoke("ChangeLeftImage");
+        CancelInvoke("ChangeRightImage");
+
+
         //GetComponent<CanvasGroup>().alpha = 0;
         //CancelInvoke();
 

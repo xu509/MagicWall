@@ -8,16 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CBH/CBHMain.unity
     guid: ac989d646b80b4447ae6d5052ca463ee
-  - enabled: 1
-    path: Assets/Scenes/CBH/ZBHFeiYueWithKinectSix.unity
-    guid: 583a888b67349c74bb593a3909e72887
-  - enabled: 1
-    path: Assets/Scenes/CBH/ZBHfengxian.unity
-    guid: 46f7993a4575d0d458e62bdaacf94d91
-  - enabled: 1
-    path: Assets/Scenes/CBH/ZBHTubuVideoScene.unity
-    guid: f2deeba0fd5e57948bc440acca6a1d9b
-  - enabled: 1
-    path: Assets/Scenes/CBH/ZBHAiqiguVideoScene.unity
-    guid: 8135574a5c38db44a8510fd251ede709
   m_configObjects: {}
