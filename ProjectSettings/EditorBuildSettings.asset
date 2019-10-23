@@ -27,6 +27,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MagicWallFIveShicun.unity
     guid: e34cfe0176cb86b488bda60bea4458f6
   - enabled: 1
-    path: Assets/Scenes/ZBHFeiYueWithKinectSix.unity
+    path: Assets/Scenes/CBH/ZBHFeiYueWithKinectSix.unity
     guid: 583a888b67349c74bb593a3909e72887
   m_configObjects: {}

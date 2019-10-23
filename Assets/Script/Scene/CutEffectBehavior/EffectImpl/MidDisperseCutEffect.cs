@@ -48,9 +48,7 @@ namespace MagicWall
             _onEffectCompleted = OnEffectCompleted;
             _onDisplayStart = OnDisplayStart;
 
-            //  获取持续时间
-            _entranceDisplayTime = manager.cutEffectConfig.LeftRightDisplayDurTime;
-            _startingTimeWithOutDelay = _entranceDisplayTime;
+
         }
 
 
@@ -134,6 +132,10 @@ namespace MagicWall
 
         private void CreateItem(DataTypeEnum dataType)
         {
+            //  获取持续时间
+            _entranceDisplayTime = _manager.cutEffectConfig.LeftRightDisplayDurTime;
+            _startingTimeWithOutDelay = _entranceDisplayTime;
+
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
             _sceneUtil = new SceneUtils(_manager);
