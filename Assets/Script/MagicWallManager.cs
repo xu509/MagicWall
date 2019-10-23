@@ -139,9 +139,9 @@ namespace MagicWall
 
         //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-      //  public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
 

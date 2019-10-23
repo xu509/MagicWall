@@ -19,7 +19,7 @@ namespace MagicWall {
         [SerializeField, Header("Service")] KinectService _kinect2Service;
         [SerializeField, Tooltip("体感块移动延迟时间")]
         public float agentMoveDelayTime = 0.5f;
-        [SerializeField, Tooltip("体感块移动忽略值(减少灵敏度)")]
+        [SerializeField, Tooltip("体感块移动忽略值(减少灵敏度)，目前无用")]
         public float ignoreValue = 10f;
         [SerializeField] KinectType _kinectType;
 
