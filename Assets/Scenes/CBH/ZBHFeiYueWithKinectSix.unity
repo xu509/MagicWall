@@ -208,12 +208,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _mockSceneConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: e47e4bccca6022b41843e475e1e71498,
-        type: 2}
     - target: {fileID: 3095498652357323026, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_Name
@@ -393,43 +387,32 @@ PrefabInstance:
       propertyPath: _daoServiceFactory
       value: 
       objectReference: {fileID: 928909975}
+    - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _agentChooseBehavior
+      value: 
+      objectReference: {fileID: 1629764202}
+    - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _runBackground
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466740121683549004, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: fc3d0db763057354f8397a5eaab6a39c,
+        type: 2}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676,
-        type: 3}
-    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 433035726018076245, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _magicSceneManager
       value: 
       objectReference: {fileID: 1008701219}
-    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _mockSceneConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
-        type: 2}
-    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _daoServiceFactory
-      value: 
-      objectReference: {fileID: 928909975}
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentContainer
@@ -438,7 +421,7 @@ PrefabInstance:
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: isMock
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -455,14 +438,31 @@ PrefabInstance:
       propertyPath: agentMoveDelayTime
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
-      propertyPath: _agentChooseBehavior
+      propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 1629764202}
+      objectReference: {fileID: 11400000, guid: e47e4bccca6022b41843e475e1e71498,
+        type: 2}
+    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _daoServiceFactory
+      value: 
+      objectReference: {fileID: 928909975}
     - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676,
+        type: 3}
+    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
@@ -470,16 +470,16 @@ PrefabInstance:
       propertyPath: ignoreValue
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
-      propertyPath: _runBackground
-      value: 0
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 4466740121683549004, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: fc3d0db763057354f8397a5eaab6a39c,
+      objectReference: {fileID: 11400000, guid: e47e4bccca6022b41843e475e1e71498,
         type: 2}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
