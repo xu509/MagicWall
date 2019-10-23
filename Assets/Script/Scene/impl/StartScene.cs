@@ -111,29 +111,42 @@ namespace MagicWall
 
         private void LoadResource()
         {
-            _manager.daoService.InitData();
 
-            var addresses = _manager.daoService.GetMatImageAddresses();
+
+            var showConfigs = _manager.daoServiceFactory.GetShowConfigs();
+
+            for (int i = 0; i < showConfigs.Count; i++) {
+                var service = _manager.daoServiceFactory.GetDaoService(showConfigs[i].daoTypeEnum);
+
+                service.InitData();
+
+                var addresses = service.GetMatImageAddresses();
+
+                foreach (string address in addresses)
+                {
+                    System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                    watch.Start();
+
+                    string imageAddress = MagicWallManager.FileDir + address;
+                    //TextureResource.Instance.GetTexture(imageAddress);               
+                    SpriteResource.Instance.GetData(imageAddress);
+
+                    watch.Stop();
+
+                    if ((watch.ElapsedMilliseconds / 1000f) > 0.5f)
+                    {
+                        Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
+                    }
+
+                }
+            }
+
+
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            foreach (string address in addresses)
-            {
-                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-
-                string imageAddress = MagicWallManager.FileDir + address;
-                //TextureResource.Instance.GetTexture(imageAddress);               
-                SpriteResource.Instance.GetData(imageAddress);
-
-                watch.Stop();
-
-                if ((watch.ElapsedMilliseconds / 1000f) > 0.5f) {
-                    Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
-                }
-
-            }
+           
 
             // 加载其他资源
             //  - 手写板用的texture

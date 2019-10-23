@@ -35,7 +35,7 @@ namespace MagicWall
 
         private Dictionary<int, Product> _productMap;
 
-
+        private bool _hasInit = false;
 
         void Awake()
         {
@@ -516,6 +516,12 @@ namespace MagicWall
         public void InitData()
         {
             // 初始化数据
+            Debug.Log("init Data feiyue kinect");
+            if (_hasInit) {
+                return;
+            }
+
+
 
             _products = new List<Product>();
             _productMap = new Dictionary<int, Product>();
@@ -543,6 +549,7 @@ namespace MagicWall
                 print("初始化文件夹不存在");
             }
 
+            _hasInit = true;
             //Debug.Log("产品总数： " + _products.Count);
 
         }

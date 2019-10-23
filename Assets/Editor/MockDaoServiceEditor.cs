@@ -18,7 +18,7 @@ namespace MagicWall
         private static float _destory_width = 80f;
         private static float _durtime_width = 50f;
         private static float _tool_width = 50f;
-        private static float _dao_width = 50f;
+        private static float _dao_width = 100f;
 
 
         public override void OnInspectorGUI()

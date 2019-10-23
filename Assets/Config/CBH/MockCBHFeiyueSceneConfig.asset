@@ -33,4 +33,14 @@ MonoBehaviour:
     _durTime: 5
     _displayBehavior: 3
     _destoryBehavior: 0
+  - _sceneType: 0
+    _dataType: 2
+    _durTime: 5
+    _displayBehavior: 2
+    _destoryBehavior: 0
+  - _sceneType: 3
+    _dataType: 2
+    _durTime: 5
+    _displayBehavior: 1
+    _destoryBehavior: 0
   data: 0

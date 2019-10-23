@@ -40,6 +40,7 @@ namespace MagicWall
         private Dictionary<int, List<Product>> _productByEidMap;
         private Dictionary<int, List<Catalog>> _catalogByEidMap;
 
+        private bool _hasInit;
 
 
         void Awake()
@@ -519,6 +520,9 @@ namespace MagicWall
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
+            if (_hasInit)
+                return;
+
 
             _enterpriseMap = new Dictionary<int, Enterprise>();
             _enterprises = new List<Enterprise>();
@@ -545,6 +549,7 @@ namespace MagicWall
             Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
             print("Init Data End");
+            _hasInit = true;
 
         }
 
