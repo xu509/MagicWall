@@ -24,6 +24,8 @@ namespace MagicWall
 
         private bool isInit;
 
+        //float minX;
+        //float maxX;
 
         public void Init(RectTransform container, KinectAgent agentPrefab, MagicWallManager manager)
         {
@@ -48,22 +50,38 @@ namespace MagicWall
                 long userid = ids[i];
                 //获取关节
                 int jointIndex = (int)KinectInterop.JointType.Head;
-                if (!kinectManager.IsJointTracked(userid, jointIndex))
-                {
-                    continue;
-                }
+                //if (!kinectManager.IsJointTracked(userid, jointIndex))
+                //{
+                //    continue;
+                //}
                 //当检测到用户时，就获取到用户的位置信息
-                //Vector3 userPos = kinectManager.GetUserPosition(userid);
-                Vector3 userPos = kinectManager.GetJointKinectPosition(userid, jointIndex);
+                Vector3 userPos = kinectManager.GetUserPosition(userid);
+                //Vector3 userPos = kinectManager.GetJointKinectPosition(userid, jointIndex);
+                //print(userid + "===" + userPos);
                 //kinect在背后，x正负值颠倒y
-                userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
+                //userPos = new Vector3(-userPos.x, userPos.y, userPos.z);
                 //保留?位小数
-                float x = float.Parse(string.Format("{0:f3}", userPos.x));
-                float y = float.Parse(string.Format("{0:f3}", userPos.y));
+                //float x = float.Parse(string.Format("{0:f3}", userPos.x));
+                //float y = float.Parse(string.Format("{0:f3}", userPos.y));
+
+                //if (x<minX)
+                //{
+                //    minX = x;
+                //    print("minX"+minX + "---" + userPos.z);
+                //}
+                //if (x>maxX)
+                //{
+                //    maxX = x;
+                //    print("maxX" + maxX + "---" + userPos.z);
+                //}
 
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
-                Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * x * Screen.width / 2, origin.y + basicDistance / userPos.z * y * Screen.height / 2 + 300); // 正式环境删除400
+                //Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * x * Screen.width / 2, origin.y + basicDistance / userPos.z * y * Screen.height / 2); // 正式环境删除400
+                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / 2.5f * Screen.width, userPos.y * Screen.height/2);
+
+
+                //Vector2 userScreenPos = new Vector2(origin.x + userPos.x;
                 KinectAgent kinectAgent = _manager.kinectManager.GetAgentById(userid);
 
                 if (!InEffectiveRange(new Vector3(userScreenPos.x, userScreenPos.y, userPos.z)))
@@ -116,7 +134,7 @@ namespace MagicWall
             {
                 if (!ids.Contains(item.userId) && item.status != KinectAgentStatusEnum.Destoring && item.status != KinectAgentStatusEnum.Obsolete)
                 {
-                    print("目标被移除:" + item.userId);
+                    //print("目标被移除:" + item.userId);
                     item.Close();
                 }
             }
@@ -161,8 +179,8 @@ namespace MagicWall
             //    kinectAgentMaskWidth = 933;
             //}
 
-            if (pos.z < safeZ)
-                return false;
+            //if (pos.z < safeZ)
+            //    return false;
             if (pos.x < kinectAgentMaskWidth || pos.x > Screen.width - kinectAgentMaskWidth || pos.y < kinectAgentMaskWidth || pos.y > Screen.height - kinectAgentMaskWidth)
             {
                 return false;
