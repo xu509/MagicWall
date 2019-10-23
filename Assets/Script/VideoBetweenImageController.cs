@@ -57,6 +57,22 @@ public class VideoBetweenImageController : MonoBehaviour
         }
     }
 
+    public void StopPlay()
+    {
+        //GetComponent<CanvasGroup>().alpha = 0;
+        //CancelInvoke();
+
+        //for (int i = 0; i < images.Count; i++)
+        //{
+        //    if (images[i].gameObject != null || images[i].gameObject.activeSelf)
+        //    {
+        //        Destroy(images[i].gameObject);
+        //    }
+        //}
+
+        //images = new List<RawImage>();
+    }
+
     void ChangeLeftImage()
     {
         RawImage[] rawImages = leftPanel.GetComponentsInChildren<RawImage>();

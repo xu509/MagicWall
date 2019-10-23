@@ -28,6 +28,7 @@ namespace MagicWall
 
 
         private bool _hasInit = false;
+        private float _startTime;
 
 
 
@@ -54,6 +55,7 @@ namespace MagicWall
         private void InitData() {
             _durTime = _sceneConfig.durtime;
             _magicSceneManager._videoBetweenImageController.StartPlay();
+            _startTime = Time.time;
             _hasInit = true;
         }
 
@@ -71,7 +73,14 @@ namespace MagicWall
             // 播放视频
 
             // 当场景结束调用
-            _onSceneCompleted.Invoke();
+
+            if ((Time.time - _startTime) > _durTime) {
+               _hasInit = false;
+                _onSceneCompleted.Invoke();
+            }
+
+
+            
 
 
             return true;
