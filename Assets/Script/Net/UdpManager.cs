@@ -59,7 +59,7 @@ namespace MagicWall
             //定义客户端
             IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
             clientEnd = (EndPoint)sender;
-            print("waiting for UDP dgram");
+            print("初始化socket！");
 
             ////开启一个线程连接，必须的，否则主线程卡死
             connectThread = new Thread(new ThreadStart(SocketReceive));
