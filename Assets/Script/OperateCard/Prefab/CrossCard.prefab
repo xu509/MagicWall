@@ -2770,7 +2770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellSpacing: 0.2
   scrollOffset: 0.5
-  loop: 0
+  loop: 1
   cellContainer: {fileID: 7543289434758531802}
   scroller: {fileID: 2971315810053268928}
   cellPrefab: {fileID: 6899294134729377403, guid: 34ab18067abe3c34c900161a85725c98,

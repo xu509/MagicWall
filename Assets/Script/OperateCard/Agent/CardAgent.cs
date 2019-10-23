@@ -37,6 +37,11 @@ namespace MagicWall
 
         protected DataTypeEnum dataType;
 
+
+        private DaoTypeEnum _daoTypeEnum;
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; } get { return _daoTypeEnum; } }
+
+
         private List<ExtraCardData> _extraCardDatas;
         private int _sceneIndex;
 
@@ -205,6 +210,9 @@ namespace MagicWall
             if (originAgent != null)
             {
                 name = dataType.ToString() + "(" + originAgent.name + ")";
+
+
+                _daoTypeEnum = originAgent.daoTypeEnum;
 
                 //  添加原组件
                 OriginAgent = originAgent;

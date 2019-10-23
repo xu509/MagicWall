@@ -132,16 +132,43 @@ namespace MagicWall
             if (_changeSceneQueue.Count > 0) {
                 int si = _changeSceneQueue.Dequeue();
 
-                var number = SceneManager.sceneCount;
-                var lastScene = SceneManager.GetSceneAt(number - 1);
+                // 1 : feiyue ; 2: fengxian 3: tubu 4: aiqi
+                int to;
+                if (si == 1)
+                {
+                    to = 1;
+                }
+                else if (si == 2)
+                {
+                    to = 5;
+                }
+                else if (si == 3)
+                {
+                    to = 7;
+                }
+                else {
+                    to = 8;
+                }
 
-                Debug.Log("lastScene : " + lastScene.name);
+                Debug.Log("si : " + si + " - TO :" + to);
 
-                SceneManager.UnloadSceneAsync(lastScene,UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
-                SceneManager.LoadScene(si,LoadSceneMode.Additive);
+                _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+                _manager.magicSceneManager.CloseCurrent(() =>
+                {
+                    _manager.magicSceneManager.JumpTo(to);
+                });
 
-                _receMsg = false;
+
+
+
+                //Debug.Log(si);
+
+
+
+             
+
+                //_receMsg = false;
             }
 
         }

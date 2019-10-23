@@ -119,7 +119,7 @@ namespace MagicWall
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, _sceneConfig.isKinect);
 
             _row = _manager.Row;
             int itemHeight = _sceneUtil.GetFixedItemHeight();
@@ -146,8 +146,7 @@ namespace MagicWall
                     bool isOddRow = i % 2 == 0;
 
                     //  获取要创建的内容
-                    //FlockData agent = _daoService.GetFlockData(type);
-                    FlockData agent = _manager.daoService.GetFlockDataByScene(type,_manager.SceneIndex);
+                    FlockData agent = _manager.daoServiceFactory.GetDaoService(_sceneConfig.daoTypeEnum).GetFlockDataByScene(type,_manager.SceneIndex);
                     Sprite coverSprite = agent.GetCoverSprite();
                     float imageWidth = coverSprite.rect.width;
                     float imageHeight = coverSprite.rect.height;

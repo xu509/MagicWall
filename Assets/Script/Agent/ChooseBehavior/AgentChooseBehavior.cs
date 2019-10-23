@@ -66,7 +66,9 @@ namespace MagicWall {
 
 
                 if (targetKinectAgent == null) {
+                    flockAgent.flockStatus = FlockStatusEnum.NORMAL;
                     DoChooseForCommon(flockAgent);
+                    return;
                 }
 
 

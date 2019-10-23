@@ -41,7 +41,6 @@ namespace MagicWall
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
-            _daoService = manager.daoService;
             _startSceneStatus = StartSceneStatus.Init;
             _onSceneCompleted = onSceneCompleted;
         }
@@ -167,8 +166,8 @@ namespace MagicWall
         {
             // 设置配置表
 
-            MWConfig _config = _daoService.GetConfig();
-            _manager.globalData.SetMWConfig(_config);
+            //MWConfig _config = _daoService.GetConfig();
+            //_manager.globalData.SetMWConfig(_config);
 
 
         }
@@ -184,5 +183,13 @@ namespace MagicWall
             return DataTypeEnum.Start;
         }
 
+        public void RunEnd(Action onEndCompleted)
+        {
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+                });
+        }
     }
 }

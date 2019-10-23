@@ -94,11 +94,11 @@ namespace MagicWall
                 // 调整 Like 按钮
                 if (cellData.IsProduct())
                 {
-                    _likes = _manager.daoService.GetLikes(_cellData.Image);
+                    _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
                 }
                 else
                 {
-                    _likes = _manager.daoService.GetLikes(_cellData.Image);
+                    _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
                 }
 
 
@@ -158,11 +158,11 @@ namespace MagicWall
             // 调整 Like 按钮
             if (cellData.IsProduct())
             {
-                _likes = _manager.daoService.GetLikes(_cellData.Image);
+                _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
             }
             else
             {
-                _likes = _manager.daoService.GetLikes(_cellData.Image);
+                _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
             }
 
 
@@ -243,7 +243,7 @@ namespace MagicWall
         private void OnClickLikeBtn()
         {
             Debug.Log("On Click Like");
-            _manager.daoService.UpdateLikes(_cellData.Image);
+            _manager.daoServiceFactory.UpdateLikes(_cellData.Image);
         }
 
         public override void SetAsLastPosition()

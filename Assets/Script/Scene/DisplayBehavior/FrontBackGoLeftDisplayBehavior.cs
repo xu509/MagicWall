@@ -22,7 +22,7 @@ namespace MagicWall
         {
             _displayBehaviorConfig = displayBehaviorConfig;
             _manager = displayBehaviorConfig.Manager;
-            _daoService = _manager.daoService;
+            _daoService = _manager.daoServiceFactory.GetDaoService(displayBehaviorConfig.sceneConfig.daoTypeEnum);
         }
 
         public void Run()

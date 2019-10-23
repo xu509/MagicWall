@@ -21,6 +21,8 @@ namespace MagicWall
 
         MagicSceneEnum GetSceneStatus();
 
+        void RunEnd(Action onEndCompleted);
+
     }
 
 }

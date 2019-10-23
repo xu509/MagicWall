@@ -192,8 +192,13 @@ namespace MagicWall
 
         }
 
+        public void CloseCurrent(Action onCloseCompleted) {
+            _scenes[_index].RunEnd(onCloseCompleted);
+        }
 
-
-
+        public void JumpTo(int sceneIndex)
+        {
+            _index = sceneIndex;            
+        }
     }
 }

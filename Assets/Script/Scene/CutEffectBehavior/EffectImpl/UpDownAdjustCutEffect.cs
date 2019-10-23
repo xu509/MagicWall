@@ -124,7 +124,7 @@ namespace MagicWall
 
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, _sceneConfig.isKinect);
 
             //int _column = _manager.managerConfig.Column;
 

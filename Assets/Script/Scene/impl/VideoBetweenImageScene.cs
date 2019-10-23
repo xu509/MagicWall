@@ -47,8 +47,8 @@ namespace MagicWall
             _sceneConfig = sceneConfig;
             _onSceneCompleted = onSceneCompleted;
 
-            _magicSceneManager = GameObject.Find("Scene").GetComponent<MagicSceneManager>();
-            _magicSceneManager._videoBetweenImageController.Init(manager);
+
+            Debug.Log("sceneConfig daoTypeEnum : " + sceneConfig.daoTypeEnum);
 
             // 销毁
             _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
@@ -60,9 +60,16 @@ namespace MagicWall
         /// 初始化数据
         /// </summary>
         private void InitData() {
+            _magicSceneManager = GameObject.Find("Scene").GetComponent<MagicSceneManager>();
+
             _durTime = _sceneConfig.durtime;
-            _magicSceneManager._videoBetweenImageController.StartPlay();
             _startTime = Time.time;
+            _magicSceneManager._videoBetweenImageController.Init(_manager, _sceneConfig.daoTypeEnum);
+            _manager.useKinect = false;
+
+            _magicSceneManager._videoBetweenImageController.StartPlay();
+
+
             _hasInit = true;
         }
 
@@ -71,6 +78,9 @@ namespace MagicWall
         {
             if (!_hasInit) {
                 InitData();
+
+                Debug.Log(_sceneConfig.daoTypeEnum);
+
             }
 
             // 整体淡入
@@ -110,5 +120,15 @@ namespace MagicWall
             _onSceneCompleted.Invoke();
         }
 
+        public void RunEnd(Action onEndCompleted)
+        {
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _magicSceneManager._videoBetweenImageController.StopPlay();
+
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+                });
+        }
     }
 }

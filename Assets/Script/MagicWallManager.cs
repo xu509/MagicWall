@@ -177,7 +177,7 @@ namespace MagicWall
         public WallStatusEnum SceneStatus { get { return status; } set { status = value; } }
         public AgentManager agentManager { get { return _agentManager; } }
         public BackgroundManager backgroundManager { get { return _backgroundManager; } }
-        public IDaoService daoService { get { return _daoService; } }
+        //public IDaoService daoService { get { return _daoService; } }
         public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
         public FlockBehaviorConfig flockBehaviorConfig { get { return _flockBehaviorConfig; } }
         public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; } }
@@ -212,54 +212,54 @@ namespace MagicWall
             TheDataSource theDataSource = TheDataSource.Instance;
 
             // 初始化数据服务
-            if (_isMockData)
-            {
-                if (switchMode)
-                {
-                    if (themeCounter % 2 == 0)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else {
-                        _daoService = _mockZhichengDaoService;
-                    }
-                }
-                else {
-                    if (_mockDaoType == DaoTypeEnum.CBHAiqigu)
-                    {
-                        _daoService = null; // 暂缺
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.CBHFeiyue)
-                    {
-                        _daoService = _mockZBHFeiyueDaoService;
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.CBHTubu) {
-                        _daoService = _mockZBHTubuDaoService;
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.CBHFengxian)
-                    {
-                        _daoService = _mockZBHFengxianDaoService;
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.ShiCunFeiyue)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.ShiCunZhicheng)
-                    {
-                        _daoService = _mockShicunDaoService;
-                    }
-                    else if (_mockDaoType == DaoTypeEnum.ShiCunShiCun)
-                    {
-                        _daoService = _mockShicunDaoService;
-                    }
-                }
+            //if (_isMockData)
+            //{
+            //    if (switchMode)
+            //    {
+            //        if (themeCounter % 2 == 0)
+            //        {
+            //            _daoService = _mockFeiyueDaoService;
+            //        }
+            //        else {
+            //            _daoService = _mockZhichengDaoService;
+            //        }
+            //    }
+            //    else {
+            //        if (_mockDaoType == DaoTypeEnum.CBHAiqigu)
+            //        {
+            //            _daoService = null; // 暂缺
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.CBHFeiyue)
+            //        {
+            //            _daoService = _mockZBHFeiyueDaoService;
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.CBHTubu) {
+            //            _daoService = _mockZBHTubuDaoService;
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.CBHFengxian)
+            //        {
+            //            _daoService = _mockZBHFengxianDaoService;
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.ShiCunFeiyue)
+            //        {
+            //            _daoService = _mockFeiyueDaoService;
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.ShiCunZhicheng)
+            //        {
+            //            _daoService = _mockShicunDaoService;
+            //        }
+            //        else if (_mockDaoType == DaoTypeEnum.ShiCunShiCun)
+            //        {
+            //            _daoService = _mockShicunDaoService;
+            //        }
+            //    }
                 
-            }
-            else
-            {
-                _daoService = _realDaoService;
-                _realDaoService.Init(this);
-            }
+            //}
+            //else
+            //{
+            //    _daoService = _realDaoService;
+            //    _realDaoService.Init(this);
+            //}
 
             // 初始化 Global Data
             _globalData.Init(this);
