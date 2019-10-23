@@ -19,6 +19,11 @@ namespace MagicWall
 
         [SerializeField,Tooltip("运行背景")] bool _runBackground = true;
         [SerializeField] Sprite _logo;
+
+        [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
+        //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
+
+
         public Sprite logo { get { return _logo; } }
 
 
