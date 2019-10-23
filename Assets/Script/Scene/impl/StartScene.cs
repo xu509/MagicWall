@@ -51,14 +51,22 @@ namespace MagicWall
         {
             //DoDebug("Start Scene Is Start!");
             if (_startSceneStatus == StartSceneStatus.Init) {
-                _startSceneStatus = StartSceneStatus.showUI;
-                _manager.BgLogo.gameObject.SetActive(true);
-                _manager.BgLogo.GetComponent<Image>()
-                    .DOFade(1, 1f)
-                    .OnComplete(() =>
-                    {
-                        _startSceneStatus = StartSceneStatus.showUICompleted;
-                    });
+
+
+                if (_manager.magicSceneManager.runLogoAni)
+                {
+                    _startSceneStatus = StartSceneStatus.showUI;
+                    _manager.BgLogo.gameObject.SetActive(true);
+                    _manager.BgLogo.GetComponent<Image>()
+                        .DOFade(1, 1f)
+                        .OnComplete(() =>
+                        {
+                            _startSceneStatus = StartSceneStatus.showUICompleted;
+                        });
+                }
+                else {
+                    _startSceneStatus = StartSceneStatus.showUICompleted;
+                }
             }
 
             if (_startSceneStatus == StartSceneStatus.showUICompleted) {
@@ -72,16 +80,23 @@ namespace MagicWall
             }
 
             if (_startSceneStatus == StartSceneStatus.LoadResourceCompleted) {
-                _startSceneStatus = StartSceneStatus.StartHideUI;
-                _manager.BgLogo.GetComponent<Image>()
-                    .DOFade(0, 1f)
-                    .OnComplete(() =>
-                    {
-                        //_doHideLogoComplete = true;
-                        // RunEnd();
-                        _manager.BgLogo.gameObject.SetActive(false);
-                        _startSceneStatus = StartSceneStatus.HideUICompleted;
-                    });
+                if (_manager.magicSceneManager.runLogoAni)
+                {
+                    _startSceneStatus = StartSceneStatus.StartHideUI;
+
+                    _manager.BgLogo.GetComponent<Image>()
+                        .DOFade(0, 1f)
+                        .OnComplete(() =>
+                        {
+                            //_doHideLogoComplete = true;
+                            // RunEnd();
+                            _manager.BgLogo.gameObject.SetActive(false);
+                            _startSceneStatus = StartSceneStatus.HideUICompleted;
+                        });
+                }
+                else {
+                    _startSceneStatus = StartSceneStatus.HideUICompleted;
+                }
             }
 
             if (_startSceneStatus == StartSceneStatus.HideUICompleted)

@@ -50,6 +50,8 @@ namespace MagicWall
 
         // 场景管理器
         [SerializeField, Header("子控制器")] MagicSceneManager _magicSceneManager;
+        public MagicSceneManager magicSceneManager { get { return _magicSceneManager; } }
+
         // 实体管理器
         [SerializeField] AgentManager _agentManager;
         // 背景管理器
@@ -101,24 +103,10 @@ namespace MagicWall
         [SerializeField, Header("CutEffect Config")] CutEffectConfig _cutEffectConfig;
 
         [SerializeField, Header("Mock")] bool _isMockData;
-
-        [SerializeField] bool _isMockFeiyueData;
-
-        [SerializeField] bool _isMockZBHFeiyueData;
-
-        [SerializeField] bool _isMockZBHFengxianData;
-
-        [SerializeField] bool _isMockZBHTubuData;
-
-        [SerializeField] bool _isMockZhichengData;
-
-        [SerializeField] bool _isMockShicunData;
-        public bool isMockShicunData { get { return _isMockShicunData; } }
-
-        public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
+        [SerializeField] DaoTypeEnum _mockDaoType;
 
 
-        [SerializeField] private ScreenTypeEnum _screenType;
+        [SerializeField,Header("Sceen")] private ScreenTypeEnum _screenType;
         public ScreenTypeEnum screenTypeEnum { set { _screenType = value; } get { return _screenType; } }
 
 
@@ -232,28 +220,32 @@ namespace MagicWall
                     }
                 }
                 else {
-                    if (_isMockFeiyueData)
+                    if (_mockDaoType == DaoTypeEnum.CBHAiqigu)
                     {
-                        _daoService = _mockFeiyueDaoService;
+                        _daoService = null; // 暂缺
                     }
-                    else if (_isMockZBHTubuData) {
-                        _daoService = _mockZBHTubuDaoService;
-                    }
-                    else if (_isMockZBHFengxianData)
-                    {
-                        _daoService = _mockZBHFengxianDaoService;
-                    }
-                    else if (_isMockZBHFeiyueData)
+                    else if (_mockDaoType == DaoTypeEnum.CBHFeiyue)
                     {
                         _daoService = _mockZBHFeiyueDaoService;
                     }
-                    else if (_isMockShicunData)
+                    else if (_mockDaoType == DaoTypeEnum.CBHTubu) {
+                        _daoService = _mockZBHTubuDaoService;
+                    }
+                    else if (_mockDaoType == DaoTypeEnum.CBHFengxian)
+                    {
+                        _daoService = _mockZBHFengxianDaoService;
+                    }
+                    else if (_mockDaoType == DaoTypeEnum.ShiCunFeiyue)
+                    {
+                        _daoService = _mockFeiyueDaoService;
+                    }
+                    else if (_mockDaoType == DaoTypeEnum.ShiCunZhicheng)
                     {
                         _daoService = _mockShicunDaoService;
                     }
-                    else
+                    else if (_mockDaoType == DaoTypeEnum.ShiCunShiCun)
                     {
-                        _daoService = _mockDaoService;
+                        _daoService = _mockShicunDaoService;
                     }
                 }
                 

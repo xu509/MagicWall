@@ -28,18 +28,27 @@ namespace MagicWall {
 
         public CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
         {
+            CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> rdata = null;
+
 
             if (index == pool.Count)
             {
-                return pool[0];
+                rdata = pool[0];
             }
 
-            if (index > 5)
+            else if (index > 5)
             {
-                return pool[index % 5];
+                rdata = pool[index % 5];
             }
 
-            return pool[index];
+            else {
+                rdata = pool[index];
+            }
+            
+
+            //rdata.GetInfo();
+
+            return rdata;
         }
 
         public IList<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>> Pool
@@ -87,9 +96,6 @@ namespace MagicWall {
 
         void UpdatePosition(float position, bool forceRefresh)
         {
-
-
-
             currentPosition = position;
 
             var p = position - scrollOffset / cellSpacing;
@@ -164,12 +170,9 @@ namespace MagicWall {
 
                 if (forceRefresh || cell.Index != index || !cell.IsVisible)
                 {
-
-                    StartCoroutine(DoIt(index, cell));
-
-                    //cell.Index = index;
-                    //cell.SetVisible(true);
-                    //cell.UpdateContent(ItemsSource[index]);
+                    cell.Index = index;
+                    cell.SetVisible(true);
+                    cell.UpdateContent(ItemsSource[index]);
                 }
 
                 cell.UpdatePosition(position);
@@ -186,34 +189,25 @@ namespace MagicWall {
         /// <returns></returns>
         IEnumerator DoIt(int index, CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell)
         {
+            //Debug.Log("UPDATE START");
+            //Debug.Log("INDEX : " + index);
+            //Debug.Log("ItemsSource[index] : " + ItemsSource[index].ToString());
+
             cell.Index = index;
             cell.SetVisible(true);
             cell.UpdateContent(ItemsSource[index]);
+
+
+            //Debug.Log("UPDATE END");
+
             yield return null;
 
         }
 
 
 
-        int CircularIndex(int i, int size)
-        {
-            if (size < 1)
-            {
-                return 0;
-            }
-            else
-            {
-                if (i < 0)
-                {
-                    return size - 1 + (i + 1) % size;
-                }
-                else
-                {
-                    return i % size;
-                }
-            }
-            //size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
-        }
+        int CircularIndex(int i, int size) => size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
+
 
 
 #if UNITY_EDITOR

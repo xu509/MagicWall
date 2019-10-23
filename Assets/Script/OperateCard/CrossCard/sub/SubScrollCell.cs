@@ -65,6 +65,11 @@ namespace MagicWall
                 Debug.Log("cell data image = null");
             }
 
+            if (cellData.Category == CrossCardCategoryEnum.CATALOG) {
+                Debug.Log("加载CATALOG");
+            }
+
+
             _manager = cellData.magicWallManager;
 
             System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();

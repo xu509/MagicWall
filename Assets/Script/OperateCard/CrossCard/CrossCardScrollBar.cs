@@ -8,6 +8,8 @@ namespace MagicWall
 {
     public class CrossCardScrollBar : FancyScrollView<CrossCardCellData, CrossCardScrollViewContext>
     {
+        int _currentIndex;
+        public int CurrentIndex { set { _currentIndex = value; } get { return _currentIndex; } }
 
         [SerializeField] ScrollerDefault scroller = default;
         [SerializeField] GameObject cellPrefab = default;
@@ -37,10 +39,9 @@ namespace MagicWall
             {
                 return;
             }
-
+            _currentIndex = index;
             Context.SelectedIndex = index;
             Refresh();
-
             onSelectionChanged?.Invoke(index);
         }
 

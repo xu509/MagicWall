@@ -91,7 +91,7 @@ namespace MagicWall
         //
         public Enterprise GetEnterprise()
         {
-            return _enterprises[Random.Range(0, _enterprises.Count)];           
+            return _enterprises[Random.Range(0, _enterprises.Count)];
         }
 
         public List<string> GetEnvCards(int id)
@@ -123,7 +123,16 @@ namespace MagicWall
         //
         public List<Catalog> GetCatalogs(int id)
         {
-            return _catalogByEidMap[id];
+            if (_catalogByEidMap.ContainsKey(id))
+            {
+                return _catalogByEidMap[id];
+            }
+            else
+            {
+                return null;
+            }
+
+
         }
 
 
@@ -472,7 +481,8 @@ namespace MagicWall
             {
                 return _activityByEidMap[envid];
             }
-            else {
+            else
+            {
                 return new List<Activity>();
             }
 
@@ -481,7 +491,15 @@ namespace MagicWall
 
         public List<Product> GetProductsByEnvId(int envid)
         {
-            return _productByEidMap[envid];
+            if (_productByEidMap.ContainsKey(envid))
+            {
+                return _productByEidMap[envid];
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public MWConfig GetConfig()
@@ -516,7 +534,8 @@ namespace MagicWall
                 DirectoryInfo[] directoryInfos = dirInfo.GetDirectories();
 
 
-                for (int i = 0; i < directoryInfos.Length; i++) {
+                for (int i = 0; i < directoryInfos.Length; i++)
+                {
                     string name = directoryInfos[i].Name;
                     AddEnterprise(name, i + 1);
                 }
@@ -531,7 +550,8 @@ namespace MagicWall
 
 
         //
-        private void AddEnterprise(string name,int ent_id) {
+        private void AddEnterprise(string name, int ent_id)
+        {
             Enterprise enterprise = new Enterprise();
             enterprise.Ent_id = ent_id;
             enterprise.Name = name;
@@ -543,7 +563,8 @@ namespace MagicWall
             //enterprise.Logo = logoPath;
             bool hasLogo = AddEnterpriseLogo(name, enterprise);
 
-            if (hasLogo) {
+            if (hasLogo)
+            {
                 // Add Catalog
                 AddCatalogByEnterprise(name, ent_id);
 
@@ -553,8 +574,6 @@ namespace MagicWall
                 // Add Activity
                 AddActivityByEnterprise(name, ent_id);
 
-                // add Category
-                AddCategoryByEnterprise(name, ent_id);
 
                 //增加公司名片
                 AddBusinessCard(name, enterprise);
@@ -565,9 +584,10 @@ namespace MagicWall
 
         }
 
-        private bool AddEnterpriseLogo(string name, Enterprise enterprise) {
+        private bool AddEnterpriseLogo(string name, Enterprise enterprise)
+        {
             bool hasLogo = false;
-            string enterprisePath = "ZBH\\fengxian\\" + name ;
+            string enterprisePath = "ZBH\\fengxian\\" + name;
 
             if (Directory.Exists(MagicWallManager.FileDir + enterprisePath))
             {
@@ -579,7 +599,8 @@ namespace MagicWall
 
                 for (int i = 0; i < files.Length; i++)
                 {
-                    if (files[i].Extension.Contains("png")) {
+                    if (CheckFileIsImage(files[i].Extension))
+                    {
                         var fileName = files[i].Name;
                         logoPath = enterprisePath + "\\" + fileName;
                         hasLogo = true;
@@ -590,7 +611,8 @@ namespace MagicWall
                 {
                     enterprise.Logo = logoPath;
                 }
-                else {
+                else
+                {
                     Debug.Log(name + " 没有logo图");
                 }
             }
@@ -598,22 +620,25 @@ namespace MagicWall
 
         }
 
-        private void AddCatalogByEnterprise(string name, int ent_id) {
+        private void AddCatalogByEnterprise(string name, int ent_id)
+        {
             bool hasCatalog = false;
 
             string catalogDirPath = "ZBH\\fengxian\\" + name + "\\catalog";
 
             //print("PATH :" + (MagicWallManager.FileDir + catalogDirPath));
 
-            if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath)) {
+            if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
+            {
                 DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + catalogDirPath);
                 FileInfo[] files = dirInfo.GetFiles();
 
                 List<Catalog> catalogs = new List<Catalog>();
-                for (int i = 0; i < files.Length; i++) {
+                for (int i = 0; i < files.Length; i++)
+                {
                     var fileName = files[i].Name;
 
-                    if (files[i].Extension.Contains("png"))
+                    if (CheckFileIsImage(files[i].Extension))
                     {
                         hasCatalog = true;
 
@@ -629,11 +654,12 @@ namespace MagicWall
 
                 }
 
-                if (hasCatalog) {
+                if (hasCatalog)
+                {
                     _catalogByEidMap.Add(ent_id, catalogs);
                 }
 
-            } 
+            }
         }
 
         private void AddProductByEnterprise(string name, int ent_id)
@@ -651,7 +677,8 @@ namespace MagicWall
                 for (int i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i].Name;
-                    if (fileName.Contains(".png")) {
+                    if (CheckFileIsImage(fileName))
+                    {
                         hasProduct = true;
 
                         var fileNameWithoutExt = fileName.Replace(files[i].Extension, "");
@@ -666,7 +693,8 @@ namespace MagicWall
                     }
                 }
 
-                if (hasProduct) {
+                if (hasProduct)
+                {
                     _productByEidMap.Add(ent_id, products);
                 }
             }
@@ -687,7 +715,7 @@ namespace MagicWall
                 for (int i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i].Name;
-                    if (fileName.Contains(".png"))
+                    if (CheckFileIsImage(fileName))
                     {
                         hasActivity = true;
 
@@ -712,9 +740,13 @@ namespace MagicWall
 
         private void AddCategoryByEnterprise(string name, int ent_id)
         {
+            Debug.Log(ent_id + "-" + name + " 添加 catalog");
+
             bool hasCatalog = false;
 
             string catalogDirPath = "ZBH\\fengxian\\" + name + "\\catalog";
+
+            Debug.Log(MagicWallManager.FileDir + catalogDirPath);
 
             if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
             {
@@ -725,7 +757,7 @@ namespace MagicWall
                 for (int i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i].Name;
-                    if (fileName.Contains(".png"))
+                    if (CheckFileIsImage(fileName))
                     {
                         hasCatalog = true;
 
@@ -742,6 +774,7 @@ namespace MagicWall
 
                 if (hasCatalog)
                 {
+                    Debug.Log("hasCatalog ent_id : " + ent_id);
                     _catalogByEidMap.Add(ent_id, catalogs);
                 }
             }
@@ -816,14 +849,16 @@ namespace MagicWall
 
                 result.Add(e.Logo);
 
-                if (e.Business_card != null && e.Business_card.Length > 0) {
+                if (e.Business_card != null && e.Business_card.Length > 0)
+                {
                     result.Add(e.Business_card);
                     //Debug.Log("Enterprise : " + e.Name + " bcard : " + e.Business_card + " length : " + e.Business_card.Length);
 
                 }
 
                 // add products
-                if (_productByEidMap.ContainsKey(e.Ent_id)){
+                if (_productByEidMap.ContainsKey(e.Ent_id))
+                {
                     var products = _productByEidMap[e.Ent_id];
                     for (int j = 0; j < products.Count; j++)
                     {
@@ -879,6 +914,20 @@ namespace MagicWall
         public List<string> GetVideosForVBI6S()
         {
             throw new System.NotImplementedException();
+        }
+
+
+        private bool CheckFileIsImage(string fileName)
+        {
+            if (fileName.Contains(".png"))
+            {
+                return true;
+            }
+            if (fileName.Contains(".jpg"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
