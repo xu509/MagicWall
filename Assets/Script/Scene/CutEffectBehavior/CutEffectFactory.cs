@@ -31,6 +31,7 @@ namespace MagicWall {
                 cutEffect = new UpDownAdjustCutEffect();
             }
 
+
             return cutEffect;
 
         }

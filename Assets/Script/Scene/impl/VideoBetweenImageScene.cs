@@ -37,6 +37,7 @@ namespace MagicWall
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
+            _sceneConfig = sceneConfig;
             _onSceneCompleted = onSceneCompleted;
         }
 
@@ -63,6 +64,9 @@ namespace MagicWall
             // 左侧、右侧轮播图片
 
             // 播放视频
+
+            // 当场景结束调用
+            _onSceneCompleted.Invoke();
 
 
             return true;

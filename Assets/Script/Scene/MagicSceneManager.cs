@@ -84,6 +84,9 @@ namespace MagicWall
                 {
                     scene = new StarScene();
                 }
+                else if (sceneConfigs[i].sceneType == SceneTypeEnum.VideoBetweenImageSixScene) {
+                    scene = new VideoBetweenImageScene();
+                }
                 else
                 {
                     scene = new CommonScene();

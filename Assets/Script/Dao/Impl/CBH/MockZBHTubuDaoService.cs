@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockZBHFeiyueDaoService : MonoBehaviour, IDaoService
+    public class MockZBHTubuDaoService : MonoBehaviour, IDaoService
     {
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
@@ -46,7 +46,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockZBHFeiyueDaoService() { }
+        protected MockZBHTubuDaoService() { }
 
 
 
@@ -515,33 +515,6 @@ namespace MagicWall
 
         public void InitData()
         {
-            // 初始化数据
-
-            _products = new List<Product>();
-            _productMap = new Dictionary<int, Product>();
-
-            string pathDir = "ZBH\\feiyue2";
-
-            if (Directory.Exists(MagicWallManager.FileDir + pathDir))
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + pathDir);
-                DirectoryInfo[] directories = dirInfo.GetDirectories();
-
-                for (int i = 0; i < directories.Length; i++) {
-                    var directory = directories[i];
-
-                    int pro_id = i;
-                    int.TryParse(i.ToString(), out pro_id);
-
-                    AddProduct(directory, pro_id);
-            
-                }
-
-
-            }
-            else {
-                print("初始化文件夹不存在");
-            }
 
             //Debug.Log("产品总数： " + _products.Count);
 
@@ -696,18 +669,7 @@ namespace MagicWall
 
         public FlockData GetFlockData(DataTypeEnum type)
         {
-            if (type == DataTypeEnum.Enterprise)
-            {
-                return GetEnterprise();
-            }
-            else if (type == DataTypeEnum.Product)
-            {
-                return GetProduct();
-            }
-            else if (type == DataTypeEnum.Activity)
-            {
-                return GetActivity();
-            }
+
             return null;
         }
 
@@ -724,12 +686,29 @@ namespace MagicWall
         public List<string> GetMatImageAddresses()
         {
             var result = new List<string>();
-
-            for (int i = 0; i < _products.Count; i++) {
-                result.Add(_products[i].Image);
-            }
-
             return result;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
+        public List<string> GetLeftImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetRigetImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetVideosForVBI6S()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

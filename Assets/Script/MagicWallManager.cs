@@ -86,8 +86,9 @@ namespace MagicWall
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
         [SerializeField,Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
         [SerializeField,Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
+        [SerializeField, Tooltip("智博会 - 土布")] MockZBHTubuDaoService _mockZBHTubuDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
-        [SerializeField] MockShicunDaoService _mockShicunDaoService;
+        [SerializeField] MockShicunDaoService _mockShicunDaoService;        
         [SerializeField] DaoService _realDaoService;
 
         [SerializeField, Header("Music")] MusicManager _musicManager;
@@ -106,6 +107,8 @@ namespace MagicWall
         [SerializeField] bool _isMockZBHFeiyueData;
 
         [SerializeField] bool _isMockZBHFengxianData;
+
+        [SerializeField] bool _isMockZBHTubuData;
 
         [SerializeField] bool _isMockZhichengData;
 
@@ -233,7 +236,11 @@ namespace MagicWall
                     {
                         _daoService = _mockFeiyueDaoService;
                     }
-                    else if (_isMockZBHFengxianData) {
+                    else if (_isMockZBHTubuData) {
+                        _daoService = _mockZBHTubuDaoService;
+                    }
+                    else if (_isMockZBHFengxianData)
+                    {
                         _daoService = _mockZBHFengxianDaoService;
                     }
                     else if (_isMockZBHFeiyueData)

@@ -189,6 +189,17 @@ namespace MagicWall
 
         bool UpdateLikes(string path);
 
+        /// <summary>
+        /// 6屏，图片轮播+ 视频， 获取左侧的图片轮播
+        /// </summary>
+        /// <returns></returns>
+        List<string> GetLeftImagesForVBI6S();
+        List<string> GetRigetImagesForVBI6S();
+        List<string> GetVideosForVBI6S();
+
+
+
+
 
     }
 }

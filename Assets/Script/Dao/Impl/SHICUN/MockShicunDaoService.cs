@@ -1440,5 +1440,20 @@ namespace MagicWall
 
             return addresses;
         }
+
+        public List<string> GetLeftImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetRigetImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetVideosForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

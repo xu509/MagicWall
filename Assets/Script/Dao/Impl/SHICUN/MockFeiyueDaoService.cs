@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockZhichengDaoService : MonoBehaviour, IDaoService
+    public class MockFeiyueDaoService : MonoBehaviour, IDaoService
     {
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
@@ -45,7 +45,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockZhichengDaoService() { }
+        protected MockFeiyueDaoService() { }
 
 
 
@@ -92,9 +92,9 @@ namespace MagicWall
         {
             List<string> list = new List<string>();
 
-            //list.Add("zhicheng\\企业名片1.jpg");
-            //list.Add("zhicheng\\企业名片2.jpg");
-            //list.Add("zhicheng\\企业名片3.jpg");
+            list.Add("feiyue\\企业名片1.jpg");
+            list.Add("feiyue\\企业名片2.jpg");
+            list.Add("feiyue\\企业名片3.jpg");
 
 
 
@@ -174,28 +174,26 @@ namespace MagicWall
 
 
                 string[] names = {
-                "会议室",
-                "洽谈厅",
-                "星巴克室内环境",
-                "星巴克室外环境",
-                "园区办公及行政场所",
-                "园区大楼欣赏",
-                "园区鸟瞰",
-                "园区配套设施",
-                "园区效果图",
-                "智城园区能源保障区",
-                "办公环境一览",
-                "公司前台一览",
-                "机房大厅",
-                "监控室操作大厅",
-                "人才公寓全貌",
-                "食堂一角",
-                "小绍兴饭店",
-                "星巴克陈列",
-                "星巴克大厅",
-                "星巴克外貌",
-                "园区鸟瞰图",
-                "主楼风貌",
+                "ins风法国版帆布鞋",
+                "超纤皮休闲百搭板鞋",
+                "骑士风高帮帆布鞋",
+                "魔术贴学生跑步鞋",
+                "经典运动休闲超纤鞋",
+                "低帮帆布鞋",
+                "低帮女学生帆布鞋",
+                "复古潮流豹纹平底鞋",
+                "低帮帆布女鞋",
+                "大孚飞跃文字快闪小白鞋",
+                "半拖懒人复古帆布鞋",
+                "高跟马丁靴",
+                "飞跃漫威联名款拖鞋",
+                "复古原宿帆布小白鞋",
+                "休闲情侣鸳鸯鞋",
+                "涂鸦迷彩帆布鞋",
+                "绿色潮流休闲情侣帆布鞋",
+                "经典帆布鞋",
+                "手绘街头嘻哈学生板鞋",
+                "休闲男鞋低帮情侣学生潮流小白鞋",
             };
 
                 //Dictionary<int, List<string>> images = new Dictionary<int, List<string>>();
@@ -203,163 +201,202 @@ namespace MagicWall
                 List<string[]> imageCovers = new List<string[]>();
 
                 string[] i = {
-                "zhicheng\\会议室\\会议室.jpg",
-                "zhicheng\\会议室\\小会议室.jpg"
-                };
+                "feiyue\\ins风法国版帆布鞋\\1.jpg",
+                "feiyue\\ins风法国版帆布鞋\\2.jpg",
+                "feiyue\\ins风法国版帆布鞋\\3.jpg",
+                "feiyue\\ins风法国版帆布鞋\\4.jpg",
+                "feiyue\\ins风法国版帆布鞋\\5.jpg",
+            };
                 imageCovers.Add(i);
 
                 string[] i2 = {
-                    "zhicheng\\洽谈厅\\候客区.jpg",
-                    "zhicheng\\洽谈厅\\洽谈及候客厅.jpg",
-                    "zhicheng\\洽谈厅\\洽谈厅.jpg",
-                    "zhicheng\\洽谈厅\\书报阅读厅.jpg",
-                    "zhicheng\\洽谈厅\\书报阅读厅一角.jpg",
-                    "zhicheng\\洽谈厅\\阅读厅.jpg"
-                };
+                "feiyue\\超纤皮休闲百搭板鞋\\1.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\2.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\3.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\4.jpg"
+            };
                 imageCovers.Add(i2);
 
 
                 string[] i3 = {
-                "zhicheng\\星巴克室内环境\\咖啡洽谈室.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克咖啡商品陈列.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克咖啡室内一景.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克收银台.jpg"
+                "feiyue\\骑士风高帮帆布鞋\\1.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\2.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\3.jpg"
             };
                 imageCovers.Add(i3);
 
 
                 string[] i4 = {
-                "zhicheng\\星巴克室外环境\\河边休憩所.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡露天场所.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡一角.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克小木屋..jpg"
-                 };
+                "feiyue\\魔术贴学生跑步鞋\\1.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\2.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\3.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\4.jpg"
+            };
                 imageCovers.Add(i4);
 
 
                 string[] i5 = {
-                "zhicheng\\园区办公及行政场所\\IMG_0073.jpg",
-                "zhicheng\\园区办公及行政场所\\办公区域.jpg",
-                "zhicheng\\园区办公及行政场所\\行政楼前台.jpg",
-                "zhicheng\\园区办公及行政场所\\前台一角.jpg",
-                "zhicheng\\园区办公及行政场所\\园区公司前台.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\1.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\2.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\3.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\4.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\5.jpg",
             };
                 imageCovers.Add(i5);
 
                 string[] i6 = {
-                "zhicheng\\园区大楼欣赏\\2号楼风貌.jpg",
-                "zhicheng\\园区大楼欣赏\\人才大楼.jpg",
-                "zhicheng\\园区大楼欣赏\\人才公寓.jpg",
-                "zhicheng\\园区大楼欣赏\\研发大楼.jpg",
-                "zhicheng\\园区大楼欣赏\\主楼风貌.jpg",
+                "feiyue\\低帮帆布鞋\\1.jpg",
+                "feiyue\\低帮帆布鞋\\2.jpg",
+                "feiyue\\低帮帆布鞋\\3.jpg",
+                "feiyue\\低帮帆布鞋\\4.jpg",
             };
                 imageCovers.Add(i6);
 
                 string[] i7 = {
-                "zhicheng\\园区鸟瞰\\鸟瞰智城片区.jpg",
-                "zhicheng\\园区鸟瞰\\智城全貌.jpg",
+                "feiyue\\低帮女学生帆布鞋\\1.jpg",
+                "feiyue\\低帮女学生帆布鞋\\2.jpg",
+                "feiyue\\低帮女学生帆布鞋\\3.jpg",
+                "feiyue\\低帮女学生帆布鞋\\4.jpg",
             };
                 imageCovers.Add(i7);
 
 
                 string[] i8 = {
-                "zhicheng\\园区配套设施\\露天球场.jpg",
-                "zhicheng\\园区配套设施\\食堂一角.jpg",
-                "zhicheng\\园区配套设施\\室外休息室.jpg",
-                "zhicheng\\园区配套设施\\用餐所.jpg",
-                "zhicheng\\园区配套设施\\智城园区食堂.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\1.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\2.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\3.jpg",
             };
                 imageCovers.Add(i8);
 
 
                 string[] i9 = {
-                    "zhicheng\\园区效果图\\全景效果图.jpg",
-                    "zhicheng\\园区效果图\\智城-创富领地.jpg",
-                    "zhicheng\\园区效果图\\智城-创新基地.jpg",
-                    "zhicheng\\园区效果图\\智城-创智天地.jpg",
-                    "zhicheng\\园区效果图\\智城-人才公寓.jpg",
-                    "zhicheng\\园区效果图\\智城-生活配套.jpg",
-                    "zhicheng\\园区效果图\\智城-食堂.jpg",
-                    "zhicheng\\园区效果图\\智城-星巴克便利店.jpg"
-                };
+                "feiyue\\低帮帆布女鞋\\1.jpg",
+                "feiyue\\低帮帆布女鞋\\2.jpg",
+                "feiyue\\低帮帆布女鞋\\3.jpg",
+                "feiyue\\低帮帆布女鞋\\4.jpg",
+            };
                 imageCovers.Add(i9);
 
 
                 string[] i10 = {
-                "zhicheng\\智城园区能源保障区\\机房一角.jpg",
-                "zhicheng\\智城园区能源保障区\\园区工房.jpg",
-                "zhicheng\\智城园区能源保障区\\园区机房.jpg",
-                "zhicheng\\智城园区能源保障区\\园区机房一角.jpg",
-                "zhicheng\\智城园区能源保障区\\园区监控室.jpg"
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837249.jpg",
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837408.jpg"
             };
                 imageCovers.Add(i10);
 
 
                 string[] i11 = {
-                  "zhicheng\\竖图\\办公环境一览.jpg"
-                };
+                "feiyue\\半拖懒人复古帆布鞋\\1.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\2.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\3.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\4.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\5.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\6.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\7.jpg"
+            };
                 imageCovers.Add(i11);
 
+
                 string[] i12 = {
-                  "zhicheng\\竖图\\公司前台一览.jpg"
-                };
+                "feiyue\\高跟马丁靴\\1.jpg",
+                "feiyue\\高跟马丁靴\\2.jpg",
+                "feiyue\\高跟马丁靴\\3.jpg",
+                "feiyue\\高跟马丁靴\\4.jpg",
+                "feiyue\\高跟马丁靴\\5.jpg",
+                "feiyue\\高跟马丁靴\\6.jpg",
+                "feiyue\\高跟马丁靴\\7.jpg",
+                "feiyue\\高跟马丁靴\\8.jpg"
+            };
                 imageCovers.Add(i12);
 
+
                 string[] i13 = {
-                  "zhicheng\\竖图\\公司前台一览.jpg"
-                };
+                "feiyue\\飞跃漫威联名款拖鞋\\1.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\2.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\3.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\4.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\5.jpg",
+            };
                 imageCovers.Add(i13);
 
+
                 string[] i14 = {
-                  "zhicheng\\竖图\\机房大厅.jpg"
-                };
+                "feiyue\\复古原宿帆布小白鞋\\1.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\2.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\3.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\4.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\5.jpg",
+            };
                 imageCovers.Add(i14);
 
+
                 string[] i15 = {
-                  "zhicheng\\竖图\\监控室操作大厅.jpg"
-                };
+                "feiyue\\休闲情侣鸳鸯鞋\\1.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\2.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\3.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\4.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\5.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\6.jpg",
+            };
                 imageCovers.Add(i15);
 
+
                 string[] i16 = {
-                  "zhicheng\\竖图\\人才公寓全貌.jpg"
-                };
+                "feiyue\\涂鸦迷彩帆布鞋\\1.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\2.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\3.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\4.jpg"
+            };
                 imageCovers.Add(i16);
 
+
                 string[] i17 = {
-                  "zhicheng\\竖图\\食堂一角.jpg"
-                };
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\1.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\2.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\3.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\4.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\5.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\6.jpg",
+            };
                 imageCovers.Add(i17);
 
+
                 string[] i18 = {
-                  "zhicheng\\竖图\\小绍兴饭店.jpg"
-                };
+                "feiyue\\经典帆布鞋\\7747427.jpg",
+                "feiyue\\经典帆布鞋\\7747787.jpg",
+                "feiyue\\经典帆布鞋\\7747957.jpg",
+                "feiyue\\经典帆布鞋\\7748486.jpg",
+                "feiyue\\经典帆布鞋\\7748971.jpg",
+                "feiyue\\经典帆布鞋\\7749427.jpg",
+                "feiyue\\经典帆布鞋\\7787236.jpg",
+                "feiyue\\经典帆布鞋\\7787656.jpg",
+                "feiyue\\经典帆布鞋\\7787783.jpg",
+                "feiyue\\经典帆布鞋\\7794456.jpg",
+                "feiyue\\经典帆布鞋\\7794807.jpg",
+            };
                 imageCovers.Add(i18);
 
+
                 string[] i19 = {
-                  "zhicheng\\竖图\\星巴克陈列.jpg"
-                };
+                "feiyue\\手绘街头嘻哈学生板鞋\\1.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\2.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\3.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\4.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\5.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\6.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\7.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\8.jpg",
+            };
                 imageCovers.Add(i19);
 
+
                 string[] i20 = {
-                  "zhicheng\\竖图\\星巴克大厅.jpg"
-                };
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\1.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\2.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\3.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\4.jpg"
+            };
                 imageCovers.Add(i20);
-
-                string[] i21 = {
-                  "zhicheng\\竖图\\星巴克外貌.jpg"
-                };
-                imageCovers.Add(i21);
-
-                string[] i22 = {
-                  "zhicheng\\竖图\\园区鸟瞰图.jpg"
-                };
-                imageCovers.Add(i22);
-
-                string[] i23 = {
-                  "zhicheng\\竖图\\主楼风貌.jpg"
-                };
-                imageCovers.Add(i23);
 
 
                 //  从数据库中获取数据
@@ -371,32 +408,9 @@ namespace MagicWall
 
                     var mats = imageCovers[x];
 
-                    //
+                    
                     AddProduct(mats, name, x);
 
-                    //Product product = new Product();
-                    //product.Name = name;
-                    //product.Pro_id = x;
-                    //product.Ent_id = 0;
-                    //product.Description = name;
-                    //product.Image = mats[0];
-
-
-                    //List<ProductDetail> productDetails = new List<ProductDetail>();
-                    //for (int y = 0; y < mats.Length; y++) {
-                    //    var mat = mats[y];
-
-                    //    ProductDetail productDetail = new ProductDetail();
-                    //    productDetail.Id = y;
-                    //    productDetail.Type = 0;
-                    //    productDetail.Pro_id = x;
-                    //    productDetail.Description = mat;
-                    //    productDetail.Image = mat;
-                    //    productDetails.Add(productDetail);
-                    //}
-
-                    //product.ProductDetails = productDetails;
-                    //_products.Add(product);
                 }
 
                 return _products;
@@ -407,6 +421,12 @@ namespace MagicWall
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="details">同产品下的多张图片，如 [“detailImages1”,“detailImages2”]</param>
+        /// <param name="name"></param>
+        /// <param name="proid"></param>
         private void AddProduct(string[] details, string name, int proid)
         {
 
@@ -420,7 +440,7 @@ namespace MagicWall
                 product.Pro_id = pro_id;
                 product.Ent_id = 0;
                 product.Description = name;
-                product.Image = details[i];
+                product.Image = details[i]; // 封面
 
                 // 包裹detail
 
@@ -438,14 +458,23 @@ namespace MagicWall
                     productDetails.Add(productDetail);
                 }
 
+                // 调整选中的图片为第一张图片
+                //productDetails
+                var temp = productDetails[0];
+                var tempC = productDetails[i];
+                productDetails[0] = tempC;
+                productDetails[i] = temp;
+
+
+
                 // todo 添加视频
                 ProductDetail productDetailVideo = new ProductDetail();
                 productDetailVideo.Id = 99;
                 productDetailVideo.Type = 1;
                 productDetailVideo.Pro_id = pro_id;
-                productDetailVideo.Description = "《智城宣传片5.18》";
-                productDetailVideo.Image = "zhicheng\\video.png";
-                productDetailVideo.VideoUrl = "zhicheng\\智城宣传片5.18.mp4";
+                productDetailVideo.Description = "《中国之造ChinaMade》";
+                productDetailVideo.Image = "feiyue\\feiyue1_Moment.png";
+                productDetailVideo.VideoUrl = "feiyue\\feiyue1.mp4";
                 productDetails.Add(productDetailVideo);
 
 
@@ -453,7 +482,6 @@ namespace MagicWall
 
 
                 //Debug.Log(pro_id);
-
                 _productMap.Add(pro_id, product);
 
                 _products.Add(product);
@@ -474,7 +502,12 @@ namespace MagicWall
         {
             List<Product> product = GetProducts();
             int index = Random.Range(0, _products.Count);
-            return _products[index];
+
+            var item = _products[index];
+
+            //Debug.Log("number : " + product.Count + " | " + item.GetId());
+
+            return item;
         }
 
         //
@@ -482,6 +515,23 @@ namespace MagicWall
         //
         public Product GetProductDetail(int pro_id)
         {
+            //Debug.Log("get pro id : " + pro_id);
+
+
+            //foreach (KeyValuePair<int,Product> d in _productMap)
+            //{
+            //    Debug.Log("Map id : " + d.Key);
+            //    Debug.Log("Map value : " + d.Value.Name);
+            //}
+
+            //for (int i = 0; i < _products.Count; i++) {
+            //    Debug.Log("List id : " + _products[i].Pro_id);
+            //    Debug.Log("List id : " + _products[i].Name);
+            //}
+
+
+
+
             var product = _productMap[pro_id];
 
             return product;
@@ -654,10 +704,9 @@ namespace MagicWall
         //
         public List<string> GetCustomImage(CustomImageType type)
         {
-
-            string[] leftImages = { "zhicheng\\智城第一屏.jpg", "zhicheng\\智城第一屏1.jpg", "zhicheng\\智城第一屏2.jpg" };
+            string[] leftImages = { "feiyue\\第一屏.jpg", "feiyue\\第一屏1.jpg" };
             //string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg", "m4.jpg", "m5.jpg" };
-            string[] rightImages = { "zhicheng\\智城第五屏.jpg" };
+            string[] rightImages = { "feiyue\\第五屏.jpg" };
 
             if (type == CustomImageType.LEFT1)
             {
@@ -746,20 +795,20 @@ namespace MagicWall
         {
             Enterprise enterprise = new Enterprise();
 
-            //// 公司卡片初始化
-            //List<string> list = new List<string>();
+            // 公司卡片初始化
+            List<string> list = new List<string>();
 
-            //list.Add("zhicheng\\企业名片1.jpg");
-            //list.Add("zhicheng\\企业名片2.jpg");
-            //list.Add("zhicheng\\企业名片3.jpg");
+            list.Add("feiyue\\企业名片1.jpg");
+            list.Add("feiyue\\企业名片2.jpg");
+            list.Add("feiyue\\企业名片3.jpg");
 
-            //enterprise.EnvCards = list;
-
-
+            enterprise.EnvCards = list;
 
 
 
-            return null;
+
+
+            return enterprise;
         }
 
         public Video GetVideoDetail(int envId, int index)
@@ -805,33 +854,34 @@ namespace MagicWall
 
         public void InitData()
         {
+            // 初始化数据
 
-            _productMap = new Dictionary<int, Product>();
             _products = new List<Product>();
 
+            _productMap = new Dictionary<int, Product>();
+
+
             string[] names = {
-                "会议室",
-                "洽谈厅",
-                "星巴克室内环境",
-                "星巴克室外环境",
-                "园区办公及行政场所",
-                "园区大楼欣赏",
-                "园区鸟瞰",
-                "园区配套设施",
-                "园区效果图",
-                "智城园区能源保障区",
-                "办公环境一览",
-                "公司前台一览",
-                "机房大厅",
-                "监控室操作大厅",
-                "人才公寓全貌",
-                "食堂一角",
-                "小绍兴饭店",
-                "星巴克陈列",
-                "星巴克大厅",
-                "星巴克外貌",
-                "园区鸟瞰图",
-                "主楼风貌",
+                "ins风法国版帆布鞋",
+                "超纤皮休闲百搭板鞋",
+                "骑士风高帮帆布鞋",
+                "魔术贴学生跑步鞋",
+                "经典运动休闲超纤鞋",
+                "低帮帆布鞋",
+                "低帮女学生帆布鞋",
+                "复古潮流豹纹平底鞋",
+                "低帮帆布女鞋",
+                "大孚飞跃文字快闪小白鞋",
+                "半拖懒人复古帆布鞋",
+                "高跟马丁靴",
+                "飞跃漫威联名款拖鞋",
+                "复古原宿帆布小白鞋",
+                "休闲情侣鸳鸯鞋",
+                "涂鸦迷彩帆布鞋",
+                "绿色潮流休闲情侣帆布鞋",
+                "经典帆布鞋",
+                "手绘街头嘻哈学生板鞋",
+                "休闲男鞋低帮情侣学生潮流小白鞋",
             };
 
             //Dictionary<int, List<string>> images = new Dictionary<int, List<string>>();
@@ -839,178 +889,213 @@ namespace MagicWall
             List<string[]> imageCovers = new List<string[]>();
 
             string[] i = {
-                "zhicheng\\会议室\\会议室.jpg",
-                "zhicheng\\会议室\\小会议室.jpg"
-                };
+                "feiyue\\ins风法国版帆布鞋\\1.jpg",
+                "feiyue\\ins风法国版帆布鞋\\2.jpg",
+                "feiyue\\ins风法国版帆布鞋\\3.jpg",
+                "feiyue\\ins风法国版帆布鞋\\4.jpg",
+                "feiyue\\ins风法国版帆布鞋\\5.jpg",
+            };
             imageCovers.Add(i);
 
             string[] i2 = {
-                    "zhicheng\\洽谈厅\\候客区.jpg",
-                    "zhicheng\\洽谈厅\\洽谈及候客厅.jpg",
-                    "zhicheng\\洽谈厅\\洽谈厅.jpg",
-                    "zhicheng\\洽谈厅\\书报阅读厅.jpg",
-                    "zhicheng\\洽谈厅\\书报阅读厅一角.jpg",
-                    "zhicheng\\洽谈厅\\阅读厅.jpg"
-                };
+                "feiyue\\超纤皮休闲百搭板鞋\\1.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\2.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\3.jpg",
+                "feiyue\\超纤皮休闲百搭板鞋\\4.jpg"
+            };
             imageCovers.Add(i2);
 
 
             string[] i3 = {
-                "zhicheng\\星巴克室内环境\\咖啡洽谈室.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克咖啡商品陈列.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克咖啡室内一景.jpg",
-                "zhicheng\\星巴克室内环境\\星巴克收银台.jpg"
+                "feiyue\\骑士风高帮帆布鞋\\1.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\2.jpg",
+                "feiyue\\骑士风高帮帆布鞋\\3.jpg"
             };
             imageCovers.Add(i3);
 
 
             string[] i4 = {
-                "zhicheng\\星巴克室外环境\\河边休憩所.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡露天场所.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克咖啡一角.jpg",
-                "zhicheng\\星巴克室外环境\\星巴克小木屋..jpg"
-                 };
+                "feiyue\\魔术贴学生跑步鞋\\1.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\2.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\3.jpg",
+                "feiyue\\魔术贴学生跑步鞋\\4.jpg"
+            };
             imageCovers.Add(i4);
 
 
             string[] i5 = {
-                "zhicheng\\园区办公及行政场所\\IMG_0073.jpg",
-                "zhicheng\\园区办公及行政场所\\办公区域.jpg",
-                "zhicheng\\园区办公及行政场所\\行政楼前台.jpg",
-                "zhicheng\\园区办公及行政场所\\前台一角.jpg",
-                "zhicheng\\园区办公及行政场所\\园区公司前台.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\1.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\2.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\3.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\4.jpg",
+                "feiyue\\经典运动休闲超纤鞋\\5.jpg",
             };
             imageCovers.Add(i5);
 
             string[] i6 = {
-                "zhicheng\\园区大楼欣赏\\2号楼风貌.jpg",
-                "zhicheng\\园区大楼欣赏\\人才大楼.jpg",
-                "zhicheng\\园区大楼欣赏\\人才公寓.jpg",
-                "zhicheng\\园区大楼欣赏\\研发大楼.jpg",
-                "zhicheng\\园区大楼欣赏\\主楼风貌.jpg",
+                "feiyue\\低帮帆布鞋\\1.jpg",
+                "feiyue\\低帮帆布鞋\\2.jpg",
+                "feiyue\\低帮帆布鞋\\3.jpg",
+                "feiyue\\低帮帆布鞋\\4.jpg",
             };
             imageCovers.Add(i6);
 
             string[] i7 = {
-                "zhicheng\\园区鸟瞰\\鸟瞰智城片区.jpg",
-                "zhicheng\\园区鸟瞰\\智城全貌.jpg",
+                "feiyue\\低帮女学生帆布鞋\\1.jpg",
+                "feiyue\\低帮女学生帆布鞋\\2.jpg",
+                "feiyue\\低帮女学生帆布鞋\\3.jpg",
+                "feiyue\\低帮女学生帆布鞋\\4.jpg",
             };
             imageCovers.Add(i7);
 
 
             string[] i8 = {
-                "zhicheng\\园区配套设施\\露天球场.jpg",
-                "zhicheng\\园区配套设施\\食堂一角.jpg",
-                "zhicheng\\园区配套设施\\室外休息室.jpg",
-                "zhicheng\\园区配套设施\\用餐所.jpg",
-                "zhicheng\\园区配套设施\\智城园区食堂.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\1.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\2.jpg",
+                "feiyue\\复古潮流豹纹平底鞋\\3.jpg",
             };
             imageCovers.Add(i8);
 
 
             string[] i9 = {
-                    "zhicheng\\园区效果图\\全景效果图.jpg",
-                    "zhicheng\\园区效果图\\智城-创富领地.jpg",
-                    "zhicheng\\园区效果图\\智城-创新基地.jpg",
-                    "zhicheng\\园区效果图\\智城-创智天地.jpg",
-                    "zhicheng\\园区效果图\\智城-人才公寓.jpg",
-                    "zhicheng\\园区效果图\\智城-生活配套.jpg",
-                    "zhicheng\\园区效果图\\智城-食堂.jpg",
-                    "zhicheng\\园区效果图\\智城-星巴克便利店.jpg"
-                };
+                "feiyue\\低帮帆布女鞋\\1.jpg",
+                "feiyue\\低帮帆布女鞋\\2.jpg",
+                "feiyue\\低帮帆布女鞋\\3.jpg",
+                "feiyue\\低帮帆布女鞋\\4.jpg",
+            };
             imageCovers.Add(i9);
 
 
             string[] i10 = {
-                "zhicheng\\智城园区能源保障区\\机房一角.jpg",
-                "zhicheng\\智城园区能源保障区\\园区工房.jpg",
-                "zhicheng\\智城园区能源保障区\\园区机房.jpg",
-                "zhicheng\\智城园区能源保障区\\园区机房一角.jpg",
-                "zhicheng\\智城园区能源保障区\\园区监控室.jpg"
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837249.jpg",
+                "feiyue\\大孚飞跃文字快闪小白鞋\\8837408.jpg"
             };
             imageCovers.Add(i10);
 
 
             string[] i11 = {
-                  "zhicheng\\竖图\\办公环境一览.jpg"
-                };
+                "feiyue\\半拖懒人复古帆布鞋\\1.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\2.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\3.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\4.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\5.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\6.jpg",
+                "feiyue\\半拖懒人复古帆布鞋\\7.jpg"
+            };
             imageCovers.Add(i11);
 
+
             string[] i12 = {
-                  "zhicheng\\竖图\\公司前台一览.jpg"
-                };
+                "feiyue\\高跟马丁靴\\1.jpg",
+                "feiyue\\高跟马丁靴\\2.jpg",
+                "feiyue\\高跟马丁靴\\3.jpg",
+                "feiyue\\高跟马丁靴\\4.jpg",
+                "feiyue\\高跟马丁靴\\5.jpg",
+                "feiyue\\高跟马丁靴\\6.jpg",
+                "feiyue\\高跟马丁靴\\7.jpg",
+                "feiyue\\高跟马丁靴\\8.jpg"
+            };
             imageCovers.Add(i12);
 
+
             string[] i13 = {
-                  "zhicheng\\竖图\\公司前台一览.jpg"
-                };
+                "feiyue\\飞跃漫威联名款拖鞋\\1.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\2.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\3.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\4.jpg",
+                "feiyue\\飞跃漫威联名款拖鞋\\5.jpg",
+            };
             imageCovers.Add(i13);
 
+
             string[] i14 = {
-                  "zhicheng\\竖图\\机房大厅.jpg"
-                };
+                "feiyue\\复古原宿帆布小白鞋\\1.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\2.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\3.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\4.jpg",
+                "feiyue\\复古原宿帆布小白鞋\\5.jpg",
+            };
             imageCovers.Add(i14);
 
+
             string[] i15 = {
-                  "zhicheng\\竖图\\监控室操作大厅.jpg"
-                };
+                "feiyue\\休闲情侣鸳鸯鞋\\1.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\2.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\3.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\4.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\5.jpg",
+                "feiyue\\休闲情侣鸳鸯鞋\\6.jpg",
+            };
             imageCovers.Add(i15);
 
+
             string[] i16 = {
-                  "zhicheng\\竖图\\人才公寓全貌.jpg"
-                };
+                "feiyue\\涂鸦迷彩帆布鞋\\1.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\2.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\3.jpg",
+                "feiyue\\涂鸦迷彩帆布鞋\\4.jpg"
+            };
             imageCovers.Add(i16);
 
+
             string[] i17 = {
-                  "zhicheng\\竖图\\食堂一角.jpg"
-                };
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\1.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\2.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\3.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\4.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\5.jpg",
+                "feiyue\\绿色潮流休闲情侣帆布鞋\\6.jpg",
+            };
             imageCovers.Add(i17);
 
+
             string[] i18 = {
-                  "zhicheng\\竖图\\小绍兴饭店.jpg"
-                };
+                "feiyue\\经典帆布鞋\\7747427.jpg",
+                "feiyue\\经典帆布鞋\\7747787.jpg",
+                "feiyue\\经典帆布鞋\\7747957.jpg",
+                "feiyue\\经典帆布鞋\\7748486.jpg",
+                "feiyue\\经典帆布鞋\\7748971.jpg",
+                "feiyue\\经典帆布鞋\\7749427.jpg",
+                "feiyue\\经典帆布鞋\\7787236.jpg",
+                "feiyue\\经典帆布鞋\\7787656.jpg",
+                "feiyue\\经典帆布鞋\\7787783.jpg",
+                "feiyue\\经典帆布鞋\\7794456.jpg",
+                "feiyue\\经典帆布鞋\\7794807.jpg",
+            };
             imageCovers.Add(i18);
 
+
             string[] i19 = {
-                  "zhicheng\\竖图\\星巴克陈列.jpg"
-                };
+                "feiyue\\手绘街头嘻哈学生板鞋\\1.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\2.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\3.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\4.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\5.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\6.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\7.jpg",
+                "feiyue\\手绘街头嘻哈学生板鞋\\8.jpg",
+            };
             imageCovers.Add(i19);
 
+
             string[] i20 = {
-                  "zhicheng\\竖图\\星巴克大厅.jpg"
-                };
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\1.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\2.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\3.jpg",
+                "feiyue\\休闲男鞋低帮情侣学生潮流小白鞋\\4.jpg"
+            };
             imageCovers.Add(i20);
-
-            string[] i21 = {
-                  "zhicheng\\竖图\\星巴克外貌.jpg"
-                };
-            imageCovers.Add(i21);
-
-            string[] i22 = {
-                  "zhicheng\\竖图\\园区鸟瞰图.jpg"
-                };
-            imageCovers.Add(i22);
-
-            string[] i23 = {
-                  "zhicheng\\竖图\\主楼风貌.jpg"
-                };
-            imageCovers.Add(i23);
 
 
             //  从数据库中获取数据
-            _products = new List<Product>();
-
             for (int x = 0; x < names.Length; x++)
             {
                 var name = names[x];
-
                 var mats = imageCovers[x];
 
-                //
                 AddProduct(mats, name, x);
-
             }
+
 
             //throw new System.NotImplementedException();
         }
@@ -1046,15 +1131,19 @@ namespace MagicWall
 
         public FlockData GetFlockDataByScene(DataTypeEnum type, int sceneIndex)
         {
-            return GetFlockData(type);
+            var item = GetFlockData(type);
+
+            //Debug.Log("Get by scene : " + item.GetId());
+
+
+            return item;
         }
 
         public List<string> GetMatImageAddresses()
         {
             var result = new List<string>();
 
-            for (int i = 0; i < _products.Count; i++)
-            {
+            for (int i = 0; i < _products.Count; i++) {
                 result.Add(_products[i].Image);
             }
 
@@ -1073,6 +1162,21 @@ namespace MagicWall
 
 
             return result;
+        }
+
+        public List<string> GetLeftImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetRigetImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetVideosForVBI6S()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
