@@ -78,7 +78,7 @@ namespace MagicWall
                 //屏幕中心点屏幕坐标
                 Vector2 origin = new Vector2(Screen.width / 2, Screen.height / 2);
                 //Vector2 userScreenPos = new Vector2(origin.x + basicDistance / 2 / userPos.z * x * Screen.width / 2, origin.y + basicDistance / userPos.z * y * Screen.height / 2); // 正式环境删除400
-                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / 2.5f * Screen.width, userPos.y * Screen.height/2);
+                Vector2 userScreenPos = new Vector2(origin.x + userPos.x / 4f * Screen.width, userPos.y * Screen.height/2);
 
 
                 //Vector2 userScreenPos = new Vector2(origin.x + userPos.x;

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/CBH/CBHMain.unity
-    guid: ac989d646b80b4447ae6d5052ca463ee
+    path: Assets/Scenes/CBH/CBHAPP.unity
+    guid: 44fe5fa362c06ee40bc2f29d1623ba65
   m_configObjects: {}

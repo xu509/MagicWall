@@ -271,10 +271,10 @@ MonoBehaviour:
   sensorAngle: 0
   autoHeightAngle: 2
   computeUserMap: 3
-  computeColorMap: 1
+  computeColorMap: 0
   computeInfraredMap: 0
   displayUserMap: 0
-  displayColorMap: 1
+  displayColorMap: 0
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
