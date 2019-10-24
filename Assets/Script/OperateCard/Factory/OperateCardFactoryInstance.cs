@@ -56,6 +56,12 @@ namespace MagicWall {
 
                 Product product = daoService.GetProductDetail(dataId);
                 Enterprise enterprise = daoService.GetEnterpriseById(product.Ent_id);
+
+                Debug.Log("enterprise : " + enterprise);
+
+                //Debug.Log("enterprise to null : " + (enterprise == null));
+
+
                 OperateCardDataSlide operateCardDataSlide = ProductAdapter.Transfer(product, enterprise);
                 cardPrefab = magicWallManager.operateCardManager.sliceCardPrefab;
                 cardData = operateCardDataSlide;

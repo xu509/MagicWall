@@ -454,22 +454,17 @@ namespace MagicWall
 
         public Enterprise GetEnterpriseById(int id)
         {
-            Enterprise enterprise = new Enterprise();
+            //Enterprise enterprise = new Enterprise();
 
-            // 公司卡片初始化
-            List<string> list = new List<string>();
+            //// 公司卡片初始化
+            //List<string> list = new List<string>();
 
-            list.Add("feiyue2\\企业名片1.jpg");
-            list.Add("feiyue2\\企业名片2.jpg");
-            list.Add("feiyue2\\企业名片3.jpg");
+            //list.Add("feiyue2\\企业名片1.jpg");
+            //list.Add("feiyue2\\企业名片2.jpg");
+            //list.Add("feiyue2\\企业名片3.jpg");
 
-            enterprise.EnvCards = list;
-
-
-
-
-
-            return enterprise;
+            //enterprise.EnvCards = list;
+            return null;
         }
 
         public Video GetVideoDetail(int envId, int index)

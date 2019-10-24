@@ -156,6 +156,25 @@ namespace MagicWall {
             return false;
         }
 
+        public List<SearchBean> Search(string keys) {
+            List<SearchBean> datas = new List<SearchBean>();
+
+            var sceneConfigs = _mockSceneConfig.sceneConfigs;
+            for (int i = 0; i < sceneConfigs.Count; i++)
+            {
+                var dataTypeEnum = sceneConfigs[i].daoTypeEnum;
+                var service = GetDaoService(dataTypeEnum);
+
+                var result = service.Search(keys);
+
+                if (result != null) {
+                    datas.AddRange(result);
+                }                
+            }
+
+            return datas;
+        }
+
 
 
     }

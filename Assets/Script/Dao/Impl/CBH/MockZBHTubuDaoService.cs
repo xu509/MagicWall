@@ -409,24 +409,8 @@ namespace MagicWall
         /// <returns></returns>
         public List<SearchBean> Search(string keys)
         {
-            //Debug.Log("搜索KEYS ：" + keys);
-
-            List<SearchBean> beans = new List<SearchBean>();
-
-            for (int i = 0; i < _products.Count; i++)
-            {
-                var name = _products[i].Name;
-                if (name.Contains(keys))
-                {
-                    SearchBean bean = new SearchBean();
-                    bean.type = DataTypeEnum.Product;
-                    bean.id = _products[i].Pro_id;
-                    bean.cover = _products[i].Image;
-                    beans.Add(bean);
-                }
-            }
-
-            return beans;
+            //Debug.Log("搜索KEYS ：" + keys)
+            return null;
         }
 
 

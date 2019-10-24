@@ -317,7 +317,9 @@ namespace MagicWall
 
                 //  获取查询词，进行搜索，得到 SearchBean 列表
                 var daoType = _cardAgent.daoTypeEnum;
-                List<SearchBean> searchBeans = _manager.daoServiceFactory.GetDaoService(daoType).Search(_searchWord);
+
+                //List<SearchBean> searchBeans = _manager.daoServiceFactory.GetDaoService(daoType).Search(_searchWord);
+                List<SearchBean> searchBeans = _manager.daoServiceFactory.Search(_searchWord);
 
                 //  生成搜索结果控件，并进行初始化
                 if (_searchResultAgent == null)

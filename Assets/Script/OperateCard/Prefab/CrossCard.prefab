@@ -1089,7 +1089,7 @@ RectTransform:
   m_GameObject: {fileID: 2247757197020260754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children:
   - {fileID: 1447688283106226908}
   - {fileID: 1865509593052167301}
@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _protectAgent: {fileID: 6960121858815626659}
   _cardStatus: 0
-  _heightFactor: 0.51
+  _heightFactor: 0.657
   _main_container: {fileID: 1447688283106226908}
   _tool_bottom_container: {fileID: 1702068175313341596}
   _tool_bottom_three_container: {fileID: 67662024630146740}

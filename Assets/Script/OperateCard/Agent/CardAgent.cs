@@ -1363,7 +1363,7 @@ namespace MagicWall
             if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 //800 
-                float rectHeight = 800f;
+                float rectHeight = 1000f;
                 GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
             }
             else {
