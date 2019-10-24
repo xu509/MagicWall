@@ -648,7 +648,7 @@ PrefabInstance:
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: isMock
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
