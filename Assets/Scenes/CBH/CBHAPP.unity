@@ -127,11 +127,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 553118721}
     m_Modifications:
-    - target: {fileID: 3233388050665599026, guid: b439edfd512c77048ac31af56929e7a2,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1080.0001
-      objectReference: {fileID: 0}
     - target: {fileID: 8956374794040588474, guid: b439edfd512c77048ac31af56929e7a2,
         type: 3}
       propertyPath: m_Name
@@ -141,6 +136,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3233388050665599026, guid: b439edfd512c77048ac31af56929e7a2,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1080.0001
       objectReference: {fileID: 0}
     - target: {fileID: 8956374794040588475, guid: b439edfd512c77048ac31af56929e7a2,
         type: 3}
@@ -271,10 +271,10 @@ MonoBehaviour:
   sensorAngle: 0
   autoHeightAngle: 2
   computeUserMap: 3
-  computeColorMap: 1
+  computeColorMap: 0
   computeInfraredMap: 0
   displayUserMap: 0
-  displayColorMap: 1
+  displayColorMap: 0
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
@@ -597,83 +597,11 @@ PrefabInstance:
       propertyPath: _daoServiceFactory
       value: 
       objectReference: {fileID: 928909975}
-    - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676,
-        type: 3}
-    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 433035726018076245, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _magicSceneManager
-      value: 
-      objectReference: {fileID: 1008701219}
-    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _mockSceneConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
-        type: 2}
-    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _daoServiceFactory
-      value: 
-      objectReference: {fileID: 928909975}
-    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: _agentContainer
-      value: 
-      objectReference: {fileID: 553118715}
-    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: isMock
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: moveDelayTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: agentMoveTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: agentMoveDelayTime
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentChooseBehavior
       value: 
       objectReference: {fileID: 1629764202}
-    - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
-        type: 3}
-      propertyPath: ignoreValue
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _runBackground
@@ -690,6 +618,78 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: fc3d0db763057354f8397a5eaab6a39c,
         type: 2}
+    - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 433035726018076245, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _magicSceneManager
+      value: 
+      objectReference: {fileID: 1008701219}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _agentContainer
+      value: 
+      objectReference: {fileID: 553118715}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: isMock
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: moveDelayTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: agentMoveTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: agentMoveDelayTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
+        type: 2}
+    - target: {fileID: 6471648411595723779, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _daoServiceFactory
+      value: 
+      objectReference: {fileID: 928909975}
+    - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676,
+        type: 3}
+    - target: {fileID: 3095498652740323692, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: ignoreValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _mockSceneConfig

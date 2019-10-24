@@ -28,9 +28,10 @@ namespace MagicWall
         [SerializeField]
         private DestoryBehaviorEnum _destoryBehavior;   // 销毁
 
-
+        [SerializeField]
         private DaoTypeEnum _daoTypeEnum;   // dao
 
+        [SerializeField]
         private int _isKinect;
 
 

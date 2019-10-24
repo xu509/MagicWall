@@ -18,39 +18,55 @@ MonoBehaviour:
     _durTime: 7
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 3
+    _isKinect: 1
   - _sceneType: 2
     _dataType: 1
     _durTime: 7
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 3
+    _isKinect: 1
   - _sceneType: 5
     _dataType: 1
     _durTime: 7
     _displayBehavior: 3
     _destoryBehavior: 0
+    _daoTypeEnum: 3
+    _isKinect: 1
   - _sceneType: 3
     _dataType: 1
     _durTime: 2
     _displayBehavior: 4
     _destoryBehavior: 1
+    _daoTypeEnum: 3
+    _isKinect: 1
   - _sceneType: 0
     _dataType: 2
     _durTime: 7
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 4
+    _isKinect: 0
   - _sceneType: 2
     _dataType: 2
     _durTime: 7
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 4
+    _isKinect: 0
   - _sceneType: 6
     _dataType: 0
     _durTime: 170
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 5
+    _isKinect: 0
   - _sceneType: 6
     _dataType: 0
     _durTime: 350
     _displayBehavior: 2
     _destoryBehavior: 0
+    _daoTypeEnum: 6
+    _isKinect: 0
   data: 0

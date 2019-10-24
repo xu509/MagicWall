@@ -124,6 +124,7 @@ namespace MagicWall
         {
             _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
                 .OnComplete(() => {
+                    _hasInit = false;
                     _magicSceneManager._videoBetweenImageController.StopPlay();
 
                     _manager.Clear();

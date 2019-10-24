@@ -49,6 +49,9 @@ namespace MagicWall
         private float _ignoreValue;
         private float _moveDelayTime;
 
+        private float _destoryStartTime = -1f;
+        private float _destoryDelayTime = 3f;
+
 
         void Awake() {
             _flockTweenerManager = new FlockTweenerManager();
@@ -194,6 +197,9 @@ namespace MagicWall
         public void Close() {
             if (_status != KinectAgentStatusEnum.Destoring) {
                 _status = KinectAgentStatusEnum.Destoring;
+
+                //_destoryStartTime
+
 
                 var closeAnimi = GetComponent<RectTransform>().DOScale(0.1f, 0.5f)
                     .OnComplete(() =>
