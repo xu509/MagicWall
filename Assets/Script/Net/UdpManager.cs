@@ -32,10 +32,10 @@ namespace MagicWall
         byte[] sendData = new byte[1024]; //发送的数据，必须为字节
         int recvLen; //接收的数据长度
 
-
+        //
         private Queue<int> _changeSceneQueue;
 
-        //委托队列
+        //废弃  委托队列
         private Queue<Action> asyncQueue = new Queue<Action>();
         private Queue<Action> mainQueue = new Queue<Action>();
 

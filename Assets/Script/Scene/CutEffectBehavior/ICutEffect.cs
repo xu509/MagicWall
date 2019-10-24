@@ -23,7 +23,10 @@ namespace MagicWall
         void Run();
 
         SceneTypeEnum GetSceneType();
-       
+
+        void InitData();
+
+
 
     }
 

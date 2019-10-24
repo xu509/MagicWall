@@ -23,6 +23,9 @@ namespace MagicWall
 
         void RunEnd(Action onEndCompleted);
 
+
+        SceneConfig GetSceneConfig();
+
     }
 
 }

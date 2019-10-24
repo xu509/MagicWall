@@ -60,6 +60,9 @@ namespace MagicWall
         /// 初始化数据
         /// </summary>
         private void InitData() {
+            Debug.Log("初始化场景数据中");
+
+
             _magicSceneManager = GameObject.Find("Scene").GetComponent<MagicSceneManager>();
 
             _durTime = _sceneConfig.durtime;
@@ -79,7 +82,6 @@ namespace MagicWall
             if (!_hasInit) {
                 InitData();
 
-                Debug.Log(_sceneConfig.daoTypeEnum);
 
             }
 
@@ -92,10 +94,7 @@ namespace MagicWall
             // 当场景结束调用
 
             if ((Time.time - _startTime) > _durTime) {
-               _hasInit = false;
-
-                // 淡出
-
+                // 淡出                
                 _destoryBehavior.Run();
 
             }
@@ -117,6 +116,7 @@ namespace MagicWall
 
         void OnDestoryCompleted() {
             _magicSceneManager._videoBetweenImageController.StopPlay();
+            _hasInit = false;
             _onSceneCompleted.Invoke();
         }
 
@@ -130,6 +130,11 @@ namespace MagicWall
                     _manager.Clear();
                     onEndCompleted.Invoke();
                 });
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
         }
     }
 }

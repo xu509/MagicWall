@@ -188,6 +188,10 @@ namespace MagicWall
             }
 
             _manager.SceneIndex = _manager.SceneIndex + 1;
+
+
+            Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
+
             _manager.CurrentScene = _scenes[_index];
 
         }

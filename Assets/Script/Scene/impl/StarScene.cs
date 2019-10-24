@@ -34,6 +34,8 @@ namespace MagicWall
 
         Action _onSceneCompleted;
 
+        SceneConfig _sceneConfig;
+
 
 
         enum StarSceneStatusEnum
@@ -73,6 +75,7 @@ namespace MagicWall
             _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
 
             _onSceneCompleted = onSceneCompleted;
+            _sceneConfig = sceneConfig;
 
             Reset();
         }
@@ -375,6 +378,11 @@ namespace MagicWall
         public void RunEnd(Action onEndCompleted)
         {
             throw new NotImplementedException();
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
         }
     }
 }
