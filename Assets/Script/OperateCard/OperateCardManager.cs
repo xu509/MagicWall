@@ -135,7 +135,9 @@ namespace MagicWall {
 
             EffectAgents.Add(cardAgent);
 
-            cardAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+            int iskinect = _manager.magicSceneManager.GetCurrentScene().GetSceneConfig().isKinect;
+
+            cardAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType, iskinect));
             _manager.collisionManager.AddCollisionEffectAgent(cardAgent);
             
             return cardAgent;

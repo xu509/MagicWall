@@ -204,5 +204,11 @@ namespace MagicWall
         {
             _index = sceneIndex;            
         }
+
+
+        public IScene GetCurrentScene() {
+            return _scenes[_index];
+
+        }
     }
 }
