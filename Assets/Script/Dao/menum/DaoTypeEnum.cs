@@ -6,7 +6,7 @@ namespace MagicWall {
     /// </summary>
     public enum DataTypeEnum
     {
-        Activity, Product, Enterprise, Wine , Start ,Video
+        Activity, Product, Enterprise, Wine , Start ,Video ,Test
     }
 }
 

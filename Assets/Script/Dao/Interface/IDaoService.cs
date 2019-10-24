@@ -135,21 +135,6 @@ namespace MagicWall
         /// <returns></returns>
         List<SearchBean> Search(string keys);
 
-
-
-        /// <summary>
-        ///     获取显示配置
-        /// </summary>
-        /// <returns></returns>
-        List<SceneConfig> GetShowConfigs();
-
-        /// <summary>
-        ///     获取配置
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        AppConfig GetConfigByKey(string key);
-
         /// <summary>
         ///     获取视频详细
         /// </summary>

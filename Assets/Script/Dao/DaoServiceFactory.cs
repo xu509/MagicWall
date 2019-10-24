@@ -19,6 +19,7 @@ namespace MagicWall {
         [SerializeField, Tooltip("智博会 - 土布")] MockZBHAiqiguDaoService _mockZBHAiqiguDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] MockShicunDaoService _mockShicunDaoService;
+        [SerializeField] MockTestDaoService _mockTestDaoService;
         [SerializeField] DaoService _realDaoService;
 
 
@@ -54,6 +55,9 @@ namespace MagicWall {
             {
                 _daoService = _mockShicunDaoService;
             }
+            else if (type == DaoTypeEnum.Test) {
+                _daoService = _mockTestDaoService; 
+            }
 
             return _daoService;
         }
@@ -74,7 +78,6 @@ namespace MagicWall {
             {
                 var scene = sceneConfigs[i].sceneType;
                 var data = sceneConfigs[i].dataType;
-                var time = sceneConfigs[i].durtime;
 
 
                 if (scene == SceneTypeEnum.Stars && data == DataTypeEnum.Enterprise)

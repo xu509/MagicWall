@@ -84,15 +84,6 @@ namespace MagicWall
         // 手写板配置项
         [SerializeField] WritePanelConfig _writePanelConfig;
 
-        [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
-        [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
-        [SerializeField, Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
-        [SerializeField, Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
-        [SerializeField, Tooltip("智博会 - 土布")] MockZBHTubuDaoService _mockZBHTubuDaoService;
-        [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
-        [SerializeField] MockShicunDaoService _mockShicunDaoService;
-        [SerializeField] DaoService _realDaoService;
-
         [SerializeField, Header("Music")] MusicManager _musicManager;
 
         [SerializeField, Header("Global Data")] GlobalData _globalData;
@@ -103,7 +94,11 @@ namespace MagicWall
         [SerializeField, Header("CutEffect Config")] CutEffectConfig _cutEffectConfig;
 
         [SerializeField, Header("Mock")] bool _isMockData;
-        [SerializeField] DaoTypeEnum _mockDaoType;
+
+        [SerializeField,Header("Dao")] DaoTypeEnum _mockDaoType;
+
+        [SerializeField] DaoServiceFactory _daoServiceFactory;
+        public DaoServiceFactory daoServiceFactory { get { return _daoServiceFactory; } }
 
 
         [SerializeField, Header("Sceen")] private ScreenTypeEnum _screenType;
@@ -115,7 +110,6 @@ namespace MagicWall
 
         #endregion
 
-        #region 非配置属性
 
         // 面板的差值
         float panelOffsetX = 0f;
@@ -131,19 +125,21 @@ namespace MagicWall
 
         // 配置选项
 
-        //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        #region 文件夹地址配置
 
-        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+
+        //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
         //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+        #endregion
 
         private int themeCounter = 0; // 主题计数器
         public int ThemeCounter { get { return themeCounter; } }
 
 
-        #endregion
 
         #region Private Parameter - Data
         // 数据管理器
@@ -188,8 +184,6 @@ namespace MagicWall
         public Camera starCamera { get { return _starCamera; } }
 
 
-        [SerializeField] DaoServiceFactory _daoServiceFactory;
-        public DaoServiceFactory daoServiceFactory { get { return _daoServiceFactory; } }
 
         // 获取文件地址
         #endregion
@@ -210,56 +204,6 @@ namespace MagicWall
 
             // 初始化数据连接服务
             TheDataSource theDataSource = TheDataSource.Instance;
-
-            // 初始化数据服务
-            //if (_isMockData)
-            //{
-            //    if (switchMode)
-            //    {
-            //        if (themeCounter % 2 == 0)
-            //        {
-            //            _daoService = _mockFeiyueDaoService;
-            //        }
-            //        else {
-            //            _daoService = _mockZhichengDaoService;
-            //        }
-            //    }
-            //    else {
-            //        if (_mockDaoType == DaoTypeEnum.CBHAiqigu)
-            //        {
-            //            _daoService = null; // 暂缺
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.CBHFeiyue)
-            //        {
-            //            _daoService = _mockZBHFeiyueDaoService;
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.CBHTubu) {
-            //            _daoService = _mockZBHTubuDaoService;
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.CBHFengxian)
-            //        {
-            //            _daoService = _mockZBHFengxianDaoService;
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.ShiCunFeiyue)
-            //        {
-            //            _daoService = _mockFeiyueDaoService;
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.ShiCunZhicheng)
-            //        {
-            //            _daoService = _mockShicunDaoService;
-            //        }
-            //        else if (_mockDaoType == DaoTypeEnum.ShiCunShiCun)
-            //        {
-            //            _daoService = _mockShicunDaoService;
-            //        }
-            //    }
-                
-            //}
-            //else
-            //{
-            //    _daoService = _realDaoService;
-            //    _realDaoService.Init(this);
-            //}
 
             // 初始化 Global Data
             _globalData.Init(this);
