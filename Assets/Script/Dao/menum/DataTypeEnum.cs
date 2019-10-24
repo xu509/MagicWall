@@ -12,8 +12,8 @@ namespace MagicWall {
         CBHFeiyue,  // 创博会飞越
         CBHFengxian,  // 创博会奉献
         CBHTubu, // 创博会土布
-        CBHAiqigu // 创博会爱企谷
-
+        CBHAiqigu, // 创博会爱企谷
+        Test    //  测试数据源
     }
 }
 
