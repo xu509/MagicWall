@@ -258,5 +258,12 @@ namespace MagicWall
             _cutEffectStatus = CutEffectStatus.Init;
         }
 
+        public void InitData()
+        {
+            _cutEffectStatus = CutEffectStatus.Init;
+            _hasCallDisplay = false;
+
+
+        }
     }
 }

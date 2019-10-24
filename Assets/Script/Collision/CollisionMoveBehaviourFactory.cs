@@ -72,33 +72,43 @@ namespace MagicWall
 
 
 
-        public ICollisionMoveBehavior GetMoveBehavior(CollisionMoveBehaviourType moveBehaviourType)
+        public ICollisionMoveBehavior GetMoveBehavior(CollisionMoveBehaviourType moveBehaviourType,int isKinect)
         {
             if (!_hasInit) {
                 Init();
             }
 
+            //int iskinect = _manager.magicSceneManager.GetCurrentScene().GetSceneConfig().isKinect;
 
-
-            if (_manager.useKinect)
+            if (isKinect == 1)
             {
                 return _kinectRoundMoveBehavior;
             }
             else {
 
-                if (moveBehaviourType == CollisionMoveBehaviourType.Common)
-                {
-                    return _commonMoveBehavior;
-                }
-                else if (moveBehaviourType == CollisionMoveBehaviourType.Round)
-                {
-                    return _roundMoveBehavior;
-                }
-                else {
-                    return null;
-                }
+                return _roundMoveBehavior;
 
             }
+
+
+            //if (_manager.useKinect)
+            //{
+            //}
+            //else {
+
+            //    if (moveBehaviourType == CollisionMoveBehaviourType.Common)
+            //    {
+            //        return _commonMoveBehavior;
+            //    }
+            //    else if (moveBehaviourType == CollisionMoveBehaviourType.Round)
+            //    {
+            //        return _roundMoveBehavior;
+            //    }
+            //    else {
+            //        return null;
+            //    }
+
+            //}
 
         }
     }

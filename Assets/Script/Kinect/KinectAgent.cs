@@ -168,7 +168,7 @@ namespace MagicWall
             _manager = magicWallManager;
             _ignoreValue = FindObjectOfType<MKinectManager>().ignoreValue;
             _moveDelayTime = FindObjectOfType<MKinectManager>().agentMoveDelayTime;
-            SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound));
+            SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(CollisionMoveBehaviourType.KinectRound,1));
             
             _status = KinectAgentStatusEnum.Creating;
 

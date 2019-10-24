@@ -32,10 +32,10 @@ namespace MagicWall
         byte[] sendData = new byte[1024]; //发送的数据，必须为字节
         int recvLen; //接收的数据长度
 
-
+        //
         private Queue<int> _changeSceneQueue;
 
-        //委托队列
+        //废弃  委托队列
         private Queue<Action> asyncQueue = new Queue<Action>();
         private Queue<Action> mainQueue = new Queue<Action>();
 
@@ -136,18 +136,18 @@ namespace MagicWall
                 int to;
                 if (si == 1)
                 {
-                    to = 1;
+                    to = 8;
                 }
                 else if (si == 2)
                 {
-                    to = 5;
+                    to = 1;
                 }
                 else if (si == 3)
                 {
-                    to = 7;
+                    to = 16;
                 }
                 else {
-                    to = 8;
+                    to = 7;
                 }
 
                 Debug.Log("si : " + si + " - TO :" + to);

@@ -106,6 +106,10 @@ namespace MagicWall
                 _manager.useKinect = true;
             }
 
+
+            // 初始化入场效果参数
+            _cutEffect.InitData();
+
         }
 
 
@@ -174,6 +178,11 @@ namespace MagicWall
 
 
 
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
         }
     }
 }

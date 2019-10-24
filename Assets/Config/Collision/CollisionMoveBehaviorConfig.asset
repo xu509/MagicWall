@@ -19,10 +19,8 @@ MonoBehaviour:
   CommonOffsetInfluenceFactor: 0
   RoundEaseEnum: 0
   RoundScaleEaseEnum: 17
-  RoundOffsetInfluenceFactor: 0.2
-  RoundOffsetInfluenceOffset: 0.2
-  EffectTiredTime: 0.5
+  RoundOffsetInfluenceFactor: 0.599
   KinectRoundEaseEnum: 0
-  kinectCardInfluenceMoveFactor: 0.98
+  kinectCardInfluenceMoveFactor: 0.63
   KinectRoundScaleEaseEnum: 17
   KinectRoundOffsetInfluenceFactor: 0.2

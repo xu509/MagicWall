@@ -8,7 +8,8 @@ using DG.Tweening;
 
 public class VideoBetweenImageController : MonoBehaviour
 {
-    public VideoPlayer videoPlayer;
+    private VideoPlayer videoPlayer;
+    public GameObject videoPlayerGo;
     public RectTransform leftPanel;
     public RectTransform rightPannel;
     public RawImage rawImagePrefab;
@@ -42,8 +43,13 @@ public class VideoBetweenImageController : MonoBehaviour
 
         //获取视频
         videos = daoService.GetVideosForVBI6S();
-        videoPlayer.loopPointReached += LoopPointReached;
 
+        videoPlayerHolder.texture = null;
+        videoPlayerGo.AddComponent<VideoPlayer>();
+        videoPlayer = videoPlayerGo.GetComponent<VideoPlayer>();
+        videoPlayer.source = VideoSource.Url;
+        videoPlayer.playOnAwake = false;
+        videoPlayer.loopPointReached += LoopPointReached;
         videoPlayer.url = MagicWallManager.FileDir + videos[0];
         videoPlayer.Prepare();
 
@@ -72,6 +78,7 @@ public class VideoBetweenImageController : MonoBehaviour
     public void StopPlay()
     {
         videoPlayer.Stop();
+        Destroy(GetComponentInChildren<VideoPlayer>());
         gameObject.SetActive(false);
 
         CancelInvoke("ChangeLeftImage");
@@ -81,15 +88,15 @@ public class VideoBetweenImageController : MonoBehaviour
         //GetComponent<CanvasGroup>().alpha = 0;
         //CancelInvoke();
 
-        //for (int i = 0; i < images.Count; i++)
-        //{
-        //    if (images[i].gameObject != null || images[i].gameObject.activeSelf)
-        //    {
-        //        Destroy(images[i].gameObject);
-        //    }
-        //}
+        for (int i = 0; i < images.Count; i++)
+        {
+            if (images[i].gameObject != null || images[i].gameObject.activeSelf)
+            {
+                Destroy(images[i].gameObject);
+            }
+        }
 
-        //images = new List<RawImage>();
+        images = new List<RawImage>();
     }
 
     void ChangeLeftImage()
@@ -157,8 +164,6 @@ public class VideoBetweenImageController : MonoBehaviour
     }
     IEnumerator PlayVideo()
     {
-
-
         while (!videoPlayer.isPrepared)
         {
             yield return new WaitForSeconds(1);

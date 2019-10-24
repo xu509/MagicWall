@@ -191,5 +191,10 @@ namespace MagicWall
                     onEndCompleted.Invoke();
                 });
         }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return new SceneConfig();
+        }
     }
 }
