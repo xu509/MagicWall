@@ -28,6 +28,7 @@ namespace MagicWall {
         public List<KinectAgent> kinectAgents { get { return _kinectAgents; } }
 
 
+        private bool _isInit = false;
 
         private bool isMonitoring = false;
 
@@ -48,50 +49,55 @@ namespace MagicWall {
         // Update is called once per frame
         public void Run()
         {
-            if (_manager != null) {
-                _kinectService.Monitoring();
-                //_kinectCardObserver.Observering();
+            if (!_isInit)
+            {
+                _isInit = true;
+                StartMonitoring();
             }
-
-            if (_kinectAgents != null) {
-
-                List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
-
-                for (int i = 0; i < _kinectAgents.Count; i++)
+            else {
+                if (_manager != null)
                 {
-                    _kinectAgents[i].UpdateBehaviour();
+                    Debug.Log("@@@ Kinecet 正在检测");
 
-                    if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete || _manager.useKinect == false)
+                    _kinectService.Monitoring();
+                    //_kinectCardObserver.Observering();
+                }
+
+                if (_kinectAgents != null)
+                {
+                    List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
+
+                    for (int i = 0; i < _kinectAgents.Count; i++)
                     {
-                        needDestoryAgents.Add(_kinectAgents[i]);
+                        _kinectAgents[i].UpdateBehaviour();
+
+                        if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete || _manager.useKinect == false)
+                        {
+                            needDestoryAgents.Add(_kinectAgents[i]);
+                        }
                     }
+
+                    for (int i = 0; i < needDestoryAgents.Count; i++)
+                    {
+                        var agent = needDestoryAgents[i];
+                        _manager.collisionManager.RemoveCollisionEffectAgent(agent);
+                        _kinectAgents.Remove(agent);
+                        Destroy(agent.gameObject);
+                    }
+
+                    needDestoryAgents.Clear();
                 }
 
-                for (int i = 0; i < needDestoryAgents.Count; i++)
-                {
-                    var agent = needDestoryAgents[i];
-                    _manager.collisionManager.RemoveCollisionEffectAgent(agent);
-                    _kinectAgents.Remove(agent);
-                    Destroy(agent.gameObject);
-                }
-
-                needDestoryAgents.Clear();
-
-                if (isMock && _manager.useKinect)
-                {
+                if (_manager.useKinect && isMock && _manager.openKinect) {
                     if (_kinectAgents.Count == 0)
                     {
                         // 模拟创建实体，实际使用kinect需注释
                         var screenPosition = new Vector2(2000, 960);
                         AddKinectAgents(screenPosition, 111);
                     }
-                    // 模拟创建实体，实际使用kinect需注释  结束
                 }
+
             }
-
-            
-
-
         }
 
         /// <summary>
@@ -122,8 +128,11 @@ namespace MagicWall {
             }
             else {
                 _kinectService.Init(_agentContainer, _kinectAgentPrefab, _manager);
-                StartMonitoring();
+                //StartMonitoring();
             }
+
+            Debug.Log("@@@ Kinecet 初始化成功");
+
 
         }
 

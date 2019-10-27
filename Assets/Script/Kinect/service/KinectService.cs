@@ -108,6 +108,9 @@ namespace MagicWall
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentRectTransform, userScreenPos, null, out rectPosition);
                     float currentY = kinectAgent.GetComponent<RectTransform>().anchoredPosition.y;
                     var to = new Vector2(rectPosition.x, currentY);
+
+                    Debug.Log("@@@ kinectAgent 进行移动");
+
                     kinectAgent.UpdatePos(to);
                     //kinectAgent.UpdatePos(rectPosition);
 
@@ -179,8 +182,8 @@ namespace MagicWall
             //    kinectAgentMaskWidth = 933;
             //}
 
-            //if (pos.z < safeZ)
-            //    return false;
+            if (pos.z > safeZ)
+                return false;
             if (pos.x < kinectAgentMaskWidth || pos.x > Screen.width - kinectAgentMaskWidth || pos.y < kinectAgentMaskWidth || pos.y > Screen.height - kinectAgentMaskWidth)
             {
                 return false;

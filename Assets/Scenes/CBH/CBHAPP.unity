@@ -287,7 +287,7 @@ MonoBehaviour:
   minUserDistance: 0.1
   maxUserDistance: 0
   maxLeftRightDistance: 0
-  maxTrackedUsers: 6
+  maxTrackedUsers: 3
   showTrackedUsersOnly: 1
   detectClosestUser: 1
   ignoreInferredJoints: 0
@@ -609,6 +609,16 @@ PrefabInstance:
       propertyPath: _daoServiceFactory
       value: 
       objectReference: {fileID: 928909975}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _openKinect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _udpManager
+      value: 
+      objectReference: {fileID: 1438289765}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentChooseBehavior
@@ -648,7 +658,7 @@ PrefabInstance:
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: isMock
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -697,6 +707,16 @@ PrefabInstance:
       propertyPath: ignoreValue
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: basicDistance
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133509222587419979, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: safeZ
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 882739352074483290, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -706,7 +726,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: fc3d0db763057354f8397a5eaab6a39c,
+      objectReference: {fileID: 11400000, guid: e47e4bccca6022b41843e475e1e71498,
         type: 2}
     - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -836,6 +856,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 132d4d55d70adda43adb4ad2000d5c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1438289765 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1230069988321349159, guid: a6e4d1195ee9f3c4980366b56d75733f,
+    type: 3}
+  m_PrefabInstance: {fileID: 378638080}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 369f25fe1d95a0c42ab23a612d1f81a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1629764202 stripped

@@ -47,14 +47,19 @@ namespace MagicWall
 
 
         void Awake() {
-            _changeSceneQueue = new Queue<int>();
 
 
             var obj = GameObject.Find("UdpHandler");
 
-            InitSocket(); //在这里初始化
             //DontDestroyOnLoad(this);
         }
+
+        public void Init() {
+            _changeSceneQueue = new Queue<int>();
+            InitSocket(); //在这里初始化
+        }
+
+
 
         /// <summary>
         ///     初始化 socket 服务器
@@ -79,6 +84,8 @@ namespace MagicWall
                 ////开启一个线程连接，必须的，否则主线程卡死
                 connectThread = new Thread(new ThreadStart(SocketReceive));
                 connectThread.Start();
+                Debug.Log("Init Socket Success!");
+
 
                 _hasInit = true;
             }
@@ -101,7 +108,7 @@ namespace MagicWall
                 //print("message from: " + clientEnd.ToString()); //打印客户端信息
                 //输出接收到的数据
                 recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
-                print(recvStr);
+                print("接收到信号：" + recvStr);
 
                 int rnumber = -1;
 
@@ -158,18 +165,13 @@ namespace MagicWall
                 {
                     _manager.magicSceneManager.JumpTo(to);
                 });
-
-
-
-
-                //Debug.Log(si);
-
-
-
-             
-
-                //_receMsg = false;
             }
+
+
+            if (Input.GetKeyDown(KeyCode.A)) {
+                AddSceneIndex(1);
+            }
+
 
         }
 
@@ -184,105 +186,10 @@ namespace MagicWall
                 connectThread.Interrupt();
                 connectThread.Abort();
             }
-            //最后关闭socket
-            if (socket != null)
-                socket.Close();
+
+            socket?.Close();
         }
 
-
-
-
-
-        public void Listening()
-        {
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                Debug.Log("您按下了W键");
-
-                _manager.Reset();
-
-            }
-
-            if (_hasInit)
-            {
-                //SocketReceive();
-                //if (CanReceive())
-                //{
-                //    SocketReceive();
-                //}
-                DoFunction();
-            }
-
-
-        }
-
-
-
-
-
-        void SocketSend(string sendStr)
-        {
-            //清空发送缓存
-            sendData = new byte[1024];
-            //数据类型转换
-            sendData = Encoding.ASCII.GetBytes(sendStr);
-            //发送给指定服务端
-            socket.SendTo(sendData, sendData.Length, SocketFlags.None, ipEnd);
-        }
-
-
-
-
-
-        // 判断是否可接受
-        private bool CanReceive()
-        {
-            if (Time.time - lastReceiveTime > 1f)
-            {
-                lastReceiveTime = Time.time;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-
-        }
-
-        private void AfterRun()
-        {
-            _manager.SetReset();
-        }
-
-
-
-        //执行Action(根据线程判断对应的方法)
-        private void DoFunction()
-        {
-            if (Thread.CurrentThread == connectThread)
-            {
-                if (asyncQueue.Count > 0)
-                {
-                    var func = asyncQueue.Dequeue();
-                    func();
-                }
-            }
-            else
-            {
-                if (mainQueue.Count > 0)
-                {
-                    int number = doUpdate;
-                    do
-                    {
-                        var func = mainQueue.Dequeue();
-                        func();
-                        number--;
-                    } while (number > 0 && mainQueue.Count > 0);
-                }
-            }
-        }
 
 
         private void AddSceneIndex(int sindex) {
@@ -293,7 +200,6 @@ namespace MagicWall
 
         private void OnDestroy()
         {
-            socket.Close();
         }
 
 

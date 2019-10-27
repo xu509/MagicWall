@@ -231,6 +231,8 @@ namespace MagicWall
 
         public void UpdatePos(Vector2 anchPos)
         {
+            Debug.Log("@@@ Update Position : " + _status);
+
             if (_status == KinectAgentStatusEnum.Normal || _status == KinectAgentStatusEnum.Creating) {
                 float currentX = GetComponent<RectTransform>().anchoredPosition.x;
                 //if (Mathf.Abs(currentX-anchPos.x) < _ignoreValue)
@@ -241,6 +243,9 @@ namespace MagicWall
                 if (Time.time - _lastMoveTime > _moveDelayTime)
                 {
                     _lastMoveTime = Time.time;
+
+                    Debug.Log("@@@ Update Position :  开始移动 " );
+
 
                     GetComponent<RectTransform>().DOAnchorPosX(anchPos.x, _moveDelayTime).OnComplete(() =>
                     {

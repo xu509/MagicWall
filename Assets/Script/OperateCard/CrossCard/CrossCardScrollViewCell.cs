@@ -118,7 +118,12 @@ namespace MagicWall
 
         public override void UpdateComponentStatus()
         {
+
+
             GetComponent<RectTransform>().SetAsLastSibling();
+
+            //Debug.Log("Set As Last sibling : " + _cellData.Title);
+
             subScrollController.UpdateAllComponents();
         }
 

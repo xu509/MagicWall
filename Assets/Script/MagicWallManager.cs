@@ -78,6 +78,10 @@ namespace MagicWall
         [SerializeField] bool _useKinect;
         public bool useKinect { set { _useKinect = value; } get { return _useKinect; } }
 
+        [SerializeField] bool _openKinect;
+        public bool openKinect { set { _openKinect = value; } get { return _openKinect; } }
+
+
         /// 配置面板
         [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
@@ -107,6 +111,8 @@ namespace MagicWall
         [SerializeField]
         private UnitySceneManager _unitySceneManager;
 
+        [SerializeField, Header("UDP")] private UdpManager _udpManager;
+
 
         #endregion
 
@@ -127,11 +133,11 @@ namespace MagicWall
 
         #region 文件夹地址配置
 
-        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+      //  public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-        //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+       // public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
         #endregion
@@ -244,19 +250,22 @@ namespace MagicWall
             _musicManager.Play();
 
             // 初始化kinect
-            if (_useKinect) {
+            if (_openKinect) {
                 _kinectManager.Init(this);
             }
-           
 
-            // 初始化定制服务
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Init(this);
-            }
+            _useKinect = false;
+
+
+            //// 初始化定制服务
+            //if (managerConfig.IsCustom)
+            //{
+            //    infoPanelAgent.Init(this);
+            //}
 
             _hasInit = true;
 
+            _udpManager.Init();
 
             //StartCoroutine(ExchangeScene(switchTime));
 
@@ -288,7 +297,7 @@ namespace MagicWall
             // 开启场景效果
             _magicSceneManager.Run();
 
-            if (_useKinect) { 
+            if (_openKinect) { 
                 _kinectManager.Run();
             }
 
@@ -297,10 +306,10 @@ namespace MagicWall
             _collisionManager.Run();
 
             // 自定义屏幕状态更新
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Run();
-            }
+            //if (managerConfig.IsCustom)
+            //{
+            //    infoPanelAgent.Run();
+            //}
 
             _operateMode.Run();
 
