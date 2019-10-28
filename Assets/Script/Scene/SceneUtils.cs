@@ -33,11 +33,20 @@ namespace MagicWall
         /// </summary>
         float _screen_height;
 
-        public SceneUtils(MagicWallManager manager)
+        public SceneUtils(MagicWallManager manager,int isKinect)
         {
             _manager = manager;
-            _row = manager.Row;
-            _column = manager.managerConfig.Column;
+
+            if (isKinect == 0)
+            {
+                _row = 6;
+                _column = 15;
+            }
+            else {
+                _row = 12;
+                _column = 30;
+            }
+
             _screen_width = manager.mainPanel.rect.width;
             _screen_height = manager.mainPanel.rect.height;
         }
@@ -63,7 +72,7 @@ namespace MagicWall
         /// <returns></returns>
         public int GetFixedItemHeight()
         {
-            int gap = GetGap();
+            int gap = GetGap() / 2;
             float h = (_screen_height - gap) / _row - gap;
             return Mathf.RoundToInt(h);
         }
@@ -150,7 +159,7 @@ namespace MagicWall
         /// <returns></returns>
         public float GetYPositionByFixedHeight(int itemHeight, int row)
         {
-            int gap = GetGap();
+            int gap = GetGap() / 2;
             float y = row * (itemHeight + gap) + itemHeight / 2 + gap;
             return y;
         }

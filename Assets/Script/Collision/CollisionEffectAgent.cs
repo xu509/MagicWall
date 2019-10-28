@@ -13,11 +13,17 @@ namespace MagicWall
 
         ICollisionMoveBehavior GetMoveBehavior();
 
+        float GetEffectDistance();
+
         bool IsEffective();
 
         float GetWidth();
 
         float GetHeight();
+
+        string GetName();
+
+        void SetDisableEffect(bool disableEffect);
 
     }
 }

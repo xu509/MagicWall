@@ -77,12 +77,41 @@ namespace MagicWall {
 
             //// 判断几个类型
 
-            
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.CataLog))
+            {
+                _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
+            }
+            else {
+                _hasCatalog = false;
+            }
 
-            _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
-            _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
-            _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
-            _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Product))
+            {
+                _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
+            }
+            else
+            {
+                _hasProduct = false;
+            }
+
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Activity))
+            {
+                _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
+            }
+            else
+            {
+                _hasActivity = false;
+            }
+
+            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Video))
+            {
+                _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
+            }
+            else
+            {
+                _hasVideo = false;
+            }
+
 
             int index = 0;
 
@@ -115,7 +144,7 @@ namespace MagicWall {
 
             if (_hasCatalog)
             {
-                //Debug.Log("_hasCatalog");
+                Debug.Log("创建CATALOG数据");
 
                 CrossCardCellData item = new CrossCardCellData();
                 item.Category = CrossCardCategoryEnum.CATALOG;
@@ -132,7 +161,6 @@ namespace MagicWall {
 
                 _scrollItemNumber++;
                 index++;
-                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
             }
 
 
@@ -193,6 +221,8 @@ namespace MagicWall {
             }
 
 
+          //  Debug.Log("_cellDatas : " + _cellDatas.Count);
+
 
 
             sw.Start();
@@ -219,7 +249,8 @@ namespace MagicWall {
             crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
 
             // 处理businesscard
-            _hasListBtn = _manager.daoService.GetEnvCards(_dataId).Count > 0;
+            //_hasListBtn = _manager.daoService.GetEnvCards(_dataId).Count > 0;
+            _hasListBtn = false;
             //InitComponents(false);
 
             // 设置完成回调
@@ -301,13 +332,16 @@ namespace MagicWall {
         public void DoUp()
         {
             int index = crossCardScrollViewController.CurrentIndex;
+
             // 获取上一个 index
             int up_index = index - 1;
-            if (index == 0)
+
+            if (up_index < 0)
             {
                 up_index = _scrollItemNumber - 1;
             }
-            //Debug.Log("PoolCount:"+ crossCardScrollViewController.Pool.Count + "---up_index:" + up_index);
+
+            //Debug.Log("上一个，当前： " + index + " 目标： " + up_index);
 
             crossCardScrollViewController.SelectCell(up_index);
 
@@ -330,6 +364,9 @@ namespace MagicWall {
             }
 
             crossCardScrollViewController.SelectCell(down_index);
+
+           // Debug.Log("下一个，当前： " + index + " 目标： " + down_index);
+
 
             DoUpdate();
         }

@@ -27,6 +27,8 @@ namespace MagicWall
 
         public SliceCardCellData cellData { set { _cellData = value; } get { return _cellData; } }
 
+        [SerializeField] RectTransform _coverContainer;
+
         [SerializeField] RawImage _cover;
         [SerializeField] Animator _animator;
         [SerializeField] float _position;
@@ -56,6 +58,9 @@ namespace MagicWall
 
         public override void UpdateContent(SliceCardCellData cellData)
         {
+            //Debug.Log("Width : " + _coverContainer.rect.width + " | Height : " + _coverContainer.rect.height);
+
+
             SetupData(cellData);
 
             _manager = cellData.magicWallManager;
@@ -89,11 +94,11 @@ namespace MagicWall
                 // 调整 Like 按钮
                 if (cellData.IsProduct())
                 {
-                    _likes = _manager.daoService.GetLikes(_cellData.Image);
+                    _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
                 }
                 else
                 {
-                    _likes = _manager.daoService.GetLikes(_cellData.Image);
+                    _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
                 }
 
 
@@ -153,18 +158,18 @@ namespace MagicWall
             // 调整 Like 按钮
             if (cellData.IsProduct())
             {
-                _likes = _manager.daoService.GetLikes(_cellData.Image);
+                _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
             }
             else
             {
-                _likes = _manager.daoService.GetLikes(_cellData.Image);
+                _likes = _manager.daoServiceFactory.GetLikes(_cellData.Image);
             }
 
 
             _buttonLikeAgent.Init(_likes, OnClickLikeBtn);
 
 
-            GetComponent<RectTransform>().SetAsLastSibling();
+            //GetComponent<RectTransform>().SetAsLastSibling();
 
             //// 调用改变描述
             //Context.OnDescriptionChanged.Invoke(cellData.Description);
@@ -238,8 +243,17 @@ namespace MagicWall
         private void OnClickLikeBtn()
         {
             Debug.Log("On Click Like");
-            _manager.daoService.UpdateLikes(_cellData.Image);
+            _manager.daoServiceFactory.UpdateLikes(_cellData.Image);
         }
 
+        public override void SetAsLastPosition()
+        {
+            GetComponent<RectTransform>().SetAsLastSibling();
+        }
+
+        public override void SetAsFirstPosition()
+        {
+            GetComponent<RectTransform>().SetAsFirstSibling();
+        }
     }
 }

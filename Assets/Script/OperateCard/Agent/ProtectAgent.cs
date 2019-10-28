@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 namespace MagicWall { 
     public class ProtectAgent : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
     {
+        bool _enabled = true;
+
         Action _onUpdatedAction;
 
         private void Start()
@@ -27,10 +29,20 @@ namespace MagicWall {
 
         private void IsUpdated() {
             //Debug.Log("ProtectAgent Is Updated");
-            _onUpdatedAction.Invoke();
+            if (_enabled) {
+                _onUpdatedAction.Invoke();
+            }
+            
         }
 
+        public void SetEnabled() {
+            _enabled = true;
+        }
 
+        public void SetDisabled()
+        {
+            _enabled = false;
+        }
 
         public void OnBeginDrag(PointerEventData eventData)
         {

@@ -19,7 +19,10 @@ namespace MagicWall
         protected MagicWallManager() { }
 
         #region 可配置项
-        public bool switchMode = false;        
+        public bool switchMode = false;
+
+        [SerializeField] int _row = 12;   //  列数
+
 
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
@@ -43,9 +46,12 @@ namespace MagicWall
 
         /// 背景中的图片logo
         [SerializeField] RectTransform _bg_logo; //背景图中的logo
+        [SerializeField] Sprite _customLogoSprite;//
 
         // 场景管理器
         [SerializeField, Header("子控制器")] MagicSceneManager _magicSceneManager;
+        public MagicSceneManager magicSceneManager { get { return _magicSceneManager; } }
+
         // 实体管理器
         [SerializeField] AgentManager _agentManager;
         // 背景管理器
@@ -56,7 +62,7 @@ namespace MagicWall
         [SerializeField] OperateCardManager _operateCardManager;
         public OperateCardManager operateCardManager { get { return _operateCardManager; } }
 
-        [SerializeField,Header("Collision")] CollisionManager _collisionManager;
+        [SerializeField, Header("Collision")] CollisionManager _collisionManager;
         public CollisionManager collisionManager { get { return _collisionManager; } }
 
         [SerializeField] CollisionBehaviorConfig _collisionBehaviorConfig;
@@ -66,17 +72,21 @@ namespace MagicWall
         public CollisionMoveBehaviourFactory collisionMoveBehaviourFactory { get { return _collisionMoveBehaviourFactory; } }
 
 
+        [SerializeField, Header("kinect")] MKinectManager _kinectManager;
+        public MKinectManager kinectManager { get { return _kinectManager; } }
+
+        [SerializeField] bool _useKinect;
+        public bool useKinect { set { _useKinect = value; } get { return _useKinect; } }
+
+        [SerializeField] bool _openKinect;
+        public bool openKinect { set { _openKinect = value; } get { return _openKinect; } }
+
+
         /// 配置面板
         [SerializeField, Header("config")] ManagerConfig _managerConfig;
 
         // 手写板配置项
         [SerializeField] WritePanelConfig _writePanelConfig;
-
-        [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
-        [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
-        [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
-        [SerializeField] MockShicunDaoService _mockShicunDaoService;
-        [SerializeField] DaoService _realDaoService;
 
         [SerializeField, Header("Music")] MusicManager _musicManager;
 
@@ -89,20 +99,23 @@ namespace MagicWall
 
         [SerializeField, Header("Mock")] bool _isMockData;
 
-        [SerializeField] bool _isMockFeiyueData;
+        [SerializeField,Header("Dao")] DaoTypeEnum _mockDaoType;
 
-        [SerializeField] bool _isMockZhichengData;
+        [SerializeField] DaoServiceFactory _daoServiceFactory;
+        public DaoServiceFactory daoServiceFactory { get { return _daoServiceFactory; } }
 
-        [SerializeField] bool _isMockShicunData;
-        public bool isMockShicunData { get { return _isMockShicunData; } }
 
-        public bool isMockFeiyueData { get { return _isMockFeiyueData; } }
+        [SerializeField, Header("Sceen")] private ScreenTypeEnum _screenType;
+        public ScreenTypeEnum screenTypeEnum { set { _screenType = value; } get { return _screenType; } }
+
+        [SerializeField]
+        private UnitySceneManager _unitySceneManager;
+
+        [SerializeField, Header("UDP")] private UdpManager _udpManager;
 
 
         #endregion
 
-        #region 非配置属性
-        int _row = 6;   //  列数
 
         // 面板的差值
         float panelOffsetX = 0f;
@@ -118,19 +131,21 @@ namespace MagicWall
 
         // 配置选项
 
-        public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        #region 文件夹地址配置
 
-       //  public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+      //  public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
-       // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+       // public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
+
+        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
+        #endregion
 
         private int themeCounter = 0; // 主题计数器
-        public int ThemeCounter { get { return themeCounter; }}
+        public int ThemeCounter { get { return themeCounter; } }
 
 
-        #endregion
 
         #region Private Parameter - Data
         // 数据管理器
@@ -154,6 +169,7 @@ namespace MagicWall
         public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
         public RectTransform OperationPanel { get { return _operationPanel; } }
         public RectTransform BgLogo { get { return _bg_logo; } }
+        public Sprite CustomLogoSprite { get { return _customLogoSprite; } }
         public int Row { get { return _row; } }
         public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
         public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }
@@ -163,7 +179,7 @@ namespace MagicWall
         public WallStatusEnum SceneStatus { get { return status; } set { status = value; } }
         public AgentManager agentManager { get { return _agentManager; } }
         public BackgroundManager backgroundManager { get { return _backgroundManager; } }
-        public IDaoService daoService { get { return _daoService; } }
+        //public IDaoService daoService { get { return _daoService; } }
         public WritePanelConfig writePanelConfig { get { return _writePanelConfig; } }
         public FlockBehaviorConfig flockBehaviorConfig { get { return _flockBehaviorConfig; } }
         public MoveBehaviourFactory moveBehaviourFactory { get { return _moveBehaviourFactory; } }
@@ -174,11 +190,10 @@ namespace MagicWall
         public Camera starCamera { get { return _starCamera; } }
 
 
+
         // 获取文件地址
         #endregion
 
-
-        UdpServer udpServer;
 
         private bool _hasInit = false;
 
@@ -189,50 +204,15 @@ namespace MagicWall
             Application.targetFrameRate = 60;
             _isLimitFps = true;
 
+            // 识别屏幕状态
+            RecognizeScreenType();
+
 
             // 初始化数据连接服务
             TheDataSource theDataSource = TheDataSource.Instance;
 
-            // 初始化数据服务
-            if (_isMockData)
-            {
-                if (switchMode)
-                {
-                    if (themeCounter % 2 == 0)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else {
-                        _daoService = _mockZhichengDaoService;
-                    }
-                }
-                else {
-                    if (_isMockFeiyueData)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else if (_isMockShicunData) {
-                        _daoService = _mockShicunDaoService;
-                    }
-                    else
-                    {
-                        _daoService = _mockDaoService;
-                    }
-                }
-                
-            }
-            else
-            {
-                _daoService = _realDaoService;
-                _realDaoService.Init(this);
-            }
-
             // 初始化 Global Data
             _globalData.Init(this);
-
-            // 初始化监听服务
-            udpServer = UdpServer.Instance;
-            udpServer.SetManager(this);
 
             // 设置 Dotween 插件
             DOTween.logBehaviour = LogBehaviour.ErrorsOnly;
@@ -245,13 +225,18 @@ namespace MagicWall
 
 
             // 初始化场景管理器
-            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
+            _magicSceneManager.Init(this,
+                OnSceneEnterLoop, 
+                OnStartSceneCompleted);
 
             // 初始化背景管理器, 此时对象池完成
             _backgroundManager.Init(this);
 
             // 初始化实体管理器
+            Debug.Log("init agent manager");
             _agentManager.Init(this);
+            Debug.Log("init agent manager end");
+
 
             //  初始化操作模块
             _operateMode.Init(this);
@@ -264,15 +249,23 @@ namespace MagicWall
 
             _musicManager.Play();
 
-
-            // 初始化定制服务
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Init(this);
+            // 初始化kinect
+            if (_openKinect) {
+                _kinectManager.Init(this);
             }
+
+            _useKinect = false;
+
+
+            //// 初始化定制服务
+            //if (managerConfig.IsCustom)
+            //{
+            //    infoPanelAgent.Init(this);
+            //}
 
             _hasInit = true;
 
+            _udpManager.Init();
 
             //StartCoroutine(ExchangeScene(switchTime));
 
@@ -304,20 +297,19 @@ namespace MagicWall
             // 开启场景效果
             _magicSceneManager.Run();
 
+            if (_openKinect) { 
+                _kinectManager.Run();
+            }
+
             _agentManager.Run();
 
-            //  启动监听
-            udpServer.Listening();
-            if (_reset)
-            {
-                Reset();
-            }
+            _collisionManager.Run();
 
             // 自定义屏幕状态更新
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Run();
-            }
+            //if (managerConfig.IsCustom)
+            //{
+            //    infoPanelAgent.Run();
+            //}
 
             _operateMode.Run();
 
@@ -358,6 +350,26 @@ namespace MagicWall
             }
             //Debug.Log("OFFSET IS " + PanelOffset);
         }
+
+        public void updateOffsetOfCanvasDirect()
+        {
+            Vector2 mainPanelPosition = mainPanel.anchoredPosition;
+            Vector2 operationPanelPosition = _operationPanel.anchoredPosition;
+            Vector2 backPanelPosition = backPanel.anchoredPosition;
+
+            PanelOffsetX = operationPanelPosition.x - mainPanelPosition.x;
+            PanelBackOffsetX = (operationPanelPosition - backPanelPosition - mainPanelPosition).x;
+            PanelOffsetY = operationPanelPosition.y - mainPanelPosition.y;
+        }
+
+        public void RecoverFromFade() {
+            if (mainPanel.GetComponent<CanvasGroup>().alpha < 1) {
+                mainPanel.GetComponent<CanvasGroup>().alpha = 1;
+            }
+        }
+
+
+
         #endregion
 
 
@@ -384,9 +396,6 @@ namespace MagicWall
 
                 //  初始化背景库
                 //_backgroundManager.Reset();
-
-                //  初始化 SOCKET 接收器
-                UdpServer.Instance.Reset();
 
                 //Init();
 
@@ -431,71 +440,86 @@ namespace MagicWall
 
         public Vector2 GetScreenRect()
         {
+            //Debug.Log(1);
+
             return new Vector2(Screen.width, Screen.height);
         }
 
-        private void ExchangeTheme() {
+        private void OnSceneEnterLoop() {
             // ExchangeTheme
 
+            // 十村定制屏逻辑 开始
 
-            System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
-            sw2.Start();
+            //System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
+            //sw2.Start();
 
-            //Debug.Log("修改主题");
-            infoPanelAgent.Hide();
+            ////Debug.Log("修改主题");
+            //infoPanelAgent.Hide();
 
-            _hasInit = false;
-            themeCounter++;
+            //_hasInit = false;
+            //themeCounter++;
 
+            //ExchangeThemeInit();
 
-            ExchangeThemeInit();
+            //sw2.Stop();
+            ////Debug.Log(" ExchangeTheme init : " + sw2.ElapsedMilliseconds / 1000f);
 
-            sw2.Stop();
-            //Debug.Log(" ExchangeTheme init : " + sw2.ElapsedMilliseconds / 1000f);
+            //_hasInit = true;
 
-
-            _hasInit = true;
-
-        }
+            // 十村定制屏逻辑 结束
 
 
-        private void ExchangeThemeInit() {
+            // 创博会逻辑
 
-            // 初始化数据服务
-            if (_isMockData)
-            {
-                if (switchMode)
-                {
-                    if (themeCounter % 2 == 0)
-                    {
-                        _daoService = _mockFeiyueDaoService;
-                    }
-                    else
-                    {
-                        _daoService = _mockZhichengDaoService;
-                    }
-                }
-            }
+            Debug.Log("Scene 进入循环底");
 
-            // 初始化 Global Data
-            _globalData.Init(this);
+            //_unitySceneManager.DoChange();
 
-            ResetMainPanel(); //主面板归位
+            Debug.Log("Scene 进入循环底 End");
 
-            PanelOffsetX = 0f;   // 清理两个panel偏移量
-            PanelBackOffsetX = 0f;
-            PanelOffsetY = 0f;   // 清理两个panel偏移量
+            //SceneManager.LoadScene("CBHMain");
 
-            // 初始化场景管理器
-            _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
-
-            // 初始化定制服务
-            if (managerConfig.IsCustom)
-            {
-                infoPanelAgent.Init(this);
-            }
 
         }
+
+
+        //private void ExchangeThemeInit() {
+
+        //    // 初始化数据服务
+        //    if (_isMockData)
+        //    {
+        //        if (switchMode)
+        //        {
+        //            if (themeCounter % 2 == 0)
+        //            {
+        //                _daoService = _mockFeiyueDaoService;
+        //            }
+        //            else
+        //            {
+        //                _daoService = _mockZhichengDaoService;
+        //            }
+        //        }
+        //    }
+
+        //    // 初始化 Global Data
+        //    _globalData.Init(this);
+
+        //    ResetMainPanel(); //主面板归位
+
+        //    PanelOffsetX = 0f;   // 清理两个panel偏移量
+        //    PanelBackOffsetX = 0f;
+        //    PanelOffsetY = 0f;   // 清理两个panel偏移量
+
+        //    // 初始化场景管理器
+        //    _magicSceneManager.Init(this, ExchangeTheme, OnStartSceneCompleted);
+
+        //    // 初始化定制服务
+        //    if (managerConfig.IsCustom)
+        //    {
+        //        infoPanelAgent.Init(this);
+        //    }
+
+        //}
 
 
 
@@ -510,6 +534,21 @@ namespace MagicWall
             }
         }
 
+
+        /// <summary>
+        ///     识别屏幕类型
+        /// </summary>
+        private void RecognizeScreenType() {
+            var height = Screen.height;
+
+            if (height < 1300)
+            {
+                _screenType = ScreenTypeEnum.Screen720P;
+            }
+            else {
+                _screenType = ScreenTypeEnum.Screen1080P;
+            }
+        }
 
 
 

@@ -65,6 +65,10 @@ namespace MagicWall
             //IList<CrossCardCellData> datas = cellData.magicWallManager.cardItemFactoryInstance
             //    .Generate(cellData.EnvId, cellData.Category, cellData.crossCardAgent);
 
+            //Debug.Log("add : " + gameObject.name);
+
+
+
             var datas = cellData.Datas;
 
             System.Diagnostics.Stopwatch sw3 = new System.Diagnostics.Stopwatch();
@@ -114,7 +118,12 @@ namespace MagicWall
 
         public override void UpdateComponentStatus()
         {
+
+
             GetComponent<RectTransform>().SetAsLastSibling();
+
+            //Debug.Log("Set As Last sibling : " + _cellData.Title);
+
             subScrollController.UpdateAllComponents();
         }
 
@@ -152,5 +161,9 @@ namespace MagicWall
             return str;
         }
 
+        public override void GetInfo()
+        {
+            Debug.Log("Index = " + cellData.Index + " Catelog : " + cellData.Category);
+        }
     }
 }

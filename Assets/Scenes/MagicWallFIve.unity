@@ -120,6 +120,57 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &48193044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2378388996740542244, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &48193046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48193044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b531f336dfee5f438f94ed501caefc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorHeight: 0
+  sensorAngle: 0
+  autoHeightAngle: 3
+  computeUserMap: 1
+  computeColorMap: 0
+  computeInfraredMap: 0
+  displayUserMap: 0
+  displayColorMap: 0
+  displaySkeletonLines: 0
+  DisplayMapsWidthPercent: 20
+  useMultiSourceReader: 0
+  minUserDistance: 0.1
+  maxUserDistance: 0
+  maxLeftRightDistance: 0
+  maxTrackedUsers: 2
+  showTrackedUsersOnly: 1
+  detectClosestUser: 1
+  ignoreInferredJoints: 0
+  ignoreZCoordinates: 0
+  lateUpdateAvatars: 0
+  smoothing: 1
+  useBoneOrientationConstraints: 0
+  allowTurnArounds: 0
+  allowedHandRotations: 1
+  waitTimeBeforeRemove: 1
+  avatarControllers: []
+  playerCalibrationPose: 0
+  playerCommonGestures: 
+  minTimeBetweenGestures: 0.7
+  gestureManager: {fileID: 0}
+  gestureListeners: []
+  calibrationText: {fileID: 0}
+  gesturesDebugText: {fileID: 0}
 --- !u!114 &348388764 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 703880140642150519, guid: 66ac6cc2e905c71459c52598e7bb1430,
@@ -264,6 +315,11 @@ PrefabInstance:
       propertyPath: _collisionMoveBehaviourFactory
       value: 
       objectReference: {fileID: 518048002}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _useKinect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3095498652740323690, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: m_IsActive
@@ -296,10 +352,36 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
         type: 2}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _agentContainer
+      value: 
+      objectReference: {fileID: 553118715}
+    - target: {fileID: 6081443006983301737, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: isMock
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _agentChooseBehavior
+      value: 
+      objectReference: {fileID: 1629764202}
+    - target: {fileID: 3070520228617436176, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
     - {fileID: 3095498651678668677, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
+--- !u!224 &553118715 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3095498653154776513, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &553118717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 312633187204164506, guid: 66ac6cc2e905c71459c52598e7bb1430,
@@ -346,5 +428,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 132d4d55d70adda43adb4ad2000d5c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1629764202 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5092590189623194666, guid: 66ac6cc2e905c71459c52598e7bb1430,
+    type: 3}
+  m_PrefabInstance: {fileID: 553118714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a2676d63e6dc342bc439962a231d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

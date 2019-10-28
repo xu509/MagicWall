@@ -120,12 +120,14 @@ namespace MagicWall {
         /// <param name="dataId">数据ID</param>
         /// <param name="dataType">数据类型</param>
         public CardAgent CreateNewOperateCard(int dataId, DataTypeEnum dataType,Vector3 position,FlockAgent refAgent)
-        {            
+        {
+            
             CloseCardWhenOverNumber();
 
 
             CardAgent cardAgent = OperateCardFactoryInstance.
                 Generate(_manager, position, _container,dataId, dataType, refAgent);
+            refAgent.cardAgent = cardAgent;
 
             Vector3 scaleVector3 = new Vector3(0.1f, 0.1f, 0.1f);
             cardAgent.GetComponent<RectTransform>().localScale = scaleVector3;
@@ -133,7 +135,9 @@ namespace MagicWall {
 
             EffectAgents.Add(cardAgent);
 
-            cardAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType));
+            int iskinect = _manager.magicSceneManager.GetCurrentScene().GetSceneConfig().isKinect;
+
+            cardAgent.SetMoveBehavior(_manager.collisionMoveBehaviourFactory.GetMoveBehavior(_manager.collisionBehaviorConfig.behaviourType, iskinect));
             _manager.collisionManager.AddCollisionEffectAgent(cardAgent);
             
             return cardAgent;

@@ -32,6 +32,11 @@ namespace MagicWall
         Action _onRunCompleted;
         Action _onRunEndCompleted;
 
+        Action _onSceneCompleted;
+
+        SceneConfig _sceneConfig;
+
+
 
         enum StarSceneStatusEnum
         {
@@ -60,14 +65,17 @@ namespace MagicWall
             return _dataType;
         }
 
-        public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+        public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
-            _daoService = manager.daoService;
+            //_daoService = manager.daoService;
             _durtime = sceneConfig.durtime;
             _dataType = sceneConfig.dataType;
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
+
+            _onSceneCompleted = onSceneCompleted;
+            _sceneConfig = sceneConfig;
 
             Reset();
         }
@@ -218,7 +226,7 @@ namespace MagicWall
             //FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
             // width, height, data, AgentContainerType.StarContainer);
             FlockAgent go = FlockAgentFactoryInstance.Generate(_manager,position, AgentContainerType.StarContainer,
-                position.x,position.y,0,0,width,height,data);
+                position.x,position.y,0,0,width,height,data,DaoTypeEnum.CBHAiqigu);
 
             go.UpdateImageAlpha(0);
 
@@ -326,8 +334,7 @@ namespace MagicWall
             if (!_isEnding)
             {
                 _isEnding = true;
-                _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
-                //DoEnd();
+                //_magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
 
                 _manager.starEffectContent.GetComponent<CanvasGroup>()
                     .DOFade(0, 2f)
@@ -347,22 +354,14 @@ namespace MagicWall
         public void OnRunEndCompleted()
         {
             _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-            _magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
+            //_magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
 
             Reset();
             _onRunEndCompleted.Invoke();
 
         }
 
-        public void SetOnRunEndCompleted(Action onRunEndCompleted)
-        {
-            _onRunEndCompleted = onRunEndCompleted;
-        }
 
-        public void SetOnRunCompleted(Action onRunCompleted)
-        {
-            _onRunCompleted = onRunCompleted;
-        }
 
         public MagicSceneEnum GetSceneStatus()
         {
@@ -374,6 +373,16 @@ namespace MagicWall
         DataTypeEnum IScene.GetDataType()
         {
             throw new NotImplementedException();
+        }
+
+        public void RunEnd(Action onEndCompleted)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
         }
     }
 }

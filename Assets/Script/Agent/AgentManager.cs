@@ -43,6 +43,9 @@ namespace MagicWall
         ///// </summary>
         //[SerializeField] RectTransform _cardContainer;
 
+        [SerializeField] AgentChooseBehavior _agentChooseBehavior;
+        public AgentChooseBehavior agentChooseBehavior { set { _agentChooseBehavior = value; } get { return _agentChooseBehavior; } }
+
 
 
         // 主管理器
@@ -98,6 +101,8 @@ namespace MagicWall
             _agents = new List<FlockAgent>();
             _manager = manager;
 
+            _agentChooseBehavior.Init(_manager);
+
             PrepareAgentPool();
         }
 
@@ -138,8 +143,15 @@ namespace MagicWall
         public void ClearAll()
         {
             for (int i = 0; i < _agents.Count; i++) {
+                var flockStatus = _agents[i].flockStatus;
 
-                _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                if (flockStatus != FlockStatusEnum.TOHIDE && flockStatus != FlockStatusEnum.HIDE) {
+                    _agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
+                }
+
+
+
+                //_agents[i].flockStatus = FlockStatusEnum.OBSOLETE;
 
 
                 //if (!(_agents[i].flockStatus == FlockStatusEnum.HIDE
@@ -203,6 +215,7 @@ namespace MagicWall
                     }
 
                     for (int i = 0; i < recycleAgents.Count; i++) {
+                        //Debug.Log(recycleAgents[i].gameObject + " - Delete");
                         RecycleAgent(recycleAgents[i]);
                     }
 
@@ -233,18 +246,14 @@ namespace MagicWall
 
             if (agent.agentContainerType == AgentContainerType.MainPanel)
             {
-                //Debug.Log("ReleaseObj : " + agent.name);
                 agent.Reset();
                 Destroy(agent.gameObject);
-                //_flockAgentPool.ReleaseObj(agent);
             }
             else if (agent.agentContainerType == AgentContainerType.BackPanel)
             {
                 agent.Reset();
 
                 Destroy(agent.gameObject);
-
-                //_flockAgentInBackPool.ReleaseObj(agent);
             }
             else
             {
@@ -260,18 +269,38 @@ namespace MagicWall
 
         public FlockAgent GetFlockAgent(AgentContainerType type)
         {
+            Transform parentContainer;
             if (type == AgentContainerType.MainPanel)
             {
-                return _flockAgentPool.GetObj();
+                parentContainer = _flockContainer;
             }
             else if (type == AgentContainerType.BackPanel)
             {
-                return _flockAgentInBackPool.GetObj();
+                parentContainer = _backContainer;
             }
             else
             {
-                return _flockAgentInStarPool.GetObj();
+                parentContainer = _starContainer;
             }
+
+
+            FlockAgent agent = Instantiate(_flockAgentPrefab, parentContainer);
+            return agent;
+
+
+
+            //if (type == AgentContainerType.MainPanel)
+            //{
+            //    return _flockAgentPool.GetObj();
+            //}
+            //else if (type == AgentContainerType.BackPanel)
+            //{
+            //    return _flockAgentInBackPool.GetObj();
+            //}
+            //else
+            //{
+            //    return _flockAgentInStarPool.GetObj();
+            //}
         }
 
 

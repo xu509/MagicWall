@@ -19,5 +19,5 @@ MonoBehaviour:
   CommonOffsetInfluenceFactor: 0
   RoundEaseEnum: 0
   RoundScaleEaseEnum: 0
-  RoundOffsetInfluenceFactor: 1
+  RoundOffsetInfluenceFactor: 1.113
   EffectTiredTime: 0.5

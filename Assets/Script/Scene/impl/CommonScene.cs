@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 // 普通场景
 namespace MagicWall
@@ -14,29 +15,36 @@ namespace MagicWall
         //
         private MagicWallManager _manager;
 
-        // Dao Service
-        DaoService _daoService;
-
         Action _onRunCompleted;
         Action _onRunEndCompleted;
+        Action _onSceneCompleted;
 
-        //  是否正在运行 Destory
-        private bool doDestoryCompleting = false;
+        // run
+        private bool _runEntrance = false;        
+        private bool _runDisplay = false;
+        public bool runDisplay { get { return _runDisplay; } set { _runDisplay = value; } }
+        private bool _runDestory = false;
+
+        // 时间点
+        private float _displayStartTime;
+
+        // flag
+        private bool _hasCallDestory = false;
+        private bool _hasInitData = false;
 
         //  使用的过场效果
-        private CutEffect _theCutEffect;
+        private ICutEffect _cutEffect;
+
+        // 运行效果
+        private CutEffectDisplayBehavior _displayBehavior;
+
+        // 关闭效果
+        private CutEffectDestoryBehavior _destoryBehavior;
 
         //  使用的类型
         private DataTypeEnum _dataType;
 
-        //  场景开始的时间
-        private float _startTime;
-
-        //  场景显示的时间点
-        private float _displayTime;
-
-        //  场景开始销毁的时间点
-        private float _destoryTime;
+        private SceneConfig _sceneConfig;
 
         //  场景状态
         SceneStatus status = SceneStatus.PREPARING; //场景状态
@@ -44,163 +52,95 @@ namespace MagicWall
 
         MagicSceneEnum _magicSceneEnumStatus;
 
-        //
-        //  Private Methods
-        //
-
-        //	过场动画
-        private void DoStarting()
-        {
-            _theCutEffect.Starting();
-
-        }
-
-        //  展示动画
-        private void DoDisplaying()
-        {
-            _theCutEffect.Displaying();
-
-
-        }
-
-        //  销毁动画
-        private void DoDestorying()
-        {
-            _theCutEffect.Destorying();
-        }
-
-        //销毁动画已完成
-        private bool DoDestoryCompleted()
-        {
-            if (!doDestoryCompleting)
-            {
-                _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
-                _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
-                doDestoryCompleting = true;
-
-                // 清理面板
-                return _manager.Clear();
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
-        //
-        //  初始化
-        // -- 初始化 Display时间
-        // -- 初始化当前的过场效果
-        //
-        private void DoCreating()
-        {
-            _theCutEffect.Create(_dataType);
-
-            doDestoryCompleting = false;
-        }
-
-
-        //
-        //	Export Methods
-        //
-
-
-        public void Init(SceneConfig sceneConfig, MagicWallManager manager)
+        public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
+            _onSceneCompleted = onSceneCompleted;
 
-            _theCutEffect = GetCutEffect(sceneConfig); // 设置过场效果
-            _theCutEffect.Init(_manager);
+            _cutEffect = CutEffectFactory.GetCutEffect(sceneConfig.sceneType); // 设置过场效果
+            _cutEffect.Init(_manager, sceneConfig
+                , OnCutEffectCreateAgentCompleted,
+                ()=> {
+                    // on effect completed
+                    Debug.Log("on effect completed");
+
+                    _runEntrance = false;
+                },()=>
+                {
+                    // on display Start
+                    Debug.Log("on display start");
+
+                    _runDisplay = true;
+                    _displayStartTime = Time.time;
+                }
+                );
             _dataType = sceneConfig.dataType; // 设置类型
+
+            //  显示
+            _displayBehavior = DisplayBehaviorFactory.GetBehavior(sceneConfig.displayBehavior);
+
+            // 销毁
+            _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
+            _destoryBehavior.Init(_manager,this, OnDestoryCompleted);
+
+            _sceneConfig = sceneConfig;
+
             _magicSceneEnumStatus = MagicSceneEnum.Running;
+
+            _runEntrance = true;
         }
+
+        private void InitData() {
+             _runEntrance = true;
+             _runDisplay = false;
+             _runDestory = false;
+             _displayStartTime = 0;
+             _hasCallDestory = false;
+             _hasInitData = true;
+
+            if (_sceneConfig.isKinect == 0)
+            {
+                _manager.useKinect = false;
+            }
+            else {
+                _manager.useKinect = true;
+            }
+
+
+            // 初始化入场效果参数
+            _cutEffect.InitData();
+
+        }
+
+
 
 
         //  运行
         public bool Run()
         {
-            MagicWallManager magicWallManager = _manager;
-
-            // 准备状态
-            if (Status == SceneStatus.PREPARING)
-            {
-                // 进入过场状态
-                //Debug.Log("Scene is Cutting");
-                _startTime = Time.time; //标记开始的时间
-
-                _manager.SceneStatus = WallStatusEnum.Cutting;   //标记项目进入过场状态
-
-                DoCreating();  //初始化场景
-
-                // 将状态标志设置为开始
-                Status = SceneStatus.STARTTING;
+            if (!_hasInitData) {
+                InitData();
             }
 
-            // 过场动画
-            if (Status == SceneStatus.STARTTING)
-            {
-                if ((Time.time - _startTime) > _theCutEffect.StartingDurTime)
-                {
-                    // 完成开场动画，场景进入展示状态
+            if (_runEntrance) {
+                _cutEffect.Run();
+            }
 
-                    // 调用效果完成回调
-                    _theCutEffect.OnStartingCompleted();
+            if (_runDisplay) {
+                _displayBehavior.Run();
+            }
 
-                    _displayTime = Time.time;
-                    Status = SceneStatus.DISPLAYING;
-                    magicWallManager.SceneStatus = WallStatusEnum.Displaying;
-                }
-                else
-                {
-                    DoStarting();
+            if (_runDestory) {
+                _destoryBehavior.Run();
+            }
+
+            if (_runDisplay && ((Time.time - _displayStartTime) > _sceneConfig.durtime)) {
+                if (!_hasCallDestory) {
+                    _hasCallDestory = true;
+                    _runDestory = true;
                 }
             }
 
-            // 正常展示
-            if (Status == SceneStatus.DISPLAYING)
-            {
-                // 过场状态具有运行状态 或 已达到运行的时间
-                if (!_theCutEffect.HasDisplaying || (Time.time - _displayTime) > _theCutEffect.DisplayDurTime)
-                {
-                    // 完成展示阶段，进行销毁
-                    OnRunCompleted();
-
-
-                    //            DoDestorying();
-                    //Status = SceneStatus.DESTORING;
-                    //            _destoryTime = Time.time;
-                }
-                else
-                {
-                    DoDisplaying();
-                }
-            }
-
-            // 销毁中
-            //if (Status == SceneStatus.DESTORING)
-            //{
-            //          // 达到销毁的时间
-            //          if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
-            //	{
-            //              OnRunEndCompleted();
-
-            //  //            if (DoDestoryCompleted())
-            //		//{
-            //  //                Status = SceneStatus.PREPARING;
-            //		//	return false;
-            //		//}
-            //		//else
-            //		//{
-
-            //  //                DoDestorying();
-            //		//}
-            //	}
-            //	else
-            //	{
-            //              RunEnd();
-            //           }
-            //}
             return true;
         }
 
@@ -209,112 +149,40 @@ namespace MagicWall
             return _dataType;
         }
 
-
-
-        /// <summary>
-        ///     获取过场
-        /// </summary>
-        /// <param name="sceneTypeEnum"></param>
-        /// <returns></returns>
-        private CutEffect GetCutEffect(SceneConfig sceneConfig)
-        {
-            CutEffect cutEffect = null;
-
-            var sceneTypeEnum = sceneConfig.sceneType;
-
-            if (sceneTypeEnum == SceneTypeEnum.CurveStagger)
-            {
-                cutEffect = new CurveStaggerCutEffect();
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.FrontBackUnfold)
-            {
-                cutEffect = new FrontBackUnfoldCutEffect();
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.LeftRightAdjust)
-            {
-                cutEffect = new LeftRightAdjustCutEffect();
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.MidDisperse)
-            {
-                cutEffect = new MidDisperseCutEffect();
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.UpDownAdjustCutEffect)
-            {
-                cutEffect = new UpDownAdjustCutEffect();
-            }
-
-            if (cutEffect == null)
-            {
-                return null;
-            }
-            else
-            {
-                cutEffect.DisplayDurTime = sceneConfig.durtime;
-
-                return cutEffect;
-            }
-
-
-        }
-
-        #region Implement
-
-        public void OnRunCompleted()
-        {
-            _destoryTime = Time.time;
-            _onRunCompleted.Invoke();
-            Status = SceneStatus.PREPARING;
-
-            _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
-
-        }
-
-        public void SetOnRunCompleted(Action onRunCompleted)
-        {
-            _onRunCompleted = onRunCompleted;
-        }
-
-        public void RunEnd()
-        {
-            if ((Time.time - _destoryTime) > _theCutEffect.DestoryDurTime)
-            {
-                OnRunEndCompleted();
-            }
-            else
-            {
-                _magicSceneEnumStatus = MagicSceneEnum.RunningEnd;
-                _theCutEffect.Destorying();
-            }
-        }
-
-        public void OnRunEndCompleted()
-        {
-            if (!doDestoryCompleting)
-            {
-                doDestoryCompleting = true;
-                _manager.mainPanel.GetComponent<CanvasGroup>().alpha = 1;
-                _manager.mainPanel.GetComponentInChildren<CanvasGroup>().alpha = 1;
-                _manager.Clear();
-
-                _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
-                _onRunEndCompleted.Invoke();
-            }
-            else
-            {
-
-            }
-        }
-
-        public void SetOnRunEndCompleted(Action onRunEndCompleted)
-        {
-            _onRunEndCompleted = onRunEndCompleted;
-        }
-
         public MagicSceneEnum GetSceneStatus()
         {
             return _magicSceneEnumStatus;
         }
 
-        #endregion
+        private void OnCutEffectCreateAgentCompleted(DisplayBehaviorConfig displayBehaviorConfig) {
+            _displayBehavior.Init(displayBehaviorConfig);
+        }
+
+        private void OnDestoryCompleted() {
+            _hasInitData = false;
+            _onSceneCompleted.Invoke();
+
+        }
+
+        public void RunEnd(Action onEndCompleted)
+        {
+            // 渐暗，清理
+            _manager.BgLogo.GetComponent<Image>().sprite = _manager.magicSceneManager.logo;
+
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _hasInitData = false;
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+            });
+
+
+
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
+        }
     }
 }

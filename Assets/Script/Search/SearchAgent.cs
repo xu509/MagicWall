@@ -171,7 +171,7 @@ namespace MagicWall
         // 联想词点击事件
         private void OnClickAssociateWord(string str)
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -285,7 +285,7 @@ namespace MagicWall
         // 退格功能
         public void DoBackspace()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -308,7 +308,7 @@ namespace MagicWall
         // 搜索功能
         public void DoSearch()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -316,7 +316,10 @@ namespace MagicWall
                 CloseSearchAgentContainer(false);
 
                 //  获取查询词，进行搜索，得到 SearchBean 列表
-                List<SearchBean> searchBeans = _manager.daoService.Search(_searchWord);
+                var daoType = _cardAgent.daoTypeEnum;
+
+                //List<SearchBean> searchBeans = _manager.daoServiceFactory.GetDaoService(daoType).Search(_searchWord);
+                List<SearchBean> searchBeans = _manager.daoServiceFactory.Search(_searchWord);
 
                 //  生成搜索结果控件，并进行初始化
                 if (_searchResultAgent == null)
@@ -347,7 +350,7 @@ namespace MagicWall
         // 点击回退
         public void DoReturn()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }
@@ -402,7 +405,9 @@ namespace MagicWall
             CardAgent cardAgent = _manager.operateCardManager.CreateNewOperateCard(searchBean.id,searchBean.type,genVector3,_cardAgent.OriginAgent);
 
            //itemsFactory.GenerateCardAgent(genVector3, null, searchBean.id, true);
-            cardAgent.GoToFront();
+            cardAgent.GoToFront(()=> {
+
+            });
 
         }
 
@@ -440,7 +445,7 @@ namespace MagicWall
         #region 提示内容
         public void DoQuestion()
         {
-            if (_cardAgent.CardStatus == CardStatusEnum.TODESTORY)
+            if (_cardAgent.CardStatus == CardStatusEnum.DESTORYINGFIRST)
             {
                 _onUpdate.Invoke();
             }

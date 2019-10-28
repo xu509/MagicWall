@@ -529,10 +529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f655f4ccc29b0443ad484e916f6a5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destoryForSpaceTime: 7
   _protectAgent: {fileID: 8148295047528552619}
   _cardStatus: 0
-  _heightFactor: 0.45
+  _heightFactor: 0.51
   _main_container: {fileID: 1251770709110857215}
   _tool_bottom_container: {fileID: 6633697251130467134}
   _tool_bottom_three_container: {fileID: 4073888055729226985}

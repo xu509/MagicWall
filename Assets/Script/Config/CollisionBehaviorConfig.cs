@@ -14,7 +14,7 @@ namespace MagicWall
 
         [SerializeField] public CollisionMoveBehaviourType behaviourType;
 
-        [Range(0f, 10f), Header(" 影响移动距离系数")]
+        [Range(0f, 10f), Header("操作卡片影响距离")]
         public float InfluenceMoveFactor = 0.5f;
 
         [Header("[Common] 动画效果")]
@@ -35,8 +35,18 @@ namespace MagicWall
         [Range(0f, 2f), Header("位移影响参数")]
         public float RoundOffsetInfluenceFactor;
 
-        [Range(0f, 10f), Header("影响疲劳时间")]
-        public float EffectTiredTime;
+        [Header("[KinectRound] 动画效果")]
+        public EaseEnum KinectRoundEaseEnum;
+
+        [SerializeField, Range(0f, 5f), Header("KR 影响距离")] public float kinectCardInfluenceMoveFactor;
+
+        [Header("缩放动画效果")]
+        public EaseEnum KinectRoundScaleEaseEnum;
+
+        [Range(0f, 2f), Header("位移影响参数")]
+        public float KinectRoundOffsetInfluenceFactor;
+
+
 
 
 

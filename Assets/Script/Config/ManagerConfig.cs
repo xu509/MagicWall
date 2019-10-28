@@ -22,7 +22,7 @@ namespace MagicWall
         /// <summary>
         /// 8屏时，固定为28列; 5 屏 18
         /// </summary>
-        [Range(5, 30), Header("固定的列数")]
+        [Range(5, 60), Header("固定的列数")]
         public int Column;
 
         [Range(10, 500), Header("浮动块对象池大小")]

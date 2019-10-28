@@ -12,9 +12,10 @@ namespace MagicWall
     public class CardAgent : MonoBehaviour, CollisionEffectAgent, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, MoveSubject
     {
         //[SerializeField,Range(0f,30f)] float _destoryForSpaceTime = 7f;
-        [SerializeField,Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
+        [SerializeField, Header("Protect")] ProtectAgent _protectAgent;  //   保护层代理，当开始关闭时，出现保护层
 
-
+        protected FlockTweenerManager _tweenerManager;
+        public FlockTweenerManager flockTweenerManager { get { return _tweenerManager; } }
 
 
         protected MagicWallManager _manager;
@@ -35,6 +36,11 @@ namespace MagicWall
         }
 
         protected DataTypeEnum dataType;
+
+
+        private DaoTypeEnum _daoTypeEnum;
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; } get { return _daoTypeEnum; } }
+
 
         private List<ExtraCardData> _extraCardDatas;
         private int _sceneIndex;
@@ -94,6 +100,11 @@ namespace MagicWall
 
         private List<MoveBtnObserver> _moveBtnObservers;    // 移动按钮的观察者
 
+        private bool _disableEffect = false;
+        public bool disableEffect{ get { return _disableEffect; } }
+        private bool _hasReplace = false;
+        public bool hasReplace { get { return _hasReplace; } }
+
 
         public CardStatusEnum _cardStatus;   // 状态   
         protected FlockAgent _originAgent;  // 原组件
@@ -102,15 +113,11 @@ namespace MagicWall
         protected bool hasInitBusinessCard = false; // 是否已生成business card
         protected BusinessCardAgent businessCardAgent;
 
-
-
-
         [SerializeField, Range(0f, 1f)] float _heightFactor; //      高度比例，如当屏幕高度100，卡片高度50时，则高度比为 0.5
         [SerializeField, Header("UI")] RectTransform _main_container;    //  主框体
         [SerializeField] RectTransform _tool_bottom_container; //   按钮工具栏（4项）
         [SerializeField] RectTransform _tool_bottom_three_container; //   按钮工具栏（3项）
         [SerializeField] RectTransform normalContainer; // 正常显示的框体
-
 
         [SerializeField, Header("Scale")] RectTransform _scale_container;    //  缩放容器
         [SerializeField] ScaleAgent _scale_prefab;    //  缩放 prefab
@@ -135,12 +142,8 @@ namespace MagicWall
         [SerializeField, Header("Physics"), Range(0, 500)] int _physicesEffectFactor;
 
 
-        //public FlockStatusEnum fs = _originAgent.flockStatus;
-
-
-
-
         Action OnCreatedCompletedAction;
+        Action OnGoToFrontFinsihed;
 
         /// <summary>
         /// 卡片恢复状态
@@ -193,18 +196,23 @@ namespace MagicWall
             Vector3 genPosition, FlockAgent originAgent)
         {
             //InitBase(manager, dataId, dataType, true);
+            _tweenerManager = new FlockTweenerManager();
+
             _manager = manager;
             _dataId = dataId;
-            
+
 
             // 初始化框体长宽
-            float rectHeight = manager.mainPanel.rect.height * _heightFactor;
-            GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+            UpdateUI();
+
 
             //  命名
             if (originAgent != null)
             {
                 name = dataType.ToString() + "(" + originAgent.name + ")";
+
+
+                _daoTypeEnum = originAgent.daoTypeEnum;
 
                 //  添加原组件
                 OriginAgent = originAgent;
@@ -284,7 +292,7 @@ namespace MagicWall
             }
 
             // 第二次缩小
-            if (_cardStatus == CardStatusEnum.TODESTORY)
+            if (_cardStatus == CardStatusEnum.DestoryFirstCompleted)
             {
                 if (_destoryFirstStageCompleteTime != 0 && (Time.time - _destoryFirstStageCompleteTime) > _activeSecondStageDuringTime)
                 {
@@ -305,6 +313,7 @@ namespace MagicWall
             if (_cardStatus == CardStatusEnum.NORMAL || _cardStatus == CardStatusEnum.MOVE)
             {
                 _recentActiveTime = Time.time;
+                _destoryFirstStageCompleteTime = 0f;
             }
 
             if (_cardStatus == CardStatusEnum.HIDE) {
@@ -314,6 +323,7 @@ namespace MagicWall
             if (_cardStatus == CardStatusEnum.RECOVER)
             {
                 _recentActiveTime = Time.time;
+                _destoryFirstStageCompleteTime = 0f;
             }
 
 
@@ -331,6 +341,8 @@ namespace MagicWall
         /// </summary>
         private void DoDestoriedForFirstStep()
         {
+            //Debug.Log(gameObject.name + " 进行第一次销毁。");
+
             // 如果当前处于移动中，则将移动关闭
             if (_cardStatus == CardStatusEnum.MOVE)
             {
@@ -341,7 +353,7 @@ namespace MagicWall
 
             //  缩放
             Vector3 scaleVector3 = new Vector3(0.7f, 0.7f, 0.7f);
-            _cardStatus = CardStatusEnum.TODESTORY;
+            _cardStatus = CardStatusEnum.DESTORYINGFIRST;
 
             _destory_first_scale_tweener = GetComponent<RectTransform>().DOScale(scaleVector3, 2f)
                 .OnUpdate(() =>
@@ -351,13 +363,18 @@ namespace MagicWall
                      _hasChangeSize = true;
                  }).OnComplete(() =>
                  {
-                     //IsRecovering = false;
-                     //IsChoosing = true;
-
                      // 设置第一次缩小的点
                      _destoryFirstStageCompleteTime = Time.time;
+
+                     _cardStatus = CardStatusEnum.DestoryFirstCompleted;
+
+                     //Debug.Log(_originAgent.flockStatus);
+
                  }).OnKill(() => {});
 
+
+            _tweenerManager.Add("d", _destory_first_scale_tweener);           
+            //Debug.Log(gameObject.name + " 第一次销毁结束，增加了tweener。");
         }
 
         //
@@ -365,7 +382,10 @@ namespace MagicWall
         //
         private void DoDestoriedForSecondStep()
         {
-            _cardStatus = CardStatusEnum.DESTORY;
+
+            _cardStatus = CardStatusEnum.DESTORYINGSECOND;
+
+            _protectAgent.SetDisabled();
 
             GetComponent<CircleCollider2D>().radius = 0;
 
@@ -385,33 +405,23 @@ namespace MagicWall
                     RectTransform cardRect = GetComponent<RectTransform>();
 
                     //  移到后方、缩小、透明
-                    Tweener t = cardRect.DOScale(0.2f, 1f);
-                    //_originAgent.flockTweenerManager.Add(FlockTweenerManager.CardAgent_Destory_Second_DOScale_IsOrigin, t);
-
+                    Tweener t = cardRect.DOScale(0.1f, 1f);
+                   
                     //  获取位置
                     Vector3 to = new Vector3(_originAgent.OriVector2.x - _manager.PanelOffsetX
                         , _originAgent.OriVector2.y - _manager.PanelOffsetY, 200);
 
+                    cardRect.DOAnchorPos3D(to, 1f)
+                       .OnComplete(() =>
+                       {
+                           if ((_sceneIndex == _manager.SceneIndex) && (_originAgent != null)) { 
+                               // 恢复
+                               _originAgent.DoRecoverAfterChoose(cardRect.position);
 
-                    if (_originAgent.SceneIndex == _manager.SceneIndex)
-                    {
-                        cardRect.DOAnchorPos3D(to, 1f)
-                             .OnComplete(() =>
-                             {
-                             // 恢复
-                             _originAgent.DoRecoverAfterChoose();
-                                 _cardStatus = CardStatusEnum.OBSOLETE;
-                             });
-                    }
-                    else
-                    {
-                        _cardStatus = CardStatusEnum.OBSOLETE;
+                            }                            
+                           _cardStatus = CardStatusEnum.OBSOLETE;
+                       });
 
-                        if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
-                        {
-                            _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
-                        }
-                    }
                 }
                 //  直接消失
                 else
@@ -419,8 +429,6 @@ namespace MagicWall
                     Close();
                 }
             }
-
-
         }
 
 
@@ -439,14 +447,12 @@ namespace MagicWall
                 {
                     _cardStatus = CardStatusEnum.OBSOLETE;
 
-
                     if (!(_originAgent.flockStatus == FlockStatusEnum.PREPARED))
                     {
                         _originAgent.flockStatus = FlockStatusEnum.OBSOLETE;
                     }
 
                     Debug.Log("直接删除");
-
                 });
 
         }
@@ -456,11 +462,14 @@ namespace MagicWall
         //  恢复
         //
         private void DoRecover()
-        {
+        {            
             _protectAgent.DoClose();
             _cardStatus = CardStatusEnum.RECOVER;
 
+            DoUpdate();
+
             // 停止销毁动画
+            Debug.Log("kill 第一次销毁动画");
             _destory_first_scale_tweener.Kill();
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
@@ -498,7 +507,7 @@ namespace MagicWall
             // 点击关闭
             if (CardStatus == CardStatusEnum.NORMAL)
             {
-                DoDestoriedForFirstStep();
+                DoDestoriedForSecondStep();
             }                
         }
 
@@ -508,10 +517,13 @@ namespace MagicWall
         public void DoCloseDirect()
         {
             // 直接关闭的逻辑
-            if (_cardStatus == CardStatusEnum.NORMAL) {
-                DoDestoriedForSecondStep();
-            }
-            
+            //if (_cardStatus == CardStatusEnum.NORMAL) {
+            //    DoDestoriedForSecondStep();
+            //}
+            _tweenerManager.Reset();
+
+            DoDestoriedForSecondStep();
+
         }
 
 
@@ -803,18 +815,19 @@ namespace MagicWall
         /// <summary>
         /// 卡片走向前台
         /// </summary>
-        public void GoToFront()
+        public void GoToFront(Action onFinsihed)
         {
             RectTransform rectTransfrom = GetComponent<RectTransform>();
 
             gameObject.SetActive(true);
 
             Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
-            GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+            var cardGoToFrontMoveAni = GetComponent<RectTransform>().DOAnchorPos3D(to2, 0.3f);
+            _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Move, cardGoToFrontMoveAni);
 
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
-            GetComponent<RectTransform>()
+            var cardGoToFrontScaleAni = GetComponent<RectTransform>()
                 .DOScale(scaleVector3, 0.5f)
                 .OnUpdate(() =>
                 {
@@ -832,7 +845,21 @@ namespace MagicWall
 
                     CardStatus = CardStatusEnum.NORMAL;
 
+                    onFinsihed.Invoke();
+
                 }).SetEase(Ease.OutBack);
+            _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Scale, cardGoToFrontScaleAni);
+        }
+
+        public void CancelGoToFront(Action onFinsihed)
+        {
+            var cardGoToFrontMoveAni = _tweenerManager.Get(FlockTweenerManager.Card_GoToFront_Move);
+            var cardGoToFrontScaleAni = _tweenerManager.Get(FlockTweenerManager.Card_GoToFront_Scale);
+
+            cardGoToFrontMoveAni.Kill();
+            cardGoToFrontScaleAni.Kill();
+            _cardStatus = CardStatusEnum.NORMAL;
+
         }
 
         /// <summary>
@@ -1330,6 +1357,29 @@ namespace MagicWall
         }
 
 
+        /* UI 设置 */
+        private void UpdateUI() {
+
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
+                //800 
+                float rectHeight = 1000f;
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+            }
+            else {
+                Debug.Log("Screen720P");
+                float rectHeight = _manager.mainPanel.rect.height * _heightFactor;
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+            }
+            //// 初始化框体长宽
+            //float rectHeight = manager.mainPanel.rect.height * _heightFactor;
+            //GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
+        }
+
+
+
+
+
         /* CollisionEffectAgent impl 实现 */
 
         public Vector3 GetRefPosition()
@@ -1354,7 +1404,7 @@ namespace MagicWall
             }
 
             if (_cardStatus == CardStatusEnum.HIDE
-                || _cardStatus == CardStatusEnum.OBSOLETE)
+                || _cardStatus == CardStatusEnum.OBSOLETE || _disableEffect)
             {
                 return false;
             }
@@ -1381,6 +1431,9 @@ namespace MagicWall
         {
 
             Vector3 scaleVector3 = GetComponent<RectTransform>().localScale;
+
+            //Debug.Log("card Agent width : " + width + " / scale : " + scaleVector3);
+
             return width * scaleVector3.x;
         }
 
@@ -1401,7 +1454,33 @@ namespace MagicWall
             return _collisionMoveBehavior;
         }
 
+        public string GetName()
+        {
+            return gameObject.name;
+        }
+
+        public float GetEffectDistance()
+        {
+
+            CollisionMoveBehaviourFactory collisionMoveBehaviourFactory = GameObject.Find("Collision").GetComponent<CollisionMoveBehaviourFactory>();
+            var influenceMoveFactor =  collisionMoveBehaviourFactory.GetMoveEffectDistance();
+
+            var effectDistance = GetWidth() * influenceMoveFactor;
+            return effectDistance;
+        }
+
+        public void SetDisableEffect(bool disableEffect)
+        {
+            _disableEffect = disableEffect;            
+        }
+
         /* CollisionEffectAgent 实现 结束*/
+
+
+        public void ChangeHasReplace(bool hasReplace) {
+            _hasReplace = hasReplace;
+        }
+
     }
 
 
