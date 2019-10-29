@@ -9,7 +9,7 @@ namespace MagicWall
 {
     public class FlockAgent : MonoBehaviour, CollisionMoveBasicAgent
     {
-        public string effectAgentName;
+        //public string effectAgentName;
 
         protected MagicWallManager _manager;
 
@@ -19,7 +19,7 @@ namespace MagicWall
 
         public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
-        [SerializeField] protected FlockStatusEnum _flockStatus;
+        protected FlockStatusEnum _flockStatus;
 
         /// <summary>
         ///  卡片状态
@@ -29,7 +29,7 @@ namespace MagicWall
 
         #region Data Parameter 
         private bool _data_iscustom; // 是定制的
-        [SerializeField] private string _data_img;    //背景图片
+        private string _data_img;    //背景图片
         private int _data_id; // id
         private DataTypeEnum _dataType;
         public DataTypeEnum dataTypeEnum { get { return _dataType; } }
@@ -70,7 +70,7 @@ namespace MagicWall
         /// <summary>
         /// 原位置，anchor position
         /// </summary>
-        [SerializeField]  private Vector2 _oriVector2;
+        private Vector2 _oriVector2;
 
         // 生成的位置
         private Vector2 _genVector2;
@@ -78,7 +78,7 @@ namespace MagicWall
 
 
         // 是否被选中
-        [SerializeField] private bool _isChoosing = false;
+        private bool _isChoosing = false;
 
 
         // 是否正在恢复
@@ -129,7 +129,7 @@ namespace MagicWall
         /// 下个移动的位置
         /// https://www.yuque.com/u314548/fc6a5l/yb8hw4#8le6t
         /// </summary>
-        [SerializeField] private Vector2 _nextVector2;        
+        private Vector2 _nextVector2;        
         public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
 
         private bool _moveFlag = false;
@@ -522,7 +522,7 @@ namespace MagicWall
                 // 进入影响范围
                 if (offset >= 0)
                 {
-                    effectAgentName = targetAgent.GetName();
+                    //effectAgentName = targetAgent.GetName();
                     
 
                     TurnOnHasMovedOffsetFlag();
