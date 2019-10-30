@@ -40,11 +40,11 @@ namespace MagicWall
             if (isKinect == 0)
             {
                 _row = 6;
-                _column = 15;
+                _column = _manager.managerConfig.Column;
             }
             else {
                 _row = 12;
-                _column = 30;
+                _column = _manager.managerConfig.KinectColumn;
             }
 
             _screen_width = manager.mainPanel.rect.width;

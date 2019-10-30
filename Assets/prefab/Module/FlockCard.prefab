@@ -51,6 +51,7 @@ MonoBehaviour:
   _backContainer: {fileID: 0}
   _starContainer: {fileID: 0}
   _flockAgentFactoryInstance: {fileID: 5202153227997342529}
+  _agentChooseBehavior: {fileID: 2456242072947183147}
 --- !u!114 &5202153227997342529
 MonoBehaviour:
   m_ObjectHideFlags: 0
