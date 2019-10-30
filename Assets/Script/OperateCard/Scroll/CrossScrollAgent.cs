@@ -44,7 +44,7 @@ namespace MagicWall {
 
             _scrollPanelMiddle.SetData(this, firstData[0]);
 
-            ////_middlePanel.GetComponentInChildren
+            //_middlePanel.GetComponentInChildren
             //var item = _middlePanel.GetComponent<ScrollItemAgent>();
             //if (item == null) {
             //    // 创建prefab
