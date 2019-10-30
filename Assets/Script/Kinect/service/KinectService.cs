@@ -12,9 +12,9 @@ namespace MagicWall
     /// </summary>
     public class KinectService : MonoBehaviour, IKinectService
     {
-        [SerializeField, Header("基准值m"), Tooltip("调整Kinect位置到刚好显示大屏两端")]
+        [SerializeField, Header("基准值m，无用"), Tooltip("调整Kinect位置到刚好显示大屏两端")]
         private float basicDistance = 3f;
-        [SerializeField, Header("Kinect距人最近距离m")]
+        [SerializeField, Header("Kinect识别最大距离m")]
         private float safeZ = 1f;
         RectTransform _parentRectTransform;
         GameObject _kinectAgentPrefab;

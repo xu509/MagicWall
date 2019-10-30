@@ -13,6 +13,10 @@ namespace MagicWall {
         CBHFengxian,  // 创博会奉献
         CBHTubu, // 创博会土布
         CBHAiqigu, // 创博会爱企谷
+        HongKouFeiyue,  //虹口飞跃
+        HongKouLogo,  //虹口爱企
+        HongKouPicture,  //虹口爱企照片墙
+        HongKouAiqigu,  //虹口爱企谷
         Test    //  测试数据源
     }
 }

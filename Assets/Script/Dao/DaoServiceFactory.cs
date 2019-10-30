@@ -15,10 +15,16 @@ namespace MagicWall {
         [SerializeField, Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
         [SerializeField, Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
         [SerializeField, Tooltip("智博会 - 土布")] MockZBHTubuDaoService _mockZBHTubuDaoService;
-        [SerializeField, Tooltip("智博会 - 爱企谷")] MockZBHAiqiguDaoService _mockZBHAiqiguDaoService;
+
+        [SerializeField, Tooltip("智博会 - 爱企")] MockZBHAiqiguDaoService _mockZBHAiqiguDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] MockTestDaoService _mockTestDaoService;
+        [SerializeField, Tooltip("虹口 - 飞越体感")] MockHKFeiyueDaoService _mockHKFeiyueDaoService;
+        [SerializeField, Tooltip("虹口 - 爱企谷Logo")] MockHKLogoDaoService _mockHKLogoDaoService;
+        [SerializeField, Tooltip("虹口 -  爱企谷照片墙")] MockHKPictureDaoService _mockHKPictureDaoService;
+        [SerializeField, Tooltip("虹口 -  爱企")] MockHKAiqiguDaoService _mockHKAiqiguDaoService;
+
         [SerializeField] DaoService _realDaoService;
 
 
@@ -57,7 +63,22 @@ namespace MagicWall {
             else if (type == DaoTypeEnum.Test) {
                 _daoService = _mockTestDaoService; 
             }
-
+            else if (type == DaoTypeEnum.HongKouFeiyue)
+            {
+                _daoService = _mockHKFeiyueDaoService;
+            }
+            else if (type == DaoTypeEnum.HongKouLogo)
+            {
+                _daoService = _mockHKLogoDaoService;
+            }
+            else if (type == DaoTypeEnum.HongKouPicture)
+            {
+                _daoService = _mockHKPictureDaoService;
+            }
+            else if (type == DaoTypeEnum.HongKouAiqigu)
+            {
+                _daoService = _mockHKAiqiguDaoService;
+            }
             return _daoService;
         }
 

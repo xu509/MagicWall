@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 697eb86ab20866941a98a75cacf7d8fd, type: 3}
-  m_Name: CBHFengxianCutEffectConfig
+  m_Name: HKFeiyueCutEffectConfig
   m_EditorClassIdentifier: 
   MidDisperseMoveEaseEnum: 14
   MidDisperseDelayMax: 0.75
-  MidDisperseDisplayTime: 0.2
+  MidDisperseDisplayTime: 1
   MidDisperseAlphaMinDistanceFactor: 1
   MidDisperseAlphaEaseEnum: 0
   MidDisperseHeightFactor: 1
