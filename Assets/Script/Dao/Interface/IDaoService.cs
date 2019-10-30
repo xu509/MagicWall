@@ -37,11 +37,6 @@ namespace MagicWall
         /// <returns></returns>
         EnterpriseDetail GetEnterprisesDetail(int com_id);
 
-        /// <summary>
-        ///     获取喜欢数
-        /// </summary>
-        /// <returns></returns>
-        int GetLikes(int id, CrossCardCategoryEnum category);
 
         /// <summary>
         ///     获得企业卡片
@@ -114,11 +109,6 @@ namespace MagicWall
         List<ProductDetail> GetProductDetails(int pro_id);
 
 
-        int GetLikesByProductDetail(int id);
-
-        int GetLikesByActivityDetail(int id);
-
-
         /// <summary>
         ///     获取浮块数据
         /// </summary>
@@ -162,17 +152,6 @@ namespace MagicWall
         /// <returns></returns>
         List<string> GetCustomImage(CustomImageType type);
         #endregion
-
-        MWConfig GetConfig();
-
-        /// <summary>
-        ///    根据图片地址获取喜欢数
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        int GetLikes(string path);
-
-        bool UpdateLikes(string path);
 
         /// <summary>
         /// 6屏，图片轮播+ 视频， 获取左侧的图片轮播

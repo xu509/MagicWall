@@ -18,7 +18,6 @@ namespace MagicWall {
         }
 
 
-
         public void DoChoose(FlockAgent flockAgent) {
 
             var agents = _manager.kinectManager.kinectAgents;

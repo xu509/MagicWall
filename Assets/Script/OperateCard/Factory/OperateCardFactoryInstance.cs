@@ -74,6 +74,7 @@ namespace MagicWall {
                 cardData = operateCardDataSlide;
             }
 
+            // 创建card
             CardAgent cardAgent = Instantiate(cardPrefab, parent);
             cardAgent.GetComponent<Transform>().position = position;
             //cardAgent.DataId = dataId;

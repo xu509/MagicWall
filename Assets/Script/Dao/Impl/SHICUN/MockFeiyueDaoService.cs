@@ -11,23 +11,6 @@ namespace MagicWall
 {
     public class MockFeiyueDaoService : MonoBehaviour, IDaoService
     {
-        [SerializeField]
-        MockSceneConfig _mockSceneConfig;
-
-        public MockSceneConfig mockSceneConfig
-        {
-            set
-            {
-                _mockSceneConfig = value;
-            }
-            get
-            {
-                return _mockSceneConfig;
-            }
-        }
-
-
-
         private List<Enterprise> _enterprises;
         private List<Activity> _activities;
         private List<Product> _products;
@@ -63,13 +46,6 @@ namespace MagicWall
             Init();
         }
 
-        //
-        //  加载信息
-        //
-        public void LoadInformation()
-        {
-
-        }
 
         //
         //  获取首页企业
@@ -489,15 +465,6 @@ namespace MagicWall
         }
 
 
-
-
-
-
-
-
-
-
-
         public Product GetProduct()
         {
             List<Product> product = GetProducts();
@@ -515,23 +482,6 @@ namespace MagicWall
         //
         public Product GetProductDetail(int pro_id)
         {
-            //Debug.Log("get pro id : " + pro_id);
-
-
-            //foreach (KeyValuePair<int,Product> d in _productMap)
-            //{
-            //    Debug.Log("Map id : " + d.Key);
-            //    Debug.Log("Map value : " + d.Value.Name);
-            //}
-
-            //for (int i = 0; i < _products.Count; i++) {
-            //    Debug.Log("List id : " + _products[i].Pro_id);
-            //    Debug.Log("List id : " + _products[i].Name);
-            //}
-
-
-
-
             var product = _productMap[pro_id];
 
             return product;
@@ -655,31 +605,7 @@ namespace MagicWall
             /// 已修改为编辑器配置方式
             ///  -》 config / MockSceneConfig 
 
-
             List<SceneConfig> items = new List<SceneConfig>();
-
-            var sceneConfigs = _mockSceneConfig.sceneConfigs;
-
-            for (int i = 0; i < sceneConfigs.Count; i++)
-            {
-                var scene = sceneConfigs[i].sceneType;
-                var data = sceneConfigs[i].dataType;
-                var time = sceneConfigs[i].durtime;
-
-
-                if (scene == SceneTypeEnum.Stars && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-                if (scene == SceneTypeEnum.FrontBackUnfold && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-
-                items.Add(sceneConfigs[i]);
-            }
 
             return items;
 

@@ -10,13 +10,12 @@ namespace MagicWall {
         [SerializeField]
         MockSceneConfig _mockSceneConfig;
 
-        // Start is called before the first frame update
         [SerializeField, Header("Data Service")] MockDaoService _mockDaoService;
         [SerializeField] MockFeiyueDaoService _mockFeiyueDaoService;
         [SerializeField, Tooltip("智博会 - 飞越体感")] MockZBHFeiyueDaoService _mockZBHFeiyueDaoService;
         [SerializeField, Tooltip("智博会 - 奉贤企业")] MockZBHFengxianDaoService _mockZBHFengxianDaoService;
         [SerializeField, Tooltip("智博会 - 土布")] MockZBHTubuDaoService _mockZBHTubuDaoService;
-        [SerializeField, Tooltip("智博会 - 土布")] MockZBHAiqiguDaoService _mockZBHAiqiguDaoService;
+        [SerializeField, Tooltip("智博会 - 爱企谷")] MockZBHAiqiguDaoService _mockZBHAiqiguDaoService;
         [SerializeField] MockZhichengDaoService _mockZhichengDaoService;
         [SerializeField] MockShicunDaoService _mockShicunDaoService;
         [SerializeField] MockTestDaoService _mockTestDaoService;

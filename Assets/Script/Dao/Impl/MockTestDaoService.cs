@@ -54,13 +54,6 @@ namespace MagicWall
             Init();
         }
 
-        //
-        //  加载信息
-        //
-        public void LoadInformation()
-        {
-
-        }
 
         //
         //  获取首页企业
@@ -396,7 +389,7 @@ namespace MagicWall
                 DirectoryInfo[] directoryInfos = dirInfo.GetDirectories();
 
 
-                for (int i = 0; i < directoryInfos.Length; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     string name = directoryInfos[i].Name;
                     AddEnterprise(name, i + 1);
