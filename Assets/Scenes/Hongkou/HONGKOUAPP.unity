@@ -277,17 +277,17 @@ MonoBehaviour:
   sensorAngle: 0
   autoHeightAngle: 2
   computeUserMap: 3
-  computeColorMap: 1
+  computeColorMap: 0
   computeInfraredMap: 0
   displayUserMap: 0
-  displayColorMap: 1
+  displayColorMap: 0
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
   minUserDistance: 0.1
   maxUserDistance: 0
   maxLeftRightDistance: 0
-  maxTrackedUsers: 2
+  maxTrackedUsers: 6
   showTrackedUsersOnly: 1
   detectClosestUser: 1
   ignoreInferredJoints: 0
@@ -932,7 +932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f9d0ab0e60f8524fb22f76db7ad5479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mockSceneConfig: {fileID: 0}
 --- !u!114 &1655540667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -945,7 +944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6108c6ad1be104e9bb788cd8a30dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mockSceneConfig: {fileID: 0}
 --- !u!114 &1655540668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +956,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565b370ce7c0d904c92ecc5935b0732a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mockSceneConfig: {fileID: 0}
 --- !u!114 &1655540669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,4 +968,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56806d2fcdf478842a3b6a84ff845a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mockSceneConfig: {fileID: 0}
