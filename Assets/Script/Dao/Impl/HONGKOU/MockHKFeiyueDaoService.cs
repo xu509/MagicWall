@@ -12,21 +12,6 @@ namespace MagicWall
 {
     public class MockHKFeiyueDaoService : MonoBehaviour, IDaoService
     {
-        [SerializeField]
-        MockSceneConfig _mockSceneConfig;
-
-        public MockSceneConfig mockSceneConfig
-        {
-            set
-            {
-                _mockSceneConfig = value;
-            }
-            get
-            {
-                return _mockSceneConfig;
-            }
-        }
-
 
 
         private List<Enterprise> _enterprises;
@@ -64,13 +49,6 @@ namespace MagicWall
             Init();
         }
 
-        //
-        //  加载信息
-        //
-        public void LoadInformation()
-        {
-
-        }
 
         //
         //  获取首页企业
@@ -204,147 +182,6 @@ namespace MagicWall
             List<ProductDetail> productDetails = new List<ProductDetail>();
 
             return productDetails;
-        }
-
-        #region 设置效果与运行时间
-
-        //
-        //  获取config
-        //
-        public AppConfig GetConfigByKey(string key)
-        {
-            AppConfig appConfig = new AppConfig();
-            appConfig.Value = "20";
-
-            if (key.Equals(AppConfig.KEY_CutEffectDuring_CurveStagger))
-            {
-                appConfig.Value = "10";
-            }
-            else if (key.Equals(AppConfig.KEY_CutEffectDuring_LeftRightAdjust))
-            {
-                appConfig.Value = "10";
-            }
-            else if (key.Equals(AppConfig.KEY_CutEffectDuring_MidDisperseAdjust))
-            {
-                appConfig.Value = "10";
-            }
-            else if (key.Equals(AppConfig.KEY_CutEffectDuring_Stars))
-            {
-                appConfig.Value = "40";
-            }
-            else if (key.Equals(AppConfig.KEY_CutEffectDuring_UpDownAdjust))
-            {
-                appConfig.Value = "10";
-            }
-            else if (key.Equals(AppConfig.KEY_CutEffectDuring_FrontBackUnfold))
-            {
-                appConfig.Value = "10";
-            }
-            else
-            {
-
-            }
-            appConfig.Value = "10";
-
-            return appConfig;
-        }
-
-        /// <summary>
-        ///     获取场景持续时间
-        /// </summary>
-        /// <param name="sceneTypeEnum"></param>
-        /// <returns></returns>
-        public float GetSceneDurTime(SceneTypeEnum sceneTypeEnum)
-        {
-            string key = "";
-
-            if (sceneTypeEnum == SceneTypeEnum.CurveStagger)
-            {
-                key = AppConfig.KEY_CutEffectDuring_CurveStagger;
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.FrontBackUnfold)
-            {
-                key = AppConfig.KEY_CutEffectDuring_FrontBackUnfold;
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.LeftRightAdjust)
-            {
-                key = AppConfig.KEY_CutEffectDuring_LeftRightAdjust;
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.MidDisperse)
-            {
-                key = AppConfig.KEY_CutEffectDuring_MidDisperseAdjust;
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.Stars)
-            {
-                key = AppConfig.KEY_CutEffectDuring_Stars;
-            }
-            else if (sceneTypeEnum == SceneTypeEnum.UpDownAdjustCutEffect)
-            {
-                key = AppConfig.KEY_CutEffectDuring_UpDownAdjust;
-            }
-
-            string durTime = GetConfigByKey(key).Value;
-            float d = AppUtils.ConvertToFloat(durTime);
-
-            return d;
-        }
-        #endregion
-
-        public int GetLikesByProductDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-        public int GetLikesByActivityDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-
-        public int GetLikes(int id, CrossCardCategoryEnum category)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-        //
-        //  获取显示配置
-        //
-        public List<SceneConfig> GetShowConfigs()
-        {
-            /// 已修改为编辑器配置方式
-            ///  -》 config / MockSceneConfig 
-
-            List<SceneConfig> items = new List<SceneConfig>();
-
-            var sceneConfigs = _mockSceneConfig.sceneConfigs;
-
-            for (int i = 0; i < sceneConfigs.Count; i++)
-            {
-                var scene = sceneConfigs[i].sceneType;
-                var data = sceneConfigs[i].dataType;
-                var time = sceneConfigs[i].durtime;
-
-
-                if (scene == SceneTypeEnum.Stars && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-                if (scene == SceneTypeEnum.FrontBackUnfold && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-
-                items.Add(sceneConfigs[i]);
-            }
-
-            return items;
-
-
         }
 
         public bool IsCustom()
@@ -684,17 +521,7 @@ namespace MagicWall
             }
         }
 
-        public int GetLikes(string path)
-        {
-            return 1;
-            //throw new System.NotImplementedException();
-        }
-
-        public bool UpdateLikes(string path)
-        {
-            return true;
-            //throw new System.NotImplementedException();
-        }
+    
 
         public FlockData GetFlockData(DataTypeEnum type)
         {
