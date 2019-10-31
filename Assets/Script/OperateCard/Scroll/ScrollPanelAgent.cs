@@ -90,11 +90,11 @@ namespace MagicWall {
                 {
                     // 移动到左侧
                     var item = GetComponentInChildren<ScrollItemAgent>();
-                    item.GetComponent<RectTransform>().DOScale(0.6f, aniTime);
-                    item.GetComponent<RectTransform>().DOAnchorPos(LeftPosition, aniTime)
+                    item.transform.SetParent(_crossScrollAgent.scrollPanelLeft.transform, true);
+                    item.GetComponent<RectTransform>().DOScale(1f, aniTime);
+                    item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
                         .OnComplete(() =>
                         {
-                            item.transform.SetParent(_crossScrollAgent.scrollPanelLeft.transform, true);
                             updatePositionSuccess.Invoke();
                         });
                 }
