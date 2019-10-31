@@ -131,7 +131,7 @@ namespace MagicWall
                 Vector2 new1 = poss[0];
                 Vector2 new2 = poss[1];
                 float newDistance = Vector2.Distance(new1, new2);
-                float s = startScalePer + (newDistance - originalDistance) / originalDistance / 2;
+                float s = startScalePer + (newDistance - originalDistance) / originalDistance;
                 if (s <= 1)
                 {
                     s = 1;

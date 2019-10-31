@@ -277,7 +277,8 @@ namespace MagicWall {
 
             var item = GetAgentById(userId);
 
-            if (item != null)
+            //最多出现体感球
+            if (item != null || kinectAgents.Count > 1)
             {
                 return null;
             }

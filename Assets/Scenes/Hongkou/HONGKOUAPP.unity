@@ -277,10 +277,10 @@ MonoBehaviour:
   sensorAngle: 0
   autoHeightAngle: 2
   computeUserMap: 3
-  computeColorMap: 0
+  computeColorMap: 1
   computeInfraredMap: 0
   displayUserMap: 0
-  displayColorMap: 0
+  displayColorMap: 1
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
@@ -612,7 +612,7 @@ PrefabInstance:
     - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _openKinect
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -920,7 +920,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847698a05e4c3274e8299977ec196c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mockSceneConfig: {fileID: 0}
 --- !u!114 &1655540661
 MonoBehaviour:
   m_ObjectHideFlags: 0
