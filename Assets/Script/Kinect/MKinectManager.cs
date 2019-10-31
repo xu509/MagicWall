@@ -57,7 +57,7 @@ namespace MagicWall {
             else {
                 if (_manager != null)
                 {
-                    Debug.Log("@@@ Kinecet 正在检测");
+                    //Debug.Log("@@@ Kinecet 正在检测");
 
                     _kinectService.Monitoring();
                     //_kinectCardObserver.Observering();
