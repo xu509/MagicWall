@@ -75,7 +75,7 @@ namespace MagicWall
         [SerializeField, Header("kinect")] MKinectManager _kinectManager;
         public MKinectManager kinectManager { get { return _kinectManager; } }
 
-        [SerializeField] bool _useKinect;
+        bool _useKinect;
         public bool useKinect { set { _useKinect = value; } get { return _useKinect; } }
 
         [SerializeField] bool _openKinect;
@@ -97,9 +97,7 @@ namespace MagicWall
 
         [SerializeField, Header("CutEffect Config")] CutEffectConfig _cutEffectConfig;
 
-        [SerializeField,Header("Dao")] DaoTypeEnum _mockDaoType;
-
-        [SerializeField] DaoServiceFactory _daoServiceFactory;
+        [SerializeField,Header("Dao")] DaoServiceFactory _daoServiceFactory;
         public DaoServiceFactory daoServiceFactory { get { return _daoServiceFactory; } }
 
 
