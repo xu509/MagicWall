@@ -1339,6 +1339,8 @@ namespace MagicWall
         /// </summary>
         /// <returns></returns>
         private bool EnterToDestoryTime() {
+            return false;
+
             float waitTime;
 
             //if(_cardStatus == CardStatusEnum.MOVE 

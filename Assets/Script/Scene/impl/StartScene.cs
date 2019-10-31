@@ -158,7 +158,7 @@ namespace MagicWall
             _startSceneStatus = StartSceneStatus.LoadResourceCompleted;
 
             sw.Stop();
-            Debug.Log("2 Time : " + sw.ElapsedMilliseconds / 1000f);
+            //Debug.Log("2 Time : " + sw.ElapsedMilliseconds / 1000f);
 
         }
 

@@ -11,6 +11,7 @@ namespace MagicWall {
         public void Init(ScrollData scrollData)
         {
             _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir +  scrollData.Cover);
+            gameObject.name = scrollData.Description;
 
         }
 

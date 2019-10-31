@@ -62,13 +62,11 @@ namespace MagicWall
                 , OnCutEffectCreateAgentCompleted,
                 ()=> {
                     // on effect completed
-                    Debug.Log("on effect completed");
 
                     _runEntrance = false;
                 },()=>
                 {
                     // on display Start
-                    Debug.Log("on display start");
 
                     _runDisplay = true;
                     _displayStartTime = Time.time;

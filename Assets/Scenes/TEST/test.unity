@@ -235,6 +235,12 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _mockSceneConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f0d3837bd8a168f43802704d2d2e7864,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
 --- !u!114 &265560235 stripped

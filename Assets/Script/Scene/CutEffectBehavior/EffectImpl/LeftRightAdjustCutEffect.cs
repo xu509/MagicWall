@@ -141,7 +141,7 @@ namespace MagicWall
         /// </summary>
         private void CreateItem(DataTypeEnum dataType)
         {
-            Debug.Log("开始加载左右动画");
+            //Debug.Log("开始加载左右动画");
             //  获取持续时间
             _entranceDisplayTime = _manager.cutEffectConfig.LeftRightDisplayDurTime;
             _startingTimeWithOutDelay = _entranceDisplayTime;
@@ -245,7 +245,6 @@ namespace MagicWall
                     column++;
                 }
             }
-            Debug.Log("_entranceDisplayTime : " + _entranceDisplayTime);
 
             _entranceDisplayTime += _startDelayTime;
 

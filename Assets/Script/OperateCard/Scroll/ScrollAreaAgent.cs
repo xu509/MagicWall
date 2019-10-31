@@ -61,25 +61,21 @@ namespace MagicWall {
             {
                 if (offset.x > 0)
                 {
-                    Debug.Log("滑动方向向右");
                     _onRecognizeDirection.Invoke(ScrollDirectionEnum.Right);
                 }
                 else
                 {
-                    Debug.Log("滑动方向向左");
                     _onRecognizeDirection.Invoke(ScrollDirectionEnum.Left);
                 }
             }
             else {
                 if (offset.y > 0)
                 {
-                    Debug.Log("滑动方向向上");
                     _onRecognizeDirection.Invoke(ScrollDirectionEnum.Top);
 
                 }
                 else
                 {
-                    Debug.Log("滑动方向向下");
                     _onRecognizeDirection.Invoke(ScrollDirectionEnum.Bottom);
 
                 }
