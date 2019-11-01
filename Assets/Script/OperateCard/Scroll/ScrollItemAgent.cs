@@ -54,14 +54,33 @@ namespace MagicWall {
 
         void Update() {
             ScrollPanelAgent panelAgent = GetComponentInParent<ScrollPanelAgent>();
-            if (panelAgent.currentLocation == PanelLocationEnum.Middle)
+
+            if (panelAgent != null)
             {
-                ShowComponents();
-            }
-            else {
-                HideComponents();
+                if (panelAgent.currentLocation == PanelLocationEnum.Middle)
+                {
+                    ShowComponents();
+                }
+                else
+                {
+                    HideComponents();
+                }
             }
 
+            else {
+                SliceScrollPanelAgent sliceScrollPanelAgent = GetComponentInParent<SliceScrollPanelAgent>();
+                if (sliceScrollPanelAgent != null) {
+                    if (sliceScrollPanelAgent.currentLocation == PanelLocationEnum.Middle)
+                    {
+                        ShowComponents();
+                    }
+                    else
+                    {
+                        HideComponents();
+                    }
+
+                }
+            }
         }
 
 

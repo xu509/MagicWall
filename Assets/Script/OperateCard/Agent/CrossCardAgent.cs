@@ -40,9 +40,6 @@ namespace MagicWall {
         [SerializeField, Header("十字卡片 - 标题")] Text _title;
         [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
-
-        [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
-        [SerializeField] CrossCardScrollBar crossCardScrollBar;
         [SerializeField] RectTransform _buttomTool;
 
 
@@ -52,38 +49,6 @@ namespace MagicWall {
         private Vector2 ButtomTool_Go_Position = new Vector2(0, 50);
 
         #endregion
-
-
-        void OnSelectionChanged(int index)
-        {
-            crossCardScrollViewController.UpdateComponents();
-
-            crossCardScrollBar.SelectCell(index);
-
-            // 更新描述
-            UpdateDescription(crossCardScrollViewController.GetCurrentCardDescription());
-
-            DoUpdate();
-
-        }
-
-        void OnBarSelectionChanged(int index)
-        {
-            if (index != crossCardScrollViewController.CurrentIndex)
-            {
-                crossCardScrollViewController.SelectCell(index);
-
-                CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
-                crossCardScrollBar.UpdateComponents();
-            }
-            else
-            {
-                crossCardScrollBar.UpdateComponents();
-
-
-            }
-
-        }
 
 
         void Awake()

@@ -17,11 +17,11 @@ namespace MagicWall
         [SerializeField, Header("SliceCardAgent UI")] Text _title;
         [SerializeField] RectTransform _titleContainer;
         [SerializeField] Text _description;
-        [SerializeField] SliceCardScrollViewController _scrollController;
+        [SerializeField] SliceScrollAgent _sliceScrollAgent;
         [SerializeField] RectTransform _buttomTool;
 
         private List<string> _envCards = new List<string>();
-        private OperateCardDataSlide _operateCardDataSlide;
+        private OperateCardDataSlide _data;
 
 
         void Awake()
@@ -36,49 +36,26 @@ namespace MagicWall
             UpdateAgency();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id">产品ID或活动ID</param>
-        /// <param name="type">类型</param>
-        public void InitSliceCard()
+
+        public override void InitData(OperateCardData operateCardData)
         {
+            OperateCardDataSlide operateCardDataSlide = (OperateCardDataSlide)operateCardData;
+            //Debug.Log("Do In slice: " + operateCardDataSlide.Title);
+            _data = operateCardDataSlide;
+
             InitUI();
 
+            // 初始化卡片块
             InitAgency();
+            _questionTypeEnum = QuestionTypeEnum.SliceCard;
 
+            _sliceScrollAgent.Init(_data, (data, scrollDirection) => {
+                UpdateDescription(data.Description);
 
-            // 获取产品标题
-            _title.text = _operateCardDataSlide.Title;
-            //_titleText.text = _operateCardDataSlide.Title;
+            }, OnClickScale, DoVideo);
 
-            InitComponents(_operateCardDataSlide.ExtraCardData);
-
-            // 获取产品详细（图片，描述）
-            List<SliceCardCellData> cellDatas = new List<SliceCardCellData>();
-            for (int i = 0; i < _operateCardDataSlide.ScrollData.Count; i++)
-            {
-                var data = _operateCardDataSlide.ScrollData[i];
-
-                SliceCardCellData cellData = new SliceCardCellData();
-                cellData.Type = 0;
-                cellData.sliceCardAgent = this;
-                cellData.magicWallManager = _manager;
-                cellData.LoadDetail(data);
-                cellDatas.Add(cellData);
-            }
-
-
-
-            _scrollController.SetUpCardAgent(this);
-            _scrollController.UpdateData(cellDatas);
-            _scrollController.OnSelectionChanged(OnScrollControllerSelectionChanged);
-            _scrollController.SetOnScrollerOperated(OnOperationAction);
-
-            SetOnCreatedCompleted(OnCreatedCompleted);
-
-            isPrepared = true;
         }
+
 
 
         public void SwitchScaleMode(Texture texture)
@@ -87,20 +64,6 @@ namespace MagicWall
             //scaleController.OpenScaleBox();
         }
 
-
-        private void OnScrollControllerSelectionChanged(int index)
-        {
-            SliceCardBaseCell<SliceCardCellData, SliceCardCellContext> cell = _scrollController.GetCell(index);
-            cell.GetComponent<RectTransform>().SetAsLastSibling();
-
-            string description = _scrollController.GetCurrentCardDescription();
-
-            //  更新描述
-            UpdateDescription(description);
-
-            // 更新下方操作栏
-            UpdateToolComponent();
-        }
 
         public void UpdateDescription(string description)
         {
@@ -122,26 +85,24 @@ namespace MagicWall
         }
 
 
-        private void OnCreatedCompleted()
+
+        private void OnClickScale(string str)
         {
-
-            string description = _scrollController.GetCurrentCardDescription();
-
-            //  更新描述
-            UpdateDescription(description);
-
-            //  更新操作栏
-            UpdateToolComponent();
-
+            var tex = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + str);
+            InitScaleAgent(tex);
         }
 
-        public override void InitData(OperateCardData operateCardData)
-        {
-            OperateCardDataSlide operateCardDataSlide = (OperateCardDataSlide)operateCardData;
-            //Debug.Log("Do In slice: " + operateCardDataSlide.Title);
-            _operateCardDataSlide = operateCardDataSlide;
 
-            InitSliceCard();
+        public override void FullDisplayAfterGoFront()
+        {
+
+            Debug.Log("Full Display After Go Front");
+
+            // 初始化组件
+            _sliceScrollAgent.CompleteInit();
+
+            // 显示标题
+            _title.text = _data.Title;
 
         }
 
@@ -181,11 +142,6 @@ namespace MagicWall
                 var descriptionFontSize = 20;
                 _description.fontSize = descriptionFontSize;
             }
-
-
-
-
-
 
         }
 

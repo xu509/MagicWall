@@ -188,26 +188,6 @@ namespace MagicWall
             return productDetails;
         }
 
-
-        public int GetLikesByProductDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-        public int GetLikesByActivityDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-
-        public int GetLikes(int id, CrossCardCategoryEnum category)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
       
         public bool IsCustom()
         {
@@ -317,7 +297,13 @@ namespace MagicWall
 
         public Enterprise GetEnterpriseById(int id)
         {
-            return _enterpriseMap[id];
+            if (_enterpriseMap.ContainsKey(id))
+            {
+                return _enterpriseMap[id];
+            }
+            else {
+                return null;
+            }
         }
 
         public Video GetVideoDetail(int envId, int index)
@@ -372,9 +358,12 @@ namespace MagicWall
             if (_hasInit)
                 return;
 
-
             _enterpriseMap = new Dictionary<int, Enterprise>();
+            _productMap = new Dictionary<int, Product>();
             _enterprises = new List<Enterprise>();
+            _products = new List<Product>();
+
+
             _activityByEidMap = new Dictionary<int, List<Activity>>();
             _productByEidMap = new Dictionary<int, List<Product>>();
             _catalogByEidMap = new Dictionary<int, List<Catalog>>();
@@ -386,7 +375,6 @@ namespace MagicWall
                 DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + enterprisePath);
                 DirectoryInfo[] directoryInfos = dirInfo.GetDirectories();
 
-
                 for (int i = 0; i < 3; i++)
                 {
                     string name = directoryInfos[i].Name;
@@ -394,16 +382,102 @@ namespace MagicWall
                 }
             }
 
+            string productPath = "ZBH\\feiyue2";
+
+            if (Directory.Exists(MagicWallManager.FileDir + productPath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + productPath);
+                DirectoryInfo[] directories = dirInfo.GetDirectories();
+
+                for (int i = 0; i < directories.Length; i++)
+                {
+                    var directory = directories[i];
+
+                    int pro_id = i;
+                    int.TryParse(i.ToString(), out pro_id);
+
+                    AddProduct(directory, pro_id);
+                }
+            }
+            else
+            {
+                print("初始化文件夹不存在");
+            }
+
             sw.Stop();
             Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
             print("Init Data End");
             _hasInit = true;
-
         }
 
 
-        //
+        private void AddProduct(DirectoryInfo directoryInfo, int index)
+        {
+            // 扫描内部的所有内容
+            var fileInfos = directoryInfo.GetFiles();
+
+            for (int i = 0; i < fileInfos.Length; i++)
+            {
+                var fileInfo = fileInfos[i];
+
+                if (fileInfo.Extension.Contains("jpg") || fileInfo.Extension.Contains("png"))
+                {
+                    Product product = new Product();
+                    product.Ent_id = 0;
+
+                    int pro_id = 0;
+                    int.TryParse(index.ToString() + i.ToString(), out pro_id);
+
+                    product.Pro_id = pro_id;
+                    product.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfo.Name;
+                    product.Name = directoryInfo.Name;
+                    product.ProductDetails = GetProductDetails(directoryInfo, fileInfo, pro_id);
+
+                    _products.Add(product);
+                    _productMap.Add(pro_id, product);
+                }
+            }
+        }
+
+        private List<ProductDetail> GetProductDetails(DirectoryInfo directoryInfo, FileInfo fileInfo, int proId)
+        {
+            List<ProductDetail> productDetails = new List<ProductDetail>();
+
+            var fileInfos = directoryInfo.GetFiles();
+            int index = 0;
+            for (int i = 0; i < fileInfos.Length; i++)
+            {
+                if (fileInfos[i].Extension.Contains("jpg") || fileInfos[i].Extension.Contains("png"))
+                {
+                    var fileName = fileInfos[i].Name.Replace(fileInfos[i].Extension, "");
+
+                    ProductDetail productDetail = new ProductDetail();
+                    productDetail.Id = i;
+                    productDetail.Pro_id = proId;
+                    productDetail.Type = 0;
+                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;
+                    productDetail.Description = fileName;
+                    productDetails.Add(productDetail);
+
+                    if (fileInfo == fileInfos[i])
+                    {
+                        index = i;
+                    }
+                }
+            }
+
+            var temp = productDetails[0];
+            var tempC = productDetails[index];
+            productDetails[0] = tempC;
+            productDetails[index] = temp;
+
+            return productDetails;
+        }
+
+
+
+
         private void AddEnterprise(string name, int ent_id)
         {
             Enterprise enterprise = new Enterprise();
@@ -592,7 +666,6 @@ namespace MagicWall
             }
         }
 
-
         private void AddBusinessCard(string name, Enterprise enterprise)
         {
             string catalogDirPath = "ZBH\\fengxian\\" + name + "\\企业名片";
@@ -615,19 +688,6 @@ namespace MagicWall
 
                 enterprise.Business_card = busincessCarcdPath;
             }
-        }
-
-
-        public int GetLikes(string path)
-        {
-            return 1;
-            //throw new System.NotImplementedException();
-        }
-
-        public bool UpdateLikes(string path)
-        {
-            return true;
-            //throw new System.NotImplementedException();
         }
 
         public FlockData GetFlockData(DataTypeEnum type)

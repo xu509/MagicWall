@@ -24,6 +24,9 @@ namespace MagicWall {
             if (dataType == DataTypeEnum.Enterprise)
             {
                 Enterprise enterprise = daoService.GetEnterpriseById(dataId);
+
+                Debug.Log("enterprise : " + (enterprise == null));                
+
                 var activities = daoService.GetActivitiesByEnvId(enterprise.Ent_id);
                 var products = daoService.GetProductsByEnvId(enterprise.Ent_id);
                 var videos = daoService.GetVideosByEnvId(enterprise.Ent_id);

@@ -341,8 +341,6 @@ namespace MagicWall
                 return;
             }
 
-
-
             _products = new List<Product>();
             _productMap = new Dictionary<int, Product>();
 
@@ -359,29 +357,20 @@ namespace MagicWall
                     int pro_id = i;
                     int.TryParse(i.ToString(), out pro_id);
 
-                    AddProduct(directory, pro_id);
-            
+                    AddProduct(directory, pro_id);            
                 }
-
-
             }
             else {
                 print("初始化文件夹不存在");
             }
 
             _hasInit = true;
-            //Debug.Log("产品总数： " + _products.Count);
-
         }
 
         private void AddProduct(DirectoryInfo directoryInfo,int index) {
             // 扫描内部的所有内容
             var fileInfos = directoryInfo.GetFiles();
 
-            //Debug.Log("扫描内部的所有内容");
-            //Debug.Log("directoryInfo:" + directoryInfo.FullName);
-            //Debug.Log("fileInfos:" + fileInfos.Length);
- 
             for (int i = 0; i < fileInfos.Length; i++) {
                 var fileInfo = fileInfos[i];
 
