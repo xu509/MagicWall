@@ -637,7 +637,7 @@ namespace MagicWall
                     var fileNameWithoutExt = item.Name.Replace(item.Extension, "");
                     Video video = new Video();
                     video.V_id = ent_id;
-                    video.Description = item.Name;
+                    video.Description = fileNameWithoutExt;
                     video.Address = videoDirPath + "\\" + item.Name;
                     video.Cover = videoDirPath + "\\" + fileNameWithoutExt + ".png";
                     videos.Add(video);
