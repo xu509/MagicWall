@@ -21,7 +21,8 @@ namespace MagicWall {
         private bool _isPrepared = false; // 即可执行操作，在变动时不可进行操作
 
         Action<ScrollData, CrossCardNavType, ScrollDirectionEnum> _onChanged;  // 修改中
-        Action<string> _onScale;  
+        Action<string> _onScale;
+        Action<string, string, string> _onPlayVideo;
         public Action<string> onScale { get { return _onScale; } }
 
 
@@ -48,12 +49,13 @@ namespace MagicWall {
         [SerializeField] ScrollPanelAgent _scrollPanelMiddle;
         public ScrollPanelAgent scrollPanelMiddle { get { return _scrollPanelMiddle; } }
 
-        public void Init(OperateCardDataCross data,Action<ScrollData, CrossCardNavType,ScrollDirectionEnum> onChanged,Action<string> onScale) {
+        public void Init(OperateCardDataCross data,Action<ScrollData, CrossCardNavType,ScrollDirectionEnum> onChanged,Action<string> onScale,Action<string,string,string> onPlayVideo) {
             _isPrepared = false;
             _data = data;
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
             _onChanged = onChanged;
             _onScale = onScale;
+            _onPlayVideo = onPlayVideo;
 
             _scrollPanelAgents = new List<ScrollPanelAgent>();
             _scrollPanelAgents.Add(_scrollPanelTop);
@@ -427,6 +429,25 @@ namespace MagicWall {
             Debug.Log("修改后的导航位置： " + _navIndex + " INDEX: " + _index);
         }
 
+        /// <summary>
+        ///     当点击中心
+        /// </summary>
+        public void OnClickMid() {            
+            if (_navList[_navIndex] == CrossCardNavType.Video) {
+
+                Debug.Log("播放视频");
+
+                var datas = data.ScrollDic[CrossCardNavType.Video];
+
+                var sd = datas[_index];
+                Debug.Log(sd.ToString());
+
+                // string address, string description, string cover
+
+                _onPlayVideo.Invoke(sd.Src, sd.Description, sd.Cover);
+
+            }
+        }
 
         /// <summary>
         /// 装载内容

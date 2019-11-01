@@ -223,7 +223,7 @@ namespace MagicWall {
                     _scrollBarAgent.TurnRight();
                 }
 
-            }, OnClickScale);
+            }, OnClickScale, DoVideo);
             
             _scrollBarAgent.Init(_navList,(dir)=> {
 

@@ -427,7 +427,6 @@ namespace MagicWall
 
                 //增加公司视频
                 AddVideo(name, ent_id);
-
                 _enterpriseMap.Add(ent_id, enterprise);
                 _enterprises.Add(enterprise);
             }
@@ -627,8 +626,9 @@ namespace MagicWall
                 List<FileInfo> videoFiles = new List<FileInfo>();
                 for (int i = 0; i < files.Length; i++)
                 {
-                    if (files[i].Extension == "mp4")
+                    if (files[i].Extension.Contains("mp4"))
                     {
+                        hasVideo = true;
                         videoFiles.Add(files[i]);
                     }
                 }
@@ -639,7 +639,7 @@ namespace MagicWall
                     video.V_id = ent_id;
                     video.Description = item.Name;
                     video.Address = videoDirPath + "\\" + item.Name;
-                    video.Cover = videoDirPath + "" + fileNameWithoutExt + "";
+                    video.Cover = videoDirPath + "\\" + fileNameWithoutExt + ".png";
                     videos.Add(video);
                 }
                 if (hasVideo)
@@ -647,6 +647,7 @@ namespace MagicWall
                     _videoByEidMap.Add(ent_id, videos);
                 }
             }
+            
         }
 
 

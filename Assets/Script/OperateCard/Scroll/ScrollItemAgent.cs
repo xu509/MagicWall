@@ -35,6 +35,8 @@ namespace MagicWall {
             if (scrollData.Type == 1)
             {
                 _videoContainer.gameObject.SetActive(true);
+                _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + scrollData.Cover);
+
             }
             else {
                 _cover.sprite = SpriteResource.Instance.GetData(MagicWallManager.FileDir + scrollData.Cover);

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e62b06450fb1fc94982e8790f91c1054, type: 3}
-  m_Name: ManagerConfigFor6Scenes
+  m_Name: ManagerConfigForHK6Scenes
   m_EditorClassIdentifier: 
   IsCustom: 0
   SelectedItemMaxCount: 5
@@ -18,9 +18,12 @@ MonoBehaviour:
   gapFactor: 0.2
   Column: 21
   KinectColumn: 30
+  Row: 6
+  KinectRow: 12
   FlockPoolSize: 150
   CardPoolSize: 8
-  MainPanelMoveFactor: 52
+  MainPanelMoveFactor: 51
+  BackPanelMoveFactor: 26
   BackgroundClearBubblePoolSize: 5
   BackgroundClearMoveMinFactor: 50
   BackgroundClearMoveMaxFactor: 150

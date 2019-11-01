@@ -15,28 +15,28 @@ MonoBehaviour:
   sceneConfigs:
   - _sceneType: 0
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 7
     _isKinect: 1
   - _sceneType: 2
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 7
     _isKinect: 1
   - _sceneType: 0
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 7
     _isKinect: 1
   - _sceneType: 5
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 3
     _destoryBehavior: 0
     _daoTypeEnum: 7
@@ -50,63 +50,63 @@ MonoBehaviour:
     _isKinect: 1
   - _sceneType: 0
     _dataType: 2
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
   - _sceneType: 2
     _dataType: 2
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
   - _sceneType: 0
     _dataType: 2
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
   - _sceneType: 5
     _dataType: 2
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 1
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
   - _sceneType: 3
     _dataType: 2
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 1
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
   - _sceneType: 0
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 9
     _isKinect: 1
   - _sceneType: 2
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 9
     _isKinect: 1
-  - _sceneType: 1
+  - _sceneType: 0
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 9
     _isKinect: 1
   - _sceneType: 5
     _dataType: 1
-    _durTime: 10
+    _durTime: 5
     _displayBehavior: 3
     _destoryBehavior: 0
     _daoTypeEnum: 9
@@ -115,7 +115,7 @@ MonoBehaviour:
     _dataType: 1
     _durTime: 2
     _displayBehavior: 4
-    _destoryBehavior: 0
+    _destoryBehavior: 1
     _daoTypeEnum: 9
     _isKinect: 1
   - _sceneType: 6
