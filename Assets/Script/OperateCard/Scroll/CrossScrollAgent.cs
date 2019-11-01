@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,10 @@ namespace MagicWall {
         private List<ScrollPanelAgent> _scrollPanelAgents;
 
         private bool _isPrepared = false; // 即可执行操作，在变动时不可进行操作
+
+        Action<ScrollData, CrossCardNavType, ScrollDirectionEnum> _onChanged;  // 修改中
+        Action<string> _onScale;  
+        public Action<string> onScale { get { return _onScale; } }
 
 
         [SerializeField] ScrollAreaAgent _scrollAreaAgent;
@@ -43,10 +48,12 @@ namespace MagicWall {
         [SerializeField] ScrollPanelAgent _scrollPanelMiddle;
         public ScrollPanelAgent scrollPanelMiddle { get { return _scrollPanelMiddle; } }
 
-        public void Init(OperateCardDataCross data) {
+        public void Init(OperateCardDataCross data,Action<ScrollData, CrossCardNavType,ScrollDirectionEnum> onChanged,Action<string> onScale) {
             _isPrepared = false;
             _data = data;
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+            _onChanged = onChanged;
+            _onScale = onScale;
 
             _scrollPanelAgents = new List<ScrollPanelAgent>();
             _scrollPanelAgents.Add(_scrollPanelTop);
@@ -161,6 +168,10 @@ namespace MagicWall {
 
                 HandleIndexAfterUpdate(scrollDirectionEnum);
 
+
+                var navType = _navList[_navIndex];
+                var scrollData = _data.ScrollDic[navType][_index];
+                _onChanged.Invoke(scrollData,navType, scrollDirectionEnum);
                 Debug.Log("当前的NAV: " + _navList[_navIndex]);
             }
         }
@@ -224,10 +235,10 @@ namespace MagicWall {
                             int offset = dataIndex - _navList.Count;
                             dataIndex = 0 + offset;
                         }
-                        preAgent.Init(_data.ScrollDic[_navList[dataIndex]][0]);
+                        preAgent.Init(_data.ScrollDic[_navList[dataIndex]][0], _onScale);
                     }
                     else if (scrollDirectionEnum == ScrollDirectionEnum.Right)
-                    {
+                    { 
                         int dataIndex = _navIndex - 2;
                         if (dataIndex < 0)
                         {
@@ -235,7 +246,7 @@ namespace MagicWall {
                             dataIndex = _navList.Count - offset;
                         }
                         Debug.Log("Prepare - " + _navList[dataIndex]);
-                        preAgent.Init(_data.ScrollDic[_navList[dataIndex]][0]);
+                        preAgent.Init(_data.ScrollDic[_navList[dataIndex]][0], _onScale);
                     }
                     else if (scrollDirectionEnum == ScrollDirectionEnum.Top) {
                         var items = _data.ScrollDic[_navList[_navIndex]];
@@ -291,7 +302,7 @@ namespace MagicWall {
 
                     Debug.Log("数据索引: " + dataIndex);
 
-                    preAgent.Init(datas[dataIndex]);
+                    preAgent.Init(datas[dataIndex], _onScale);
                 }
             }
         }

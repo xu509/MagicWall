@@ -9,12 +9,15 @@ namespace MagicWall {
     public class ScrollPanelAgent : MonoBehaviour
     {
         [SerializeField] PanelLocationEnum _currentLocation;
+        public PanelLocationEnum currentLocation { get { return _currentLocation; } }
 
         private CrossScrollAgent _crossScrollAgent;
         private MagicWallManager _manager;
 
         private Vector2 LeftPosition;
         private Vector2 RightPosition;
+        private Vector2 TopPosition;
+        private Vector2 BottomPosition;
         private Vector2 MiddlePosition;
 
         private float aniTime;
@@ -27,10 +30,22 @@ namespace MagicWall {
             aniFadeTime = 0.25f;
 
             if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P) {
-                LeftPosition = new Vector2(-236, 0);
-                RightPosition = new Vector2(236, 0);
+                LeftPosition = new Vector2(-195, 0);
+                RightPosition = new Vector2(195, 0);
                 MiddlePosition = new Vector2(0, 0);
+                TopPosition = new Vector2(0, 130);
+                BottomPosition = new Vector2(0, -130);
             }
+
+            if (_currentLocation == PanelLocationEnum.Top)
+            {
+                GetComponent<RectTransform>().anchoredPosition = TopPosition;
+            }
+            else if (_currentLocation == PanelLocationEnum.Bottom) {
+                GetComponent<RectTransform>().anchoredPosition = BottomPosition;
+
+            }
+
 
         }
 
@@ -52,7 +67,7 @@ namespace MagicWall {
                 // 创建prefab
                 item = Instantiate(_crossScrollAgent.scrollItemPrefab, transform);
             }
-            item.Init(scrollData);
+            item.Init(scrollData, _crossScrollAgent.onScale);
         }
 
         public void GoOutLocation() {
@@ -147,11 +162,11 @@ namespace MagicWall {
                 {
                     // 移动到右侧
                     var item = GetComponentInChildren<ScrollItemAgent>();
-                    item.GetComponent<RectTransform>().DOScale(0.6f, aniTime);
-                    item.GetComponent<RectTransform>().DOAnchorPos(RightPosition, aniTime)
+                    item.transform.SetParent(_crossScrollAgent.scrollPanelRight.transform, true);
+                    item.GetComponent<RectTransform>().DOScale(1f, aniTime);
+                    item.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, aniTime)
                         .OnComplete(() =>
                         {
-                            item.transform.SetParent(_crossScrollAgent.scrollPanelRight.transform, true);
                             updatePositionSuccess.Invoke();
                         });
                 }
@@ -323,11 +338,11 @@ namespace MagicWall {
                                 Destroy(item.gameObject);
                             }
                             item = Instantiate(_crossScrollAgent.scrollItemPrefab, transform);
-                            item.Init(datas[index]);
-                            GetComponent<CanvasGroup>().DOFade(1f, aniFadeTime);
+                            item.Init(datas[index], _crossScrollAgent.onScale);
+                            GetComponent<CanvasGroup>().DOFade(0.2f, aniFadeTime);
                         }
                         else if (_currentLocation == PanelLocationEnum.Top) {
-                            GetComponent<CanvasGroup>().DOFade(1f, aniFadeTime);
+                            GetComponent<CanvasGroup>().DOFade(0.2f, aniFadeTime);
                             var item = GetComponentInChildren<ScrollItemAgent>();
                             if (item != null)
                             {
@@ -347,8 +362,8 @@ namespace MagicWall {
                                 Destroy(item.gameObject);
                             }
                             item = Instantiate(_crossScrollAgent.scrollItemPrefab,transform);
-                            item.Init(datas[index]);
-                            GetComponent<CanvasGroup>().DOFade(1f, aniFadeTime);
+                            item.Init(datas[index], _crossScrollAgent.onScale);
+                            GetComponent<CanvasGroup>().DOFade(0.2f, aniFadeTime);
                         }
                         else if (_currentLocation == PanelLocationEnum.Bottom)
                         {
@@ -359,8 +374,8 @@ namespace MagicWall {
                                 Destroy(item.gameObject);
                             }
                             item = Instantiate(_crossScrollAgent.scrollItemPrefab, transform);
-                            item.Init(datas[index]);
-                            GetComponent<CanvasGroup>().DOFade(1f, aniFadeTime);
+                            item.Init(datas[index], _crossScrollAgent.onScale);
+                            GetComponent<CanvasGroup>().DOFade(0.2f, aniFadeTime);
 
                         }
                     }

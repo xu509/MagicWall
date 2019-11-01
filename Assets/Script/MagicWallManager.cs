@@ -125,11 +125,15 @@ namespace MagicWall
 
         #region 文件夹地址配置
 
-        // public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+         public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
        public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
+<<<<<<< HEAD
         //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+=======
+       // public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+>>>>>>> f0ff3982d1141cee9db1fc1b199a4b80fe964224
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
         #endregion
