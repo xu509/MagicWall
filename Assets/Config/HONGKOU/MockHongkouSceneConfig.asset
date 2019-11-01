@@ -76,6 +76,13 @@ MonoBehaviour:
     _destoryBehavior: 0
     _daoTypeEnum: 8
     _isKinect: 0
+  - _sceneType: 3
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 1
+    _destoryBehavior: 0
+    _daoTypeEnum: 8
+    _isKinect: 0
   - _sceneType: 0
     _dataType: 1
     _durTime: 10

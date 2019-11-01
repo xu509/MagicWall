@@ -70,10 +70,10 @@ namespace MagicWall
 
 
             // 固定高度
-            int _row = 6;
+            int _row = _manager.managerConfig.Row;
 
             if (_sceneConfig.isKinect == 1) {
-                _row = 12;
+                _row = _manager.managerConfig.KinectRow;
             }
 
             int _itemHeight = _sceneUtil.GetFixedItemHeight();

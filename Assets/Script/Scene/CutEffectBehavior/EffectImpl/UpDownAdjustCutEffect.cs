@@ -136,7 +136,7 @@ namespace MagicWall
             }
             else
             {
-                _column = 30;
+                _column = _manager.managerConfig.KinectColumn;
             }
 
 

@@ -9,7 +9,7 @@ namespace MagicWall
 {
     public interface CutEffectDestoryBehavior
     {
-        void Init(MagicWallManager manager,CommonScene commonScene, Action onDestoryCompleted);
+        void Init(MagicWallManager manager,CommonScene commonScene, Action onDestoryCompleted,SceneConfig sceneConfig);
 
         void Run();
     }

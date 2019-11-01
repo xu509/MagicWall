@@ -32,17 +32,18 @@ namespace MagicWall
             _parentRectTransform = container;
             _kinectAgentPrefab = agentPrefab.gameObject;
             _manager = manager;
-            kinectManager = KinectManager.Instance;
             //print("KinectService Init");
 
         }
 
         public void Monitoring()
         {
-
             if (!isInit)
                 return;
-
+            if (kinectManager == null)
+            {
+                kinectManager = KinectManager.Instance;
+            }
             //生成体感卡片
             List<long> ids = kinectManager.GetAllUserIds();
             for (int i = 0; i < ids.Count; i++)
@@ -150,6 +151,7 @@ namespace MagicWall
 
         public void StartMonitoring(Action startSuccessAction, Action<string> startFailedAction)
         {
+            kinectManager = KinectManager.Instance;
             isInit = kinectManager.IsInitialized(); //首先要对设备进行实例化和初始化，之后才能进行后续的操作
             if (isInit)
             {
@@ -164,7 +166,7 @@ namespace MagicWall
 
         public void StopMonitoring()
         {
-
+            
         }
 
         /// <summary>

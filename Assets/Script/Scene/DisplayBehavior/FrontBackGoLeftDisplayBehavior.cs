@@ -28,10 +28,10 @@ namespace MagicWall
         public void Run()
         {
 
-            Vector3 to = new Vector3(0 - Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor, 0, 0);
+            Vector3 to = new Vector3(-Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor, 0, 0);
             _manager.mainPanel.transform.Translate(to);
 
-            Vector3 backTo = new Vector3(Time.deltaTime * _manager.managerConfig.MainPanelMoveFactor / 2, 0, 0);
+            Vector3 backTo = new Vector3(Time.deltaTime * _manager.managerConfig.BackPanelMoveFactor, 0, 0);
             //Vector3 backTo = new Vector3(Time.deltaTime * _manager.MovePanelFactor * 2, 0, 0);
             _manager.backPanel.transform.Translate(backTo);
 
@@ -123,7 +123,7 @@ namespace MagicWall
                         //    imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(ori_x, ori_y), AgentContainerType.MainPanel
-    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent, DaoTypeEnum.CBHAiqigu);
+    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent, _displayBehaviorConfig.sceneConfig.daoTypeEnum);
 
                         go.flockStatus = FlockStatusEnum.NORMAL;
 
@@ -201,7 +201,7 @@ namespace MagicWall
                         //go = _displayBehaviorConfig.ItemsFactory.Generate(ori_x, ori_y, ori_x, ori_y, i, column,
                         //    width, height, agent, AgentContainerType.BackPanel);
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(ori_x, ori_y), AgentContainerType.BackPanel
-, ori_x, ori_y, i, column, width, height, agent,DaoTypeEnum.CBHAiqigu);
+, ori_x, ori_y, i, column, width, height, agent, _displayBehaviorConfig.sceneConfig.daoTypeEnum);
 
                         go.flockStatus = FlockStatusEnum.NORMAL;
 

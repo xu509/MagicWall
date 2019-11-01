@@ -31,12 +31,24 @@ namespace MagicWall
         private bool isHide = false;//logo 淡出
         private float fadeTime = 3f;//淡入淡出时间
 
-        public void Init(MagicWallManager manager,CommonScene commonScene, Action onDestoryCompleted)
+        private SceneConfig _sceneConfig;
+
+        //虹口
+        //飞越logo
+        private Sprite feiyueLogo;
+        //爱企logo
+        private Sprite aiqiLogo;
+
+
+        public void Init(MagicWallManager manager,CommonScene commonScene, Action onDestoryCompleted, SceneConfig sceneConfig)
         {
             _manager = manager;
             _commonScene = commonScene;
             _onDestoryCompleted = onDestoryCompleted;
+            _sceneConfig = sceneConfig;
 
+            feiyueLogo = Resources.Load<Sprite>("UI/6ping-feiyue-logo");
+            aiqiLogo = Resources.Load<Sprite>("UI/6ping-aiqi-logo");
 
             logoOriginalIsActive = _manager.BgLogo.gameObject.activeInHierarchy;
             logoOriginalSprite = _manager.BgLogo.GetComponent<Image>().sprite;
@@ -50,7 +62,14 @@ namespace MagicWall
             {
                 // 此处初始化
                 _manager.BgLogo.gameObject.SetActive(true);
-                _manager.BgLogo.GetComponent<Image>().sprite = _manager.CustomLogoSprite;
+                if (_sceneConfig.daoTypeEnum == DaoTypeEnum.HongKouFeiyue)
+                {
+                    _manager.BgLogo.GetComponent<Image>().sprite = feiyueLogo;
+                }
+                else if (_sceneConfig.daoTypeEnum == DaoTypeEnum.HongKouPicture)
+                {
+                    _manager.BgLogo.GetComponent<Image>().sprite = aiqiLogo;
+                }
                 _manager.BgLogo.sizeDelta = customLogoSize;
                 _manager.BgLogo.GetComponent<Image>().color = Color.white;
                 _manager.BgLogo.GetComponent<Image>().CrossFadeAlpha(0, 0, true);

@@ -71,6 +71,7 @@ namespace MagicWall
             //_daoService = manager.daoService;
             _durtime = sceneConfig.durtime;
             _dataType = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
             _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
 
@@ -206,7 +207,10 @@ namespace MagicWall
         private FlockAgent CreateNewAgent(bool randomZ)
         {
             // 获取数据
-            //FlockData data = _daoService.GetFlockData(_dataType,_manager);
+            //FlockData data = _daoService.GetFlockData(_dataType,_manager);\
+            Debug.Log("111" + _dataType);
+            Debug.Log("222" + _manager.SceneIndex);
+
             FlockData data = _daoService.GetFlockDataByScene(_dataType,_manager.SceneIndex);
 
             // 获取出生位置

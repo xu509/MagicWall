@@ -56,10 +56,10 @@ namespace MagicWall
 
             if (sceneConfig.isKinect == 0)
             {
-                row_set = 6;
+                row_set = _manager.managerConfig.Row;
             }
             else {
-                row_set = 12;
+                row_set = _manager.managerConfig.KinectRow;
             }
 
 

@@ -23,6 +23,7 @@ namespace MagicWall
         private Dictionary<int, List<Activity>> _activityByEidMap;
         private Dictionary<int, List<Product>> _productByEidMap;
         private Dictionary<int, List<Catalog>> _catalogByEidMap;
+        private Dictionary<int, List<Video>> _videoByEidMap;
 
         private bool _hasInit;
 
@@ -306,8 +307,14 @@ namespace MagicWall
 
         public List<Video> GetVideosByEnvId(int envId)
         {
-            return new List<Video>();
-
+            if (_videoByEidMap.ContainsKey(envId))
+            {
+                return _videoByEidMap[envId];
+            }
+            else
+            {
+                return new List<Video>();
+            }
         }
 
         public List<Activity> GetActivitiesByEnvId(int envid)
@@ -363,6 +370,7 @@ namespace MagicWall
             _activityByEidMap = new Dictionary<int, List<Activity>>();
             _productByEidMap = new Dictionary<int, List<Product>>();
             _catalogByEidMap = new Dictionary<int, List<Catalog>>();
+            _videoByEidMap = new Dictionary<int, List<Video>>();
 
             string enterprisePath = "ZBH\\fengxian\\";
 
@@ -416,6 +424,9 @@ namespace MagicWall
 
                 //增加公司名片
                 AddBusinessCard(name, enterprise);
+
+                //增加公司视频
+                AddVideo(name, ent_id);
 
                 _enterpriseMap.Add(ent_id, enterprise);
                 _enterprises.Add(enterprise);
@@ -598,6 +609,43 @@ namespace MagicWall
                 }
 
                 enterprise.Business_card = busincessCarcdPath;
+            }
+        }
+
+        private void AddVideo(string name, int ent_id)
+        {
+            bool hasVideo = false;
+
+            string videoDirPath = "ZBH\\fengxian\\" + name + "\\视频";
+
+            if (Directory.Exists(MagicWallManager.FileDir + videoDirPath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(MagicWallManager.FileDir + videoDirPath);
+                FileInfo[] files = dirInfo.GetFiles();
+
+                List<Video> videos = new List<Video>();
+                List<FileInfo> videoFiles = new List<FileInfo>();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (files[i].Extension == "mp4")
+                    {
+                        videoFiles.Add(files[i]);
+                    }
+                }
+                foreach (var item in videoFiles)
+                {
+                    var fileNameWithoutExt = item.Name.Replace(item.Extension, "");
+                    Video video = new Video();
+                    video.V_id = ent_id;
+                    video.Description = item.Name;
+                    video.Address = videoDirPath + "\\" + item.Name;
+                    video.Cover = videoDirPath + "" + fileNameWithoutExt + "";
+                    videos.Add(video);
+                }
+                if (hasVideo)
+                {
+                    _videoByEidMap.Add(ent_id, videos);
+                }
             }
         }
 

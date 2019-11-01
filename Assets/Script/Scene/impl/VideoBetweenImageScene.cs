@@ -52,7 +52,7 @@ namespace MagicWall
 
             // 销毁
             _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            _destoryBehavior.Init(_manager, null, OnDestoryCompleted);
+            _destoryBehavior.Init(_manager, null, OnDestoryCompleted, sceneConfig);
 
         }
 
