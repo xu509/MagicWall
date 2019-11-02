@@ -16,6 +16,8 @@ namespace MagicWall
 
         [SerializeField, Header("SliceCardAgent UI")] Text _title;
         [SerializeField] RectTransform _titleContainer;
+        [SerializeField] RectTransform _descContainer;
+        [SerializeField] RectTransform _buttomsContainer;
         [SerializeField] Text _description;
         [SerializeField] SliceScrollAgent _sliceScrollAgent;
         [SerializeField] RectTransform _buttomTool;
@@ -50,19 +52,24 @@ namespace MagicWall
             _questionTypeEnum = QuestionTypeEnum.SliceCard;
 
             _sliceScrollAgent.Init(_data, (data, scrollDirection) => {
+                DoUpdate();
                 UpdateDescription(data.Description);
+                AdjustUILocation();
+            }, OnClickScale, DoVideo,()=> {
+                // scale 部分调整完毕
+                //AdjustUI();
+                DoUpdate();
+                ShowUI();
 
-            }, OnClickScale, DoVideo);
+                var data = operateCardDataSlide.ScrollData[0];
+                UpdateDescription(data.Description);
+            });
+
+            var extraDatas = operateCardDataSlide.ExtraCardData;
+            InitComponents(extraDatas);
 
         }
 
-
-
-        public void SwitchScaleMode(Texture texture)
-        {
-            //scaleController.SetImage(texture);
-            //scaleController.OpenScaleBox();
-        }
 
 
         public void UpdateDescription(string description)
@@ -71,19 +78,6 @@ namespace MagicWall
             _description.text = description;
 
         }
-
-        private void UpdateToolComponent()
-        {
-
-
-        }
-
-
-        private void OnOperationAction()
-        {
-            DoUpdate();
-        }
-
 
 
         private void OnClickScale(string str)
@@ -107,6 +101,52 @@ namespace MagicWall
         }
 
 
+
+        private void ShowUI() {
+            // 显示UI
+            Debug.Log("显示UI");
+            AdjustUILocation();
+            //Debug.Log(scrollSize);
+
+
+
+        }
+
+        private void AdjustUILocation() {
+            // 调整标题位置
+            // height : 400 => position 7 : -235
+            // 900 => -5
+
+            var scrollSize = _sliceScrollAgent.GetCurrentImage();
+            var height = scrollSize.y;
+
+            var offsetTitle = (height - 400) / 500f;
+            Vector2 toLocation = Vector2.LerpUnclamped(new Vector2(0, -235), new Vector2(0, -5), offsetTitle);
+            _titleContainer.anchoredPosition = toLocation;
+
+            Debug.Log("调整标题位置： " + toLocation);
+
+
+            // 调整描述位置
+            // 400 => 230
+            // 900 => -34
+            var offsetDescription = (height - 400) / 500f;
+            Vector2 toDLocation = Vector2.LerpUnclamped(new Vector2(0, 230), new Vector2(0, -34), offsetDescription);
+            _descContainer.anchoredPosition = toDLocation;
+
+            Debug.Log("调整描述位置： " + toDLocation);
+
+
+            // 调整按钮位置
+            // 400 => 190
+            // 900 => -67
+            var offsetBottoms = (height - 400) / 500f;
+            Vector2 toBLocation = Vector2.LerpUnclamped(new Vector2(0, 190), new Vector2(0, -67), offsetBottoms);
+            _buttomsContainer.anchoredPosition = toBLocation;
+        }
+
+
+
         /// <summary>
         /// 调整卡片UI
         /// </summary>
@@ -120,13 +160,11 @@ namespace MagicWall
             if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 // 调整标题位置，标题大小
-                var titlePosition1080 = new Vector2(0.0f, -165.0f);
-                var titleFontSize = 40;
-                _titleContainer.anchoredPosition = titlePosition1080;
+                var titleFontSize = 45;
                 _title.fontSize = titleFontSize;
 
                 // 调整描述字体大小与位置
-                var descriptionFontSize = 30;
+                var descriptionFontSize = 40;
                 _description.fontSize = descriptionFontSize;
 
             }
@@ -135,7 +173,6 @@ namespace MagicWall
                 // 调整标题位置，标题大小
                 var titlePosition720 = new Vector2(0.0f, -165.0f);
                 var titleFontSize = 30;
-                _titleContainer.anchoredPosition = titlePosition720;
                 _title.fontSize = titleFontSize;
 
                 // 调整描述字体大小与位置

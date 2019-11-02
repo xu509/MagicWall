@@ -224,6 +224,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 64193bc53d4317f45a7dd9780e7f6f3d,
         type: 2}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _cutEffectConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: cf92c3633f3925f40b1731de61ad22fd,
+        type: 2}
     - target: {fileID: 6604836969971961798, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _crossCardPrefab

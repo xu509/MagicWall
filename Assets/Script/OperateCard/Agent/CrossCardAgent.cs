@@ -86,51 +86,6 @@ namespace MagicWall {
 
         }
 
-        ////
-        ////  上一张
-        ////
-        //public void DoUp()
-        //{
-        //    int index = crossCardScrollViewController.CurrentIndex;
-
-        //    // 获取上一个 index
-        //    int up_index = index - 1;
-
-        //    if (up_index < 0)
-        //    {
-        //        up_index = _scrollItemNumber - 1;
-        //    }
-
-        //    //Debug.Log("上一个，当前： " + index + " 目标： " + up_index);
-
-        //    crossCardScrollViewController.SelectCell(up_index);
-
-        //    DoUpdate();
-
-        //}
-
-        ////
-        ////  下一张
-        ////
-        //public void DoDown()
-        //{
-        //    int index = crossCardScrollViewController.CurrentIndex;
-
-        //    // 获取上一个 index
-        //    int down_index = index + 1;
-        //    if (down_index == _scrollItemNumber)
-        //    {
-        //        down_index = 0;
-        //    }
-
-        //    crossCardScrollViewController.SelectCell(down_index);
-
-        //   // Debug.Log("下一个，当前： " + index + " 目标： " + down_index);
-
-
-        //    DoUpdate();
-        //}
-
 
         private void UpdateToolComponent()
         {
@@ -177,6 +132,7 @@ namespace MagicWall {
             _questionTypeEnum = QuestionTypeEnum.CrossCard;
 
             _crossScrollAgent.Init(_cardData,(data,navtype,scrollDirection)=> {
+                DoUpdate();
                 Debug.Log("Has Changed : [NAV]" + navtype + "[data]" + data);
                 UpdateDescription(data.Description);
 
@@ -197,57 +153,6 @@ namespace MagicWall {
         }
 
 
-        private List<CrossCardCellData> Transfer(List<ScrollData> scrollDatas) {
-            List<CrossCardCellData> crossCardCellDatas = new List<CrossCardCellData>();
-
-            for (int i = 0; i < scrollDatas.Count; i++) {
-                CrossCardCellData crossCardCellData = new CrossCardCellData();
-                crossCardCellData.Image = scrollDatas[i].Cover;
-                crossCardCellData.Index = i;
-                crossCardCellData.Description = scrollDatas[i].Description;
-                if (scrollDatas[i].Type == 0)
-                {
-                    crossCardCellData.IsImage = true;
-                }
-                else {
-                    crossCardCellData.Category = CrossCardCategoryEnum.VIDEO;
-                    crossCardCellData.IsImage = false;
-                    crossCardCellData.VideoUrl = scrollDatas[i].Src;
-                }
-
-                crossCardCellData.magicWallManager = _manager;
-
-                crossCardCellDatas.Add(crossCardCellData);
-            }
-
-
-            return crossCardCellDatas;
-        }
-
-        private CrossCardCellData TransferScrollData(ScrollData scrollData)
-        {
-
-            CrossCardCellData crossCardCellData = new CrossCardCellData();
-            crossCardCellData.Image = scrollData.Cover;
-            crossCardCellData.Index = 0;
-            crossCardCellData.Description = scrollData.Description;
-            if (scrollData.Type == 0)
-            {
-                crossCardCellData.IsImage = true;
-            }
-            else
-            {
-                crossCardCellData.IsImage = false;
-                crossCardCellData.VideoUrl = scrollData.Src;
-            }
-
-            crossCardCellData.magicWallManager = _manager;
-
-
-            return crossCardCellData;
-        }
-
-
         public override void FullDisplayAfterGoFront() {
 
             Debug.Log("Full Display After Go Front");
@@ -258,6 +163,7 @@ namespace MagicWall {
             // 显示标题
             _title.text = _cardData.Title;
 
+            DoUpdate();
 
         }
 
@@ -273,7 +179,7 @@ namespace MagicWall {
             if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 // 提示按钮
-                _questionContainer.anchoredPosition = new Vector2(337, 194);
+                _questionContainer.anchoredPosition = new Vector2(391, 243);
 
                 // 描述模块
 

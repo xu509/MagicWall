@@ -19,13 +19,14 @@ namespace MagicWall {
 
         Action<ScrollData, ScrollDirectionEnum> _onChanged;  // 修改中
         Action<string> _onScale;
+        Action _onInitCompleted;
         Action<string, string, string> _onPlayVideo;
         public Action<string> onScale { get { return _onScale; } }
 
 
         [SerializeField] ScrollAreaAgent _scrollAreaAgent;
-        [SerializeField] ScrollItemAgent _scrollItemPrefab;
-        public ScrollItemAgent scrollItemPrefab { get { return _scrollItemPrefab; } }
+        [SerializeField] SliceScrollItemAgent _scrollItemPrefab;
+        public SliceScrollItemAgent scrollItemPrefab { get { return _scrollItemPrefab; } }
 
         [SerializeField] SliceScrollPanelAgent _scrollPanelPrepare;
         public SliceScrollPanelAgent scrollPanelPrepare { get { return _scrollPanelPrepare; } }
@@ -39,13 +40,15 @@ namespace MagicWall {
         [SerializeField] SliceScrollPanelAgent _scrollPanelMiddle;
         public SliceScrollPanelAgent scrollPanelMiddle { get { return _scrollPanelMiddle; } }
 
-        public void Init(OperateCardDataSlide data,Action<ScrollData,ScrollDirectionEnum> onChanged,Action<string> onScale,Action<string,string,string> onPlayVideo) {
+        public void Init(OperateCardDataSlide data,Action<ScrollData,ScrollDirectionEnum> onChanged,
+            Action<string> onScale,Action<string,string,string> onPlayVideo,Action onInitCompleted) {
             _isPrepared = false;
             _data = data;
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
             _onChanged = onChanged;
             _onScale = onScale;
             _onPlayVideo = onPlayVideo;
+            _onInitCompleted = onInitCompleted;
 
             _scrollPanelAgents = new List<SliceScrollPanelAgent>();
             _scrollPanelAgents.Add(_scrollPanelLeft);
@@ -73,6 +76,8 @@ namespace MagicWall {
             // 初始化对照nav list
             var datas = _data.ScrollData;
 
+            _scrollPanelMiddle.GoOutLocation();
+
             // 添加上部与下部的内容
             if (datas.Count == 2)
             {
@@ -92,6 +97,7 @@ namespace MagicWall {
 
             _scrollAreaAgent.Init(OnRecognizeDirection);
             _isPrepared = true;
+            _onInitCompleted.Invoke();
         }
 
 
@@ -124,10 +130,10 @@ namespace MagicWall {
                 HandleIndexAfterUpdate(scrollDirectionEnum);
 
 
-                //var navType = _data.ScrollData[_index];
-                //var scrollData = _data.ScrollDic[navType][_index];
-                //_onChanged.Invoke(scrollData,navType, scrollDirectionEnum);
-                //Debug.Log("当前的NAV: " + _data.ScrollData[_index]);
+                var currentData = _data.ScrollData[_index];
+
+                _onChanged.Invoke(currentData, scrollDirectionEnum);
+
             }
         }
 
@@ -146,7 +152,7 @@ namespace MagicWall {
 
                 }
                 else if (_data.ScrollData.Count > 2) {
-                    var preAgent = _scrollPanelPrepare.GetComponentInChildren<ScrollItemAgent>();
+                    var preAgent = _scrollPanelPrepare.GetComponentInChildren<SliceScrollItemAgent>();
                     if (preAgent != null)
                     {
                         Destroy(preAgent.gameObject);
@@ -266,6 +272,11 @@ namespace MagicWall {
         /// </summary>
         void Refresh() {
             
+        }
+
+        public Vector2 GetCurrentImage() {
+            var item = _scrollPanelMiddle.GetComponentInChildren<SliceScrollItemAgent>();
+            return item.GetImageSize();
         }
 
     }

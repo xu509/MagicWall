@@ -1339,7 +1339,7 @@ namespace MagicWall
         /// </summary>
         /// <returns></returns>
         private bool EnterToDestoryTime() {
-            return false;
+            //return false;
 
             float waitTime;
 

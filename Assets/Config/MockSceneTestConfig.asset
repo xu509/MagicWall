@@ -13,18 +13,32 @@ MonoBehaviour:
   m_Name: MockSceneTestConfig
   m_EditorClassIdentifier: 
   sceneConfigs:
+  - _sceneType: 0
+    _dataType: 2
+    _durTime: 5
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 4
+    _isKinect: 0
+  - _sceneType: 0
+    _dataType: 2
+    _durTime: 5
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 4
+    _isKinect: 0
   - _sceneType: 2
     _dataType: 1
     _durTime: 10
     _displayBehavior: 2
     _destoryBehavior: 0
     _daoTypeEnum: 11
-    _isKinect: 0
+    _isKinect: 1
   - _sceneType: 3
     _dataType: 1
     _durTime: 10
     _displayBehavior: 1
     _destoryBehavior: 0
     _daoTypeEnum: 11
-    _isKinect: 0
+    _isKinect: 1
   data: 0
