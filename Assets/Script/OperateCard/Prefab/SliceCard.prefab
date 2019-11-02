@@ -1124,7 +1124,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4F3D\u84DD\uFF08\u96C6\u56E2\uFF09\u80A1\u4EFD\u6709\u9650\u516C\u53F8"
+  m_Text: 
 --- !u!1 &4664694587762709937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,11 +2061,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4891059830163230388}
     m_Modifications:
-    - target: {fileID: 6760767054770873067, guid: 3fe1c305d76e4634680f49b083bd536d,
-        type: 3}
-      propertyPath: m_Name
-      value: protectAgent
-      objectReference: {fileID: 0}
     - target: {fileID: 2205539996274789613, guid: 3fe1c305d76e4634680f49b083bd536d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2171,6 +2166,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6760767054770873067, guid: 3fe1c305d76e4634680f49b083bd536d,
+        type: 3}
+      propertyPath: m_Name
+      value: protectAgent
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fe1c305d76e4634680f49b083bd536d, type: 3}
 --- !u!224 &28323493482734350 stripped
@@ -2198,11 +2198,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9052429436917369684}
     m_Modifications:
-    - target: {fileID: 255108019010542658, guid: 94b80dc75b630574395b6b6b5d0ceedb,
-        type: 3}
-      propertyPath: m_Name
-      value: Content
-      objectReference: {fileID: 0}
     - target: {fileID: 1800393925005223097, guid: 94b80dc75b630574395b6b6b5d0ceedb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2308,6 +2303,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 255108019010542658, guid: 94b80dc75b630574395b6b6b5d0ceedb,
+        type: 3}
+      propertyPath: m_Name
+      value: Content
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94b80dc75b630574395b6b6b5d0ceedb, type: 3}
 --- !u!114 &6549174168007684893 stripped
@@ -2335,11 +2335,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2231630901696905992}
     m_Modifications:
-    - target: {fileID: 8481579859594210014, guid: 1756148a935a84845be20feebb4faeea,
-        type: 3}
-      propertyPath: m_Name
-      value: move
-      objectReference: {fileID: 0}
     - target: {fileID: 5573244821936830720, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2445,6 +2440,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8481579859594210014, guid: 1756148a935a84845be20feebb4faeea,
+        type: 3}
+      propertyPath: m_Name
+      value: move
+      objectReference: {fileID: 0}
     - target: {fileID: 8410637306457466100, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -2497,16 +2497,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5348307415405197549}
     m_Modifications:
-    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
-        type: 3}
-      propertyPath: m_Name
-      value: btn-move
-      objectReference: {fileID: 0}
     - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: _moveSubject
       value: 
       objectReference: {fileID: 2429258555300052348}
+    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: m_Name
+      value: btn-move
+      objectReference: {fileID: 0}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2639,16 +2639,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7532080157054653257}
     m_Modifications:
-    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
-        type: 3}
-      propertyPath: m_Name
-      value: btn-move
-      objectReference: {fileID: 0}
     - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: _moveSubject
       value: 
       objectReference: {fileID: 2429258555300052348}
+    - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: m_Name
+      value: btn-move
+      objectReference: {fileID: 0}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x

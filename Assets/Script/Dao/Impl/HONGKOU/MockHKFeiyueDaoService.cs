@@ -172,6 +172,8 @@ namespace MagicWall
         //
         public Product GetProductDetail(int pro_id)
         {
+            Debug.Log("pro_id : " + pro_id);
+
             var product = _productMap[pro_id];
 
             return product;
@@ -415,10 +417,20 @@ namespace MagicWall
             }
         }
 
+
+
+        /// <summary>
+        /// 此处有修改，其他dao需要比对此方法
+        /// </summary>
+        /// <param name="directoryInfo"></param>
+        /// <param name="fileInfo"></param>
+        /// <param name="proId"></param>
+        /// <returns></returns>
         private List<ProductDetail> GetProductDetails(DirectoryInfo directoryInfo,FileInfo fileInfo,int proId) {
             List<ProductDetail> productDetails = new List<ProductDetail>();
 
             var fileInfos = directoryInfo.GetFiles();
+            int coverIndex = 0;
             int index = 0;
             for (int i = 0; i < fileInfos.Length; i++)
             {
@@ -434,17 +446,21 @@ namespace MagicWall
                     productDetail.Description = fileName;
                     productDetails.Add(productDetail);
 
-                    if (fileInfo == fileInfos[i])
+
+                    //Debug.Log("FULLNAME : " + fileInfo.Name + " - FULLNAME[i]" + fileInfos[i].FullName);
+
+                    if (fileInfo.Name.Equals(fileInfos[i].Name))
                     {
-                        index = i;
+                        coverIndex = index;
                     }
+                    index++;
                 }
             }
 
             var temp = productDetails[0];
-            var tempC = productDetails[index];
+            var tempC = productDetails[coverIndex];
             productDetails[0] = tempC;
-            productDetails[index] = temp;
+            productDetails[coverIndex] = temp;
 
             return productDetails;
         }

@@ -525,7 +525,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _collisionBehaviorConfig
       value: 
-      objectReference: {fileID: 11400000, guid: 2114e26291e14df49af27e4e6629890f,
+      objectReference: {fileID: 11400000, guid: ae1fe98d94b0a11419600d6312ca491d,
         type: 2}
     - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -619,6 +619,12 @@ PrefabInstance:
       propertyPath: _udpManager
       value: 
       objectReference: {fileID: 1438289765}
+    - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _flockBehaviorConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 837ab59404ddbdb41a9569c8f363b1e3,
+        type: 2}
     - target: {fileID: 7656926779250438374, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _agentChooseBehavior
