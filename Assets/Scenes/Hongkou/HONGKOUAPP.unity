@@ -276,7 +276,7 @@ MonoBehaviour:
   sensorHeight: 0
   sensorAngle: 0
   autoHeightAngle: 2
-  computeUserMap: 3
+  computeUserMap: 2
   computeColorMap: 0
   computeInfraredMap: 0
   displayUserMap: 0
@@ -737,7 +737,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: fc3d0db763057354f8397a5eaab6a39c,
+      objectReference: {fileID: 11400000, guid: c9fa7357c74b9d343b4d85be348063a4,
         type: 2}
     - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}

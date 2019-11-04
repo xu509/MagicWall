@@ -143,18 +143,18 @@ namespace MagicWall
                 int to;
                 if (si == 1)
                 {
-                    to = 8;
+                    to = 1;
                 }
                 else if (si == 2)
                 {
-                    to = 1;
+                    to = 6;
                 }
                 else if (si == 3)
                 {
-                    to = 16;
+                    to = 11;
                 }
                 else {
-                    to = 7;
+                    to = 16;
                 }
 
                 Debug.Log("si : " + si + " - TO :" + to);

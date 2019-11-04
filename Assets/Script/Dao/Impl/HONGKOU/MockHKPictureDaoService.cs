@@ -414,6 +414,7 @@ namespace MagicWall
             List<ProductDetail> productDetails = new List<ProductDetail>();
 
             var fileInfos = directoryInfo.GetFiles();
+            int coverIndex = 0;
             int index = 0;
             for (int i = 0; i < fileInfos.Length; i++)
             {
@@ -429,17 +430,18 @@ namespace MagicWall
                     productDetail.Description = fileName;
                     productDetails.Add(productDetail);
 
-                    if (fileInfo == fileInfos[i])
+                    if (fileInfo.Name.Equals(fileInfos[i].Name))
                     {
-                        index = i;
+                        coverIndex = index;
                     }
+                    index++;
                 }
             }
 
             var temp = productDetails[0];
-            var tempC = productDetails[index];
+            var tempC = productDetails[coverIndex];
             productDetails[0] = tempC;
-            productDetails[index] = temp;
+            productDetails[coverIndex] = temp;
 
             return productDetails;
         }
