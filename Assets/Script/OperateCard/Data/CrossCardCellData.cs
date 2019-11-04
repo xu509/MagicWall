@@ -55,11 +55,13 @@ namespace MagicWall {
             string str = "";
 
             str += "Id : " + _id;
-            str += "Env Id : " + _envid;
-            str += "Index : " + _index;
-            str += "title : " + _title;
-            str += "category : " + _category;
-            str += "Image Texture is Null : " + _imageTexture == null;
+            str += " Env Id : " + _envid;
+            str += " Index : " + _index;
+            str += " description : " + _description;
+            str += " title : " + _title;
+            str += " _image : " + _image;
+            str += " category : " + _category;
+            str += " Image Texture is Null : " + _imageTexture == null;
 
 
 

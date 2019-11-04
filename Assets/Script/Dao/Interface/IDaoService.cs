@@ -37,11 +37,6 @@ namespace MagicWall
         /// <returns></returns>
         EnterpriseDetail GetEnterprisesDetail(int com_id);
 
-        /// <summary>
-        ///     获取喜欢数
-        /// </summary>
-        /// <returns></returns>
-        int GetLikes(int id, CrossCardCategoryEnum category);
 
         /// <summary>
         ///     获得企业卡片
@@ -114,11 +109,6 @@ namespace MagicWall
         List<ProductDetail> GetProductDetails(int pro_id);
 
 
-        int GetLikesByProductDetail(int id);
-
-        int GetLikesByActivityDetail(int id);
-
-
         /// <summary>
         ///     获取浮块数据
         /// </summary>
@@ -134,21 +124,6 @@ namespace MagicWall
         /// <param name="keys"></param>
         /// <returns></returns>
         List<SearchBean> Search(string keys);
-
-
-
-        /// <summary>
-        ///     获取显示配置
-        /// </summary>
-        /// <returns></returns>
-        List<SceneConfig> GetShowConfigs();
-
-        /// <summary>
-        ///     获取配置
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        AppConfig GetConfigByKey(string key);
 
         /// <summary>
         ///     获取视频详细
@@ -178,16 +153,16 @@ namespace MagicWall
         List<string> GetCustomImage(CustomImageType type);
         #endregion
 
-        MWConfig GetConfig();
-
         /// <summary>
-        ///    根据图片地址获取喜欢数
+        /// 6屏，图片轮播+ 视频， 获取左侧的图片轮播
         /// </summary>
-        /// <param name="path"></param>
         /// <returns></returns>
-        int GetLikes(string path);
+        List<string> GetLeftImagesForVBI6S();
+        List<string> GetRigetImagesForVBI6S();
+        List<string> GetVideosForVBI6S();
 
-        bool UpdateLikes(string path);
+
+
 
 
     }

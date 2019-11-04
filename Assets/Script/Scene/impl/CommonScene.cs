@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 // 普通场景
 namespace MagicWall
@@ -61,13 +62,11 @@ namespace MagicWall
                 , OnCutEffectCreateAgentCompleted,
                 ()=> {
                     // on effect completed
-                    Debug.Log("on effect completed");
 
                     _runEntrance = false;
                 },()=>
                 {
                     // on display Start
-                    Debug.Log("on display start");
 
                     _runDisplay = true;
                     _displayStartTime = Time.time;
@@ -80,7 +79,7 @@ namespace MagicWall
 
             // 销毁
             _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            _destoryBehavior.Init(_manager,this, OnDestoryCompleted);
+            _destoryBehavior.Init(_manager,this, OnDestoryCompleted, sceneConfig);
 
             _sceneConfig = sceneConfig;
 
@@ -96,6 +95,19 @@ namespace MagicWall
              _displayStartTime = 0;
              _hasCallDestory = false;
              _hasInitData = true;
+
+            if (_sceneConfig.isKinect == 0)
+            {
+                _manager.useKinect = false;
+            }
+            else {
+                _manager.useKinect = true;
+            }
+
+
+            // 初始化入场效果参数
+            _cutEffect.InitData();
+
         }
 
 
@@ -150,5 +162,25 @@ namespace MagicWall
 
         }
 
+        public void RunEnd(Action onEndCompleted)
+        {
+            // 渐暗，清理
+            _manager.BgLogo.GetComponent<Image>().sprite = _manager.magicSceneManager.logo;
+
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _hasInitData = false;
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+            });
+
+
+
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
+        }
     }
 }

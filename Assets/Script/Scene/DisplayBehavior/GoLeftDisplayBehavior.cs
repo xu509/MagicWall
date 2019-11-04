@@ -24,7 +24,7 @@ namespace MagicWall
         {
             _displayBehaviorConfig = displayBehaviorConfig;
             _manager = _displayBehaviorConfig.Manager;
-            _daoService = _manager.daoService;
+            _daoService = _manager.daoServiceFactory.GetDaoService(displayBehaviorConfig.sceneConfig.daoTypeEnum);
 
             flag = false;
         }
@@ -88,7 +88,7 @@ namespace MagicWall
                 {
                     // 该行添加内容
                     //FlockData data = _manager.daoService.GetFlockData(dataType);
-                    FlockData data = _manager.daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
+                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite spriteImage = data.GetCoverSprite();
 
                     int itemHeight = _displayBehaviorConfig.sceneUtils.GetFixedItemHeight();
@@ -104,7 +104,7 @@ namespace MagicWall
                     //    , row, bean.column + 1, itemWidth, itemHeight, data, AgentContainerType.MainPanel);
 
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x,gen_y), AgentContainerType.MainPanel
-                        , gen_x, gen_y, row, bean.column + 1, itemWidth, itemHeight, data);
+                        , gen_x, gen_y, row, bean.column + 1, itemWidth, itemHeight, data, _displayBehaviorConfig.sceneConfig.daoTypeEnum);
                     go.flockStatus = FlockStatusEnum.NORMAL;
 
                     go.NextVector2 = new Vector2(gen_x, gen_y);

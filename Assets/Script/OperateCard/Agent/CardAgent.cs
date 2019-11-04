@@ -37,6 +37,11 @@ namespace MagicWall
 
         protected DataTypeEnum dataType;
 
+
+        private DaoTypeEnum _daoTypeEnum;
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; } get { return _daoTypeEnum; } }
+
+
         private List<ExtraCardData> _extraCardDatas;
         private int _sceneIndex;
 
@@ -97,8 +102,7 @@ namespace MagicWall
 
         private bool _disableEffect = false;
         public bool disableEffect{ get { return _disableEffect; } }
-        private bool _hasReplace = false;
-        public bool hasReplace { get { return _hasReplace; } }
+
 
 
         public CardStatusEnum _cardStatus;   // 状态   
@@ -205,6 +209,9 @@ namespace MagicWall
             if (originAgent != null)
             {
                 name = dataType.ToString() + "(" + originAgent.name + ")";
+
+
+                _daoTypeEnum = originAgent.daoTypeEnum;
 
                 //  添加原组件
                 OriginAgent = originAgent;
@@ -810,7 +817,6 @@ namespace MagicWall
         public void GoToFront(Action onFinsihed)
         {
             RectTransform rectTransfrom = GetComponent<RectTransform>();
-
             gameObject.SetActive(true);
 
             Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
@@ -835,6 +841,9 @@ namespace MagicWall
                     // 执行完成后动画
                     DoOnCreatedCompleted();
 
+                    // 进行完整显示
+                    FullDisplayAfterGoFront();
+
                     CardStatus = CardStatusEnum.NORMAL;
 
                     onFinsihed.Invoke();
@@ -842,6 +851,14 @@ namespace MagicWall
                 }).SetEase(Ease.OutBack);
             _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Scale, cardGoToFrontScaleAni);
         }
+
+        public virtual void FullDisplayAfterGoFront()
+        {
+            //Debug.Log("Do In Parent");
+        }
+
+
+
 
         public void CancelGoToFront(Action onFinsihed)
         {
@@ -1322,6 +1339,8 @@ namespace MagicWall
         /// </summary>
         /// <returns></returns>
         private bool EnterToDestoryTime() {
+            //return false;
+
             float waitTime;
 
             //if(_cardStatus == CardStatusEnum.MOVE 
@@ -1355,7 +1374,7 @@ namespace MagicWall
             if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 //800 
-                float rectHeight = 800f;
+                float rectHeight = 1000f;
                 GetComponent<RectTransform>().sizeDelta = new Vector2(rectHeight, rectHeight);
             }
             else {
@@ -1468,10 +1487,6 @@ namespace MagicWall
 
         /* CollisionEffectAgent 实现 结束*/
 
-
-        public void ChangeHasReplace(bool hasReplace) {
-            _hasReplace = hasReplace;
-        }
 
     }
 

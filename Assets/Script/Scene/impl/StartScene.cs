@@ -41,7 +41,6 @@ namespace MagicWall
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
-            _daoService = manager.daoService;
             _startSceneStatus = StartSceneStatus.Init;
             _onSceneCompleted = onSceneCompleted;
         }
@@ -51,14 +50,22 @@ namespace MagicWall
         {
             //DoDebug("Start Scene Is Start!");
             if (_startSceneStatus == StartSceneStatus.Init) {
-                _startSceneStatus = StartSceneStatus.showUI;
-                _manager.BgLogo.gameObject.SetActive(true);
-                _manager.BgLogo.GetComponent<Image>()
-                    .DOFade(1, 1f)
-                    .OnComplete(() =>
-                    {
-                        _startSceneStatus = StartSceneStatus.showUICompleted;
-                    });
+
+
+                if (_manager.magicSceneManager.runLogoAni)
+                {
+                    _startSceneStatus = StartSceneStatus.showUI;
+                    _manager.BgLogo.gameObject.SetActive(true);
+                    _manager.BgLogo.GetComponent<Image>()
+                        .DOFade(1, 1f)
+                        .OnComplete(() =>
+                        {
+                            _startSceneStatus = StartSceneStatus.showUICompleted;
+                        });
+                }
+                else {
+                    _startSceneStatus = StartSceneStatus.showUICompleted;
+                }
             }
 
             if (_startSceneStatus == StartSceneStatus.showUICompleted) {
@@ -72,16 +79,23 @@ namespace MagicWall
             }
 
             if (_startSceneStatus == StartSceneStatus.LoadResourceCompleted) {
-                _startSceneStatus = StartSceneStatus.StartHideUI;
-                _manager.BgLogo.GetComponent<Image>()
-                    .DOFade(0, 1f)
-                    .OnComplete(() =>
-                    {
-                        //_doHideLogoComplete = true;
-                        // RunEnd();
-                        _manager.BgLogo.gameObject.SetActive(false);
-                        _startSceneStatus = StartSceneStatus.HideUICompleted;
-                    });
+                if (_manager.magicSceneManager.runLogoAni)
+                {
+                    _startSceneStatus = StartSceneStatus.StartHideUI;
+
+                    _manager.BgLogo.GetComponent<Image>()
+                        .DOFade(0, 1f)
+                        .OnComplete(() =>
+                        {
+                            //_doHideLogoComplete = true;
+                            // RunEnd();
+                            _manager.BgLogo.gameObject.SetActive(false);
+                            _startSceneStatus = StartSceneStatus.HideUICompleted;
+                        });
+                }
+                else {
+                    _startSceneStatus = StartSceneStatus.HideUICompleted;
+                }
             }
 
             if (_startSceneStatus == StartSceneStatus.HideUICompleted)
@@ -96,25 +110,42 @@ namespace MagicWall
 
         private void LoadResource()
         {
-            _manager.daoService.InitData();
 
-            var addresses = _manager.daoService.GetMatImageAddresses();
+
+            var showConfigs = _manager.daoServiceFactory.GetShowConfigs();
+
+            for (int i = 0; i < showConfigs.Count; i++) {
+                var service = _manager.daoServiceFactory.GetDaoService(showConfigs[i].daoTypeEnum);
+
+                service.InitData();
+
+                var addresses = service.GetMatImageAddresses();
+
+                foreach (string address in addresses)
+                {
+                    System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                    watch.Start();
+
+                    string imageAddress = MagicWallManager.FileDir + address;
+                    //TextureResource.Instance.GetTexture(imageAddress);               
+                    SpriteResource.Instance.GetData(imageAddress);
+
+                    watch.Stop();
+
+                    if ((watch.ElapsedMilliseconds / 1000f) > 0.5f)
+                    {
+                        Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
+                    }
+
+                }
+            }
+
+
 
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            foreach (string address in addresses)
-            {
-                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-
-                string imageAddress = MagicWallManager.FileDir + address;
-                //TextureResource.Instance.GetTexture(imageAddress);               
-                SpriteResource.Instance.GetData(imageAddress);
-
-                watch.Stop();
-                //Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
-            }
+           
 
             // 加载其他资源
             //  - 手写板用的texture
@@ -127,7 +158,7 @@ namespace MagicWall
             _startSceneStatus = StartSceneStatus.LoadResourceCompleted;
 
             sw.Stop();
-            Debug.Log("2 Time : " + sw.ElapsedMilliseconds / 1000f);
+            //Debug.Log("2 Time : " + sw.ElapsedMilliseconds / 1000f);
 
         }
 
@@ -135,8 +166,8 @@ namespace MagicWall
         {
             // 设置配置表
 
-            MWConfig _config = _daoService.GetConfig();
-            _manager.globalData.SetMWConfig(_config);
+            //MWConfig _config = _daoService.GetConfig();
+            //_manager.globalData.SetMWConfig(_config);
 
 
         }
@@ -152,5 +183,18 @@ namespace MagicWall
             return DataTypeEnum.Start;
         }
 
+        public void RunEnd(Action onEndCompleted)
+        {
+            _manager.mainPanel.GetComponent<CanvasGroup>().DOFade(0, 1.5f)
+                .OnComplete(() => {
+                    _manager.Clear();
+                    onEndCompleted.Invoke();
+                });
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return new SceneConfig();
+        }
     }
 }

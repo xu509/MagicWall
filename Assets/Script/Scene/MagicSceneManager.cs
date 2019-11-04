@@ -18,7 +18,15 @@ namespace MagicWall
         private MagicWallManager _manager;
 
         [SerializeField,Tooltip("运行背景")] bool _runBackground = true;
+        [SerializeField, Tooltip("运行logo动画")] bool _runLogoAni = true;
+        public bool runLogoAni { get { return _runLogoAni; } }
+
         [SerializeField] Sprite _logo;
+
+        [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
+        //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
+
+
         public Sprite logo { get { return _logo; } }
 
 
@@ -74,7 +82,7 @@ namespace MagicWall
             _scenes.Add(startScene);
 
             // - 加载普通场景
-            List<SceneConfig> sceneConfigs = manager.daoService.GetShowConfigs();
+            List<SceneConfig> sceneConfigs = manager.daoServiceFactory.GetShowConfigs();
             for (int i = 0; i < sceneConfigs.Count; i++)
             {
                 //Debug.Log(sceneConfigs[i].ToString());
@@ -83,6 +91,9 @@ namespace MagicWall
                 if (sceneConfigs[i].sceneType == SceneTypeEnum.Stars)
                 {
                     scene = new StarScene();
+                }
+                else if (sceneConfigs[i].sceneType == SceneTypeEnum.VideoBetweenImageSixScene) {
+                    scene = new VideoBetweenImageScene();
                 }
                 else
                 {
@@ -155,15 +166,21 @@ namespace MagicWall
 
             if (_index == _scenes.Count - 1)
             {
-                
-                if (!_manager.switchMode)
-                {
-                    _index = 0;
-                }
-                else {
-                    _onSceneEnterLoop.Invoke();
-                    return;
-                }
+
+                _index = 0;
+
+                //_onSceneEnterLoop.Invoke();
+
+
+
+                //if (!_manager.switchMode)
+                //{
+                //    _index = 0;
+                //}
+                //else {
+                //    _onSceneEnterLoop.Invoke();
+                //    return;
+                //}
             }
             else
             {
@@ -171,12 +188,27 @@ namespace MagicWall
             }
 
             _manager.SceneIndex = _manager.SceneIndex + 1;
+
+
+            //Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
+
             _manager.CurrentScene = _scenes[_index];
 
         }
 
+        public void CloseCurrent(Action onCloseCompleted) {
+            _scenes[_index].RunEnd(onCloseCompleted);
+        }
+
+        public void JumpTo(int sceneIndex)
+        {
+            _index = sceneIndex;            
+        }
 
 
+        public IScene GetCurrentScene() {
+            return _scenes[_index];
 
+        }
     }
 }

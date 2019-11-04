@@ -717,67 +717,6 @@ namespace MagicWall
         }
 
 
-        public int GetLikes(string path)
-        {
-            var likes = _theDataSource.GetLikeDataBase();
-            int r = 0;
-
-            for (int i = 0; i < likes.list.Count; i++)
-            {
-                var like = likes.list[i];
-                if (like.Path == path)
-                {
-                    r = like.Number;
-                    break;
-                }
-            }
-
-            return r;
-        }
-
-        public bool UpdateLikes(string path)
-        {
-            //Debug.Log("更新喜欢数:" + path);
-            try
-            {
-                var likes = _theDataSource.GetLikeDataBase();
-
-                bool hasPath = false;
-
-                for (int i = 0; i < likes.list.Count; i++)
-                {
-                    var like = likes.list[i];
-                    if (like.Path == path)
-                    {
-                        hasPath = true;
-                        like.Number = like.Number + 1;
-                        break;
-                    }
-                }
-
-                if (!hasPath)
-                {
-                    var like = new Like();
-                    like.Path = path;
-                    like.Number = 1;
-                    likes.list.Add(like);
-                }
-
-
-                _theDataSource.SaveLikes();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError(ex.Message);
-            }
-            finally
-            {
-
-            }
-
-            return false;
-        }
 
         public FlockData GetFlockData(DataTypeEnum type)
         {
@@ -798,6 +737,21 @@ namespace MagicWall
         }
 
         public List<string> GetMatImageAddresses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetLeftImagesForVBI6S()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetRigetImagesForVBI6S()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetVideosForVBI6S()
         {
             throw new NotImplementedException();
         }

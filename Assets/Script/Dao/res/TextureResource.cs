@@ -47,7 +47,7 @@ namespace MagicWall
             }
             else
             {
-                Texture texture = AppUtils.LoadPNG(address);
+                Texture texture = AppUtils.LoadPNGToTexture2D(address);
                 Add(address, texture);
                 return texture;
             }

@@ -28,18 +28,27 @@ namespace MagicWall {
 
         public CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> GetCell(int index)
         {
+            CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> rdata = null;
+
 
             if (index == pool.Count)
             {
-                return pool[0];
+                rdata = pool[0];
             }
 
-            if (index > 5)
+            else if (index > 5)
             {
-                return pool[index % 5];
+                rdata = pool[index % 5];
             }
 
-            return pool[index];
+            else {
+                rdata = pool[index];
+            }
+            
+
+            //rdata.GetInfo();
+
+            return rdata;
         }
 
         public IList<CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext>> Pool
@@ -87,9 +96,6 @@ namespace MagicWall {
 
         void UpdatePosition(float position, bool forceRefresh)
         {
-
-
-
             currentPosition = position;
 
             var p = position - scrollOffset / cellSpacing;
@@ -140,12 +146,15 @@ namespace MagicWall {
         void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
         {
 
-
             for (var i = 0; i < pool.Count; i++)
             {
                 var index = firstIndex + i;
                 var position = firstPosition + i * cellSpacing;
-                var cell = pool[CircularIndex(index, pool.Count)];
+
+                var toIndex = CircularIndex(index, pool.Count);
+                //Debug.Log("To Index : " + toIndex);
+
+                var cell = pool[toIndex];
 
                 if (loop)
                 {
@@ -160,16 +169,11 @@ namespace MagicWall {
 
                 // 这里耗时
 
-                //StartCoroutine()
-
                 if (forceRefresh || cell.Index != index || !cell.IsVisible)
                 {
-
-                    StartCoroutine(DoIt(index, cell));
-
-                    //cell.Index = index;
-                    //cell.SetVisible(true);
-                    //cell.UpdateContent(ItemsSource[index]);
+                    cell.Index = index;
+                    cell.SetVisible(true);
+                    cell.UpdateContent(ItemsSource[index]);
                 }
 
                 cell.UpdatePosition(position);
@@ -178,42 +182,9 @@ namespace MagicWall {
 
         }
 
-        /// <summary>
-        ///     TODO 点击卡片耗时过多，需要优化
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="cell"></param>
-        /// <returns></returns>
-        IEnumerator DoIt(int index, CrossCardBaseCell<CrossCardCellData, CrossCardScrollViewContext> cell)
-        {
-            cell.Index = index;
-            cell.SetVisible(true);
-            cell.UpdateContent(ItemsSource[index]);
-            yield return null;
 
-        }
+        int CircularIndex(int i, int size) => size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
 
-
-
-        int CircularIndex(int i, int size)
-        {
-            if (size < 1)
-            {
-                return 0;
-            }
-            else
-            {
-                if (i < 0)
-                {
-                    return size - 1 + (i + 1) % size;
-                }
-                else
-                {
-                    return i % size;
-                }
-            }
-            //size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
-        }
 
 
 #if UNITY_EDITOR

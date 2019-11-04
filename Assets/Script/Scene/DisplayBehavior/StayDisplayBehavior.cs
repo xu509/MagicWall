@@ -24,7 +24,6 @@ namespace MagicWall
             _displayBehaviorConfig = displayBehaviorConfig;
 
             _manager = displayBehaviorConfig.Manager;
-            _daoService = _manager.daoService;
 
             flag = false;
         }

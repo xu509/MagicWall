@@ -56,5 +56,8 @@ namespace MagicWall
 
         public abstract void InitData();
 
+
+        public abstract void GetInfo();
+
     }
 }

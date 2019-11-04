@@ -45,9 +45,6 @@ namespace MagicWall {
             Context.SelectedIndex = index;
             Refresh();
             onSelectionChanged?.Invoke(index);
-
-
-
         }
 
         public void UpdateItemData(CrossCardAgent agent)
@@ -61,7 +58,6 @@ namespace MagicWall {
         {
             // 此时数据传递
             _items = items;
-
 
             UpdateContents(items);
 
@@ -88,10 +84,10 @@ namespace MagicWall {
 
         public void SelectCell(int index)
         {
-            //Debug.Log(index + "---" + ItemsSource.Count + "---" + Context.SelectedIndex);
+            Debug.Log("select cell : " + index);
+
             if (index < 0 || index >= ItemsSource.Count || index == Context.SelectedIndex)
             {
-                Debug.Log(111111);
                 return;
             }
 

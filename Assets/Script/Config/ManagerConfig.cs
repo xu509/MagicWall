@@ -22,8 +22,17 @@ namespace MagicWall
         /// <summary>
         /// 8屏时，固定为28列; 5 屏 18
         /// </summary>
-        [Range(5, 60), Header("固定的列数")]
+        [Range(5, 60), Header("固定的列数(MidDisperse,UpDown)")]
         public int Column;
+
+        [Range(30, 100), Header("Kinect固定的列数(MidDisperse,UpDown)")]
+        public int KinectColumn;
+
+        [Range(1, 10), Header("固定的行数(CurveStagger)")]
+        public int Row = 6;
+
+        [Range(10, 30), Header("Kinect固定的行数(CurveStagger)")]
+        public int KinectRow = 12;
 
         [Range(10, 500), Header("浮动块对象池大小")]
         public int FlockPoolSize;
@@ -33,6 +42,9 @@ namespace MagicWall
 
         [Range(1, 400), Header("[场景]移动速率")]
         public int MainPanelMoveFactor;
+
+        [Range(1, 400), Header("[场景]反向移动速率")]
+        public int BackPanelMoveFactor;
 
         [Range(0, 200), Header("[背景] 清晰的背景气球池")]
         public int BackgroundClearBubblePoolSize;

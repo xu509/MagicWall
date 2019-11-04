@@ -11,22 +11,6 @@ namespace MagicWall
 {
     public class MockDaoService : MonoBehaviour, IDaoService
     {
-        [SerializeField]
-        MockSceneConfig _mockSceneConfig;
-
-        public MockSceneConfig mockSceneConfig
-        {
-            set
-            {
-                _mockSceneConfig = value;
-            }
-            get
-            {
-                return _mockSceneConfig;
-            }
-        }
-
-
 
         private List<Enterprise> _enterprises;
         private List<Activity> _activities;
@@ -56,13 +40,6 @@ namespace MagicWall
             Init();
         }
 
-        //
-        //  加载信息
-        //
-        public void LoadInformation()
-        {
-
-        }
 
         //
         //  获取首页企业
@@ -503,64 +480,6 @@ namespace MagicWall
         }
         #endregion
 
-        public int GetLikesByProductDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-        public int GetLikesByActivityDetail(int id)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-
-        public int GetLikes(int id, CrossCardCategoryEnum category)
-        {
-            int likes = Random.Range(1, 50);
-            return likes;
-        }
-
-        //
-        //  获取显示配置
-        //
-        public List<SceneConfig> GetShowConfigs()
-        {
-            /// 已修改为编辑器配置方式
-            ///  -》 config / MockSceneConfig 
-
-
-            List<SceneConfig> items = new List<SceneConfig>();
-
-            var sceneConfigs = _mockSceneConfig.sceneConfigs;
-
-            for (int i = 0; i < sceneConfigs.Count; i++)
-            {
-                var scene = sceneConfigs[i].sceneType;
-                var data = sceneConfigs[i].dataType;
-                var time = sceneConfigs[i].durtime;
-
-
-                if (scene == SceneTypeEnum.Stars && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-                if (scene == SceneTypeEnum.FrontBackUnfold && data == DataTypeEnum.Enterprise)
-                {
-                    continue;
-                }
-
-
-                items.Add(sceneConfigs[i]);
-            }
-
-            return items;
-
-
-        }
-
         public bool IsCustom()
         {
             //TODO
@@ -570,9 +489,6 @@ namespace MagicWall
             return true;
 
         }
-
-
-
 
         //
         //  TODO 获取定制屏所配置的图片
@@ -801,6 +717,21 @@ namespace MagicWall
 
             return addresses;
             
+        }
+
+        public List<string> GetLeftImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetRigetImagesForVBI6S()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetVideosForVBI6S()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

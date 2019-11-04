@@ -38,7 +38,7 @@ namespace MagicWall
         public void Init(MagicWallManager manager)
         {
             _magicWallManager = manager;
-            _dataService = _magicWallManager.daoService;
+            _dataService = _magicWallManager.daoServiceFactory.GetDaoService(DaoTypeEnum.CBHAiqigu);
 
             images = new List<RawImage>();
             

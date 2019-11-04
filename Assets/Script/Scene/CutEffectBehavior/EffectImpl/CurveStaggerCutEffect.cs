@@ -28,6 +28,10 @@ namespace MagicWall
         private Action _onDisplayStart;
         private Action<DisplayBehaviorConfig> _onCreateAgentCompleted;
 
+
+        private IDaoService _daoService;
+        private SceneConfig _sceneConfig;
+
         private bool _hasCallDisplay = false;
 
         public void Init(MagicWallManager manager, SceneConfig sceneConfig,
@@ -40,15 +44,15 @@ namespace MagicWall
 
             //  初始化 manager
             _manager = manager;
+            _sceneConfig = sceneConfig;
             _dataTypeEnum = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
 
             _onCreateAgentCompleted = OnCreateAgentCompleted;
             _onEffectCompleted = OnEffectCompleted;
             _onDisplayStart = OnDisplayStart;
 
-            //  获取持续时间
-            _entranceDisplayTime = manager.cutEffectConfig.CurveStaggerDisplayDurTime;
-            _startingTimeWithOutDelay = _entranceDisplayTime;
+
 
             sw.Stop();
         }
@@ -56,13 +60,22 @@ namespace MagicWall
 
         private void CreateItem(DataTypeEnum dataType)
         {
+            //  获取持续时间
+            _entranceDisplayTime = _manager.cutEffectConfig.CurveStaggerDisplayDurTime;
+            _startingTimeWithOutDelay = _entranceDisplayTime;
+
             //  初始化 config
             _displayBehaviorConfig = new DisplayBehaviorConfig();
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, _sceneConfig.isKinect);
 
 
             // 固定高度
-            int _row = _manager.Row;
+            int _row = _manager.managerConfig.Row;
+
+            if (_sceneConfig.isKinect == 1) {
+                _row = _manager.managerConfig.KinectRow;
+            }
+
             int _itemHeight = _sceneUtil.GetFixedItemHeight();
             float gap = _sceneUtil.GetGap();
 
@@ -92,7 +105,7 @@ namespace MagicWall
                 {
                     // 获取数据
                     //FlockData data = _daoService.GetFlockData(dataType);
-                    FlockData data = _manager.daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
+                    FlockData data = _daoService.GetFlockDataByScene(dataType,_manager.SceneIndex);
                     Sprite coverSprite = data.GetCoverSprite();
                     float itemWidth = AppUtils.GetSpriteWidthByHeight(coverSprite, _itemHeight);
 
@@ -124,7 +137,7 @@ namespace MagicWall
                     //生成 agent
                     Vector2 genPosition = new Vector2(gen_x, gen_y);
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, genPosition, AgentContainerType.MainPanel
-                        , ori_x, ori_y, row, column, itemWidth, _itemHeight, data);
+                        , ori_x, ori_y, row, column, itemWidth, _itemHeight, data, _sceneConfig.daoTypeEnum);
                     go.flockStatus = FlockStatusEnum.RUNIN;
 
                     // 装载延迟参数
@@ -154,6 +167,7 @@ namespace MagicWall
             _displayBehaviorConfig.dataType = _dataTypeEnum;
             _displayBehaviorConfig.Manager = _manager;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
+            _displayBehaviorConfig.sceneConfig = _sceneConfig;
 
             _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
         }
@@ -244,5 +258,12 @@ namespace MagicWall
             _cutEffectStatus = CutEffectStatus.Init;
         }
 
+        public void InitData()
+        {
+            _cutEffectStatus = CutEffectStatus.Init;
+            _hasCallDisplay = false;
+
+
+        }
     }
 }

@@ -24,9 +24,9 @@ namespace MagicWall
         {
             _displayBehaviorConfig = displayBehaviorConfig;
             _manager = _displayBehaviorConfig.Manager;
-            _daoService = _manager.daoService;
+            _daoService = _manager.daoServiceFactory.GetDaoService(displayBehaviorConfig.sceneConfig.daoTypeEnum);
 
-            flag = false;
+             flag = false;
         }
 
         public void Run()
@@ -102,7 +102,7 @@ namespace MagicWall
                     //         itemwidth, itemHeight, data, AgentContainerType.MainPanel);
 
                     FlockAgent go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(ori_x, ori_y), AgentContainerType.MainPanel
-                        , ori_x, ori_y, row, column, itemwidth, itemHeight, data);
+                        , ori_x, ori_y, row, column, itemwidth, itemHeight, data, _displayBehaviorConfig.sceneConfig.daoTypeEnum);
                     go.flockStatus = FlockStatusEnum.NORMAL;
 
 

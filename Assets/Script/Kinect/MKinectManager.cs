@@ -19,7 +19,7 @@ namespace MagicWall {
         [SerializeField, Header("Service")] KinectService _kinect2Service;
         [SerializeField, Tooltip("体感块移动延迟时间")]
         public float agentMoveDelayTime = 0.5f;
-        [SerializeField, Tooltip("体感块移动忽略值(减少灵敏度)")]
+        [SerializeField, Tooltip("体感块移动忽略值(减少灵敏度)，目前无用")]
         public float ignoreValue = 10f;
         [SerializeField] KinectType _kinectType;
 
@@ -28,6 +28,7 @@ namespace MagicWall {
         public List<KinectAgent> kinectAgents { get { return _kinectAgents; } }
 
 
+        private bool _isInit = false;
 
         private bool isMonitoring = false;
 
@@ -48,50 +49,55 @@ namespace MagicWall {
         // Update is called once per frame
         public void Run()
         {
-            if (_manager != null) {
-                _kinectService.Monitoring();
-                //_kinectCardObserver.Observering();
+            if (!_isInit)
+            {
+                _isInit = true;
+                StartMonitoring();
             }
-
-            if (_kinectAgents != null) {
-
-                List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
-
-                for (int i = 0; i < _kinectAgents.Count; i++)
+            else {
+                if (_manager != null && isMonitoring)
                 {
-                    _kinectAgents[i].UpdateBehaviour();
+                    //Debug.Log("@@@ Kinecet 正在检测");
 
-                    if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete)
+                    _kinectService.Monitoring();
+                    //_kinectCardObserver.Observering();
+                }
+
+                if (_kinectAgents != null)
+                {
+                    List<KinectAgent> needDestoryAgents = new List<KinectAgent>();
+
+                    for (int i = 0; i < _kinectAgents.Count; i++)
                     {
-                        needDestoryAgents.Add(_kinectAgents[i]);
+                        _kinectAgents[i].UpdateBehaviour();
+
+                        if (_kinectAgents[i].status == KinectAgentStatusEnum.Obsolete || _manager.useKinect == false)
+                        {
+                            needDestoryAgents.Add(_kinectAgents[i]);
+                        }
                     }
+
+                    for (int i = 0; i < needDestoryAgents.Count; i++)
+                    {
+                        var agent = needDestoryAgents[i];
+                        _manager.collisionManager.RemoveCollisionEffectAgent(agent);
+                        _kinectAgents.Remove(agent);
+                        Destroy(agent.gameObject);
+                    }
+
+                    needDestoryAgents.Clear();
                 }
 
-                for (int i = 0; i < needDestoryAgents.Count; i++)
-                {
-                    var agent = needDestoryAgents[i];
-                    _manager.collisionManager.RemoveCollisionEffectAgent(agent);
-                    _kinectAgents.Remove(agent);
-                    Destroy(agent.gameObject);
-                }
-
-                needDestoryAgents.Clear();
-
-                if (isMock)
-                {
+                if (_manager.useKinect && isMock && _manager.openKinect) {
                     if (_kinectAgents.Count == 0)
                     {
                         // 模拟创建实体，实际使用kinect需注释
                         var screenPosition = new Vector2(2000, 960);
                         AddKinectAgents(screenPosition, 111);
                     }
-                    // 模拟创建实体，实际使用kinect需注释  结束
                 }
+
             }
-
-            
-
-
         }
 
         /// <summary>
@@ -122,8 +128,11 @@ namespace MagicWall {
             }
             else {
                 _kinectService.Init(_agentContainer, _kinectAgentPrefab, _manager);
-                StartMonitoring();
+                //StartMonitoring();
             }
+
+            Debug.Log("@@@ Kinecet 初始化成功");
+
 
         }
 
@@ -268,7 +277,8 @@ namespace MagicWall {
 
             var item = GetAgentById(userId);
 
-            if (item != null)
+            //最多出现体感球
+            if (item != null || kinectAgents.Count > 1)
             {
                 return null;
             }

@@ -15,7 +15,7 @@ namespace MagicWall {
         public static CardAgent Generate(MagicWallManager magicWallManager, Vector3 position
             , Transform parent, int dataId, DataTypeEnum dataType,FlockAgent refFlockAgent)
         {
-            IDaoService daoService = magicWallManager.daoService;
+            IDaoService daoService = magicWallManager.daoServiceFactory.GetDaoService(refFlockAgent.daoTypeEnum);
 
             OperateCardData cardData = null;
             CardAgent cardPrefab = null ;
@@ -24,6 +24,9 @@ namespace MagicWall {
             if (dataType == DataTypeEnum.Enterprise)
             {
                 Enterprise enterprise = daoService.GetEnterpriseById(dataId);
+
+                Debug.Log("enterprise : " + (enterprise == null));                
+
                 var activities = daoService.GetActivitiesByEnvId(enterprise.Ent_id);
                 var products = daoService.GetProductsByEnvId(enterprise.Ent_id);
                 var videos = daoService.GetVideosByEnvId(enterprise.Ent_id);
@@ -56,6 +59,12 @@ namespace MagicWall {
 
                 Product product = daoService.GetProductDetail(dataId);
                 Enterprise enterprise = daoService.GetEnterpriseById(product.Ent_id);
+
+                Debug.Log("enterprise : " + enterprise);
+
+                //Debug.Log("enterprise to null : " + (enterprise == null));
+
+
                 OperateCardDataSlide operateCardDataSlide = ProductAdapter.Transfer(product, enterprise);
                 cardPrefab = magicWallManager.operateCardManager.sliceCardPrefab;
                 cardData = operateCardDataSlide;
@@ -68,6 +77,7 @@ namespace MagicWall {
                 cardData = operateCardDataSlide;
             }
 
+            // 创建card
             CardAgent cardAgent = Instantiate(cardPrefab, parent);
             cardAgent.GetComponent<Transform>().position = position;
             //cardAgent.DataId = dataId;

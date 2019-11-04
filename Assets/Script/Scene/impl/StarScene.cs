@@ -34,6 +34,8 @@ namespace MagicWall
 
         Action _onSceneCompleted;
 
+        SceneConfig _sceneConfig;
+
 
 
         enum StarSceneStatusEnum
@@ -66,13 +68,15 @@ namespace MagicWall
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
-            _daoService = manager.daoService;
+            //_daoService = manager.daoService;
             _durtime = sceneConfig.durtime;
             _dataType = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
-            _sceneUtil = new SceneUtils(_manager);
+            _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
 
             _onSceneCompleted = onSceneCompleted;
+            _sceneConfig = sceneConfig;
 
             Reset();
         }
@@ -203,7 +207,10 @@ namespace MagicWall
         private FlockAgent CreateNewAgent(bool randomZ)
         {
             // 获取数据
-            //FlockData data = _daoService.GetFlockData(_dataType,_manager);
+            //FlockData data = _daoService.GetFlockData(_dataType,_manager);\
+            Debug.Log("111" + _dataType);
+            Debug.Log("222" + _manager.SceneIndex);
+
             FlockData data = _daoService.GetFlockDataByScene(_dataType,_manager.SceneIndex);
 
             // 获取出生位置
@@ -223,7 +230,7 @@ namespace MagicWall
             //FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
             // width, height, data, AgentContainerType.StarContainer);
             FlockAgent go = FlockAgentFactoryInstance.Generate(_manager,position, AgentContainerType.StarContainer,
-                position.x,position.y,0,0,width,height,data);
+                position.x,position.y,0,0,width,height,data,DaoTypeEnum.CBHAiqigu);
 
             go.UpdateImageAlpha(0);
 
@@ -370,6 +377,16 @@ namespace MagicWall
         DataTypeEnum IScene.GetDataType()
         {
             throw new NotImplementedException();
+        }
+
+        public void RunEnd(Action onEndCompleted)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SceneConfig GetSceneConfig()
+        {
+            return _sceneConfig;
         }
     }
 }

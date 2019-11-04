@@ -17,7 +17,17 @@ namespace MagicWall{
         public int Type { set { type = value; } get { return type; } } 
         public string Cover { set { cover = value; } get { return cover; } } 
         public string Src { set { src = value; } get { return src; } } 
-        public string Description { set { description = value; } get { return description; } } 
+        public string Description { set { description = value; } get { return description; } }
+
+        public override string ToString()
+        {
+            string str = "";
+            str += "type : " + type + "\n";
+            str += "cover : " + cover + "\n";
+            str += "src : " + src + "\n";
+            str += "description : " + description + "\n";
+            return str;
+        }
 
 
     }

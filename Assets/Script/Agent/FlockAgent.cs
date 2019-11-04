@@ -9,7 +9,7 @@ namespace MagicWall
 {
     public class FlockAgent : MonoBehaviour, CollisionMoveBasicAgent
     {
-        public string effectAgentName;
+        //public string effectAgentName;
 
         protected MagicWallManager _manager;
 
@@ -19,7 +19,7 @@ namespace MagicWall
 
         public FlockTweenerManager flockTweenerManager { get { return _flockTweenerManager; } }
 
-        [SerializeField] protected FlockStatusEnum _flockStatus;
+        protected FlockStatusEnum _flockStatus;
 
         /// <summary>
         ///  卡片状态
@@ -29,7 +29,7 @@ namespace MagicWall
 
         #region Data Parameter 
         private bool _data_iscustom; // 是定制的
-        [SerializeField] private string _data_img;    //背景图片
+        private string _data_img;    //背景图片
         private int _data_id; // id
         private DataTypeEnum _dataType;
         public DataTypeEnum dataTypeEnum { get { return _dataType; } }
@@ -70,7 +70,7 @@ namespace MagicWall
         /// <summary>
         /// 原位置，anchor position
         /// </summary>
-        [SerializeField]  private Vector2 _oriVector2;
+        private Vector2 _oriVector2;
 
         // 生成的位置
         private Vector2 _genVector2;
@@ -78,7 +78,7 @@ namespace MagicWall
 
 
         // 是否被选中
-        [SerializeField] private bool _isChoosing = false;
+        private bool _isChoosing = false;
 
 
         // 是否正在恢复
@@ -101,6 +101,9 @@ namespace MagicWall
 
 
         #endregion
+
+        private DaoTypeEnum _daoTypeEnum;
+        public DaoTypeEnum daoTypeEnum { set { _daoTypeEnum = value; }  get { return _daoTypeEnum; } }
 
 
         private float _lastEffectTime;
@@ -126,7 +129,7 @@ namespace MagicWall
         /// 下个移动的位置
         /// https://www.yuque.com/u314548/fc6a5l/yb8hw4#8le6t
         /// </summary>
-        [SerializeField] private Vector2 _nextVector2;        
+        private Vector2 _nextVector2;        
         public Vector2 NextVector2 { set { _nextVector2 = value; } get { return _nextVector2; } }
 
         private bool _moveFlag = false;
@@ -188,13 +191,14 @@ namespace MagicWall
         /// <param name="dataId"></param>
         /// <param name="type"></param>
         /// <param name="isCard"></param>
-        protected void InitBase(MagicWallManager manager, int dataId, DataTypeEnum dataType)
+        protected void InitBase(MagicWallManager manager, int dataId, DataTypeEnum dataType, DaoTypeEnum daoTypeEnum)
         {
             //Debug.Log("Init Base : " + dataId);
 
             _manager = manager;
             _data_id = dataId;
             _dataType = dataType;
+            _daoTypeEnum = daoTypeEnum;
 
             _flockTweenerManager = new FlockTweenerManager();
             _flockStatus = FlockStatusEnum.NORMAL;
@@ -216,9 +220,9 @@ namespace MagicWall
         /// <param name="dataIsCustom"></param>
         /// <param name="dataType"></param>
         public virtual void Initialize(MagicWallManager manager, Vector2 originVector, Vector2 genVector, int row,
-            int column, float width, float height, int dataId, string dataImg, bool dataIsCustom, DataTypeEnum dataTypeEnum, AgentContainerType agentContainerType)
+            int column, float width, float height, int dataId, string dataImg, bool dataIsCustom, DataTypeEnum dataTypeEnum, AgentContainerType agentContainerType, DaoTypeEnum daoTypeEnum)
         {
-            InitBase(manager, dataId, dataTypeEnum);
+            InitBase(manager, dataId, dataTypeEnum,daoTypeEnum);
             _manager = manager;
             OriVector2 = originVector;
 
@@ -518,7 +522,7 @@ namespace MagicWall
                 // 进入影响范围
                 if (offset >= 0)
                 {
-                    effectAgentName = targetAgent.GetName();
+                    //effectAgentName = targetAgent.GetName();
                     
 
                     TurnOnHasMovedOffsetFlag();

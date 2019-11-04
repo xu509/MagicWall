@@ -33,11 +33,20 @@ namespace MagicWall
         /// </summary>
         float _screen_height;
 
-        public SceneUtils(MagicWallManager manager)
+        public SceneUtils(MagicWallManager manager,int isKinect)
         {
             _manager = manager;
-            _row = manager.Row;
-            _column = manager.managerConfig.Column;
+
+            if (isKinect == 0)
+            {
+                _row = 6;
+                _column = _manager.managerConfig.Column;
+            }
+            else {
+                _row = 12;
+                _column = _manager.managerConfig.KinectColumn;
+            }
+
             _screen_width = manager.mainPanel.rect.width;
             _screen_height = manager.mainPanel.rect.height;
         }
