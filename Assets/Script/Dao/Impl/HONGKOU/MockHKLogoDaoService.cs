@@ -65,12 +65,21 @@ namespace MagicWall
             throw new System.NotImplementedException();
         }
 
+        int dataIndex = 0;
         //
         //  获取首页企业
         //
         public Enterprise GetEnterprise()
         {
             return _enterprises[Random.Range(0, _enterprises.Count)];
+
+            //if (dataIndex == _enterprises.Count -1)
+            //{
+            //    dataIndex = 0;
+            //}
+            //Enterprise e = _enterprises[dataIndex];
+            //dataIndex++;
+            //return e;
         }
 
         public List<string> GetEnvCards(int id)
@@ -268,6 +277,7 @@ namespace MagicWall
                     beans.Add(bean);
                 }
             }
+            print("LOGO：" + beans.Count);
 
             return beans;
         }
@@ -357,7 +367,7 @@ namespace MagicWall
         public void InitData()
         {
             print("Init Data");
-
+            dataIndex = 0;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
@@ -372,7 +382,7 @@ namespace MagicWall
             _catalogByEidMap = new Dictionary<int, List<Catalog>>();
             _videoByEidMap = new Dictionary<int, List<Video>>();
 
-            string enterprisePath = "ZBH\\fengxian\\";
+            string enterprisePath = "HK\\fengxian\\";
 
             if (Directory.Exists(MagicWallManager.FileDir + enterprisePath))
             {
@@ -436,7 +446,7 @@ namespace MagicWall
         private bool AddEnterpriseLogo(string name, Enterprise enterprise)
         {
             bool hasLogo = false;
-            string enterprisePath = "ZBH\\fengxian\\" + name;
+            string enterprisePath = "HK\\fengxian\\" + name;
 
             if (Directory.Exists(MagicWallManager.FileDir + enterprisePath))
             {
@@ -473,7 +483,7 @@ namespace MagicWall
         {
             bool hasCatalog = false;
 
-            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\catalog";
+            string catalogDirPath = "HK\\fengxian\\" + name + "\\catalog";
 
             //print("PATH :" + (MagicWallManager.FileDir + catalogDirPath));
 
@@ -515,7 +525,7 @@ namespace MagicWall
         {
             bool hasProduct = false;
 
-            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\产品";
+            string catalogDirPath = "HK\\fengxian\\" + name + "\\产品";
 
             if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
             {
@@ -553,7 +563,7 @@ namespace MagicWall
         {
             bool hasActivity = false;
 
-            string activityDirPath = "ZBH\\fengxian\\" + name + "\\活动";
+            string activityDirPath = "HK\\fengxian\\" + name + "\\活动";
 
             if (Directory.Exists(MagicWallManager.FileDir + activityDirPath))
             {
@@ -589,7 +599,7 @@ namespace MagicWall
 
         private void AddBusinessCard(string name, Enterprise enterprise)
         {
-            string catalogDirPath = "ZBH\\fengxian\\" + name + "\\企业名片";
+            string catalogDirPath = "HK\\fengxian\\" + name + "\\企业名片";
 
             if (Directory.Exists(MagicWallManager.FileDir + catalogDirPath))
             {
@@ -615,7 +625,7 @@ namespace MagicWall
         {
             bool hasVideo = false;
 
-            string videoDirPath = "ZBH\\fengxian\\" + name + "\\视频";
+            string videoDirPath = "HK\\fengxian\\" + name + "\\视频";
 
             if (Directory.Exists(MagicWallManager.FileDir + videoDirPath))
             {

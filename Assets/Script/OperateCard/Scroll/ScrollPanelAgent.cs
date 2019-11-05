@@ -141,7 +141,6 @@ namespace MagicWall {
             // 右滑
             else if (scrollDirectionEnum == ScrollDirectionEnum.Right)
             {
-
                 // 向右移动至中间
                 if (_currentLocation == PanelLocationEnum.Left)
                 {

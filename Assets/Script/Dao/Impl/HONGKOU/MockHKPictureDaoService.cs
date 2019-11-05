@@ -263,6 +263,7 @@ namespace MagicWall
                     beans.Add(bean);
                 }
             }
+            print("产品：" + beans.Count);
 
             return beans;
         }
@@ -343,7 +344,7 @@ namespace MagicWall
         public void InitData()
         {
             // 初始化数据
-            Debug.Log("init Data feiyue kinect");
+            Debug.Log("init Data huodong kinect");
             if (_hasInit) {
                 return;
             }
@@ -353,7 +354,7 @@ namespace MagicWall
             _products = new List<Product>();
             _productMap = new Dictionary<int, Product>();
 
-            string pathDir = "ZBH\\feiyue2";
+            string pathDir = "HK\\huodong\\";
 
             if (Directory.Exists(MagicWallManager.FileDir + pathDir))
             {
@@ -400,7 +401,7 @@ namespace MagicWall
                     int.TryParse(index.ToString() + i.ToString(), out pro_id);
 
                     product.Pro_id = pro_id;
-                    product.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfo.Name;
+                    product.Image = "HK\\huodong\\" + directoryInfo.Name + "\\" + fileInfo.Name;
                     product.Name = directoryInfo.Name;
                     product.ProductDetails = GetProductDetails(directoryInfo, fileInfo, pro_id);
 
@@ -426,7 +427,7 @@ namespace MagicWall
                     productDetail.Id = i;
                     productDetail.Pro_id = proId;
                     productDetail.Type = 0;
-                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;                    
+                    productDetail.Image = "HK\\huodong\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;                    
                     productDetail.Description = fileName;
                     productDetails.Add(productDetail);
 

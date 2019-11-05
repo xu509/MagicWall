@@ -160,11 +160,11 @@ namespace MagicWall
             if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
                 // 调整标题位置，标题大小
-                var titleFontSize = 45;
+                var titleFontSize = 28;
                 _title.fontSize = titleFontSize;
 
                 // 调整描述字体大小与位置
-                var descriptionFontSize = 40;
+                var descriptionFontSize = 28;
                 _description.fontSize = descriptionFontSize;
 
             }

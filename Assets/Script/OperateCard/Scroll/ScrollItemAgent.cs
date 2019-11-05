@@ -85,7 +85,10 @@ namespace MagicWall {
 
 
         public void ShowComponents() {
-            _scaleBtn.gameObject.SetActive(true);
+            if (_data.Type != 1)
+            {
+                _scaleBtn.gameObject.SetActive(true);
+            }        
             _likeContainer.gameObject.SetActive(true);
         }
 

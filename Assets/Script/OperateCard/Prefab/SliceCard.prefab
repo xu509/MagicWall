@@ -1057,6 +1057,7 @@ GameObject:
   - component: {fileID: 6484229736758225829}
   - component: {fileID: 5250836795067822983}
   - component: {fileID: 771340144239110582}
+  - component: {fileID: 9041435936978634018}
   m_Layer: 11
   m_Name: Title-name
   m_TagString: Untagged
@@ -1113,7 +1114,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e7f0d1956e8e0a543885ba258b163f4b, type: 3}
-    m_FontSize: 40
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -1121,10 +1122,24 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &9041435936978634018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636351901391315520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &4664694587762709937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,6 +2076,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4891059830163230388}
     m_Modifications:
+    - target: {fileID: 6760767054770873067, guid: 3fe1c305d76e4634680f49b083bd536d,
+        type: 3}
+      propertyPath: m_Name
+      value: protectAgent
+      objectReference: {fileID: 0}
     - target: {fileID: 2205539996274789613, guid: 3fe1c305d76e4634680f49b083bd536d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2166,11 +2186,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6760767054770873067, guid: 3fe1c305d76e4634680f49b083bd536d,
-        type: 3}
-      propertyPath: m_Name
-      value: protectAgent
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fe1c305d76e4634680f49b083bd536d, type: 3}
 --- !u!224 &28323493482734350 stripped
@@ -2198,6 +2213,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9052429436917369684}
     m_Modifications:
+    - target: {fileID: 255108019010542658, guid: 94b80dc75b630574395b6b6b5d0ceedb,
+        type: 3}
+      propertyPath: m_Name
+      value: Content
+      objectReference: {fileID: 0}
     - target: {fileID: 1800393925005223097, guid: 94b80dc75b630574395b6b6b5d0ceedb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2303,13 +2323,14 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 255108019010542658, guid: 94b80dc75b630574395b6b6b5d0ceedb,
-        type: 3}
-      propertyPath: m_Name
-      value: Content
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94b80dc75b630574395b6b6b5d0ceedb, type: 3}
+--- !u!224 &4621180878887643528 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1800393925005223097, guid: 94b80dc75b630574395b6b6b5d0ceedb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6403541676083236145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6549174168007684893 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 161747020612828716, guid: 94b80dc75b630574395b6b6b5d0ceedb,
@@ -2322,12 +2343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e9a02c932bbe94096fee48c633c5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &4621180878887643528 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1800393925005223097, guid: 94b80dc75b630574395b6b6b5d0ceedb,
-    type: 3}
-  m_PrefabInstance: {fileID: 6403541676083236145}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6670080107981136513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2335,6 +2350,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2231630901696905992}
     m_Modifications:
+    - target: {fileID: 8481579859594210014, guid: 1756148a935a84845be20feebb4faeea,
+        type: 3}
+      propertyPath: m_Name
+      value: move
+      objectReference: {fileID: 0}
     - target: {fileID: 5573244821936830720, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2440,11 +2460,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 8481579859594210014, guid: 1756148a935a84845be20feebb4faeea,
-        type: 3}
-      propertyPath: m_Name
-      value: move
-      objectReference: {fileID: 0}
     - target: {fileID: 8410637306457466100, guid: 1756148a935a84845be20feebb4faeea,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -2497,16 +2512,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5348307415405197549}
     m_Modifications:
-    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
-        type: 3}
-      propertyPath: _moveSubject
-      value: 
-      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_Name
       value: btn-move
       objectReference: {fileID: 0}
+    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: _moveSubject
+      value: 
+      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2639,16 +2654,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7532080157054653257}
     m_Modifications:
-    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
-        type: 3}
-      propertyPath: _moveSubject
-      value: 
-      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 5278398309218859200, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_Name
       value: btn-move
       objectReference: {fileID: 0}
+    - target: {fileID: 2500392301717383503, guid: 1a3edff60d8e205459ad47f92843f9f7,
+        type: 3}
+      propertyPath: _moveSubject
+      value: 
+      objectReference: {fileID: 2429258555300052348}
     - target: {fileID: 7272146260540408835, guid: 1a3edff60d8e205459ad47f92843f9f7,
         type: 3}
       propertyPath: m_LocalPosition.x

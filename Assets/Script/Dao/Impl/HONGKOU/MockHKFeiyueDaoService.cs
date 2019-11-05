@@ -248,10 +248,7 @@ namespace MagicWall
         /// <returns></returns>
         public List<SearchBean> Search(string keys)
         {
-            //Debug.Log("搜索KEYS ：" + keys);
-
             List<SearchBean> beans = new List<SearchBean>();
-
             for (int i = 0; i < _products.Count; i++)
             {
                 var name = _products[i].Name;
@@ -264,7 +261,7 @@ namespace MagicWall
                     beans.Add(bean);
                 }
             }
-
+            print("飞跃：" + beans.Count);
             return beans;
         }
 
@@ -360,7 +357,7 @@ namespace MagicWall
             _products = new List<Product>();
             _productMap = new Dictionary<int, Product>();
 
-            string pathDir = "ZBH\\feiyue2";
+            string pathDir = "HK\\feiyue2";
 
             if (Directory.Exists(MagicWallManager.FileDir + pathDir))
             {
@@ -407,7 +404,7 @@ namespace MagicWall
                     int.TryParse(index.ToString() + i.ToString(), out pro_id);
 
                     product.Pro_id = pro_id;
-                    product.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfo.Name;
+                    product.Image = "HK\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfo.Name;
                     product.Name = directoryInfo.Name;
                     product.ProductDetails = GetProductDetails(directoryInfo, fileInfo, pro_id);
 
@@ -442,7 +439,7 @@ namespace MagicWall
                     productDetail.Id = i;
                     productDetail.Pro_id = proId;
                     productDetail.Type = 0;
-                    productDetail.Image = "ZBH\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;                    
+                    productDetail.Image = "HK\\feiyue2\\" + directoryInfo.Name + "\\" + fileInfos[i].Name; ;                    
                     productDetail.Description = fileName;
                     productDetails.Add(productDetail);
 

@@ -552,6 +552,7 @@ namespace MagicWall
 
         public List<SearchBean> Search(string keys)
         {
+            print("Search关键词：" + keys);
             List<SearchBean> searchBeans = new List<SearchBean>();
             if (keys == null || keys.Length == 0)
             {

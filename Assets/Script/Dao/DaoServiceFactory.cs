@@ -180,9 +180,16 @@ namespace MagicWall {
         }
 
         public List<SearchBean> Search(string keys) {
-            List<SearchBean> datas = new List<SearchBean>();
 
+            List<SearchBean> datas = new List<SearchBean>();
+            if (keys == null || keys.Length == 0)
+            {
+                return datas;
+            }
             var sceneConfigs = _mockSceneConfig.sceneConfigs;
+            Debug.Log("搜索KEYS ：" + keys + "  sceneConfigs: " + sceneConfigs.Count);
+
+            //TOTO 目前搜索了所有sceneConfigs，所以搜索结果会出现重复的内容
             for (int i = 0; i < sceneConfigs.Count; i++)
             {
                 var dataTypeEnum = sceneConfigs[i].daoTypeEnum;
@@ -190,11 +197,44 @@ namespace MagicWall {
 
                 var result = service.Search(keys);
 
-                if (result != null) {
+                if (result != null)
+                {
                     datas.AddRange(result);
-                }                
+                }
             }
 
+            /*
+             * 这个方法不会搜索到重复的内容，但是滚动条及搜索结果显示需要修改
+            List<SceneConfig> configs = new List<SceneConfig>();
+            for (int i = 0; i < sceneConfigs.Count; i++)
+            {
+                bool isIn = false;
+                foreach (var item in configs)
+                {
+                    if (item.dataType == sceneConfigs[i].dataType)
+                    {
+                        isIn = true;
+                        break;
+                    }
+                }
+                if (!isIn)
+                {
+                    configs.Add(sceneConfigs[i]);
+                }              
+            }
+            for (int i = 0; i < configs.Count; i++)
+            {
+                var dataTypeEnum = configs[i].daoTypeEnum;
+                var service = GetDaoService(dataTypeEnum);
+
+                var result = service.Search(keys);
+
+                if (result != null)
+                {
+                    datas.AddRange(result);
+                }
+            }
+            */
             return datas;
         }
 
