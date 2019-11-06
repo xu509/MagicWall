@@ -35,15 +35,15 @@ namespace MagicWall {
                     .Transfer(enterprise, activities, products, videos, catalogs);
                 //Debug.Log(operateCardDataCross.ToString());
 
-                if (CheckIsSimple(operateCardDataCross))
-                {
-                    cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
-                    cardData = operateCardDataCross;
+                //if (CheckIsSimple(operateCardDataCross))
+                //{
+                //    cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
+                //    cardData = operateCardDataCross;
 
-                    Debug.Log("Generate 单个企业卡片");
-                }
-                else
-                {
+                //    Debug.Log("Generate 单个企业卡片");
+                //}
+                //else
+                //{
                     cardPrefab = magicWallManager.operateCardManager.crossCardPrefab;
                     // 单个卡片的逻辑
                     //OperateCardDataSingle operateCardDataSingle = new OperateCardDataSingle();
@@ -52,7 +52,7 @@ namespace MagicWall {
                     cardData = operateCardDataCross;
 
                     //cardData = (OperateCardDataSingle)operateCardDataCross;
-                }
+                //}
             }
             else if (dataType == DataTypeEnum.Product || dataType == DataTypeEnum.Wine)
             {

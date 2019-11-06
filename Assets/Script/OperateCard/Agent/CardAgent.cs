@@ -888,7 +888,7 @@ namespace MagicWall
                 {
                     float width = GetComponent<RectTransform>().rect.width;
                     float height = GetComponent<RectTransform>().rect.height;
-                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.6f;
+                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.5f;
                     _collider.radius = radius;
                     _hasChangeSize = false;
                     //Debug.Log("UpdateColliderRadius! " + radius);
