@@ -24,7 +24,7 @@ namespace MagicWall
         private Sprite logoOriginalSprite;
         private Vector2 logoOriginalSize;
         private Color logoOriginalColor;
-        private Vector2 customLogoSize = new Vector2(4341, 994);
+        private Vector2 customLogoSize;
         //掉落时间到一半时logo淡入，掉落完以后logo淡出（速度100时掉落完需要11s）
         private float fallTotalTime = 11f;
         private bool isShow = false;//logo 但淡入
@@ -70,6 +70,7 @@ namespace MagicWall
                 {
                     _manager.BgLogo.GetComponent<Image>().sprite = aiqiLogo;
                 }
+                customLogoSize = _manager.BgLogo.GetComponent<Image>().sprite.rect.size;
                 _manager.BgLogo.sizeDelta = customLogoSize;
                 _manager.BgLogo.GetComponent<Image>().color = Color.white;
                 _manager.BgLogo.GetComponent<Image>().CrossFadeAlpha(0, 0, true);
