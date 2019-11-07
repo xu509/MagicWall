@@ -321,6 +321,9 @@ namespace MagicWall
                 //List<SearchBean> searchBeans = _manager.daoServiceFactory.GetDaoService(daoType).Search(_searchWord);
                 List<SearchBean> searchBeans = _manager.daoServiceFactory.Search(_searchWord);
 
+                Debug.Log("搜索到结果 ： " + searchBeans.Count);
+
+
                 //  生成搜索结果控件，并进行初始化
                 if (_searchResultAgent == null)
                 {

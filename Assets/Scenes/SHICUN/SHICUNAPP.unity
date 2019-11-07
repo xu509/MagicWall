@@ -640,7 +640,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: c9fa7357c74b9d343b4d85be348063a4,
+      objectReference: {fileID: 11400000, guid: b789351f6808f574bbabd69f1e4afabd,
         type: 2}
     - target: {fileID: 7003525394532276174, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
