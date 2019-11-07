@@ -150,6 +150,7 @@ namespace MagicWall {
                     // 移动到中间
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
                     item.transform.SetParent(_sliceScrollAgent.scrollPanelMiddle.transform, true);
+                    item.GetComponent<RectTransform>().DOScale(1f, 0);
                     item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
                         .OnComplete(() =>
                         {
@@ -201,6 +202,7 @@ namespace MagicWall {
                     // 移动到右侧
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
                     item.transform.SetParent(_sliceScrollAgent.scrollPanelRight.transform, true);
+                    item.GetComponent<RectTransform>().DOScale(1f, 0);
                     item.RecoverFrame();
                     item.GetComponent<RectTransform>().DOAnchorPos(Vector2.zero, aniTime)
                         .OnComplete(() =>
