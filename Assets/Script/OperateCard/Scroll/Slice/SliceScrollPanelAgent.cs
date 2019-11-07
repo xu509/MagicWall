@@ -24,13 +24,13 @@ namespace MagicWall {
         private float MaxWidth;
         private float MaxHeight;
 
-
         void Awake() {
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
             aniTime = 0.5f;
             aniFadeTime = 0.25f;
 
-            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P) {
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
                 LeftPosition = new Vector2(-195, 0);
                 RightPosition = new Vector2(195, 0);
                 MiddlePosition = new Vector2(0, 0);
@@ -39,17 +39,16 @@ namespace MagicWall {
                 MaxWidth = 600f;
                 MaxHeight = 600f;
             }
+            else if (_manager.screenTypeEnum == ScreenTypeEnum.Screen720P) {
+                // TODO
+                LeftPosition = new Vector2(-195, 0);
+                RightPosition = new Vector2(195, 0);
+                MiddlePosition = new Vector2(0, 0);
 
-            //if (_currentLocation == PanelLocationEnum.Top)
-            //{
-            //    GetComponent<RectTransform>().anchoredPosition = TopPosition;
-            //}
-            //else if (_currentLocation == PanelLocationEnum.Bottom) {
-            //    GetComponent<RectTransform>().anchoredPosition = BottomPosition;
+                MaxWidth = 9f / 16f * 600f;
+                MaxHeight = 9f / 16f * 600f;
 
-            //}
-
-
+            }
         }
 
 
@@ -80,13 +79,11 @@ namespace MagicWall {
             }
             item.Init(scrollData, _sliceScrollAgent.onScale);
 
-
-
-
         }
 
         public void GoOutLocation() {
-            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P) {
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
                 if (_currentLocation == PanelLocationEnum.Left)
                 {
                     GetComponent<RectTransform>().DOAnchorPos(LeftPosition, 1f);
@@ -104,7 +101,33 @@ namespace MagicWall {
                 if (_currentLocation == PanelLocationEnum.Middle)
                 {
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
-                    item.SetAsMiddle(() => {
+                    item.SetAsMiddle(() =>
+                    {
+                    });
+                }
+            }
+            else {
+                // TODO 
+
+                if (_currentLocation == PanelLocationEnum.Left)
+                {
+                    GetComponent<RectTransform>().DOAnchorPos(LeftPosition, 1f);
+                    var item = GetComponentInChildren<SliceScrollItemAgent>();
+                    item?.RecoverFrame();
+                }
+
+                if (_currentLocation == PanelLocationEnum.Right)
+                {
+                    GetComponent<RectTransform>().DOAnchorPos(RightPosition, 1f);
+                    var item = GetComponentInChildren<SliceScrollItemAgent>();
+                    item?.RecoverFrame();
+                }
+
+                if (_currentLocation == PanelLocationEnum.Middle)
+                {
+                    var item = GetComponentInChildren<SliceScrollItemAgent>();
+                    item.SetAsMiddle(() =>
+                    {
                     });
                 }
             }

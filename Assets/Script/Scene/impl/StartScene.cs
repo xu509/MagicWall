@@ -75,7 +75,12 @@ namespace MagicWall
                 LoadConfig();
 
                 // 加载资源
+                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
                 LoadResource();
+                watch.Stop();
+                Debug.Log("数据加载耗时 : " + watch.ElapsedMilliseconds / 1000f);
+
             }
 
             if (_startSceneStatus == StartSceneStatus.LoadResourceCompleted) {
