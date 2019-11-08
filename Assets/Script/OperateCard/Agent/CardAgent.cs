@@ -468,7 +468,7 @@ namespace MagicWall
             DoUpdate();
 
             // 停止销毁动画
-            Debug.Log("kill 第一次销毁动画");
+            //Debug.Log("kill 第一次销毁动画");
             _destory_first_scale_tweener.Kill();
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
@@ -888,7 +888,7 @@ namespace MagicWall
                 {
                     float width = GetComponent<RectTransform>().rect.width;
                     float height = GetComponent<RectTransform>().rect.height;
-                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.5f;
+                    float radius = (Mathf.Sqrt(width * width + height * height) / 2) * 0.6f;
                     _collider.radius = radius;
                     _hasChangeSize = false;
                     //Debug.Log("UpdateColliderRadius! " + radius);

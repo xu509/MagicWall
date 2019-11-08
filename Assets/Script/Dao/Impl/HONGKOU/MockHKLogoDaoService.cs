@@ -366,7 +366,7 @@ namespace MagicWall
         /// </summary>
         public void InitData()
         {
-            print("Init Data");
+            //print("Init Data");
             dataIndex = 0;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();

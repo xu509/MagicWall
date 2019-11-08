@@ -13,6 +13,7 @@ namespace MagicWall {
 
         float _minWidthImage;
         float _minHeightImage;
+        float _maxHeightImage;
 
         private float _imageWidth;
         private float _imageHeight;
@@ -34,9 +35,16 @@ namespace MagicWall {
         void Awake() {
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
 
-            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P) {
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
                 _minWidthImage = 600f;
                 _minHeightImage = 400f;
+                _maxHeightImage = 900f;
+            }
+            else if (_manager.screenTypeEnum == ScreenTypeEnum.Screen720P) {
+                _minWidthImage = 600f * 0.66f;
+                _minHeightImage = 400f * 0.66f;
+                _maxHeightImage = 900f * 0.66f;
             }
 
 
@@ -186,6 +194,10 @@ namespace MagicWall {
             var height = _cover.GetComponent<RectTransform>().rect.height;
             _photoframe.DOScale(1f, _scaleAniTime);
 
+
+            if (height > _maxHeightImage) {
+                height = _maxHeightImage;
+            }
 
             _photoframe.DOSizeDelta(new Vector2(width, height), _scaleAniTime).OnComplete(() =>
             {

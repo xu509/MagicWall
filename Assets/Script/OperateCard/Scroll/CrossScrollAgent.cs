@@ -70,7 +70,7 @@ namespace MagicWall {
 
             // 设置首图
             var firstData = data.ScrollDic[CrossCardNavType.Index];
-            Debug.Log("firstData[0] : " + firstData[0].ToString());
+            //Debug.Log("firstData[0] : " + firstData[0].ToString());
 
             _scrollPanelMiddle.SetData(firstData[0]);
 

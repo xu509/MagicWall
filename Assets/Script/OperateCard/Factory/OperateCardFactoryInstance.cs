@@ -48,7 +48,7 @@ namespace MagicWall {
                     // 单个卡片的逻辑
                     //OperateCardDataSingle operateCardDataSingle = new OperateCardDataSingle();
 
-                    Debug.Log("Generate 正常企业卡片");
+                   // Debug.Log("Generate 正常企业卡片");
                     cardData = operateCardDataCross;
 
                     //cardData = (OperateCardDataSingle)operateCardDataCross;
