@@ -178,7 +178,7 @@ namespace MagicWall {
 
             sprite.texture.wrapMode = TextureWrapMode.Clamp;
 
-            Debug.Log("图片原始尺寸： " + w + " * " + h + " ==> 修改后 " + width + "*" + height);
+            //Debug.Log("图片原始尺寸： " + w + " * " + h + " ==> 修改后 " + width + "*" + height);
 
             _imageWidth = width;
             _imageHeight = height;

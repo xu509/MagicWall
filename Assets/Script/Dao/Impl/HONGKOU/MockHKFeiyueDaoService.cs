@@ -172,7 +172,7 @@ namespace MagicWall
         //
         public Product GetProductDetail(int pro_id)
         {
-            Debug.Log("pro_id : " + pro_id);
+            //Debug.Log("pro_id : " + pro_id);
 
             var product = _productMap[pro_id];
 

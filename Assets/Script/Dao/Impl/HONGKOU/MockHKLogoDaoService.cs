@@ -398,9 +398,9 @@ namespace MagicWall
             }
 
             sw.Stop();
-            Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
+            //Debug.Log("Time : " + sw.ElapsedMilliseconds / 1000f);
 
-            print("Init Data End");
+            //print("Init Data End");
             _hasInit = true;
 
         }

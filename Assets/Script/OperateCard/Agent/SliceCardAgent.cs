@@ -124,7 +124,7 @@ namespace MagicWall
             Vector2 toLocation = Vector2.LerpUnclamped(new Vector2(0, -235), new Vector2(0, -5), offsetTitle);
             _titleContainer.anchoredPosition = toLocation;
 
-            Debug.Log("调整标题位置： " + toLocation);
+            //Debug.Log("调整标题位置： " + toLocation);
 
 
             // 调整描述位置
@@ -134,7 +134,7 @@ namespace MagicWall
             Vector2 toDLocation = Vector2.LerpUnclamped(new Vector2(0, 230), new Vector2(0, -34), offsetDescription);
             _descContainer.anchoredPosition = toDLocation;
 
-            Debug.Log("调整描述位置： " + toDLocation);
+            //Debug.Log("调整描述位置： " + toDLocation);
 
 
             // 调整按钮位置

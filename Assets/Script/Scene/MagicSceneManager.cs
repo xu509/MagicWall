@@ -161,26 +161,11 @@ namespace MagicWall
             if (_index == 0) {
                 // 预加载场景结束
                 _onStartCompleted.Invoke();
-
             }
 
             if (_index == _scenes.Count - 1)
             {
-
                 _index = 0;
-
-                //_onSceneEnterLoop.Invoke();
-
-
-
-                //if (!_manager.switchMode)
-                //{
-                //    _index = 0;
-                //}
-                //else {
-                //    _onSceneEnterLoop.Invoke();
-                //    return;
-                //}
             }
             else
             {
@@ -190,7 +175,7 @@ namespace MagicWall
             _manager.SceneIndex = _manager.SceneIndex + 1;
 
 
-            //Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
+            Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
 
             _manager.CurrentScene = _scenes[_index];
 
