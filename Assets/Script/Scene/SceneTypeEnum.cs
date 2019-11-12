@@ -16,7 +16,17 @@ namespace MagicWall
         MidDisperse,    // 中外
         Stars,  // 星空
         UpDownAdjustCutEffect,   // 上下
-        VideoBetweenImageSixScene   //6屏，视频在中间
+        VideoBetweenImageSixScene,   //6屏，视频在中间
+
+        /// <summary>
+        ///     8屏定制效果 Start
+        /// </summary>
+        CustomCurveStagger8p,
+        CustomFrontBackUnfold8p,
+        CustomLeftRightAdjust8p,
+        CustomMidDisperse8p,
+        Stars8p,
+        UpDownAdjust8p,
 
     }
 }

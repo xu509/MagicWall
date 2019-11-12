@@ -31,6 +31,12 @@ namespace MagicWall {
                 cutEffect = new UpDownAdjustCutEffect();
             }
 
+            //  8屏定制效果
+            else if (sceneType == SceneTypeEnum.CustomCurveStagger8p)
+            {
+                cutEffect = new CustomCurveStagger8pCutEffect();
+            }
+
 
             return cutEffect;
 
