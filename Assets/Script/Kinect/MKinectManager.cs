@@ -55,9 +55,9 @@ namespace MagicWall {
                 StartMonitoring();
             }
             else {
-                if (_manager != null)
+                if (_manager != null && isMonitoring)
                 {
-                    Debug.Log("@@@ Kinecet 正在检测");
+                    //Debug.Log("@@@ Kinecet 正在检测");
 
                     _kinectService.Monitoring();
                     //_kinectCardObserver.Observering();
@@ -277,7 +277,8 @@ namespace MagicWall {
 
             var item = GetAgentById(userId);
 
-            if (item != null)
+            //最多出现体感球
+            if (item != null || kinectAgents.Count > 1)
             {
                 return null;
             }

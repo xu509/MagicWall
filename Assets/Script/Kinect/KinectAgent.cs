@@ -201,7 +201,7 @@ namespace MagicWall
                 //_destoryStartTime
 
 
-                var closeAnimi = GetComponent<RectTransform>().DOScale(0.1f, 0.5f)
+                var closeAnimi = GetComponent<RectTransform>().DOScale(0f, 0.5f)
                     .OnComplete(() =>
                     {
                         _status = KinectAgentStatusEnum.Obsolete;

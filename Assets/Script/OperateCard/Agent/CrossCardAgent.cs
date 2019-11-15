@@ -8,6 +8,11 @@ using System;
 namespace MagicWall {
     public class CrossCardAgent : CardAgent
     {
+        [SerializeField,Header("Scroll")] CrossScrollAgent _crossScrollAgent;
+        [SerializeField,Header("Scroll Bar")] ScrollBarAgent _scrollBarAgent;
+
+        [SerializeField, Header("UI Container")] RectTransform _questionContainer;
+
 
         #region Data Parameter
 
@@ -15,7 +20,6 @@ namespace MagicWall {
         public int Likes { set { _likes = value; } get { return _likes; } }
 
         bool _isNormalModel = true;
-
 
         private int _scrollItemNumber;  // 滚动插件，滑动块个数
 
@@ -36,9 +40,6 @@ namespace MagicWall {
         [SerializeField, Header("十字卡片 - 标题")] Text _title;
         [SerializeField, Header("十字卡片 - 描述")] Text _description;
 
-
-        [SerializeField] CrossCardScrollViewController crossCardScrollViewController;
-        [SerializeField] CrossCardScrollBar crossCardScrollBar;
         [SerializeField] RectTransform _buttomTool;
 
 
@@ -50,250 +51,9 @@ namespace MagicWall {
         #endregion
 
 
-        //
-        //  初始化数据
-        //
-        public void InitCrossCardAgent()
-        {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-
-            InitAgency();
-            _questionTypeEnum = QuestionTypeEnum.CrossCard;
-
-            _scrollItemNumber = 0;
-
-            //IDaoService daoService = _manager.daoService;
-            //EnterpriseDetail enterpriseDetail = daoService.GetEnterprisesDetail(_dataId);
-
-
-            //  设置标题
-            _title.text = _cardData.Title;
-
-            ////  设置描述
-            //UpdateDescription(enterpriseDetail.Enterprise.Description);
-
-            // 设置喜欢数
-            //Likes = enterpriseDetail.Enterprise.likes;
-
-            //// 判断几个类型
-
-            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.CataLog))
-            {
-                _hasCatalog = _cardData.ScrollDic[CrossCardNavType.CataLog].Count > 0;
-            }
-            else {
-                _hasCatalog = false;
-            }
-
-            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Product))
-            {
-                _hasProduct = _cardData.ScrollDic[CrossCardNavType.Product].Count > 0;
-            }
-            else
-            {
-                _hasProduct = false;
-            }
-
-            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Activity))
-            {
-                _hasActivity = _cardData.ScrollDic[CrossCardNavType.Activity].Count > 0;
-            }
-            else
-            {
-                _hasActivity = false;
-            }
-
-            if (_cardData.ScrollDic.ContainsKey(CrossCardNavType.Video))
-            {
-                _hasVideo = _cardData.ScrollDic[CrossCardNavType.Video].Count > 0;
-            }
-            else
-            {
-                _hasVideo = false;
-            }
-
-
-            int index = 0;
-
-            _cellDatas = new List<CrossCardCellData>();
-
-            CrossCardCellData item2 = new CrossCardCellData();
-            item2.crossCardAgent = this;
-            item2.EnvId = _dataId;
-            item2.Likes = Likes;
-            item2.Category = CrossCardCategoryEnum.INDEX;
-            item2.Index = index;
-            item2.Title = "公司名片";
-            item2.Description = _cardData.Description;
-            item2.magicWallManager = _manager;
-
-            ScrollData sd = new ScrollData();
-            sd.Cover = _cardData.Cover;
-            sd.Description = _cardData.Description;
-
-            var cces = TransferScrollData(sd);
-            List<CrossCardCellData> indexData = new List<CrossCardCellData>();
-            indexData.Add(cces);
-            item2.Datas = indexData;
-
-            index++;
-            _cellDatas.Add(item2);
-
-            _scrollItemNumber++;
-            //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item2));
-
-            if (_hasCatalog)
-            {
-                Debug.Log("创建CATALOG数据");
-
-                CrossCardCellData item = new CrossCardCellData();
-                item.Category = CrossCardCategoryEnum.CATALOG;
-                item.crossCardAgent = this;
-                item.EnvId = _dataId;
-                item.Likes = Likes;
-                item.Index = index;
-                item.Title = "CATALOG";
-                item.magicWallManager = _manager;
-
-                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.CataLog]);
-
-                _cellDatas.Add(item);
-
-                _scrollItemNumber++;
-                index++;
-            }
-
-
-            if (_hasProduct)
-            {
-                //Debug.Log("_hasProduct");
-                CrossCardCellData item = new CrossCardCellData();
-                item.Category = CrossCardCategoryEnum.PRODUCT;
-                item.crossCardAgent = this;
-                item.EnvId = _dataId;
-                item.Likes = Likes;
-                item.Index = index;
-                item.Title = "产品";
-                item.magicWallManager = _manager;
-                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Product]);
-                _cellDatas.Add(item);
-                _scrollItemNumber++;
-                index++;
-                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
-            }
-            if (_hasActivity)
-            {
-                //Debug.Log("_hasActivity");
-
-                CrossCardCellData item = new CrossCardCellData();
-                item.Category = CrossCardCategoryEnum.ACTIVITY;
-                item.crossCardAgent = this;
-                item.EnvId = _dataId;
-                item.Likes = Likes;
-                item.Index = index;
-                item.Title = "活动";
-                item.magicWallManager = _manager;
-                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Activity]);
-                _cellDatas.Add(item);
-                _scrollItemNumber++;
-                index++;
-                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
-            }
-
-            if (_hasVideo)
-            {
-                //Debug.Log("_hasVideo");
-
-                CrossCardCellData item = new CrossCardCellData();
-                item.Category = CrossCardCategoryEnum.VIDEO;
-                item.crossCardAgent = this;
-                item.EnvId = _dataId;
-                item.Likes = Likes;
-                item.Index = index;
-                item.Title = "视频";
-                item.magicWallManager = _manager;
-                item.Datas = Transfer(_cardData.ScrollDic[CrossCardNavType.Video]);
-                _cellDatas.Add(item);
-
-                _scrollItemNumber++;
-                index++;
-                //_cardScrollCells.Add(CreateCardScrollCell(scrollView, item));
-            }
-
-
-          //  Debug.Log("_cellDatas : " + _cellDatas.Count);
-
-
-
-            sw.Start();
-
-            // Updatedata
-            //crossCardScrollViewController.SelectCell(0);
-            crossCardScrollViewController.SetUpCardAgent(this);
-            crossCardScrollViewController.UpdateData(_cellDatas);
-
-            sw.Stop();
-            //Debug.Log("Cross Card Agent Time : " + sw.ElapsedMilliseconds / 1000f);
-
-
-            crossCardScrollViewController.OnSelectionChanged(OnSelectionChanged);
-
-
-
-            //crossCardScrollViewController.SetScrollOperatedAction(OnScrollOperated);
-
-            crossCardScrollBar.UpdateData(_cellDatas);
-            //crossCardScrollBar.SelectCell(0);
-            crossCardScrollBar.UpdateComponents();
-            crossCardScrollBar.OnSelectionChanged(OnBarSelectionChanged);
-            crossCardScrollBar.SetScrollOperatedAction(OnScrollOperated);
-
-            // 处理businesscard
-            //_hasListBtn = _manager.daoService.GetEnvCards(_dataId).Count > 0;
-            _hasListBtn = false;
-            //InitComponents(false);
-
-            // 设置完成回调
-            SetOnCreatedCompleted(OnCreatedCompleted);
-
-            isPrepared = true;
-
-        }
-
-        void OnSelectionChanged(int index)
-        {
-            crossCardScrollViewController.UpdateComponents();
-
-            crossCardScrollBar.SelectCell(index);
-
-            // 更新描述
-            UpdateDescription(crossCardScrollViewController.GetCurrentCardDescription());
-
-            DoUpdate();
-
-        }
-
-        void OnBarSelectionChanged(int index)
-        {
-            if (index != crossCardScrollViewController.CurrentIndex)
-            {
-                crossCardScrollViewController.SelectCell(index);
-
-                CrossCardScrollBarCell cell = crossCardScrollBar.GetCell(index) as CrossCardScrollBarCell;
-                crossCardScrollBar.UpdateComponents();
-            }
-            else
-            {
-                crossCardScrollBar.UpdateComponents();
-
-
-            }
-
-        }
-
-
         void Awake()
         {
+            SetUpUI();
         }
 
         //
@@ -322,59 +82,8 @@ namespace MagicWall {
             _description.GetComponent<RectTransform>().DOAnchorPos(Description_Go_Position, 0.5f);
             _description.DOFade(1, 0.5f);
 
-            UpdateToolComponent();
+            //UpdateToolComponent();
 
-        }
-
-        //
-        //  上一张
-        //
-        public void DoUp()
-        {
-            int index = crossCardScrollViewController.CurrentIndex;
-
-            // 获取上一个 index
-            int up_index = index - 1;
-
-            if (up_index < 0)
-            {
-                up_index = _scrollItemNumber - 1;
-            }
-
-            //Debug.Log("上一个，当前： " + index + " 目标： " + up_index);
-
-            crossCardScrollViewController.SelectCell(up_index);
-
-            DoUpdate();
-
-        }
-
-        //
-        //  下一张
-        //
-        public void DoDown()
-        {
-            int index = crossCardScrollViewController.CurrentIndex;
-
-            // 获取上一个 index
-            int down_index = index + 1;
-            if (down_index == _scrollItemNumber)
-            {
-                down_index = 0;
-            }
-
-            crossCardScrollViewController.SelectCell(down_index);
-
-           // Debug.Log("下一个，当前： " + index + " 目标： " + down_index);
-
-
-            DoUpdate();
-        }
-
-
-        private void OnScrollOperated()
-        {
-            DoUpdate();
         }
 
 
@@ -389,83 +98,100 @@ namespace MagicWall {
 
 
 
-
-        private void OnCreatedCompleted()
-        {
-            //string description = crossCardScrollViewController.GetCurrentCardDescription();
-
-            ////  更新描述
-            //UpdateDescription(description);
-
-            ////  更新操作栏
-            //UpdateToolComponent();
-
-        }
-
-
-
         public override void InitData(OperateCardData operateCardData)
         {
             OperateCardDataCross operateCardDataCross = (OperateCardDataCross)operateCardData;
-            //Debug.Log("Do In slice: " + operateCardDataSlide.Title);
             _cardData = operateCardDataCross;
 
-            //Debug.Log("Init Data : " + operateCardData.ToString());
+            var _navList = new List<CrossCardNavType>();
+            _navList.Add(CrossCardNavType.Index);
 
-            InitCrossCardAgent();
+            if (operateCardDataCross.ScrollDic.ContainsKey(CrossCardNavType.CataLog))
+            {
+                _navList.Add(CrossCardNavType.CataLog);
+            }
 
-        }
+            if (operateCardDataCross.ScrollDic.ContainsKey(CrossCardNavType.Product))
+            {
+                _navList.Add(CrossCardNavType.Product);
+            }
 
+            if (operateCardDataCross.ScrollDic.ContainsKey(CrossCardNavType.Activity))
+            {
+                _navList.Add(CrossCardNavType.Activity);
+            }
 
-        private List<CrossCardCellData> Transfer(List<ScrollData> scrollDatas) {
-            List<CrossCardCellData> crossCardCellDatas = new List<CrossCardCellData>();
+            if (operateCardDataCross.ScrollDic.ContainsKey(CrossCardNavType.Video))
+            {
+                _navList.Add(CrossCardNavType.Video);
+            }
 
-            for (int i = 0; i < scrollDatas.Count; i++) {
-                CrossCardCellData crossCardCellData = new CrossCardCellData();
-                crossCardCellData.Image = scrollDatas[i].Cover;
-                crossCardCellData.Index = i;
-                crossCardCellData.Description = scrollDatas[i].Description;
-                if (scrollDatas[i].Type == 0)
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+            InitAgency();
+            _questionTypeEnum = QuestionTypeEnum.CrossCard;
+
+            _crossScrollAgent.Init(_cardData,(data,navtype,scrollDirection)=> {
+                DoUpdate();
+                Debug.Log("Has Changed : [NAV]" + navtype + "[data]" + data);
+                UpdateDescription(data.Description);
+
+                if (scrollDirection == ScrollDirectionEnum.Left)
                 {
-                    crossCardCellData.IsImage = true;
+                    _scrollBarAgent.TurnLeft();
                 }
-                else {
-                    crossCardCellData.Category = CrossCardCategoryEnum.VIDEO;
-                    crossCardCellData.IsImage = false;
-                    crossCardCellData.VideoUrl = scrollDatas[i].Src;
+                else if (scrollDirection == ScrollDirectionEnum.Right) {
+                    _scrollBarAgent.TurnRight();
                 }
 
-                crossCardCellData.magicWallManager = _manager;
+            }, OnClickScale, DoVideo);
+            
+            _scrollBarAgent.Init(_navList,(dir)=> {
 
-                crossCardCellDatas.Add(crossCardCellData);
-            }
+            });
 
-
-            return crossCardCellDatas;
         }
 
-        private CrossCardCellData TransferScrollData(ScrollData scrollData)
-        {
 
-            CrossCardCellData crossCardCellData = new CrossCardCellData();
-            crossCardCellData.Image = scrollData.Cover;
-            crossCardCellData.Index = 0;
-            crossCardCellData.Description = scrollData.Description;
-            if (scrollData.Type == 0)
-            {
-                crossCardCellData.IsImage = true;
-            }
-            else
-            {
-                crossCardCellData.IsImage = false;
-                crossCardCellData.VideoUrl = scrollData.Src;
-            }
+        public override void FullDisplayAfterGoFront() {
 
-            crossCardCellData.magicWallManager = _manager;
+            Debug.Log("Full Display After Go Front");
 
+            // 初始化组件
+            _crossScrollAgent.CompleteInit();
 
-            return crossCardCellData;
+            // 显示标题
+            _title.text = _cardData.Title;
+
+            DoUpdate();
+
         }
+
+
+        private void OnClickScale(string str) {
+            var tex = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + str);
+            InitScaleAgent(tex);
+        }
+
+
+        private void SetUpUI() {
+            MagicWallManager manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+            if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
+                // 提示按钮
+                _questionContainer.anchoredPosition = new Vector2(391, 243);
+
+                // 描述模块
+
+            }
+            else {
+
+
+
+            }
+
+        }
+
 
 
 

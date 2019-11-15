@@ -102,8 +102,7 @@ namespace MagicWall
 
         private bool _disableEffect = false;
         public bool disableEffect{ get { return _disableEffect; } }
-        private bool _hasReplace = false;
-        public bool hasReplace { get { return _hasReplace; } }
+
 
 
         public CardStatusEnum _cardStatus;   // 状态   
@@ -469,7 +468,7 @@ namespace MagicWall
             DoUpdate();
 
             // 停止销毁动画
-            Debug.Log("kill 第一次销毁动画");
+            //Debug.Log("kill 第一次销毁动画");
             _destory_first_scale_tweener.Kill();
             Vector3 scaleVector3 = new Vector3(1f, 1f, 1f);
 
@@ -818,7 +817,6 @@ namespace MagicWall
         public void GoToFront(Action onFinsihed)
         {
             RectTransform rectTransfrom = GetComponent<RectTransform>();
-
             gameObject.SetActive(true);
 
             Vector3 to2 = new Vector3(rectTransfrom.anchoredPosition.x, rectTransfrom.anchoredPosition.y, 0);
@@ -843,6 +841,9 @@ namespace MagicWall
                     // 执行完成后动画
                     DoOnCreatedCompleted();
 
+                    // 进行完整显示
+                    FullDisplayAfterGoFront();
+
                     CardStatus = CardStatusEnum.NORMAL;
 
                     onFinsihed.Invoke();
@@ -850,6 +851,14 @@ namespace MagicWall
                 }).SetEase(Ease.OutBack);
             _tweenerManager.Add(FlockTweenerManager.Card_GoToFront_Scale, cardGoToFrontScaleAni);
         }
+
+        public virtual void FullDisplayAfterGoFront()
+        {
+            //Debug.Log("Do In Parent");
+        }
+
+
+
 
         public void CancelGoToFront(Action onFinsihed)
         {
@@ -1330,6 +1339,8 @@ namespace MagicWall
         /// </summary>
         /// <returns></returns>
         private bool EnterToDestoryTime() {
+            //return false;
+
             float waitTime;
 
             //if(_cardStatus == CardStatusEnum.MOVE 
@@ -1476,10 +1487,6 @@ namespace MagicWall
 
         /* CollisionEffectAgent 实现 结束*/
 
-
-        public void ChangeHasReplace(bool hasReplace) {
-            _hasReplace = hasReplace;
-        }
 
     }
 

@@ -132,11 +132,11 @@ namespace MagicWall
             int _column = 0;
             if (_sceneConfig.isKinect == 0)
             {
-                _column = 15;
+                _column = _manager.managerConfig.Column;
             }
             else
             {
-                _column = 30;
+                _column = _manager.managerConfig.KinectColumn;
             }
 
 

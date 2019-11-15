@@ -16,7 +16,6 @@ namespace MagicWall
         private IDaoService _daoService;
         private float _durtime; // 持续时间
         private DataTypeEnum _dataType; //  场景内容类型
-        //private ItemsFactory _itemFactory;  // 工厂
         private SceneUtils _sceneUtil;
 
         private float _startTime;   //  开始时间
@@ -27,10 +26,6 @@ namespace MagicWall
         private StarSceneStatusEnum _starSceneStatusEnum;   // 状态
 
         MagicSceneEnum _magicSceneEnumStatus;
-
-
-        Action _onRunCompleted;
-        Action _onRunEndCompleted;
 
         Action _onSceneCompleted;
 
@@ -48,36 +43,18 @@ namespace MagicWall
             EndCompleted
         }
 
-
-
-        private void Reset()
-        {
-            _starSceneStatusEnum = StarSceneStatusEnum.Init;
-            _magicSceneEnumStatus = MagicSceneEnum.Running;
-            _isEnding = false;
-            _isPreparing = false;
-            _startTime = Time.time;
-            _activeAgents = new List<FlockAgent>();
-        }
-
-        public DataTypeEnum GetDataType()
-        {
-            return _dataType;
-        }
-
         public void Init(SceneConfig sceneConfig, MagicWallManager manager,Action onSceneCompleted)
         {
             _manager = manager;
             //_daoService = manager.daoService;
             _durtime = sceneConfig.durtime;
             _dataType = sceneConfig.dataType;
+            _daoService = _manager.daoServiceFactory.GetDaoService(sceneConfig.daoTypeEnum);
             //_itemFactory = manager.itemsFactoryAgent.GetItemsFactoryByContentType(_dataType);
             _sceneUtil = new SceneUtils(_manager, sceneConfig.isKinect);
 
             _onSceneCompleted = onSceneCompleted;
             _sceneConfig = sceneConfig;
-
-            Reset();
         }
 
         /// <summary>
@@ -94,7 +71,11 @@ namespace MagicWall
                 if (!_isPreparing)
                 {
                     _isPreparing = true;
+                    _activeAgents = new List<FlockAgent>();
+                    _startTime = Time.time;
+
                     DoPrepare();
+
                 }
             }
 
@@ -205,8 +186,14 @@ namespace MagicWall
 
         private FlockAgent CreateNewAgent(bool randomZ)
         {
+            if (!randomZ) {
+                Debug.Log("添加星空块。");
+            }
+
+
             // 获取数据
-            //FlockData data = _daoService.GetFlockData(_dataType,_manager);
+            //FlockData data = _daoService.GetFlockData(_dataType,_manager);\
+
             FlockData data = _daoService.GetFlockDataByScene(_dataType,_manager.SceneIndex);
 
             // 获取出生位置
@@ -226,7 +213,7 @@ namespace MagicWall
             //FlockAgent go = _itemFactory.Generate(position.x, position.y, position.x, position.y, 0, 0,
             // width, height, data, AgentContainerType.StarContainer);
             FlockAgent go = FlockAgentFactoryInstance.Generate(_manager,position, AgentContainerType.StarContainer,
-                position.x,position.y,0,0,width,height,data,DaoTypeEnum.CBHAiqigu);
+                position.x,position.y,0,0,width,height,data, _sceneConfig.daoTypeEnum);
 
             go.UpdateImageAlpha(0);
 
@@ -318,19 +305,6 @@ namespace MagicWall
 
         public void OnRunCompleted()
         {
-            //_starSceneStatusEnum = StarSceneStatusEnum.RunCompleted
-            _magicSceneEnumStatus = MagicSceneEnum.RunningComplete;
-            _starSceneStatusEnum = StarSceneStatusEnum.End;
-            //Debug.Log("Do OnRunCompleted Action");
-
-            _onRunCompleted.Invoke();
-
-        }
-
-
-
-        public void RunEnd()
-        {
             if (!_isEnding)
             {
                 _isEnding = true;
@@ -341,23 +315,18 @@ namespace MagicWall
                     .OnComplete(() =>
                     {
                         _manager.starEffectContainer.gameObject.SetActive(false);
-                        _manager.Clear();
-                        OnRunEndCompleted();
+                        _onSceneCompleted.Invoke();
+                        _starSceneStatusEnum = StarSceneStatusEnum.Init;
+                        _magicSceneEnumStatus = MagicSceneEnum.Running;
+
+                        _isPreparing = false;
                         _isEnding = false;
-                    //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-                });
+                        //_starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
+                    });
 
 
             }
-        }
 
-        public void OnRunEndCompleted()
-        {
-            _starSceneStatusEnum = StarSceneStatusEnum.EndCompleted;
-            //_magicSceneEnumStatus = MagicSceneEnum.RunningEndComplete;
-
-            Reset();
-            _onRunEndCompleted.Invoke();
 
         }
 

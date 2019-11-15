@@ -161,26 +161,11 @@ namespace MagicWall
             if (_index == 0) {
                 // 预加载场景结束
                 _onStartCompleted.Invoke();
-
             }
 
             if (_index == _scenes.Count - 1)
             {
-
                 _index = 0;
-
-                //_onSceneEnterLoop.Invoke();
-
-
-
-                //if (!_manager.switchMode)
-                //{
-                //    _index = 0;
-                //}
-                //else {
-                //    _onSceneEnterLoop.Invoke();
-                //    return;
-                //}
             }
             else
             {

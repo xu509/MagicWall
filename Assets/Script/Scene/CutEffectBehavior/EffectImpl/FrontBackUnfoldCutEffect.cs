@@ -183,7 +183,7 @@ namespace MagicWall
                         //    imageSize.x, imageSize.y, agent, AgentContainerType.MainPanel);
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x,gen_y), AgentContainerType.MainPanel
-    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent,DaoTypeEnum.CBHAiqigu);
+    , ori_x, ori_y, i, column, imageSize.x, imageSize.y, agent, _sceneConfig.daoTypeEnum);
 
                     }
                     else
@@ -200,7 +200,7 @@ namespace MagicWall
 
 
                         go = FlockAgentFactoryInstance.Generate(_manager, new Vector2(gen_x, gen_y), AgentContainerType.BackPanel
-    , ori_x, ori_y, i, column, width, height, agent, DaoTypeEnum.CBHAiqigu);
+    , ori_x, ori_y, i, column, width, height, agent, _sceneConfig.daoTypeEnum);
                     }
                     //go.NextVector2 = new Vector2(gen_x, gen_y);
 
@@ -231,6 +231,7 @@ namespace MagicWall
             _displayBehaviorConfig.dataType = _dataTypeEnum;
             _displayBehaviorConfig.Manager = _manager;
             _displayBehaviorConfig.sceneUtils = _sceneUtil;
+            _displayBehaviorConfig.sceneConfig = _sceneConfig;
 
             _onCreateAgentCompleted.Invoke(_displayBehaviorConfig);
 

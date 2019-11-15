@@ -12,9 +12,9 @@ namespace MagicWall
     /// </summary>
     public class KinectService : MonoBehaviour, IKinectService
     {
-        [SerializeField, Header("基准值m"), Tooltip("调整Kinect位置到刚好显示大屏两端")]
+        [SerializeField, Header("基准值m，无用"), Tooltip("调整Kinect位置到刚好显示大屏两端")]
         private float basicDistance = 3f;
-        [SerializeField, Header("Kinect距人最近距离m")]
+        [SerializeField, Header("Kinect识别最大距离m")]
         private float safeZ = 1f;
         RectTransform _parentRectTransform;
         GameObject _kinectAgentPrefab;
@@ -32,17 +32,18 @@ namespace MagicWall
             _parentRectTransform = container;
             _kinectAgentPrefab = agentPrefab.gameObject;
             _manager = manager;
-            kinectManager = KinectManager.Instance;
             //print("KinectService Init");
 
         }
 
         public void Monitoring()
         {
-
             if (!isInit)
                 return;
-
+            if (kinectManager == null)
+            {
+                kinectManager = KinectManager.Instance;
+            }
             //生成体感卡片
             List<long> ids = kinectManager.GetAllUserIds();
             for (int i = 0; i < ids.Count; i++)
@@ -150,6 +151,7 @@ namespace MagicWall
 
         public void StartMonitoring(Action startSuccessAction, Action<string> startFailedAction)
         {
+            kinectManager = KinectManager.Instance;
             isInit = kinectManager.IsInitialized(); //首先要对设备进行实例化和初始化，之后才能进行后续的操作
             if (isInit)
             {
@@ -164,7 +166,7 @@ namespace MagicWall
 
         public void StopMonitoring()
         {
-
+            
         }
 
         /// <summary>

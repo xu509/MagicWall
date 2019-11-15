@@ -24,6 +24,9 @@ namespace MagicWall {
             if (dataType == DataTypeEnum.Enterprise)
             {
                 Enterprise enterprise = daoService.GetEnterpriseById(dataId);
+
+                Debug.Log("enterprise : " + (enterprise == null));                
+
                 var activities = daoService.GetActivitiesByEnvId(enterprise.Ent_id);
                 var products = daoService.GetProductsByEnvId(enterprise.Ent_id);
                 var videos = daoService.GetVideosByEnvId(enterprise.Ent_id);
@@ -32,24 +35,24 @@ namespace MagicWall {
                     .Transfer(enterprise, activities, products, videos, catalogs);
                 //Debug.Log(operateCardDataCross.ToString());
 
-                if (CheckIsSimple(operateCardDataCross))
-                {
-                    cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
-                    cardData = operateCardDataCross;
+                //if (CheckIsSimple(operateCardDataCross))
+                //{
+                //    cardPrefab = magicWallManager.operateCardManager.singleCardPrefab;
+                //    cardData = operateCardDataCross;
 
-                    Debug.Log("Generate 单个企业卡片");
-                }
-                else
-                {
+                //    Debug.Log("Generate 单个企业卡片");
+                //}
+                //else
+                //{
                     cardPrefab = magicWallManager.operateCardManager.crossCardPrefab;
                     // 单个卡片的逻辑
                     //OperateCardDataSingle operateCardDataSingle = new OperateCardDataSingle();
 
-                    Debug.Log("Generate 正常企业卡片");
+                   // Debug.Log("Generate 正常企业卡片");
                     cardData = operateCardDataCross;
 
                     //cardData = (OperateCardDataSingle)operateCardDataCross;
-                }
+                //}
             }
             else if (dataType == DataTypeEnum.Product || dataType == DataTypeEnum.Wine)
             {
@@ -74,6 +77,7 @@ namespace MagicWall {
                 cardData = operateCardDataSlide;
             }
 
+            // 创建card
             CardAgent cardAgent = Instantiate(cardPrefab, parent);
             cardAgent.GetComponent<Transform>().position = position;
             //cardAgent.DataId = dataId;

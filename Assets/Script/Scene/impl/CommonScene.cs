@@ -62,13 +62,11 @@ namespace MagicWall
                 , OnCutEffectCreateAgentCompleted,
                 ()=> {
                     // on effect completed
-                    Debug.Log("on effect completed");
 
                     _runEntrance = false;
                 },()=>
                 {
                     // on display Start
-                    Debug.Log("on display start");
 
                     _runDisplay = true;
                     _displayStartTime = Time.time;
@@ -81,7 +79,7 @@ namespace MagicWall
 
             // 销毁
             _destoryBehavior = DestoryBehaviorFactory.GetBehavior(sceneConfig.destoryBehavior);
-            _destoryBehavior.Init(_manager,this, OnDestoryCompleted);
+            _destoryBehavior.Init(_manager,this, OnDestoryCompleted, sceneConfig);
 
             _sceneConfig = sceneConfig;
 
