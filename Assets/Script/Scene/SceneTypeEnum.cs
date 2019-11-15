@@ -17,6 +17,7 @@ namespace MagicWall
         Stars,  // 星空
         UpDownAdjustCutEffect,   // 上下
         VideoBetweenImageSixScene,   //6屏，视频在中间
+        VideoBetweenImageEightScene,   //6屏，视频在中间
 
         /// <summary>
         ///     8屏定制效果 Start

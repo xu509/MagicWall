@@ -517,5 +517,10 @@ namespace MagicWall
             videos.Add(pathDir);
             return videos;
         }
+
+        public List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

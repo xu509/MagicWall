@@ -161,7 +161,11 @@ namespace MagicWall
         List<string> GetRigetImagesForVBI6S();
         List<string> GetVideosForVBI6S();
 
-
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <returns></returns>
+        List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type);
 
 
 

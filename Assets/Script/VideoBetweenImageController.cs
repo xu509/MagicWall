@@ -11,12 +11,16 @@ public class VideoBetweenImageController : MonoBehaviour
     private VideoPlayer videoPlayer;
     public GameObject videoPlayerGo;
     public RectTransform leftPanel;
+    public RectTransform leftPanel1;
     public RectTransform rightPannel;
+    public RectTransform rightPannel1;
     public RawImage rawImagePrefab;
     public RawImage videoPlayerHolder;
 
     private List<string> leftImages;
+    private List<string> leftImages1;
     private List<string> rightImages;
+    private List<string> rightImages1;
     private List<string> videos;
 
     private DaoTypeEnum _daoTypeEnum;
@@ -25,7 +29,9 @@ public class VideoBetweenImageController : MonoBehaviour
     List<RawImage> images;
 
     [SerializeField, Range(1f, 20f)] public float _leftChangeTime = 10f;
+    [SerializeField, Range(1f, 20f)] public float _leftChangeTime1 = 10f;
     [SerializeField, Range(1f, 20f)] public float _rightChangeTime = 10f;
+    [SerializeField, Range(1f, 20f)] public float _rightChangeTime1 = 10f;
     [SerializeField, Range(0f, 3f), Header("图片淡出时间")] public float _fadeoutDuration = 0.5f;
 
     private MagicWallManager _manager;
@@ -58,20 +64,34 @@ public class VideoBetweenImageController : MonoBehaviour
         images = new List<RawImage>();
 
         // 初始化最左侧图片
-        leftImages = daoService.GetLeftImagesForVBI6S();
+        leftImages = daoService.GetImagesForVideoPanel8Screen(VideoPanel8Type.Left1);
         SetLeftImages();
+        // 初始化最左侧1图片
+        leftImages1 = daoService.GetImagesForVideoPanel8Screen(VideoPanel8Type.Left2);
+        SetLeftImages1();
 
         // 初始化右侧图片
-        rightImages = daoService.GetRigetImagesForVBI6S();
+        rightImages = daoService.GetImagesForVideoPanel8Screen(VideoPanel8Type.Right1);
         SetRightImages();
+        // 初始化右侧图片1
+        rightImages1 = daoService.GetImagesForVideoPanel8Screen(VideoPanel8Type.Right2);
+        SetRightImages1();
 
         if (leftImages.Count > 1)
         {
             InvokeRepeating("ChangeLeftImage", _leftChangeTime, _leftChangeTime + _fadeoutDuration);
         }
+        if (leftImages1.Count > 1)
+        {
+            InvokeRepeating("ChangeLeftImage1", _leftChangeTime1, _leftChangeTime1 + _fadeoutDuration + 2);
+        }
         if (rightImages.Count > 1)
         {
             InvokeRepeating("ChangeRightImage", _rightChangeTime, _rightChangeTime + _fadeoutDuration);
+        }
+        if (rightImages1.Count > 1)
+        {
+            InvokeRepeating("ChangeRightImage1", _rightChangeTime1, _rightChangeTime1 + _fadeoutDuration + 2);
         }
     }
 
@@ -82,7 +102,9 @@ public class VideoBetweenImageController : MonoBehaviour
         gameObject.SetActive(false);
 
         CancelInvoke("ChangeLeftImage");
+        CancelInvoke("ChangeLeftImage1");
         CancelInvoke("ChangeRightImage");
+        CancelInvoke("ChangeRightImage1");
 
 
         //GetComponent<CanvasGroup>().alpha = 0;
@@ -117,6 +139,24 @@ public class VideoBetweenImageController : MonoBehaviour
         });
     }
 
+    void ChangeLeftImage1()
+    {
+        RawImage[] rawImages = leftPanel1.GetComponentsInChildren<RawImage>();
+        RawImage rawImage = rawImages[rawImages.Length - 1];
+
+        rawImage.DOFade(0, _fadeoutDuration).OnComplete(() =>
+        {
+            GameObject.Destroy(rawImage.gameObject);
+            this.images.Remove(rawImage);
+
+            RawImage[] images = leftPanel1.GetComponentsInChildren<RawImage>();
+            if (images.Length == 2)
+            {
+                SetLeftImages1();
+            }
+        });
+    }
+
     void ChangeRightImage()
     {
         RawImage[] rawImages = rightPannel.GetComponentsInChildren<RawImage>();
@@ -135,6 +175,24 @@ public class VideoBetweenImageController : MonoBehaviour
         });
     }
 
+    void ChangeRightImage1()
+    {
+        RawImage[] rawImages = rightPannel1.GetComponentsInChildren<RawImage>();
+        RawImage rawImage = rawImages[rawImages.Length - 1];
+
+        rawImage.DOFade(0, _fadeoutDuration).OnComplete(() =>
+        {
+            GameObject.Destroy(rawImage.gameObject);
+            this.images.Remove(rawImage);
+
+            RawImage[] images = rightPannel1.GetComponentsInChildren<RawImage>();
+            if (images.Length == 2)
+            {
+                SetRightImages1();
+            }
+        });
+    }
+
     void SetLeftImages()
     {
         for (int i = 0; i < leftImages.Count; i++)
@@ -145,6 +203,20 @@ public class VideoBetweenImageController : MonoBehaviour
             rtf.localScale = new Vector3(1, 1, 1);
             rtf.SetAsFirstSibling();
             rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + leftImages[i]);
+            images.Add(rawImage);
+        }
+    }
+
+    void SetLeftImages1()
+    {
+        for (int i = 0; i < leftImages1.Count; i++)
+        {
+            RawImage rawImage = GameObject.Instantiate(rawImagePrefab, leftPanel1) as RawImage;
+            RectTransform rtf = rawImage.GetComponent<RectTransform>();
+            rtf.anchoredPosition = Vector2.zero;
+            rtf.localScale = new Vector3(1, 1, 1);
+            rtf.SetAsFirstSibling();
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + leftImages1[i]);
             images.Add(rawImage);
         }
     }
@@ -162,6 +234,21 @@ public class VideoBetweenImageController : MonoBehaviour
             images.Add(rawImage);
         }
     }
+
+    void SetRightImages1()
+    {
+        for (int i = 0; i < rightImages1.Count; i++)
+        {
+            RawImage rawImage = GameObject.Instantiate(rawImagePrefab, rightPannel1) as RawImage;
+            RectTransform rtf = rawImage.GetComponent<RectTransform>();
+            rtf.anchoredPosition = Vector2.zero;
+            rtf.localScale = new Vector3(1, 1, 1);
+            rtf.SetAsFirstSibling();
+            rawImage.texture = TextureResource.Instance.GetTexture(MagicWallManager.FileDir + rightImages1[i]);
+            images.Add(rawImage);
+        }
+    }
+
     IEnumerator PlayVideo()
     {
         while (!videoPlayer.isPrepared)

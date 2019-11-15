@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockHKAiqiguDaoService : MonoBehaviour, IDaoService
+    public class MockAQGAiqiguDaoService : MonoBehaviour, IDaoService
     {
 
 
@@ -33,7 +33,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockHKAiqiguDaoService() { }
+        protected MockAQGAiqiguDaoService() { }
 
 
 
@@ -514,9 +514,9 @@ namespace MagicWall
         public List<string> GetLeftImagesForVBI6S()
         {
             List<string> images = new List<string>();
-            string pathDir = "ZBH\\aiqi\\爱企谷 第一屏1.jpg";
-            string pathDir1 = "ZBH\\aiqi\\爱企谷 第一屏2.jpg";
-            string pathDir2 = "ZBH\\aiqi\\爱企谷 第一屏3.jpg";
+            string pathDir = "HK\\aiqi\\爱企谷 第一屏1.jpg";
+            string pathDir1 = "HK\\aiqi\\爱企谷 第一屏2.jpg";
+            string pathDir2 = "HK\\aiqi\\爱企谷 第一屏3.jpg";
 
             images.Add(pathDir);
             images.Add(pathDir1);
@@ -528,8 +528,8 @@ namespace MagicWall
         public List<string> GetRigetImagesForVBI6S()
         {
             List<string> images = new List<string>();
-            string pathDir = "ZBH\\aiqi\\爱企谷 第六屏1.jpg";
-            string pathDir2 = "ZBH\\aiqi\\爱企谷 第六屏2.jpg";
+            string pathDir = "HK\\aiqi\\爱企谷 第六屏1.jpg";
+            string pathDir2 = "HK\\aiqi\\爱企谷 第六屏2.jpg";
             images.Add(pathDir);
             images.Add(pathDir2);
 
@@ -541,14 +541,61 @@ namespace MagicWall
             Debug.Log(1);
 
             List<string> videos = new List<string>();
-            string pathDir = "ZBH\\aiqi\\191023_爱企谷宣传片B.mp4";
+            string pathDir = "HK\\aiqi\\191023_爱企谷宣传片B.mp4";
             videos.Add(pathDir);
             return videos;
         }
 
         public List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type)
         {
-            throw new System.NotImplementedException();
+            if (type == VideoPanel8Type.Left1)
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第一屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第一屏2.jpg";
+                string pathDir2 = "HK\\aiqi\\爱企谷 第一屏3.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+                images.Add(pathDir2);
+
+                return images;
+            }
+            else if (type == VideoPanel8Type.Left2)
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第一屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第一屏2.jpg";
+                string pathDir2 = "HK\\aiqi\\爱企谷 第一屏3.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+                images.Add(pathDir2);
+
+                return images;
+            }
+            else if (type == VideoPanel8Type.Right1)
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第六屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第六屏2.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+
+                return images;
+            }
+            else
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第六屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第六屏2.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+
+                return images;
+            }
         }
     }
 }
