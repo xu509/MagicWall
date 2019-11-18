@@ -262,8 +262,12 @@ namespace MagicWall {
         public void OnClickMid() {
             var data = _data.ScrollData[_index];
 
+            Debug.Log("点击中心");
+
             if (data.Type == 1) {
                 _onPlayVideo.Invoke(data.Src, data.Description, data.Cover);
+
+                Debug.Log("点击中心 11");
 
             }
         }

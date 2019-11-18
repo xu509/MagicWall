@@ -161,7 +161,7 @@ namespace MagicWall {
                     item.GetComponent<RectTransform>().DOScale(1f, 0);
                     item.RecoverFrame();
 
-                    item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
+                    item.GetComponent<RectTransform>().DOAnchorPos(LeftPosition, aniTime)
                         .OnComplete(() =>
                         {
 
@@ -192,7 +192,7 @@ namespace MagicWall {
                         item.transform.SetParent(_sliceScrollAgent.scrollPanelRight.transform, true);
                         item.RecoverFrame();
 
-                        item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
+                        item.GetComponent<RectTransform>().DOAnchorPos(RightPosition, aniTime)
                             .OnComplete(() =>
                             {
                             //AdjustSize();

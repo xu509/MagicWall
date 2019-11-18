@@ -310,7 +310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 190, y: -120}
+  m_AnchoredPosition: {x: -70, y: 50}
   m_SizeDelta: {x: 101, y: 41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2963403938103123037
@@ -466,7 +466,6 @@ MonoBehaviour:
   _videoToolContainer: {fileID: 5751343484654165270}
   _scaleBtn: {fileID: 9124775961522046486}
   _likeContainer: {fileID: 5641313818609572458}
-  _videoContainer: {fileID: 0}
   _buttonLikeAgent: {fileID: 7526444311444164111}
 --- !u!1 &4840941271069785571
 GameObject:
@@ -500,10 +499,10 @@ RectTransform:
   m_Father: {fileID: 6291402446412218208}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5648965606999428968
 GameObject:
@@ -588,7 +587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 200, y: 100}
+  m_AnchoredPosition: {x: -50, y: -50}
   m_SizeDelta: {x: 60, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999421505440727533
