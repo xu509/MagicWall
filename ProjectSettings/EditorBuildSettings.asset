@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Hongkou/HONGKOUAPP.unity
     guid: b1fab00108ec20d4f99a0ae52f87f8ae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AQG/AQGAPP.unity
     guid: 16da16bc8b445ed459dab35dfb908b21
+  - enabled: 1
+    path: Assets/Scenes/SHICUN/ShiCunDingzhiAPP.unity
+    guid: fd5a5b13a4578b04ca35cb3d3944c08b
   m_configObjects: {}

@@ -48,11 +48,11 @@ MonoBehaviour:
   - _sceneType: 3
     _subEffect: 1
     _dataType: 1
-    _durTime: 1
+    _durTime: 8
     _displayBehavior: 1
-    _destoryBehavior: 1
+    _destoryBehavior: 0
     _daoTypeEnum: 1
-    _isKinect: 1
+    _isKinect: 0
   - _sceneType: 5
     _subEffect: 1
     _dataType: 1
