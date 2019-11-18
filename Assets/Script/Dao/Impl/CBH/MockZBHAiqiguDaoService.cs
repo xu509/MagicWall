@@ -545,5 +545,63 @@ namespace MagicWall
             videos.Add(pathDir);
             return videos;
         }
+
+        public List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type)
+        {
+            if (type == VideoPanel8Type.Left1)
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第一屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第一屏2.jpg";
+                string pathDir2 = "HK\\aiqi\\爱企谷 第一屏3.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+                images.Add(pathDir2);
+
+                return images;
+            }
+            //else if (type == VideoPanel8Type.Left2)
+            //{
+            //    List<string> images = new List<string>();
+            //    string pathDir = "HK\\aiqi\\爱企谷 第2屏1.jpg";
+            //    string pathDir1 = "HK\\aiqi\\爱企谷 第2屏2.jpg";
+            //    string pathDir2 = "HK\\aiqi\\爱企谷 第2屏3.jpg";
+
+            //    images.Add(pathDir);
+            //    images.Add(pathDir1);
+            //    images.Add(pathDir2);
+
+            //    return images;
+            //}
+            else if (type == VideoPanel8Type.Right1)
+            {
+                List<string> images = new List<string>();
+                string pathDir = "HK\\aiqi\\爱企谷 第六屏1.jpg";
+                string pathDir1 = "HK\\aiqi\\爱企谷 第六屏2.jpg";
+
+                images.Add(pathDir);
+                images.Add(pathDir1);
+
+
+                return images;
+            }
+            //else
+            //{
+
+            //    List<string> images = new List<string>();
+            //    string pathDir = "HK\\aiqi\\爱企谷 第7屏1.jpg";
+            //    string pathDir1 = "HK\\aiqi\\爱企谷 第7屏2.jpg";
+            //    string pathDir2 = "HK\\aiqi\\爱企谷 第7屏3.jpg";
+
+            //    images.Add(pathDir);
+            //    images.Add(pathDir1);
+            //    images.Add(pathDir2);
+            //    return images;
+            //}
+            else {
+                return null;
+            }
+        }
     }
 }

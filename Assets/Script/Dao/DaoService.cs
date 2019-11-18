@@ -756,5 +756,10 @@ namespace MagicWall
         {
             throw new NotImplementedException();
         }
+
+        public List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
