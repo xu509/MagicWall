@@ -187,7 +187,7 @@ namespace MagicWall
         private FlockAgent CreateNewAgent(bool randomZ)
         {
             if (!randomZ) {
-                Debug.Log("添加星空块。");
+                //Debug.Log("添加星空块。");
             }
 
 

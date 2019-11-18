@@ -123,11 +123,11 @@ namespace MagicWall
 
         #region 文件夹地址配置
 
-         //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+         public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
         //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
-        public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
+        //public static string FileDir = "D:\\workspace\\MagicWall\\Files\\"; // xu  笔记本电脑
 
 
         //public static string FileDir = "D:\\MagicWall\\Files\\";  // 柯 笔记本电脑
@@ -397,31 +397,9 @@ namespace MagicWall
 
         private void ResetMainPanel()
         {
-            if (managerConfig.IsCustom)
-            {
-                // 此时为什么会偏移
-                //mainPanel.anchoredPosition = new Vector2(540, 0);
-                //while (mainPanel.anchoredPosition != new Vector2(540, 0))
-                //{
-                //    StartCoroutine(AfterFixedUpdate());
-                //}
-                mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-                                                            //mainPanel.offsetMin = new Vector2(2160, 0);
-                                                            //mainPanel.offsetMax = new Vector2(-1080, 0);
-                                                            //while (mainPanel.anchoredPosition != Vector2.zero)
-                                                            //{
-                                                            //    StartCoroutine(AfterFixedUpdate());
-                                                            //}
+            mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
 
-            }
-            else
-            {
-                mainPanel.anchoredPosition = Vector2.zero;  //主面板归位
-                                                            //while (mainPanel.anchoredPosition != Vector2.zero)
-                                                            //{
-                                                            //    StartCoroutine(AfterFixedUpdate());
-                                                            //}
-            }
+            
         }
 
 
@@ -472,12 +450,7 @@ namespace MagicWall
         }
 
         private void OnStartSceneCompleted() {
-            //OnStartSceneCompleted
-            if (managerConfig.IsCustom) {
-                // 显示
-                infoPanelAgent.Show();
 
-            }
         }
 
 

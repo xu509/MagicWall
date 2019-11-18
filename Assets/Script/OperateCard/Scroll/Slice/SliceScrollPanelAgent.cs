@@ -187,14 +187,18 @@ namespace MagicWall {
                 {
                     // 移动到右侧
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
-                    item.transform.SetParent(_sliceScrollAgent.scrollPanelRight.transform, true);
-                    item.RecoverFrame();
 
-                    item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
-                        .OnComplete(() =>
-                        {
+                    if (item != null) {
+                        item.transform.SetParent(_sliceScrollAgent.scrollPanelRight.transform, true);
+                        item.RecoverFrame();
+
+                        item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
+                            .OnComplete(() =>
+                            {
                             //AdjustSize();
                         });
+                    }
+                   
                 }
             }
 
@@ -235,19 +239,25 @@ namespace MagicWall {
                 else if (_currentLocation == PanelLocationEnum.Right)
                 {
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
-                    Destroy(item.gameObject);
+                    Destroy(item?.gameObject);
 
                 }
                 else if (_currentLocation == PanelLocationEnum.Prepare)
                 {
                     // 移动到左侧
                     var item = GetComponentInChildren<SliceScrollItemAgent>();
-                    item.transform.SetParent(_sliceScrollAgent.scrollPanelLeft.transform, true);
-                    item.RecoverFrame();
-                    item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
-                        .OnComplete(() =>
-                        {
-                        });
+
+                    if (item != null)
+                    {
+                        item.transform.SetParent(_sliceScrollAgent.scrollPanelLeft.transform, true);
+                        item.RecoverFrame();
+                        item.GetComponent<RectTransform>().DOAnchorPos(MiddlePosition, aniTime)
+                            .OnComplete(() =>
+                            {
+                            });
+                    }
+
+
                 }
             }
 

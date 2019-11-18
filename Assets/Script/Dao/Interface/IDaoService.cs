@@ -167,6 +167,8 @@ namespace MagicWall
         /// <returns></returns>
         List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type);
 
+        List<string> GetImageForImageBothSide(VideoPanel8Type type);
+
 
 
     }

@@ -83,6 +83,7 @@ namespace MagicWall {
             {
                 // 添加上部
                 _scrollPanelRight.SetData(datas[1]);
+                _scrollPanelRight.GoOutLocation();
             }
             else if (datas.Count > 2) {
                 // 添加左右两部分

@@ -1,6 +1,4 @@
-﻿ using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using EasingUtil;
@@ -9,7 +7,7 @@ using System;
 // 过场效果 1 ，曲线麻花效果
 namespace MagicWall
 {
-    public class CustomCurveStagger8pCutEffect : ICutEffect
+    public class CurveStaggerCutEffect : ICutEffect
     {
         MagicWallManager _manager;
 
@@ -233,7 +231,6 @@ namespace MagicWall
 
             if (_cutEffectStatus == CutEffectStatus.PreparingCompleted) {
                 _cutEffectStatus = CutEffectStatus.Creating;
-                
                 CreateItem(_dataTypeEnum);
                 _cutEffectStatus = CutEffectStatus.CreatingCompleted;
             }

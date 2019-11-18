@@ -54,6 +54,7 @@ namespace MagicWall
                 EditorGUILayout.LabelField("type", GUILayout.Width(_type_width));
                 EditorGUILayout.LabelField("moveB", GUILayout.Width(_move_width));
                 EditorGUILayout.LabelField("destoryB", GUILayout.Width(_destory_width));
+                EditorGUILayout.LabelField("subEffect", GUILayout.Width(_effect_width));
                 EditorGUILayout.LabelField("data", GUILayout.Width(_dao_width));
                 EditorGUILayout.LabelField("durtime", GUILayout.Width(_durtime_width));
                 EditorGUILayout.LabelField("isKinect", GUILayout.Width(_tool_width));
@@ -76,6 +77,7 @@ namespace MagicWall
                     config.dataType = (DataTypeEnum)EditorGUILayout.EnumPopup(config.dataType, GUILayout.Width(_type_width));
                     config.displayBehavior = (DisplayBehaviorEnum)EditorGUILayout.EnumPopup(config.displayBehavior, GUILayout.Width(_move_width));
                     config.destoryBehavior = (DestoryBehaviorEnum)EditorGUILayout.EnumPopup(config.destoryBehavior, GUILayout.Width(_destory_width));
+                    config.subEffect = (SubCutEffectTypeEnum)EditorGUILayout.EnumPopup(config.subEffect, GUILayout.Width(_effect_width));
                     config.daoTypeEnum = (DaoTypeEnum)EditorGUILayout.EnumPopup(config.daoTypeEnum, GUILayout.Width(_dao_width));
                     config.durtime = EditorGUILayout.FloatField(config.durtime, GUILayout.Width(_durtime_width));
                     config.isKinect = EditorGUILayout.IntField(config.isKinect, GUILayout.Width(_durtime_width));
@@ -157,7 +159,7 @@ namespace MagicWall
             }
 
             SceneConfig n = new SceneConfig(SceneTypeEnum.CurveStagger, DataTypeEnum.Activity
-                ,DisplayBehaviorEnum.GoLeft,DestoryBehaviorEnum.Fade,DaoTypeEnum.ShiCunFeiyue, 5f);
+                ,DisplayBehaviorEnum.GoLeft,DestoryBehaviorEnum.Fade,SubCutEffectTypeEnum.None, DaoTypeEnum.ShiCunFeiyue, 5f);
 
             configs.Add(n);
 
