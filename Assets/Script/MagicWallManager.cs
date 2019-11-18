@@ -21,16 +21,11 @@ namespace MagicWall
         #region 可配置项
         bool switchMode = false;
 
-        int _row = 12;   //  列数
-
-
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
 
         [SerializeField] Camera _starCamera;    // 星空camera
 
-        // 定制 INFO 面板
-        [SerializeField, Header("UI")] InfoPanelAgent infoPanelAgent;
         // MagicWall 面板
         [SerializeField] RectTransform _magicWallPanel;
         // start effect 面板
