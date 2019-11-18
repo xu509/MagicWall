@@ -447,7 +447,7 @@ MonoBehaviour:
     _destoryBehavior: 1
     _daoTypeEnum: 9
     _isKinect: 1
-  - _sceneType: 6
+  - _sceneType: 7
     _dataType: 0
     _durTime: 350
     _displayBehavior: 2

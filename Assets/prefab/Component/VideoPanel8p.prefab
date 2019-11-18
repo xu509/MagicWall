@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4935359623112719681}
   - component: {fileID: 5672399556697107230}
   m_Layer: 5
-  m_Name: RightPanel (1)
+  m_Name: RightPanel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 4277951264969510284}
   - component: {fileID: 4277951264969510275}
   m_Layer: 5
-  m_Name: RightPanel
+  m_Name: RightPanel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 4277951265470247301}
   - component: {fileID: 4277951265470247300}
   m_Layer: 5
-  m_Name: LeftPanel
+  m_Name: LeftPanel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,15 +318,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayerGo: {fileID: 4277951266102669596}
-  leftPanel: {fileID: 4277951265470247323}
-  leftPanel1: {fileID: 2438447173614835432}
-  rightPannel: {fileID: 4277951264969510274}
-  rightPannel1: {fileID: 7468061554392645609}
+  leftPanel1: {fileID: 4277951265470247323}
+  leftPanel2: {fileID: 2438447173614835432}
+  rightPannel1: {fileID: 4277951264969510274}
+  rightPannel2: {fileID: 7468061554392645609}
   rawImagePrefab: {fileID: 5778379174164596669, guid: 3896a6df498710e4c8e6320f9c8845ae,
     type: 3}
   videoPlayerHolder: {fileID: 5389965347712742443}
-  _leftChangeTime: 10
-  _rightChangeTime: 5
+  _leftChangeTime1: 10
+  _leftChangeTime2: 10
+  _rightChangeTime1: 10
+  _rightChangeTime2: 10
   _fadeoutDuration: 0.5
 --- !u!1 &7068559121975652659
 GameObject:
@@ -364,7 +366,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080.0001}
+  m_SizeDelta: {x: 1833.3, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7764371872288924656
 MonoBehaviour:
@@ -425,7 +427,7 @@ GameObject:
   - component: {fileID: 5765269488570799053}
   - component: {fileID: 5021887189896295618}
   m_Layer: 5
-  m_Name: LeftPanel (1)
+  m_Name: LeftPanel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

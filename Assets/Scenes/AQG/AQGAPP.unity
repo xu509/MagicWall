@@ -921,6 +921,11 @@ PrefabInstance:
       propertyPath: _rightChangeTime1
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4277951266131253598, guid: 91021dbb8667e874bafe9efec2d16e72,
+        type: 3}
+      propertyPath: _rightChangeTime2
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7764371872288924656, guid: 91021dbb8667e874bafe9efec2d16e72,
         type: 3}
       propertyPath: m_Enabled
