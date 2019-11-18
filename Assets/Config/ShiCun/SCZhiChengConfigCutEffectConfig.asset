@@ -37,3 +37,4 @@ MonoBehaviour:
   FallDownNoise: 1.24
   FallDownTotalTime: 11.42
   FallDownLogoFadeTime: 3
+  FrontBackRow: 6

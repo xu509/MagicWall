@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62b06450fb1fc94982e8790f91c1054, type: 3}
   m_Name: SCZhiChengConfig
   m_EditorClassIdentifier: 
-  IsCustom: 0
   SelectedItemMaxCount: 3
   OperateCardAutoCloseTime: 5
   gapFactor: 0.2
-  Column: 10
+  Column: 15
   KinectColumn: 30
   Row: 6
   KinectRow: 12

@@ -75,6 +75,9 @@ namespace MagicWall
             int generatePositionXInBack = _displayBehaviorConfig.generatePositionXInBack;
 
 
+            int row = _manager.cutEffectConfig.FrontBackRow;
+
+
             // 补充前排
             if ((generatePositionX - _manager.mainPanel.rect.width) < _manager.PanelOffsetX)
             {
@@ -87,7 +90,9 @@ namespace MagicWall
 
                 bool isOddColumn = column % 2 == 0;
 
-                for (int i = 0; i < _manager.Row; i++)
+
+
+                for (int i = 0; i < row; i++)
                 {
                     //  获取行数奇数状态
                     bool isOddRow = i % 2 == 0;
@@ -156,7 +161,7 @@ namespace MagicWall
 
                 bool isOddColumn = column % 2 == 0;
 
-                for (int i = 0; i < _manager.Row; i++)
+                for (int i = 0; i < row; i++)
                 {
                     //  获取行数奇数状态
                     bool isOddRow = i % 2 == 0;

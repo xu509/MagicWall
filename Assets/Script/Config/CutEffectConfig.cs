@@ -78,5 +78,8 @@ namespace MagicWall
         [SerializeField, Range(0f, 5f), Header("下坠LOGO渐隐时间")]
         public float FallDownLogoFadeTime;
 
+        [SerializeField, Range(0, 12), Header("[前后分层效果] 行数")]
+        public int FrontBackRow;
+
     }
 }
