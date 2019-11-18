@@ -117,7 +117,9 @@ namespace MagicWall
             _manager.CurrentScene = _scenes[0];
 
             // 常驻效果管理器
-            _wholeEffectManager.Init(this);
+            if (_wholeEffectManager.isOpen()) {
+                _wholeEffectManager.Init(this);
+            }
 
             _hasInit = true;
         }
