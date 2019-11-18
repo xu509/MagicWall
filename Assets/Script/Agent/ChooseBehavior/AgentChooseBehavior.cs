@@ -220,25 +220,36 @@ namespace MagicWall {
         }
 
 
-        private Vector3 GetCardGeneratePosition(FlockAgent flockAgent)
+        private Vector2 GetCardGeneratePosition(FlockAgent flockAgent)
         {
             AgentContainerType _agentContainerType = flockAgent.agentContainerType;
 
             var rect = flockAgent.GetComponent<RectTransform>();
 
+           //  获取卡片生成位置
+           //Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f,
+           //         rect.anchoredPosition.y - _manager.PanelOffsetY - 1f,
+           //         200);
 
-            //  获取卡片生成位置
-            Vector3 cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f,
-                    rect.anchoredPosition.y - _manager.PanelOffsetY - 1f,
-                    200);
+            Vector3 cardGenPosition = Vector3.zero;
 
             if (_agentContainerType == AgentContainerType.MainPanel)
             {
-                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+                // 获取屏幕坐标
+                //var sposition = Camera.main.WorldToScreenPoint(flockAgent.transform.position);
+                var sposition = flockAgent.transform.position;
+                Debug.Log("屏幕坐标： " + sposition);
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(_manager.operateCardManager.container.GetComponent<RectTransform>(), sposition, null,out cardGenPosition);
+                Debug.Log("调整后： " + cardGenPosition);
+
+                //cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
             }
             else if (_agentContainerType == AgentContainerType.BackPanel)
             {
-                cardGenPosition = new Vector3(rect.anchoredPosition.x - _manager.PanelBackOffsetX - 1f, rect.anchoredPosition.y - _manager.PanelOffsetY - 1f, 200);
+                var sposition = flockAgent.transform.position;
+                Debug.Log("屏幕坐标： " + sposition);
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(_manager.operateCardManager.container.GetComponent<RectTransform>(), sposition, null, out cardGenPosition);
+                Debug.Log("调整后： " + cardGenPosition);
             }
             else if (_agentContainerType == AgentContainerType.StarContainer)
             {
