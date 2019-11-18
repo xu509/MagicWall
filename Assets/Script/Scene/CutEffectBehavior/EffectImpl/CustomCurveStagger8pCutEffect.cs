@@ -234,6 +234,8 @@ namespace MagicWall
             if (_cutEffectStatus == CutEffectStatus.PreparingCompleted) {
                 _cutEffectStatus = CutEffectStatus.Creating;
                 
+                // todo 调整layout
+
                 CreateItem(_dataTypeEnum);
                 _cutEffectStatus = CutEffectStatus.CreatingCompleted;
             }

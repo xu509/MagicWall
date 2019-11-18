@@ -101,14 +101,6 @@ namespace MagicWall
 
         }
 
-        #region 
-
-
-
-
-
-        #endregion
-
 
         //  手写板识别内容后的回调
         private void OnRecognizedSuccess(string[] strs)
