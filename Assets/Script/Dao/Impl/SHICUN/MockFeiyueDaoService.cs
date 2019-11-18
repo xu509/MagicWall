@@ -857,5 +857,10 @@ namespace MagicWall
         {
             throw new System.NotImplementedException();
         }
+
+        public List<string> GetImageForImageBothSide(VideoPanel8Type type)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

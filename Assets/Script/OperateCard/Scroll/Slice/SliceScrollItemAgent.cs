@@ -25,9 +25,10 @@ namespace MagicWall {
 
         [SerializeField] Image _cover;
         [SerializeField] RectTransform _photoframe;
+        [SerializeField] RectTransform _photoToolContainer;
+        [SerializeField] RectTransform _videoToolContainer;
         [SerializeField] RectTransform _scaleBtn;
         [SerializeField] RectTransform _likeContainer;
-        [SerializeField] RectTransform _videoContainer;
 
         [SerializeField] ButtonLikeAgent _buttonLikeAgent;
 
@@ -60,11 +61,13 @@ namespace MagicWall {
             // 视频
             if (scrollData.Type == 1)
             {
-                _videoContainer.gameObject.SetActive(true);
+                _videoToolContainer.gameObject.SetActive(true);
+                _photoToolContainer.gameObject.SetActive(false);
 
             }
             else {
-                _videoContainer.gameObject.SetActive(false);
+                _videoToolContainer.gameObject.SetActive(false);
+                _photoToolContainer.gameObject.SetActive(true);
             }
 
             // 设置封面图片
@@ -73,13 +76,15 @@ namespace MagicWall {
 
 
             // 设置喜欢控件
-            var imageUrl = scrollData.Cover;
+            if (scrollData.Type == 0) {
+                var imageUrl = scrollData.Cover;
 
-            _buttonLikeAgent.Init(_manager.daoServiceFactory.GetLikes(imageUrl), () =>
-            {
-                _manager.daoServiceFactory.UpdateLikes(imageUrl);                
-            });
-
+                _buttonLikeAgent.Init(_manager.daoServiceFactory.GetLikes(imageUrl), () =>
+                {
+                    _manager.daoServiceFactory.UpdateLikes(imageUrl);
+                });
+            }
+            
         }
 
         void Update() {
@@ -115,13 +120,26 @@ namespace MagicWall {
 
 
         public void ShowComponents() {
-            _scaleBtn.gameObject.SetActive(true);
-            _likeContainer.gameObject.SetActive(true);
+
+            if (_data.Type == 0)
+            {
+                _photoToolContainer.gameObject.SetActive(true);
+            }
+            else {
+                _videoToolContainer.gameObject.SetActive(true);
+            }
+            
         }
 
         public void HideComponents() {
-            _scaleBtn.gameObject.SetActive(false);
-            _likeContainer.gameObject.SetActive(false);
+            if (_data.Type == 0)
+            {
+                _photoToolContainer.gameObject.SetActive(false);
+            }
+            else
+            {
+                _videoToolContainer.gameObject.SetActive(false);
+            }
         }
 
 

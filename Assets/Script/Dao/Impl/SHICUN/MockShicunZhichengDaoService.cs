@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 namespace MagicWall
 {
-    public class MockZhichengDaoService : MonoBehaviour, IDaoService
+    public class MockShicunZhichengDaoService : MonoBehaviour, IDaoService
     {
 
         private List<Enterprise> _enterprises;
@@ -28,7 +28,7 @@ namespace MagicWall
         //
         //  Construct
         //
-        protected MockZhichengDaoService() { }
+        protected MockShicunZhichengDaoService() { }
 
 
 
@@ -734,6 +734,36 @@ namespace MagicWall
         public List<string> GetImagesForVideoPanel8Screen(VideoPanel8Type type)
         {
             throw new System.NotImplementedException();
+        }
+
+        public List<string> GetImageForImageBothSide(VideoPanel8Type type)
+        {
+
+            string[] leftImages = { "zhicheng\\智城第一屏.jpg", "zhicheng\\智城第一屏1.jpg", "zhicheng\\智城第一屏2.jpg" };
+            //string[] middleImages = { "m1.jpg", "m2.jpg", "m3.jpg", "m4.jpg", "m5.jpg" };
+            string[] rightImages = { "zhicheng\\智城第五屏.jpg" };
+
+            if (type == VideoPanel8Type.Left1)
+            {
+                List<string> images = new List<string>();
+                int size = leftImages.Length;
+                for (int i = 0; i < size; i++)
+                {
+                    images.Add(leftImages[i]);
+                }
+                return images;
+            }
+            else
+            {
+                List<string> images = new List<string>();
+                int size = rightImages.Length;
+                for (int i = 0; i < size; i++)
+                {
+                    images.Add(rightImages[i]);
+                }
+                return images;
+            }
+
         }
     }
 }

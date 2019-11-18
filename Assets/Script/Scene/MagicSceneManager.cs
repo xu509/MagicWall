@@ -24,6 +24,8 @@ namespace MagicWall
         [SerializeField] Sprite _logo;
 
         [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
+        [SerializeField] SubCutEffectManager _subCutEffectManager;
+        [SerializeField,Header("常驻效果管理器")] WholeEffectManager _wholeEffectManager;
         //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
 
 
@@ -114,6 +116,8 @@ namespace MagicWall
             // 初始化管理器标志
             _manager.CurrentScene = _scenes[0];
 
+            // 常驻效果管理器
+            _wholeEffectManager.Init(this);
 
             _hasInit = true;
         }
@@ -128,7 +132,12 @@ namespace MagicWall
             // 背景始终运行
             if (_runBackground) {
                 _manager.backgroundManager.run();
-            }            
+            }
+
+            if (_wholeEffectManager.isOpen()) {
+                _wholeEffectManager.Run();
+            }
+
 
             if (!_hasInit && _scenes != null)
             {

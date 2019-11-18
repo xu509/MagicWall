@@ -41,6 +41,9 @@ namespace MagicWall
         // 关闭效果
         private CutEffectDestoryBehavior _destoryBehavior;
 
+        // 次级效果
+        private ISubCutEffect _subCutEffect;
+
         //  使用的类型
         private DataTypeEnum _dataType;
 

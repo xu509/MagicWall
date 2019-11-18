@@ -603,5 +603,10 @@ namespace MagicWall
                 return null;
             }
         }
+
+        public List<string> GetImageForImageBothSide(VideoPanel8Type type)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

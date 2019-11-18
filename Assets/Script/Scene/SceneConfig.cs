@@ -17,6 +17,9 @@ namespace MagicWall
         private SceneTypeEnum _sceneType;    //过场名
 
         [SerializeField]
+        private SubCutEffectTypeEnum _subEffect; // 次效果
+
+        [SerializeField]
         private DataTypeEnum _dataType;    //内容类型
 
         [SerializeField]
@@ -36,6 +39,7 @@ namespace MagicWall
 
 
         public SceneTypeEnum sceneType { set { _sceneType = value; } get { return _sceneType; } }
+        public SubCutEffectTypeEnum subEffect { set { _subEffect = value; } get { return _subEffect; } }
         public DataTypeEnum dataType { set { _dataType = value; } get { return _dataType; } }
         public float durtime { set { _durTime = value; } get { return _durTime; } }
         public DisplayBehaviorEnum displayBehavior { set { _displayBehavior = value; } get { return _displayBehavior; } }
@@ -46,9 +50,12 @@ namespace MagicWall
         public SceneConfig() { }
 
         public SceneConfig(SceneTypeEnum sceneTypeEnum, DataTypeEnum dataType, 
-            DisplayBehaviorEnum displayBehavior, DestoryBehaviorEnum destoryBehavior,DaoTypeEnum daoTypeEnum,float durTime)
+            DisplayBehaviorEnum displayBehavior, DestoryBehaviorEnum destoryBehavior,
+            SubCutEffectTypeEnum subEffect,
+            DaoTypeEnum daoTypeEnum,float durTime)
         {
             _sceneType = sceneTypeEnum;
+            _subEffect = subEffect;
             _dataType = dataType;
             _durTime = durTime;
             _displayBehavior = displayBehavior;

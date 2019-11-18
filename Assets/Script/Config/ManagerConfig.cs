@@ -7,8 +7,6 @@ namespace MagicWall
 {
     public class ManagerConfig : ScriptableObject
     {
-        [Header("是否是定制屏")]
-        public bool IsCustom = false;
 
         [Range(3, 8), Header("点开的最大数量")]
         public int SelectedItemMaxCount;
