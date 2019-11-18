@@ -95,6 +95,10 @@ namespace MagicWall
                 else if (sceneConfigs[i].sceneType == SceneTypeEnum.VideoBetweenImageSixScene) {
                     scene = new VideoBetweenImageScene();
                 }
+                else if (sceneConfigs[i].sceneType == SceneTypeEnum.VideoBetweenImageEightScene)
+                {
+                    scene = new VideoBetweenImageSceneEightScreen();
+                }
                 else
                 {
                     scene = new CommonScene();

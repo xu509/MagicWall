@@ -17,6 +17,7 @@ namespace MagicWall {
         HongKouLogo,  //虹口爱企
         HongKouPicture,  //虹口爱企照片墙
         HongKouAiqigu,  //虹口爱企谷
+        AQGAiqigu,  //爱企谷爱企谷
         Test    //  测试数据源
     }
 }
