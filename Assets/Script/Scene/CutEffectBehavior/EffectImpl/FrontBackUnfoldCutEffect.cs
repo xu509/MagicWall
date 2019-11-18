@@ -121,7 +121,7 @@ namespace MagicWall
             _displayBehaviorConfig = new DisplayBehaviorConfig();
             _sceneUtil = new SceneUtils(_manager, _sceneConfig.isKinect);
 
-            _row = _manager.Row;
+            _row = _manager.cutEffectConfig.FrontBackRow;
             int itemHeight = _sceneUtil.GetFixedItemHeight();
             float gap = _sceneUtil.GetGap();
 
