@@ -126,10 +126,10 @@ namespace MagicWall
 
                 var addresses = service.GetMatImageAddresses();
 
-                //foreach (string address in addresses)
-                //{
-                //    System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                //    watch.Start();
+                foreach (string address in addresses)
+                {
+                    System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+                    //watch.Start();
 
                     string imageAddress = MagicWallManager.FileDir + address;
 
@@ -138,13 +138,13 @@ namespace MagicWall
                         SpriteResource.Instance.GetData(imageAddress);
                     }
 
-                //    watch.Stop();
+                    //    watch.Stop();
 
-                //    if ((watch.ElapsedMilliseconds / 1000f) > 0.5f)
-                //    {
-                //        Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
-                //    }
-                //}
+                    if ((watch.ElapsedMilliseconds / 1000f) > 0.5f)
+                    {
+                        Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
+                    }
+                }
 
             }
 
