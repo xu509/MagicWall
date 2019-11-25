@@ -730,8 +730,6 @@ namespace MagicWall
             var mainWidth = _manager.mainPanel.GetComponent<RectTransform>().rect.width;
             var mainHeight = _manager.mainPanel.GetComponent<RectTransform>().rect.height;
 
-            //Debug.Log("mainWidth: " + mainWidth + " | mainHeight : " + mainHeight);
-
             var panelAnchorPosition = new Vector2(mainWidth / 2,
                 mainHeight / 2);
 
