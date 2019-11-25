@@ -132,8 +132,11 @@ namespace MagicWall
                     watch.Start();
 
                     string imageAddress = MagicWallManager.FileDir + address;
-                    //TextureResource.Instance.GetTexture(imageAddress);               
-                    SpriteResource.Instance.GetData(imageAddress);
+
+                    if (_manager.magicSceneManager._preLoadResource) {
+                        //TextureResource.Instance.GetTexture(imageAddress);               
+                        SpriteResource.Instance.GetData(imageAddress);
+                    }
 
                     watch.Stop();
 

@@ -126,21 +126,34 @@ namespace MagicWall
             reqStream.Close();
 
 
+            HttpWebResponse httpWebResponse = null;
+            StreamReader streamReader = null;
+            JObject result = null;
             // 获得 response
-            HttpWebResponse httpWebResponse = (HttpWebResponse)request.GetResponse();
-            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
-            string responseContent = streamReader.ReadToEnd();
+            try
+            {
+                httpWebResponse = (HttpWebResponse)request.GetResponse();
+                streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+                string responseContent = streamReader.ReadToEnd();
 
+                result = ReadXmlResult(responseContent);
 
-            JObject result = ReadXmlResult(responseContent);
-            //Debug.Log(result);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("请求出错： " + ex.Message);
+                result["result"] = "error";
+            }
+            finally {
 
-            httpWebResponse.Close();
-            streamReader.Close();
-            request.Abort();
-            httpWebResponse.Close();
+                httpWebResponse?.Close();
+                streamReader?.Close();
+                request.Abort();
+                httpWebResponse.Close();
+            }
 
             return result;
+
         }
 
         private JObject ReadXmlResult(string xmlresult)

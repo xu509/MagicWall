@@ -487,6 +487,11 @@ PrefabInstance:
       propertyPath: _videoBetweenImageController
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3462981383253737423, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _preLoadResource
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4466740121683549004, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _mockSceneConfig
