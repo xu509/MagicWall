@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 //
 //  场景管理器
@@ -20,6 +21,8 @@ namespace MagicWall
         [SerializeField,Tooltip("运行背景")] bool _runBackground = true;
         [SerializeField, Tooltip("运行logo动画")] bool _runLogoAni = true;
         public bool runLogoAni { get { return _runLogoAni; } }
+
+        [SerializeField,Header("Transform")] RectTransform _backContainer;
 
         [SerializeField] Sprite _logo;
 
@@ -39,6 +42,7 @@ namespace MagicWall
         //  paramater
         //
         bool _hasInit = false;
+        bool _hasInitTheme = false;
 
         List<IScene> _scenes; // 场景列表
         int _index; // 当前的索引
@@ -133,6 +137,14 @@ namespace MagicWall
         //
         public void Run()
         {
+            // 设置主题
+            if (!_hasInitTheme) {
+                // 设置主题
+                InitTheme();
+                _hasInitTheme = true;
+            }
+
+
             // 背景始终运行
             if (_runBackground) {
                 _manager.backgroundManager.run();
@@ -207,10 +219,17 @@ namespace MagicWall
             _index = sceneIndex;            
         }
 
-
         public IScene GetCurrentScene() {
             return _scenes[_index];
 
         }
+
+
+        void InitTheme() {
+            // 设置背景图片
+            var backSprite = _manager.themeManager.GetService().GetBackSprite();
+            _backContainer.GetComponent<Image>().sprite = backSprite;
+        }
+
     }
 }

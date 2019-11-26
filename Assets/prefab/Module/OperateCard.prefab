@@ -49,7 +49,7 @@ MonoBehaviour:
     type: 3}
   _sliceCardPrefab: {fileID: 2429258555300052348, guid: 5718fed7609bcb646b4e5d99f796eaaf,
     type: 3}
-  _crossCardPrefab: {fileID: 8137593796822784393, guid: 0005f6786f0b4884baf9fe2d95708c5b,
+  _crossCardPrefab: {fileID: 8137593796822784393, guid: 0a7f9e8aa7453154ba5ea17e093b57b6,
     type: 3}
 --- !u!114 &2013527649482980804
 MonoBehaviour:

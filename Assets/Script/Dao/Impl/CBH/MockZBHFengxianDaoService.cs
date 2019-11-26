@@ -68,7 +68,7 @@ namespace MagicWall
         //  获取首页企业
         //
         public Enterprise GetEnterprise()
-        {
+        {           
             return _enterprises[Random.Range(0, _enterprises.Count)];
         }
 
