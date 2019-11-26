@@ -69,18 +69,9 @@ namespace MagicWall {
             }
 
             // 设置首图
-            var firstData = data.ScrollDic[CrossCardNavType.Index];
-            //Debug.Log("firstData[0] : " + firstData[0].ToString());
+            var firstData = data.ScrollDic[CrossCardNavType.Index];            
 
             _scrollPanelMiddle.SetData(firstData[0]);
-
-            //_middlePanel.GetComponentInChildren
-            //var item = _middlePanel.GetComponent<ScrollItemAgent>();
-            //if (item == null) {
-            //    // 创建prefab
-            //    item = Instantiate(_scrollItemPrefab, _middlePanel);
-            //}
-            //item.Init(firstData[0]);
 
             // 初始化内容
             _currentNavType = CrossCardNavType.Index;
@@ -166,10 +157,7 @@ namespace MagicWall {
                     });
                 }
 
-                //Debug.Log("当前的移动方向： " + scrollDirectionEnum + " 当前的导航位置： " + _navIndex);
-
                 HandleIndexAfterUpdate(scrollDirectionEnum);
-
 
                 var navType = _navList[_navIndex];
                 var scrollData = _data.ScrollDic[navType][_index];
@@ -188,37 +176,6 @@ namespace MagicWall {
                 // 左右滑动、既是滑动更改nav
                 if (_navList.Count == 2)
                 {
-                    // TODO 
-
-                    //var preAgent = _scrollPanelPrepare.GetComponentInChildren<ScrollItemAgent>();
-                    //if (preAgent != null)
-                    //{
-                    //    Destroy(preAgent.gameObject);
-                    //}
-                    //preAgent = Instantiate(_scrollItemPrefab, _scrollPanelPrepare.transform);
-
-                    //if (scrollDirectionEnum == ScrollDirectionEnum.Left)
-                    //{
-                    //    int toIndex = _navIndex - 1;
-                    //    if (toIndex < 0)
-                    //    {
-                    //        toIndex = _navList.Count - 2;
-                    //    }
-
-                    //    Debug.Log("Prepare - " + _navList[toIndex]);
-
-                    //    preAgent.Init(_data.ScrollDic[_navList[toIndex]][0]);
-                    //}
-                    //else
-                    //{
-                    //    int toIndex = _navIndex + 2;
-                    //    if (toIndex >= _navList.Count)
-                    //    {
-                    //        toIndex = 0;
-                    //    }
-                    //    Debug.Log("Prepare - " + _navList[toIndex]);
-                    //    preAgent.Init(_data.ScrollDic[_navList[toIndex]][0]);
-                    //}
                 }
                 else if (_navList.Count > 2) {
                     var preAgent = _scrollPanelPrepare.GetComponentInChildren<ScrollItemAgent>();
@@ -426,7 +383,7 @@ namespace MagicWall {
                 }
             }
 
-            Debug.Log("修改后的导航位置： " + _navIndex + " INDEX: " + _index);
+            //Debug.Log("修改后的导航位置： " + _navIndex + " INDEX: " + _index);
         }
 
         /// <summary>
@@ -435,7 +392,7 @@ namespace MagicWall {
         public void OnClickMid() {            
             if (_navList[_navIndex] == CrossCardNavType.Video) {
 
-                Debug.Log("播放视频");
+               // Debug.Log("播放视频");
 
                 var datas = data.ScrollDic[CrossCardNavType.Video];
 

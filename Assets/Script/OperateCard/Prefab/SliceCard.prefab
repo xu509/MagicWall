@@ -364,6 +364,7 @@ MonoBehaviour:
   _description: {fileID: 3946797811664477073}
   _sliceScrollAgent: {fileID: 6549174168007684893}
   _buttomTool: {fileID: 7719139451170563042}
+  _backgroundImg: {fileID: 5419891386664147591}
 --- !u!58 &4448697247416911871
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -698,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.72156864}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

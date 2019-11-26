@@ -53,17 +53,12 @@ SpriteAtlas:
     - {fileID: 21300000, guid: d59acd9a86d12514ebd0399a6b5b46a7, type: 3}
     - {fileID: 21300000, guid: a9a3d9e8e98a66546865c01641af4779, type: 3}
     - {fileID: 21300000, guid: 52054f188357890448dd162a984b9125, type: 3}
-    - {fileID: 21300000, guid: d5589cf988f3fda43ad705e385d3d121, type: 3}
-    - {fileID: 21300000, guid: b661c8ccc9bc2404fbb4c95788ef201a, type: 3}
-    - {fileID: 21300000, guid: 62b1ef94695b3524abac4850acc454d8, type: 3}
-    - {fileID: 21300000, guid: ad3669500e118d64ba353eb043ed4ccb, type: 3}
     - {fileID: 21300000, guid: d363bec3f78996f4c903d33afa99b887, type: 3}
     - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
-    totalSpriteSurfaceArea: 3720924
+    totalSpriteSurfaceArea: 3450524
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: ad3669500e118d64ba353eb043ed4ccb, type: 3}
   - {fileID: 21300000, guid: 8f9aa960cefb7d8488c5a0a873d34c55, type: 3}
   - {fileID: 21300000, guid: 97b97411a1133c74f82b571700923676, type: 3}
   - {fileID: 21300000, guid: a6b78391b3a7fd744b5c84b37897715c, type: 3}
@@ -72,17 +67,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c7ddb5e2cacf3f849b653d64a41ee8d4, type: 3}
   - {fileID: 21300000, guid: d363bec3f78996f4c903d33afa99b887, type: 3}
   - {fileID: 21300000, guid: f6c966e37644ca149a01469b4767c157, type: 3}
-  - {fileID: 21300000, guid: 62b1ef94695b3524abac4850acc454d8, type: 3}
   - {fileID: 21300000, guid: 52054f188357890448dd162a984b9125, type: 3}
   - {fileID: 21300000, guid: 6066f3c8470f9b248a1c505c7fc76186, type: 3}
   - {fileID: 21300000, guid: a9a3d9e8e98a66546865c01641af4779, type: 3}
   - {fileID: 21300000, guid: 4403f169240983046936ecdc32c6cee4, type: 3}
-  - {fileID: 21300000, guid: d5589cf988f3fda43ad705e385d3d121, type: 3}
   - {fileID: 21300000, guid: d59acd9a86d12514ebd0399a6b5b46a7, type: 3}
   - {fileID: 21300000, guid: d38f881b5e4cf3b42875be6e80e1145d, type: 3}
-  - {fileID: 21300000, guid: b661c8ccc9bc2404fbb4c95788ef201a, type: 3}
   m_PackedSpriteNamesToIndex:
-  - remind-card-move-top
   - background-bubble-dim
   - background-logo
   - cursor-mouse-point
@@ -91,14 +82,11 @@ SpriteAtlas:
   - btn-search
   - reminder-crosscard-arrow
   - btn-list
-  - remind-card-move-right
   - btn-down
   - btn-move
   - btn-up
   - btn-question
-  - remind-card-move-buttom
   - btn-move-active
   - btn-close
-  - remind-card-move-left
   m_Tag: SpriteAtlas
   m_IsVariant: 0

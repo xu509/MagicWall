@@ -557,6 +557,7 @@ MonoBehaviour:
   _title: {fileID: 7601360225588502368}
   _description: {fileID: 3850439570969959639}
   _cover: {fileID: 4116305739599950154}
+  _backgroundImg: {fileID: 9186654971777209370}
   _buttomTool: {fileID: 4073888055729226985}
 --- !u!1 &2321720225611421098
 GameObject:

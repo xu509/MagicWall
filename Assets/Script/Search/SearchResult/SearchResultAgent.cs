@@ -14,7 +14,6 @@ namespace MagicWall
         Action _onUpdated;
         Action<SearchBean> _onClickSearchResultItem;
 
-        [SerializeField] Text _title;   //  标题
         [SerializeField, Header("Scroll View")] RectTransform _ScrollViewItemContainer;    //  列表内容容器
         [SerializeField] ScrollRect _scrollRect;    //  _scrollRect
         [SerializeField] SearchResultItemAgent _searchResultItemAgentPrefab;    //  搜索 item 代理
@@ -29,6 +28,13 @@ namespace MagicWall
         // 提示功能相关
         [SerializeField, Header("Question")] RectTransform _questionContainer;
         [SerializeField] QuestionAgent _questionPrefab;
+
+        [SerializeField,Header("UI")] Image _backImage;
+        [SerializeField] Text _title;   //  标题
+        [SerializeField] Text _none_item_text;   // noneItemText
+
+
+
         private bool _showQuestion;
         private QuestionAgent _questionAgent;
         // 提示功能相关 结束
@@ -107,7 +113,8 @@ namespace MagicWall
         /// </summary>
         public void Init(Action onUpdatedAction)
         {
-            _onUpdated = onUpdatedAction;            
+            _onUpdated = onUpdatedAction;
+            InitUI();
         }
 
         /// <summary>
@@ -292,5 +299,19 @@ namespace MagicWall
         }
 
         #endregion
+
+
+        private void InitUI() {
+            _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+
+            _title.color = _manager.themeManager.GetService().GetFontColor();
+            _none_item_text.color = _manager.themeManager.GetService().GetFontColor();
+            _backImage.sprite = _manager.themeManager.GetService().GetCardBackShade(FlockCardTypeEnum.SearchCard);
+
+
+
+        }
+    
+    
     }
 }

@@ -8,14 +8,14 @@ namespace MagicWall {
     {
         [SerializeField] Text _text;
 
+        MagicWallManager _manager;
+
         public void Awake() {
             MagicWallManager manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
 
-            if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P) {
-                _text.fontSize = 26;
-            } else {
-                _text.fontSize = 24;
-            }
+            _manager = manager;
+
+            InitUI();
         }
 
 
@@ -51,8 +51,23 @@ namespace MagicWall {
             }
 
             _text.text = text;
+        }
+
+
+        private void InitUI() {
+            if (_manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
+            {
+                _text.fontSize = 26;
+            }
+            else
+            {
+                _text.fontSize = 24;
+            }
+
+            _text.color = _manager.themeManager.GetService().GetFontColor();
 
         }
+
     }
 
 }

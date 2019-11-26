@@ -12,6 +12,9 @@ namespace MagicWall {
         [SerializeField,Header("Scroll Bar")] ScrollBarAgent _scrollBarAgent;
 
         [SerializeField, Header("UI Container")] RectTransform _questionContainer;
+        [SerializeField] Image _backgroundImg;
+        [SerializeField] Image _scrollImg;
+
 
 
         #region Data Parameter
@@ -53,7 +56,6 @@ namespace MagicWall {
 
         void Awake()
         {
-            SetUpUI();
         }
 
         //
@@ -145,7 +147,9 @@ namespace MagicWall {
                 }
 
             }, OnClickScale, DoVideo);
-            
+
+            InitUI();
+
             _scrollBarAgent.Init(_navList,(dir)=> {
 
             });
@@ -174,7 +178,7 @@ namespace MagicWall {
         }
 
 
-        private void SetUpUI() {
+        private void InitUI() {
             MagicWallManager manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
             if (manager.screenTypeEnum == ScreenTypeEnum.Screen1080P)
             {
@@ -185,11 +189,20 @@ namespace MagicWall {
 
             }
             else {
-
-
+                _questionContainer.anchoredPosition = new Vector2(391, 243);
 
             }
 
+            /// 设置主题相关
+             
+            // 设置遮罩图片
+            _backgroundImg.sprite = _manager.themeManager.GetService().GetCardBackShade(FlockCardTypeEnum.CrossCard);
+            // 设置标题
+            _title.color = _manager.themeManager.GetService().GetFontColor();
+            // 设置描述
+            _description.color = _manager.themeManager.GetService().GetFontColor();
+            // 设置scroll
+            _scrollImg.sprite = _manager.themeManager.GetService().GetScrollBarSprite();
         }
 
 

@@ -18,10 +18,22 @@ namespace MagicWall
 
         Action<string> _OnClickAssociateWord;
 
+        MagicWallManager _manager;
+
+
+        public void Init() {
+            _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+            InitUI();
+        }
+
+
+
         public void SetOnClickWord(Action<string> action)
         {
             _OnClickAssociateWord = action;
         }
+
+
 
         public void OnClick()
         {
@@ -33,6 +45,9 @@ namespace MagicWall
             text.text = str;
         }
 
+        private void InitUI() {
+            text.color = _manager.themeManager.GetService().GetFontColor();
+        }
 
 
     }

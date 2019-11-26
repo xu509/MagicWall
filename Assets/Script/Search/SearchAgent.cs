@@ -37,6 +37,12 @@ namespace MagicWall
         // 提示功能相关
         [SerializeField, Header("Question")] RectTransform _questionContainer;
         [SerializeField] QuestionAgent _questionPrefab;
+
+        // UI
+        [SerializeField, Header("UI")] Image _backgroundImage;
+
+
+
         private bool _showQuestion;
         private QuestionAgent _questionAgent;
         // 提示功能相关 结束
@@ -82,6 +88,8 @@ namespace MagicWall
             GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
 
             InitBackspaceStatus();
+
+            InitUI();
         }
 
         public void InitData(MagicWallManager manager, CardAgent cardAgent)
@@ -123,6 +131,7 @@ namespace MagicWall
                 for (int i = 0; i < length; i++)
                 {
                     AssociateWordAgent associateWordAgent = Instantiate(_associateWordPrefab, _associateWordArea);
+                    associateWordAgent.Init();
                     associateWordAgent.SetText(strs[i]);
                     // 装载点击事件
                     associateWordAgent.SetOnClickWord(OnClickAssociateWord);
@@ -361,17 +370,6 @@ namespace MagicWall
         /// </summary>
         public void DoMove()
         {
-            //if (!_doMoving)
-            //{
-            //    _move_rect.GetComponent<Image>().sprite = _sprite_move_active;
-            //}
-            //else {
-            //    _move_rect.GetComponent<Image>().sprite = _sprite_move;
-
-            //}
-
-            //_doMoving = !_doMoving;
-
             _onClickMove.Invoke();
         }
 
@@ -467,6 +465,17 @@ namespace MagicWall
         }
 
         #endregion
+
+        /// <summary>
+        /// 设置UI
+        /// </summary>
+        private void InitUI() {
+
+            _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
+
+            _backgroundImage.sprite = _manager.themeManager.GetService().GetCardBackShade(FlockCardTypeEnum.SearchCard);            
+
+        }
 
 
 

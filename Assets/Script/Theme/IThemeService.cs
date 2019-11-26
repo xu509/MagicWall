@@ -17,6 +17,12 @@ namespace MagicWall
         /// </summary>
         /// <returns></returns>
         Sprite GetBackSprite();
-        
+
+        Sprite GetCardBackShade(FlockCardTypeEnum flockCardTypeEnum);
+
+        Sprite GetMoveAgentSprite(MoveAgentTypeEnum moveAgentTypeEnum);
+
+        Sprite GetScrollBarSprite();
+
     }
 }

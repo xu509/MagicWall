@@ -583,12 +583,32 @@ PrefabInstance:
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: f1437d86193d6f643be2adf3ded2b616,
+      objectReference: {fileID: 11400000, guid: 0acd81a3005e20146b1bf413bde6d36e,
         type: 2}
     - target: {fileID: 2378844215938086190, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
       propertyPath: _open
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920943028269726456, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920943028269726456, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920943028269726456, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506919947527592829, guid: 66ac6cc2e905c71459c52598e7bb1430,
+        type: 3}
+      propertyPath: _theme
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3095498651678668676, guid: 66ac6cc2e905c71459c52598e7bb1430, type: 3}
@@ -643,7 +663,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 553118714}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655540658}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1c0568de151c4642a7627b0c9ad438b, type: 3}
@@ -689,23 +709,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87a2676d63e6dc342bc439962a231d51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1655540658 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5525864841571010623, guid: 66ac6cc2e905c71459c52598e7bb1430,
-    type: 3}
-  m_PrefabInstance: {fileID: 553118714}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1655540659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655540658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847698a05e4c3274e8299977ec196c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

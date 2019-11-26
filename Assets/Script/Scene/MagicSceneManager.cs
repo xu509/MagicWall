@@ -25,12 +25,14 @@ namespace MagicWall
         [SerializeField,Header("Transform")] RectTransform _backContainer;
 
         [SerializeField] Sprite _logo;
-
-        [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
-        [SerializeField] SubCutEffectManager _subCutEffectManager;
-        [SerializeField] public bool _preLoadResource;
-        [SerializeField,Header("常驻效果管理器")] WholeEffectManager _wholeEffectManager;
         
+        [SerializeField,Header("预处理数据")] public bool _preLoadResource;
+        [SerializeField, Header("次效果管理器")] SubCutEffectManager _subCutEffectManager;
+        [SerializeField,Header("常驻效果管理器")] WholeEffectManager _wholeEffectManager;
+
+        [SerializeField,Header("Scene 单独设置")] public VideoBetweenImageController _videoBetweenImageController;
+
+
         //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
 
 

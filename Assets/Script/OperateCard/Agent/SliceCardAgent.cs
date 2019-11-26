@@ -21,6 +21,8 @@ namespace MagicWall
         [SerializeField] Text _description;
         [SerializeField] SliceScrollAgent _sliceScrollAgent;
         [SerializeField] RectTransform _buttomTool;
+        [SerializeField] Image _backgroundImg;
+
 
         private List<string> _envCards = new List<string>();
         private OperateCardDataSlide _data;
@@ -179,6 +181,16 @@ namespace MagicWall
                 var descriptionFontSize = 20;
                 _description.fontSize = descriptionFontSize;
             }
+
+
+            /// 设置主题相关
+             
+            // 设置遮罩图片
+            _backgroundImg.sprite = _manager.themeManager.GetService().GetCardBackShade(FlockCardTypeEnum.SliceCard);
+            // 设置标题
+            _title.color = _manager.themeManager.GetService().GetFontColor();
+            // 设置描述
+            _description.color = _manager.themeManager.GetService().GetFontColor();
 
         }
 

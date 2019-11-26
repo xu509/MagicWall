@@ -953,7 +953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8427000ec7bf84ca50b87da519b612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 5758101501450986653}
   _ScrollViewItemContainer: {fileID: 2110123316612410934}
   _scrollRect: {fileID: 5723322305398653550}
   _searchResultItemAgentPrefab: {fileID: 6132195421317577046, guid: 481029151a366604ca0ac3575b309fec,
@@ -968,6 +967,9 @@ MonoBehaviour:
   _questionContainer: {fileID: 7903460834527006687}
   _questionPrefab: {fileID: 451025744172064408, guid: 71b01d4cdb887934db22617de872dc86,
     type: 3}
+  _backImage: {fileID: 2720907411084212148}
+  _title: {fileID: 5758101501450986653}
+  _none_item_text: {fileID: 8805894573237610190}
 --- !u!114 &700272839115314218
 MonoBehaviour:
   m_ObjectHideFlags: 0

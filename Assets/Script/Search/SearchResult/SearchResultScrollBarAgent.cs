@@ -98,7 +98,7 @@ namespace MagicWall
                 item.Refresh(widthOffset);
             }
 
-            onScrollUpdatedAction.Invoke();
+            onScrollUpdatedAction?.Invoke();
         }
 
 

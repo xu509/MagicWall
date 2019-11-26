@@ -38,9 +38,8 @@ namespace MagicWall
         [SerializeField, Header("UI")] Text _title;
         [SerializeField] Text _description;
         [SerializeField] Image _cover;
-
-
-
+        [SerializeField] Image _backgroundImg;
+        
         [SerializeField] RectTransform _buttomTool;
 
 
