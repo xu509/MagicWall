@@ -19,6 +19,7 @@ namespace MagicWall {
         HongKouAiqigu,  //虹口爱企谷
         AQGAiqigu,  //爱企谷爱企谷
         AQGBlack, // 爱企谷，黑色主题
+        AQGBlackLogo, // 爱企谷，黑色主题
         Test    //  测试数据源
     }
 }
