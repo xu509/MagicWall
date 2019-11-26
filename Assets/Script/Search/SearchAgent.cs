@@ -112,7 +112,7 @@ namespace MagicWall
             if (strs.Length == 0)
             {
                 RectTransform item = Instantiate(_associateWordMessagePrefab, _associateWordArea);
-                item.GetComponent<Text>().text = "未能识别您的笔迹。";
+                item.GetComponentInChildren<Text>().text = "未能识别您的笔迹。";
             }
             else
             {
@@ -139,13 +139,14 @@ namespace MagicWall
         /// <param name="message">消息</param>
         private void OnRecognizedError(string message)
         {
+            
+           
             // 清理联想板块
             ClearAssociateWordArea();
 
-            // 增加联想的内容
-
             RectTransform item = Instantiate(_associateWordMessagePrefab, _associateWordArea);
-            item.GetComponentInChildren<Text>().text = message;
+            item.GetComponentInChildren<Text>().text = "网络请求发生错误。";
+            
 
             _onUpdate.Invoke();
         }

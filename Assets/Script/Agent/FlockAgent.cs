@@ -524,7 +524,6 @@ namespace MagicWall
                 {
                     //effectAgentName = targetAgent.GetName();
                     
-
                     TurnOnHasMovedOffsetFlag();
 
                     var moveBehavior = targetAgent.GetMoveBehavior();
@@ -623,7 +622,22 @@ namespace MagicWall
             }
 
             // refVector2 此时该数据需要进行修改偏移量
+
+            // local position -》 worldposition
+            //var w = _manager.agentManager.flockContainer.rect.width;
+            //var h = _manager.agentManager.flockContainer.rect.height;
+
+            //var leftButtomPos = _manager.agentManager.flockContainer.transform.position - new Vector3(w / 2f, h / 2f,0);
+            //var t = refVector2WithOffset + (Vector2)leftButtomPos;
+
+
+
+            //var screenPosition = RectTransformUtility.WorldToScreenPoint(null, t);
             var screenPosition = RectTransformUtility.WorldToScreenPoint(null, refVector2WithOffset);
+
+
+            //Debug.Log("t : " + refVector2WithOffset + " -> " + screenPosition + " - " + gameObject.name);
+
             return screenPosition;
         }
 
@@ -699,23 +713,33 @@ namespace MagicWall
 
             if (_agentContainerType == AgentContainerType.MainPanel)
             {
-                container = _manager.mainPanel;
+                container = _manager.agentManager.flockContainer;
             }
             else if (_agentContainerType == AgentContainerType.BackPanel)
             {
-                container = _manager.backPanel;
+                container = _manager.agentManager.backContainer;
             }
             else {
-                container = _manager.mainPanel;
+                container = _manager.agentManager.flockContainer;
             }
 
             // 将屏幕坐标转换为rect 坐标
             var localPosition = new Vector2();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(container, screenPosition, null, out localPosition);
-          
-            var panelAnchorPosition = new Vector2(_manager.mainPanel.GetComponent<RectTransform>().rect.width / 2,
-                _manager.mainPanel.GetComponent<RectTransform>().rect.height / 2);
-            localPosition += panelAnchorPosition;
+
+            var mainWidth = _manager.mainPanel.GetComponent<RectTransform>().rect.width;
+            var mainHeight = _manager.mainPanel.GetComponent<RectTransform>().rect.height;
+
+            var panelAnchorPosition = new Vector2(mainWidth / 2,
+                mainHeight / 2);
+
+
+            //Debug.Log("计算前： " + screenPosition + " -> 后：" + localPosition + " -> 最终： " + (localPosition + panelAnchorPosition));
+
+
+            localPosition = localPosition + panelAnchorPosition;
+
+
 
             return localPosition;
         }

@@ -21,16 +21,11 @@ namespace MagicWall
         #region 可配置项
         bool switchMode = false;
 
-        int _row = 12;   //  列数
-
-
         [SerializeField, Header("Camera")] Camera _mainCamera;
         public Camera mainCamera { get { return _mainCamera; } }
 
         [SerializeField] Camera _starCamera;    // 星空camera
 
-        // 定制 INFO 面板
-        [SerializeField, Header("UI")] InfoPanelAgent infoPanelAgent;
         // MagicWall 面板
         [SerializeField] RectTransform _magicWallPanel;
         // start effect 面板
@@ -123,7 +118,7 @@ namespace MagicWall
 
         #region 文件夹地址配置
 
-         //public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
+        // public static string FileDir = "E:\\workspace\\MagicWall\\Files\\"; // xu pc电脑
 
         //public static string FileDir = "C:\\workspace\\MagicWall\\Files\\"; // 公司开发
 
@@ -160,7 +155,6 @@ namespace MagicWall
         public RectTransform backPanel { get { return _backPanel; } }//前后层展开效果的后层
         public RectTransform OperationPanel { get { return _operationPanel; } }
         public RectTransform BgLogo { get { return _bg_logo; } }
-        public int Row { get { return _row; } }
         public float PanelOffsetX { get { return panelOffsetX; } set { panelOffsetX = value; } }
         public float PanelBackOffsetX { get { return panelBackOffsetX; } set { panelBackOffsetX = value; } }
         public float PanelOffsetY { get { return panelOffsetY; } set { panelOffsetY = value; } }

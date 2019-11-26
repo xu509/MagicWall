@@ -23,16 +23,21 @@ namespace MagicWall
         /// 普通浮动块容器
         /// </summary>
         [SerializeField, Header("Container")] RectTransform _flockContainer;
+        public RectTransform flockContainer { get { return _flockContainer; } }
 
         /// <summary>
         ///    后层的浮动块容器
         /// </summary>
         [SerializeField] RectTransform _backContainer;
+        public RectTransform backContainer { get { return _backContainer; } }
+
 
         /// <summary>
         ///    后层的浮动块容器
         /// </summary>
         [SerializeField] RectTransform _starContainer;
+        public RectTransform starContainer { get { return _starContainer; } }
+
 
         [SerializeField] FlockAgentFactoryInstance _flockAgentFactoryInstance;
         public FlockAgentFactoryInstance flockAgentFactoryInstance { get { return _flockAgentFactoryInstance; } }

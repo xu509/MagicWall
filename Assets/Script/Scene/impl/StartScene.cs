@@ -129,20 +129,23 @@ namespace MagicWall
                 foreach (string address in addresses)
                 {
                     System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                    watch.Start();
+                    //watch.Start();
 
                     string imageAddress = MagicWallManager.FileDir + address;
-                    //TextureResource.Instance.GetTexture(imageAddress);               
-                    SpriteResource.Instance.GetData(imageAddress);
 
-                    watch.Stop();
+                    if (_manager.magicSceneManager._preLoadResource) {
+                        //TextureResource.Instance.GetTexture(imageAddress);               
+                        SpriteResource.Instance.GetData(imageAddress);
+                    }
+
+                    //    watch.Stop();
 
                     if ((watch.ElapsedMilliseconds / 1000f) > 0.5f)
                     {
                         Debug.Log("Time - " + imageAddress + " - second : " + watch.ElapsedMilliseconds / 1000f);
                     }
-
                 }
+
             }
 
 

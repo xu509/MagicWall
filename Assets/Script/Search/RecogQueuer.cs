@@ -36,7 +36,7 @@ namespace MagicWall
 
             var appKey = "195d5435";
             var devKey = "3a6d22a54d7d453d0689551661ea3f8e";
-            var timeOut = 20000;
+            var timeOut = 2000;
 
             sVClient = new SVClient(appKey, devKey, timeOut);
 
@@ -194,6 +194,9 @@ namespace MagicWall
                 }
                 else
                 {
+
+                    Debug.Log("识别错误");
+
                     _errorCallBackQueue.Enqueue(new ErrorActionCallBackBean("识别服务错误", recognizeImageParams.errorCallBack));
                 }
 

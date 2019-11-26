@@ -25,7 +25,9 @@ namespace MagicWall
 
         [SerializeField] public VideoBetweenImageController _videoBetweenImageController;
         [SerializeField] SubCutEffectManager _subCutEffectManager;
+        [SerializeField] public bool _preLoadResource;
         [SerializeField,Header("常驻效果管理器")] WholeEffectManager _wholeEffectManager;
+        
         //public VideoBetweenImageController videoBetweenImageController { get { return videoBetweenImageController; } }
 
 
@@ -117,7 +119,9 @@ namespace MagicWall
             _manager.CurrentScene = _scenes[0];
 
             // 常驻效果管理器
-            _wholeEffectManager.Init(this);
+            if (_wholeEffectManager.isOpen()) {
+                _wholeEffectManager.Init(this);
+            }
 
             _hasInit = true;
         }
@@ -188,7 +192,7 @@ namespace MagicWall
             _manager.SceneIndex = _manager.SceneIndex + 1;
 
 
-            Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
+            //Debug.Log("进入到下个场景，索引为： " + _index + " 类型为： " + _scenes[_index].GetSceneConfig().sceneType);
 
             _manager.CurrentScene = _scenes[_index];
 

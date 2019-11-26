@@ -11,6 +11,7 @@ namespace MagicWall {
     public class OperateCardManager : MonoBehaviour
     {
         [SerializeField, Header("UI")] Transform _container;
+        public Transform container { get { return _container; } }
 
 
         [SerializeField,Header("Prefab")] SingleCardAgent _singleCardPrefab;
