@@ -24,13 +24,13 @@ namespace MagicWall {
         {
             _wholeEffectManager = wholeEffectManager;
             _manager = GameObject.Find("MagicWall").GetComponent<MagicWallManager>();
-            _imageBothSideController.Init(_manager, _daoType);
+            _imageBothSideController?.Init(_manager, _daoType);
         }
 
         public void Run()
         {
             if (!_hasInit) {
-                _imageBothSideController.StartPlay();
+                _imageBothSideController?.StartPlay();
                 _hasInit = true;
             }
 

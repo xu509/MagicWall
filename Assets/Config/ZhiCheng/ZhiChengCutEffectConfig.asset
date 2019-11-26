@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697eb86ab20866941a98a75cacf7d8fd, type: 3}
+  m_Name: ZhiChengCutEffectConfig
+  m_EditorClassIdentifier: 
+  MidDisperseMoveEaseEnum: 14
+  MidDisperseDelayMax: 0.75
+  MidDisperseDisplayTime: 1
+  MidDisperseAlphaMinDistanceFactor: 1
+  MidDisperseAlphaEaseEnum: 0
+  MidDisperseHeightFactor: 1
+  LeftRightDisplayEaseEnum: 14
+  LeftRightDisplayDurTime: 3
+  LeftRightGapTime: 0.05
+  LeftRightGapEaseEnum: 0
+  UpDownDisplayEaseEnum: 14
+  UpDownDisplayDurTime: 1.5
+  FrontBackDisplayEaseEnum: 27
+  FrontBackDisplayDurTime: 1.5
+  CurveStaggerDisplayEaseEnum: 24
+  CurveStaggerDisplayDurTime: 3
+  StarEffectAgentsCount: 60
+  StarEffectMoveFactor: 15
+  StarEffectOriginPoint: 1000
+  StarEffectEndPoint: -2500
+  FallDownSpeed: 108
+  FallDownGapTime: 3.14
+  FallDownNoise: 1.24
+  FallDownTotalTime: 11.42
+  FallDownLogoFadeTime: 3
+  FrontBackRow: 0

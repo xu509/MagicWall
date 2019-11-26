@@ -26,6 +26,7 @@ namespace MagicWall {
         [SerializeField, Tooltip("虹口 -  爱企")] MockHKAiqiguDaoService _mockHKAiqiguDaoService;
 
         [SerializeField, Tooltip("爱企谷 -  爱企")] MockAQGAiqiguDaoService _mockAQGAiqiguDaoService;
+        [SerializeField, Tooltip("爱企谷 -  黑色")] MockAQGBlackDaoService _mockAQGBlackDaoService;
 
         [SerializeField] DaoService _realDaoService;
 
@@ -62,8 +63,9 @@ namespace MagicWall {
             {
                 _daoService = _mockShicunDaoService;
             }
-            else if (type == DaoTypeEnum.Test) {
-                _daoService = _mockTestDaoService; 
+            else if (type == DaoTypeEnum.Test)
+            {
+                _daoService = _mockTestDaoService;
             }
             else if (type == DaoTypeEnum.HongKouFeiyue)
             {
@@ -84,6 +86,9 @@ namespace MagicWall {
             else if (type == DaoTypeEnum.AQGAiqigu)
             {
                 _daoService = _mockAQGAiqiguDaoService;
+            }
+            else if (type == DaoTypeEnum.AQGBlack) {
+                _daoService = _mockAQGBlackDaoService;
             }
             return _daoService;
         }

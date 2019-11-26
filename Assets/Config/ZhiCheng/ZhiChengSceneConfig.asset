@@ -10,28 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 339ad0c5e25662c41ba772634a7b6a06, type: 3}
-  m_Name: MockSceneTestConfig
+  m_Name: ZhiChengSceneConfig
   m_EditorClassIdentifier: 
   sceneConfigs:
   - _sceneType: 4
+    _subEffect: 1
     _dataType: 1
-    _durTime: 5
+    _durTime: 8
     _displayBehavior: 2
     _destoryBehavior: 0
-    _daoTypeEnum: 7
-    _isKinect: 0
-  - _sceneType: 0
-    _dataType: 2
-    _durTime: 5
-    _displayBehavior: 2
-    _destoryBehavior: 0
-    _daoTypeEnum: 8
-    _isKinect: 0
-  - _sceneType: 0
-    _dataType: 0
-    _durTime: 5
-    _displayBehavior: 2
-    _destoryBehavior: 0
-    _daoTypeEnum: 0
+    _daoTypeEnum: 1
     _isKinect: 0
   data: 0
