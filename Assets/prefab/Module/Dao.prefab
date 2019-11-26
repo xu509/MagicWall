@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 4014768128315026246}
   - component: {fileID: 7998534953754153329}
   - component: {fileID: 3749803696099780319}
+  - component: {fileID: 8430899459586920427}
   m_Layer: 0
   m_Name: Service
   m_TagString: Untagged
@@ -238,6 +239,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889a63cb58ea88e4485a2e38be343771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8430899459586920427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697730326170835635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0bf5b463828ea4493ef57140b35c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7295579063051274837
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,4 +311,5 @@ MonoBehaviour:
   _mockHKAiqiguDaoService: {fileID: 8663514179304430619}
   _mockAQGAiqiguDaoService: {fileID: 7998534953754153329}
   _mockAQGBlackDaoService: {fileID: 3749803696099780319}
+  _mockAQGBLogoDaoService: {fileID: 8430899459586920427}
   _realDaoService: {fileID: 6120329361894765570}

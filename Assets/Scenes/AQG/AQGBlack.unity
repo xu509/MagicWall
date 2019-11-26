@@ -94,8 +94,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -372,7 +372,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _collisionBehaviorConfig
       value: 
-      objectReference: {fileID: 11400000, guid: 3f12fccf4da8834439b2a864c04f187c,
+      objectReference: {fileID: 11400000, guid: b1c261e1b85885f41b7b27eee666ca4a,
         type: 2}
     - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -413,7 +413,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _cutEffectConfig
       value: 
-      objectReference: {fileID: 11400000, guid: 49112f9d2f77b0b40b054128ad45c9da,
+      objectReference: {fileID: 11400000, guid: d01b67da56bdb06499d22cf7060f91a4,
         type: 2}
     - target: {fileID: 3095498653284836062, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}
@@ -583,7 +583,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _mockSceneConfig
       value: 
-      objectReference: {fileID: 11400000, guid: f1437d86193d6f643be2adf3ded2b616,
+      objectReference: {fileID: 11400000, guid: 930e47d7dc266bf4da754c86c0050eb9,
         type: 2}
     - target: {fileID: 2378844215938086190, guid: 66ac6cc2e905c71459c52598e7bb1430,
         type: 3}

@@ -13,6 +13,166 @@ MonoBehaviour:
   m_Name: MockAQGBlackSceneConfig
   m_EditorClassIdentifier: 
   sceneConfigs:
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 13
+    _isKinect: 0
+  - _sceneType: 2
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 13
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 5
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 3
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 2
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 5
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 3
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 2
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 5
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 3
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 2
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 5
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 3
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 2
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 0
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 2
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
+  - _sceneType: 5
+    _subEffect: 0
+    _dataType: 2
+    _durTime: 10
+    _displayBehavior: 3
+    _destoryBehavior: 0
+    _daoTypeEnum: 12
+    _isKinect: 0
   - _sceneType: 7
     _subEffect: 0
     _dataType: 0
